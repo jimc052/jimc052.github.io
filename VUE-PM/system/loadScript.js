@@ -30,9 +30,7 @@ let loadScript = function(filename, callback ){
 			script.src   = arrScript[index]; //filename;
 			script.id    = "js";
 			if(typeof script != "undefined"){
-				//document.body.appendChild(script);
 				script.onload = function(){
-					//console.log(script.src);
 					start(index+1);
 				};
 				document.getElementsByTagName("head")[0].appendChild(script);

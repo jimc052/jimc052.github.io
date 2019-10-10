@@ -54,6 +54,9 @@
 		.ivu-message-notice-content > div:nth-child(2) {
 			padding-left: 32px;
 		}
+		.ivu-input[readonly] {
+			background: #e6e6e6;
+		}
 	</style>
 </head>
 <body>
@@ -76,7 +79,7 @@
 			el: '#app',
 			data() {
 				return {
-					drawer: true, 
+					drawer: false, 
 					menu: [
 						{title: "員工資料", icon: "md-person", js: "user"},
 						{title: "專案資料", icon: "md-person", js: "project"},

@@ -3,9 +3,9 @@ Vue.component('data-table', {
 			'<header-bar :title="title"></header-bar>' +
 			'<slot name="header"></slot>' +
 			'<div ref="tbl" style="flex: 1; overflow: hidden">' +
-				'<Table :columns="columns" :data="myData" border :height="maxHeight" @on-row-click="onRowClick" @on-selection-change="onSelectionChange" @on-sort-change="onChangeSort" ></Table>				></Table>' +
+				'<Table :columns="cols" :data="myData" border :height="maxHeight" @on-row-click="onRowClick" @on-selection-change="onSelectionChange" @on-sort-change="onChangeSort" ></Table>				></Table>' +
 			'</div>' +
-			'<Page ref="page" v-if="datas.length > 10" :total="datas.length" @on-change="onPageChange" @on-page-size-change="onPageSizeChange" :page-size="pageSize" style="margin: 5px;" show-total show-elevator show-sizer  />' +
+			'<Page ref="page" v-if="datas.length > pageSize" :total="datas.length" @on-change="onPageChange" @on-page-size-change="onPageSizeChange" :page-size="pageSize" style="margin: 5px;" show-total show-elevator show-sizer />' +
 			'<slot name="footer"></slot>' +
 			'<i-button type="primary" shape="circle" class="absolute-bottom" icon="md-add" circle @click.native="onNewRow"></i-button>' +
 		'</div>'
@@ -34,7 +34,12 @@ Vue.component('data-table', {
 		return {
 			maxHeight: 500, 
 			pageSize: 20,
-			myData: []
+			myData: [],
+			cols: [{ // ok 的，可以用
+				type: 'selection',
+				width: 60,
+				align: 'center'
+			}]
 		};
 	},
 	created(){
@@ -42,48 +47,9 @@ Vue.component('data-table', {
 		window.onresize = () => {
 			self.resize(600);
 		}
-
-		// this.columns.push({ // 可以用的
-		// 	title: 'Action',
-		// 	key: 'action',
-		// 	width: 110,
-		// 	align: 'center',
-		// 	render: (h, params) => {
-		// 		return h('div', [
-		// 				h('Button', {
-		// 						props: {
-		// 								type: 'primary',
-		// 								size: 'small'
-		// 						},
-		// 						style: {
-		// 								marginRight: '5px'
-		// 						},
-		// 						on: {
-		// 								click: () => {
-		// 									self.onEdit("edit", params)
-		// 								}
-		// 						}
-		// 				}, '編輯'),
-		// 				h('Button', {
-		// 						props: {
-		// 								type: 'error',
-		// 								size: 'small'
-		// 						},
-		// 						on: {
-		// 							click: () => {
-		// 								self.onEdit("del", params)
-		// 							}
-		// 						}
-		// 				}, '刪除')
-		// 		]);
-		// 	}
-		// });
-
-		this.columns.unshift({ // ok 的，可以用
-			type: 'selection',
-			width: 60,
-			align: 'center'
-		})
+		this.columns.forEach(item=>{
+			this.cols.push(item)
+		});
 	},
 	mounted(){
 		this.resize();
@@ -108,7 +74,6 @@ Vue.component('data-table', {
 				arr.push(this.datas[i]);
 			}
 			this.myData = arr;
-			
 		},
 		onPageSizeChange(i){
 			this.pageSize = parseInt(i, 10)
@@ -118,7 +83,6 @@ Vue.component('data-table', {
 			this.onEdit("new")
 		}, 
 		onRowClick(item, index){
-			// this.myData[index].CD_KIND += "xx";
 			this.onEdit("edit", this.myData[index], index);
 		},
 		onSelectionChange(){
@@ -126,7 +90,7 @@ Vue.component('data-table', {
 			setTimeout(()=>{
 				let arr2 = [];
 				for(let i = 0; i < arr.length; i++) {
-					if(arr[i].checked == true) arr2.push(i);
+					if(arr[i].checked == true) arr2.push(this.myData[i]);
 				}
 				this.onEdit("selection", arr2);
 			}, 300)
@@ -135,23 +99,40 @@ Vue.component('data-table', {
 			if(typeof this.onSort == "function") this.onSort(item);
 		},
 		addRows(item) {
-			
-			if(myData.length < this.pageSize){
-
+			if(this.myData.length < this.pageSize){
+				this.myData.push(item)
 			}
+			this.datas.push(item)
 		},
 		updateRow(item) {
-			// console.log("currentPage: " + this.$refs["page"].currentPage)
+			for(let i = 0; i < this.datas.length; i++) {
+				if(this.datas[i].PK == item.PK) {
+					this.datas[i] = item;
+					break;
+				}
+			}
+			for(let i = 0; i < this.myData.length; i++) {
+				if(this.myData[i].PK == item.PK) {
+					this.$set(this.myData, i, item);
+					break;
+				}
+			}
 		},
 		removeRows(){
 			let arr = document.querySelectorAll(".ivu-table-tbody .ivu-table-cell-with-selection input");
-				for(let i = arr.length - 1; i >= 0; i--) {
-					if(arr[i].checked == true) {
-
-					}
+			let currentPage = typeof this.$refs["page"] == "undefined" ? 1 : this.$refs["page"].currentPage;
+			let x = (currentPage - 1) * this.pageSize;
+			for(let i = arr.length - 1; i >= 0; i--) {
+				if(arr[i].checked == true) {
+					this.myData.splice(i, 1)
+					this.datas.splice(x + i, 1)
 				}
-
-			this.onPageChange(this.$refs["page"].currentPage);
+			}
+			let y = Math.ceil(this.datas.length / this.pageSize);
+			if(y >= currentPage) {
+				y = currentPage;
+			}
+			this.onPageChange(y);
 		}
 	}
 });

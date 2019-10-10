@@ -25,7 +25,7 @@ class Sqlite{
 				"PRIMARY KEY (PK) )");
 	
 			arr.push("CREATE TABLE if not exists CODE(PK int NOT NULL, CD_KIND nvarchar(20) NOT NULL," +
-				"CD_NAME nvarchar(20) NOT NULL, CD_KEY nvarchar(20) NOT NULL, MEMO text, ACTIVE nvarchar(1) default 'Y', " +
+				"CD_NAME nvarchar(20) NOT NULL, CD_KEY nvarchar(20) NULL, MEMO text, ACTIVE nvarchar(1) default 'Y', " +
 				"MODIFY_DATE int NOT NULL, " +
 				"PRIMARY KEY (PK) )");
 		}
@@ -66,15 +66,34 @@ class Sqlite{
 		return {sql: "Insert Into " + tblName + "(" + s1 + ") values(" + s2 + ")", values};
 	}
 
-	execute(sql, value){
+	convertToUpdate(tblName, json){
+		let values = [], s1 = "", PK = "";
+		let date = (new Date()).getTime();
+		json.MODIFY_DATE = date;
+		for(let key in json) {
+			if(key == "PK") {
+				PK = json[key];
+			} else {
+				s1 += (s1.length > 0 ? ", " : "") + key + "= ?";
+				values.push(json[key]);
+			}
+		}
+		return {sql: "Update " + tblName + " set " + s1 + " Where PK=" + PK, values};
+	}
+
+	execute(sql, values){
 		let self = this;
 		return new Promise( (success, error) => {
 			self.db.transaction((tx) => {
-				tx.executeSql(sql, value, 
+				tx.executeSql(sql, values, 
 				(tx, results)=>{
-					if(sql.toUpperCase().indexOf("SELECT ") == 0)
-						success(results.rows)
-					else 
+					if(sql.toUpperCase().indexOf("SELECT ") == 0) {
+						let arr = [];
+						for(let i = 0; i < results.rows.length; i++) {
+							arr.push(results.rows.item(i));
+						}
+						success(arr)
+					} else 
 						success(results.rowsAffected);
 				}, (tx, e)=>{
 					error(e)
