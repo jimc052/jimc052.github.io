@@ -133,6 +133,15 @@ Vue.component('data-table', {
 				y = currentPage;
 			}
 			this.onPageChange(y);
+		},
+	},
+	watch: {
+		datas(val) {
+			if(val.length > 0)
+				this.onPageChange(1)
+			else {
+				this.myData = [];
+			}
 		}
-	}
+	},
 });

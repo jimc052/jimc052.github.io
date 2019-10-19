@@ -2,7 +2,7 @@ new Vue({
 	template: '<div id="frame">' +
 		'<data-table title="專案資料" :columns="columns" :datas="datas" :onEdit="onEdit" :onSort="onSort">' +
 				'<div slot="header" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">' + 
-					'<options ref="options" :columns="columns" />' +
+					'<options ref="options" :datas="columns" />' +
 					'<i-input v-model="search" size="large" placeholder="請輸入關鍵字" style="width: 200px;">' +
 					  '<Icon type="ios-search" slot="suffix" @click.native="onSearch" style="cursor: pointer;" />' +
 					'</i-input>' +

@@ -25,7 +25,7 @@ class Sqlite{
 				"PRIMARY KEY (PK) )");
 	
 			arr.push("CREATE TABLE if not exists CODE(PK int NOT NULL, CD_KIND nvarchar(20) NOT NULL," +
-				"CD_NAME nvarchar(20) NOT NULL, CD_KEY nvarchar(20) NULL, MEMO text, ACTIVE nvarchar(1) default 'Y', " +
+				"CD_NAME nvarchar(20) NOT NULL, CD_KEY nvarchar(5)  default '', MEMO text, ACTIVE nvarchar(1) default 'Y', " +
 				"MODIFY_DATE int NOT NULL, " +
 				"PRIMARY KEY (PK) )");
 		}
@@ -82,6 +82,10 @@ class Sqlite{
 	}
 
 	execute(sql, values){
+		if(typeof sql == "object") {
+			values = sql.values;
+			sql = sql.sql;
+		}
 		let self = this;
 		return new Promise( (success, error) => {
 			self.db.transaction((tx) => {
@@ -98,7 +102,9 @@ class Sqlite{
 				}, (tx, e)=>{
 					error(e)
 					console.log(e)
-					vm.showMessage("SQL Error：", e.message, sql);
+					vm.showMessage("SQL Error：", e.message, sql, 
+						Array.isArray(values) ? JSON.stringify(values) : undefined
+					);
 				});
 			});
 		});

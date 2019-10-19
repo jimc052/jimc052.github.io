@@ -1,34 +1,45 @@
+
 new Vue({
-	template: `<div id="frame">` +
-		`<data-table ref="tbl" title="代碼資料" :columns="columns" :datas="datas" :onEdit="onEdit" :onSort="onSort">` +
-			`<div slot="header" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-end; align-items: center;">` + 
-				`<i-button v-if="dels.length > 0" type="warning" @click="onBtnDel">刪除</i-button>` +
-				`<div style="flex: 1;"/>` +
-				`<options ref="options" :columns="columns" />` +
-				`<i-input v-model="search" size="large" placeholder="請輸入關鍵字" style="width: 200px;">` +
-					`<Icon type="ios-search" slot="suffix" @click.native="onSearch" style="cursor: pointer;" />` +
-				`</i-input>` +
-			`</div>` +
-		`</data-table>` +
-		`<modal v-model="modal" class-name="vertical-center-modal" title="代碼資料" width="400">` +
-			`<div v-for="(item, key, index) in columns" style="margin-top: 5px;display: flex; flex-direction: row; justify-content: center; align-items: center;">` +
-				`<div style="width: 60px; text-align: right; display: inline-block; margin-right: 5px;">{{item.title}}</div>` +
-				`<div v-if="item.key == 'ACTIVE'" style="flex: 1;"><RadioGroup  v-model="editData[item.key]"><Radio label="Y">是</Radio><Radio label="N">否</Radio></RadioGroup></div>` +
-				`<i-input v-else :readonly="editData.PK > -1 && (item.key == 'CD_KIND' || item.key == 'CD_NAME') ? true : false" ` + 
-					`v-model="editData[item.key]" size="large" style="flex: 1;"></i-input>` +
-			`</div>` +
-			`<div slot="footer">` +
-				`<i-button @click="modal=false">取消</i-button>` +
-				`<i-button type="primary" @click="onSave">確定</i-button>` +
-			`</div>` +
-		`</modal>` +
-	`</div>`, // 
+	template: `<div id="frame">
+		<data-table ref="tbl" title="代碼資料" :columns="columns" :datas="datas" :onEdit="onEdit" :onSort="onSort">
+			<div slot="header" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-end; align-items: center;"> 
+				<i-button v-if="dels.length > 0" type="warning" @click="onBtnDel">刪除</i-button>
+				<div style="flex: 1;"/>
+				<options ref="options" :datas="columns" />
+				<i-input v-model="search" size="large" :search="true" @on-search="onSearch" placeholder="請輸入關鍵字" style="width: 200px;">
+				</i-input>
+			</div>
+		</data-table>
+		<modal v-model="modal" class-name="vertical-center-modal" title="代碼資料" width="400">
+			<div v-for="(item, key, index) in columns" style="margin-top: 5px;display: flex; flex-direction: row; justify-content: center; align-items: center;">
+				<div style="width: 60px; text-align: right; display: inline-block; margin-right: 5px;">{{item.title}}</div>
+				<div v-if="item.key == 'CD_KIND' && typeof editData.PK == 'undefined'" style="flex: 1;">
+					<i-select v-model="editData[item.key]" style="width:120px; margin-right: 5px;">
+						<i-option v-for="item in kinds" :value="item" :key="item">
+							{{ item }}
+						</i-option>
+					</i-select>
+				</div>
+				<div v-else-if="item.key == 'ACTIVE'" style="flex: 1;">
+					<RadioGroup  v-model="editData[item.key]">
+						<Radio label="Y">Y</Radio><Radio label="N">N</Radio>
+					</RadioGroup>
+				</div>
+				<i-input v-else :readonly="editData.PK > -1 && (item.key == 'CD_KIND' || item.key == 'CD_NAME' || item.key == 'CD_KEY') ? true : false"  
+					v-model="editData[item.key]" size="large" style="flex: 1;"></i-input>
+			</div>
+			<div slot="footer">
+				<i-button @click="modal=false">取消</i-button>
+				<i-button type="primary" @click="onSave">確定</i-button>
+			</div>
+		</modal>
+	</div>`, // 
 	data() {
 		return {
 			columns: [
 				{title: '代碼分類', key: 'CD_KIND', width: 150, sortable: true, require: true},
-				{title: '關鍵代碼', key: 'CD_KEY', width: 160, sortable: true},
 				{title: '代碼名稱', key: 'CD_NAME', width: 160, require: true},
+				{title: '關鍵代碼', key: 'CD_KEY', width: 160},
 				{title: '說明', key: 'MEMO'},
 				{title: '啟用', key: 'ACTIVE', align: 'center', width: 60},
 			],
@@ -37,16 +48,35 @@ new Vue({
 			order: "",
 			editData: {},
 			modal: false, 
-			dels: []
+			dels: [],
+			kinds: ['部門', '職務', '狀態']
 		};
 	},
 	created(){
 	},
-	 mounted(){
-		for(let i = 0; i < 30; i++) {
-			this.datas.push({PK: i, CD_KIND: i})
+	 async mounted(){
+		await this.onSearch();
+		if(this.datas.length == 0){
+			let arr = [
+				{CD_KIND: "部門", CD_NAME: "RD", CD_KEY: ""},
+				{CD_KIND: "部門", CD_NAME: "PM", CD_KEY: ""},
+				{CD_KIND: "部門", CD_NAME: "客服", CD_KEY: ""},
+				{CD_KIND: "職務", CD_NAME: "主管", CD_KEY: ""},
+				{CD_KIND: "職務", CD_NAME: "工程師", CD_KEY: ""},
+				{CD_KIND: "進度", CD_NAME: "評估中", CD_KEY: "0"},
+				{CD_KIND: "進度", CD_NAME: "進行中", CD_KEY: "10"},
+				{CD_KIND: "進度", CD_NAME: "本週工作", CD_KEY: "11"},
+				{CD_KIND: "進度", CD_NAME: "待修正", CD_KEY: "Q"},
+				{CD_KIND: "進度", CD_NAME: "待測試", CD_KEY: "W"},
+				{CD_KIND: "進度", CD_NAME: "已完成", CD_KEY: "Z"},
+			];
+
+			for(let i = 0; i < arr.length; i++) {
+				let sql = sqlite.convertToInsert("CODE", arr[i]);
+				await window.sqlite.execute(sql);
+			}
+			await this.onSearch();
 		}
-		this.onSearch();
 	},
 	destroyed(){
   },
@@ -54,7 +84,8 @@ new Vue({
 		async onSearch(){
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
 			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
-			let sort = this.order.length > 0 ? this.order : "CD_KIND, CD_NAME";
+
+			let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : "CD_KIND, CD_KEY, CD_NAME";
 			let sql = "Select * from CODE " + where +  " order by " + sort;
 			try {
 				let rows = await window.sqlite.execute(sql);
@@ -87,7 +118,9 @@ new Vue({
 			let sql = {}
 			// {title: '代碼分類', key: 'CD_KIND', width: 150, sortable: true, require: true},
 			for(let i = 0; i < this.columns.length; i++) {
-				if(this.columns[i].require == true) {
+				if(this.columns[i].key== "CD_KIND") {
+
+				} else if(this.columns[i].require == true) {
 					let val = this.editData[this.columns[i].key];
 					if(typeof val == "undefined" || val.length == 0) {
 						this.$Modal.warning({title: "代碼資料", content: "請輸入『" + this.columns[i].title  + "』"});
@@ -101,7 +134,7 @@ new Vue({
 				sql = sqlite.convertToUpdate("CODE", this.editData);
 			}
 			try {
-				let result = await window.sqlite.execute(sql.sql, sql.values);
+				let result = await window.sqlite.execute(sql);
 				if(result > 0) {
 					if(sql.sql.indexOf("Insert Into") == 0) {
 						this.$refs["tbl"].addRows(this.editData)
