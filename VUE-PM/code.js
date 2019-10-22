@@ -10,7 +10,7 @@ new Vue({
 				</i-input>
 			</div>
 		</data-table>
-		<modal v-model="modal" class-name="vertical-center-modal" title="代碼資料" width="400">
+		<modal v-model="modal" class-name="vertical-center-modal" title="代碼資料" :width="dlgWidth">
 			<div v-for="(item, key, index) in columns" style="margin-top: 5px;display: flex; flex-direction: row; justify-content: center; align-items: center;">
 				<div style="width: 60px; text-align: right; display: inline-block; margin-right: 5px;">{{item.title}}</div>
 				<div v-if="item.key == 'CD_KIND' && typeof editData.PK == 'undefined'" style="flex: 1;">
@@ -26,7 +26,8 @@ new Vue({
 					</RadioGroup>
 				</div>
 				<i-input v-else :readonly="editData.PK > -1 && (item.key == 'CD_KIND' || item.key == 'CD_NAME' || item.key == 'CD_KEY') ? true : false"  
-					v-model="editData[item.key]" size="large" style="flex: 1;"></i-input>
+					v-model="editData[item.key]" size="large" style="flex: 1;"  
+					:type="item.key == 'MEMO' ? 'textarea' : 'text'" :rows="5"></i-input>
 			</div>
 			<div slot="footer">
 				<i-button @click="modal=false">取消</i-button>
@@ -40,7 +41,7 @@ new Vue({
 				{title: '代碼分類', key: 'CD_KIND', width: 150, sortable: true, require: true},
 				{title: '代碼名稱', key: 'CD_NAME', width: 160, require: true},
 				{title: '關鍵代碼', key: 'CD_KEY', width: 160},
-				{title: '說明', key: 'MEMO'},
+				{title: '說明', key: 'MEMO', resizable: true},
 				{title: '啟用', key: 'ACTIVE', align: 'center', width: 60},
 			],
 			datas: [],
@@ -49,12 +50,13 @@ new Vue({
 			editData: {},
 			modal: false, 
 			dels: [],
-			kinds: ['部門', '職務', '狀態']
+			kinds: ['部門', '職務', '進度'],
+			dlgWidth: 400
 		};
 	},
 	created(){
 	},
-	 async mounted(){
+	async mounted(){
 		await this.onSearch();
 		if(this.datas.length == 0){
 			let arr = [
@@ -63,9 +65,11 @@ new Vue({
 				{CD_KIND: "部門", CD_NAME: "客服", CD_KEY: ""},
 				{CD_KIND: "職務", CD_NAME: "主管", CD_KEY: ""},
 				{CD_KIND: "職務", CD_NAME: "工程師", CD_KEY: ""},
+				{CD_KIND: "職務", CD_NAME: "助理", CD_KEY: ""},
 				{CD_KIND: "進度", CD_NAME: "評估中", CD_KEY: "0"},
 				{CD_KIND: "進度", CD_NAME: "進行中", CD_KEY: "10"},
 				{CD_KIND: "進度", CD_NAME: "本週工作", CD_KEY: "11"},
+				{CD_KIND: "進度", CD_NAME: "Pending", CD_KEY: "P"},
 				{CD_KIND: "進度", CD_NAME: "待修正", CD_KEY: "Q"},
 				{CD_KIND: "進度", CD_NAME: "待測試", CD_KEY: "W"},
 				{CD_KIND: "進度", CD_NAME: "已完成", CD_KEY: "Z"},
@@ -94,6 +98,7 @@ new Vue({
 			}
 		},
 		onEdit(type, item, index){
+			this.dlgWidth = document.body.clientWidth > 600 ? 550 : document.body.clientWidth - 10;
 			if(type == "new") {
 				let obj = {ACTIVE: "Y"};
 				if(typeof this.editData.CD_KIND != "undefined")
@@ -129,6 +134,7 @@ new Vue({
 				}
 			}
 			if(typeof this.editData.PK == "undefined") {
+				this.editData.PK = (new Date()).getTime();
 				sql = sqlite.convertToInsert("CODE", this.editData);
 			} else {
 				sql = sqlite.convertToUpdate("CODE", this.editData);
@@ -151,11 +157,13 @@ new Vue({
 			for(let i = 0; i < this.dels.length; i++){
 				try {
 					let result = await window.sqlite.execute("delete from CODE Where PK=" + this.dels[i].PK);
+					
 				} catch(e) {
 					break;
 				}
 			}
-			this.$refs["tbl"].removeRows()
+			this.$refs["tbl"].removeRows();
+			this.dels = [];
 		}
 	}
 }).$mount('#frame');

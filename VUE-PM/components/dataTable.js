@@ -1,14 +1,20 @@
 Vue.component('data-table', { 
-	template: '<div style="height: 100%; display: flex; flex-direction: column;">' +
-			'<header-bar :title="title"></header-bar>' +
-			'<slot name="header"></slot>' +
-			'<div ref="tbl" style="flex: 1; overflow: hidden">' +
-				'<Table :columns="cols" :data="myData" border :height="maxHeight" @on-row-click="onRowClick" @on-selection-change="onSelectionChange" @on-sort-change="onChangeSort" ></Table>				></Table>' +
-			'</div>' +
-			'<Page ref="page" v-if="datas.length > pageSize" :total="datas.length" @on-change="onPageChange" @on-page-size-change="onPageSizeChange" :page-size="pageSize" style="margin: 5px;" show-total show-elevator show-sizer />' +
-			'<slot name="footer"></slot>' +
-			'<i-button type="primary" shape="circle" class="absolute-bottom" icon="md-add" circle @click.native="onNewRow"></i-button>' +
-		'</div>'
+	template: `<div style="height: 100%; display: flex; flex-direction: column;">
+			<header-bar :title="title"></header-bar>
+			<slot name="header"></slot>
+			<div ref="tbl" style="flex: 1; overflow: hidden">
+				<Table :columns="cols" :data="myData" border :height="maxHeight" 
+					@on-row-click="onRowClick" @on-selection-change="onSelectionChange" 
+					@on-sort-change="onChangeSort">
+				</Table>
+			</div>
+			<Page ref="page" v-if="datas.length > pageSize" :total="datas.length" 
+				@on-change="onPageChange" @on-page-size-change="onPageSizeChange" 
+				:page-size="pageSize" style="margin: 5px;" show-total show-elevator show-sizer />
+			<slot name="footer"></slot>
+			<i-button type="primary" shape="circle" class="absolute-bottom" icon="md-add" 
+				circle @click.native="onNewRow" size="large"></i-button>
+		</div>`
 	,
 	props: {
 		title: String,
@@ -35,10 +41,10 @@ Vue.component('data-table', {
 			maxHeight: 500, 
 			pageSize: 20,
 			myData: [],
-			cols: [{ // ok 的，可以用
+			cols: [{ 
 				type: 'selection',
 				width: 60,
-				align: 'center'
+				align: 'center',
 			}]
 		};
 	},
@@ -47,8 +53,11 @@ Vue.component('data-table', {
 		window.onresize = () => {
 			self.resize(600);
 		}
+		if(typeof this.columns[0].fixed == "string") {
+			this.cols[0].fixed = "left";
+		}
 		this.columns.forEach(item=>{
-			this.cols.push(item)
+			this.cols.push(item);
 		});
 	},
 	mounted(){

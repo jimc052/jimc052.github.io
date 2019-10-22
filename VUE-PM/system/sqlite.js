@@ -1,25 +1,24 @@
 class Sqlite{
 	constructor(){
 		let self = this;
-		this.version = "20191007";
+		this.version = "20191020";
 		this.db = window.openDatabase("project", '1.0', '', 10*1000*1000);
 
-		this.db.transaction(function(tx){
-			
-		});
+		// this.db.transaction(function(tx){
+		// });
 	}
 
 	initial(){
 		let version = window.localStorage["dbVersion"];
 		version = typeof version == "string" ? version : "";
 		let arr = [], sql = "", tx, self = this;
-		if(this.version > version) {
+		if(version == "") {
 			arr.push("CREATE TABLE if not exists USER(PK int NOT NULL, USR_NAME nvarchar(10) NOT NULL," +
 				"DEP nvarchar(10), JOB nvarchar(10), MAIL nvarchar(30), MEMO text, ACTIVE nvarchar(1) default 'Y', " +
 				"MODIFY_DATE int NOT NULL, " +
 				"PRIMARY KEY (PK) )");
 
-				arr.push("CREATE TABLE if not exists PROJECT(PK int NOT NULL, PRJ_NAME nvarchar(10) NOT NULL," +
+				arr.push("CREATE TABLE if not exists PROJECT(PK int NOT NULL, PRJ_NAME nvarchar(20) NOT NULL," +
 				"MEMBER text, VERSION nvarchar(50), MEMO text, ACTIVE nvarchar(1) default 'Y', " +
 				"MODIFY_DATE int NOT NULL, " +
 				"PRIMARY KEY (PK) )");
@@ -29,6 +28,21 @@ class Sqlite{
 				"MODIFY_DATE int NOT NULL, " +
 				"PRIMARY KEY (PK) )");
 		}
+		if(version < "20191020") {
+			arr.push("CREATE TABLE if not exists SHEET(PK int NOT NULL, PRJ_NAME nvarchar(20) NOT NULL," +
+				"TITLE nvarchar(200) NOT NULL, ORD_NO nvarchar(20), " +
+				"STATUS nvarchar(20) NOT NULL, PM nvarchar(10) default '', RD nvarchar(10) default '', " +
+				"MEMO text, ACTIVE nvarchar(1) default 'Y', " +
+				"MODIFY_DATE int NOT NULL, " +
+				"PRIMARY KEY (PK) )");
+			
+			arr.push("CREATE TABLE if not exists HISTORY(PK int NOT NULL, FK int NOT NULL, " +
+				"STATUS nvarchar(20) NOT NULL, USER nvarchar(10), " +
+				"MEMO text, ACTIVE nvarchar(1) default 'Y', " +
+				"MODIFY_DATE int NOT NULL, " +
+				"PRIMARY KEY (PK) )");
+		}
+
 		return new Promise( (success, error) => {
 			self.db.transaction((_tx) => {
 				tx = _tx;
@@ -97,8 +111,9 @@ class Sqlite{
 							arr.push(results.rows.item(i));
 						}
 						success(arr)
-					} else 
+					} else {
 						success(results.rowsAffected);
+					}
 				}, (tx, e)=>{
 					error(e)
 					console.log(e)

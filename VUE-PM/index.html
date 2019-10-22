@@ -7,11 +7,18 @@
 	<script src="https://unpkg.com/vue/dist/vue.js"></script>
 	<script src="https://unpkg.com/iview/dist/iview.min.js"></script>
 	<script src="https://unpkg.com/iview/dist/locale/zh-TW.js"></script>
+	<script src="https://unpkg.com/marked@0.3.6"></script>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+
 	<script src="system/loadScript.js"></script>
+	<script src="system/system.js"></script>
 	<script src="system/sqlite.js"></script>
 	<script src="components/headerBar.js"></script>
 	<script src="components/dataTable.js"></script>
 	<script src="components/options.js"></script>
+	<script src="components/panel.js"></script>
+	<script src="components/sheetEdit.js"></script>
+	
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -20,7 +27,7 @@
 		}
 		body {
 			margin: 0px;
-			background-color: #e6e6e6;
+			background-color: #ebecf0;
 			padding: 0px 0px;
 			visibility: hidden;
 		}
@@ -60,6 +67,19 @@
 		.ivu-input[readonly] {
 			background: #e6e6e6;
 		}
+		.panel + .panel {
+			margin-left: 10px;
+		}
+		.row {
+			display: flex; 
+			flex-direction: row; 
+			justify-content: center; 
+			align-items: center;
+		}
+		table.sheetEdit td.label {
+			text-align: right;
+			font-size: 14px;
+		}
 		
 	</style>
 </head>
@@ -90,6 +110,7 @@
 				return {
 					drawer: false, 
 					menu: [
+						{title: "需求單", icon: "md-person", js: "sheet"},
 						{title: "專案資料", icon: "md-person", js: "project"},
 						{title: "員工資料", icon: "md-person", js: "user"},
 						{title: "代碼資料", icon: "md-person", js: "code"}
@@ -106,7 +127,7 @@
 				await window.sqlite.initial();
 
 				if(location.href.indexOf("file:///") == 0) {
-					this.onSelect(1);
+					this.onSelect("home");
 				} else {
 					this.onSelect("home");
 				}
@@ -117,7 +138,7 @@
 				},
 				onSelect(index){
 					let arr = [];
-					if(isNaN(index)) {
+					if(index == "home") {
 						arr.push("home.js");
 					} else {
 						if(typeof this.menu[index].file == "string") {
@@ -125,7 +146,10 @@
 							arr.push(this.menu[index].file + ".css");
 						} else {
 							if(typeof this.menu[index].js == "string") {
-								arr.push(this.menu[index].js + ".js");
+								let arr2 = this.menu[index].js.split(",");
+								for(let i = 0; i < arr2.length; i++) {
+									arr.push(arr2[i] + ".js");
+								}
 							}
 							if(typeof this.menu[index].css == "string") {
 								arr.push(this.menu[index].css + ".css");
