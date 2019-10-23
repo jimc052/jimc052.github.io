@@ -57,6 +57,7 @@ Vue.component('data-table', {
 			this.cols[0].fixed = "left";
 		}
 		this.columns.forEach(item=>{
+			item.ellipsis = false;
 			this.cols.push(item);
 		});
 	},

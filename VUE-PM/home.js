@@ -9,8 +9,9 @@ new Vue({
 				</RadioGroup>
 			</div>
 			<div style="flex: 1; overflow: auto hidden; display: flex; flex-direction: row; padding: 10px;">
-				<panel v-for="(item, key) in datas" :key="key" :type="type" :title="key" :datas="item"
-					@onClick="onClick"
+				<div v-if="msg.length > 0" style="flex: 1; color: red;" class="row">{{msg}}</div>
+				<panel v-else v-for="(item, key, index) in datas" :key="key" :serial="index" :type="type"  :title="key" :datas="item"
+					@onClick="onClick" @onDrop="onDrop"
 					class="panel"
 				/>
 			</div>
@@ -23,7 +24,8 @@ new Vue({
 			type: "STATUS",
 			datas: {},
 			visible: false,
-			editData: {}
+			editData: {},
+			msg: ""
 		};
 	},
 	created(){
@@ -38,13 +40,16 @@ new Vue({
 			this.datas = {}, obj = {};
 			try {
 				let sql = "Select * from SHEET where ACTIVE = 'Y' order by " + e;
-				if(e == "STATUS") {
-					sql = "Select a.* " +
+				sql = "Select a.* " +
 						"from SHEET a " +
 						"Left Join CODE b on(a.STATUS = b.CD_NAME) " +
 						"where a.ACTIVE = 'Y' and b.CD_KIND = '進度' " +
 						"order by CD_KEY, CD_NAME";
-				}
+
+				if(e != "STATUS") {
+					sql = sql.replace("order by ", "order by " + e + ",");
+				} else 
+					sql += ", PRJ_NAME"
 				let rows = await window.sqlite.execute(sql);
 
 				let pk = "";
@@ -60,6 +65,7 @@ new Vue({
 				for(let key in obj) {
 					this.$set(this.datas, key, obj[key])
 				}
+				this.msg = rows.length == 0 ? "暫無資料" : "";
 			} catch(e) {
 			}
 		},
@@ -68,15 +74,9 @@ new Vue({
 			this.visible = true;
 		},
 		onClose(mode, data){
+			let self = this;
 			if(typeof mode == "string") {
-				let key = "";
-				if(this.type == "進度")
-					key = data["STATUS"];
-				else if(this.type == "專案") 
-					key = data["PRJ_NAME"];
-				else {
-					key = data[this.type];
-				}
+				let key = data[this.type];
 
 				if(mode == "new") {
 					if(Array.isArray(this.datas[key]) ){
@@ -85,8 +85,42 @@ new Vue({
 						this.datas[key] = [data];
 					}
 				} else {
-					console.log(data)
+					if(!Array.isArray(this.datas[key]) ){
+						this.datas[key] = [data];
+						reomve();
+					} else {
+						for(let i = 0; i < self.datas[key].length; i++){
+							if(self.datas[key][i].PK == data.PK) {
+								this.$set(self.datas[key], i, data);
+								break;
+							}
+							if(i == self.datas[key].length - 1) {
+								self.datas[key].push(data)
+								reomve();
+							}
+						}
+					}
 				}
+				function reomve(){
+					for(let key2 in self.datas) {
+						if(key != key2) {
+							for(let i = 0; i < self.datas[key2].length; i++){
+								if(self.datas[key2][i].PK == data.PK) {
+									self.datas[key2].splice(i, 1)
+									return;
+								}
+							}
+						}
+					}
+				}
+				let s = "暫無資料";
+				for(let key2 in self.datas) {
+					if(self.datas[key2].length > 0) {
+						s = "";
+						break;
+					}
+				}
+				this.msg = s;
 			}
 			this.visible = false;
 		},
@@ -94,6 +128,15 @@ new Vue({
 			this.current = arg;
 			this.editData = arg.item;
 			this.visible = true;
+		},
+		onDrop(source, target) {
+			let x = source.id.split("_")[2];
+			let obj = this.datas[source.getAttribute("data-title")].splice(x, 1);
+			obj[0][this.type] = target.getAttribute("data-title");
+
+			let y = target.id.split("_")[2];
+			this.datas[target.getAttribute("data-title")].splice(y, 0, obj[0]);
+			sqlite.execute(sqlite.convertToUpdate("SHEET", obj[0]))
 		}
 	}
 }).$mount('#frame');
