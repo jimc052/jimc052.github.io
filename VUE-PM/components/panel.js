@@ -5,7 +5,8 @@ Vue.component('panel', {
 				<List border size="large" style="background-color: white;">
 					<ListItem v-for="(item, index) in datas" :key="item.PK" 
 						:data-title="title" :data-pk="item.PK" :id="'li_' + serial + '_' + index"
-						style="display: block; width: 100%; cursor: pointer;" @click.native="onClick(item, index)" 
+						style="display: block; width: 100%; cursor: pointer; " 
+						@click.native="onClick(item, index)" 
 						:draggable="type == 'STATUS'" 
 						@dragstart.native="dragstart" @dragend.native="dragend" @dragover.native="dragover"
 						@dragenter.native="dragenter" @dragleave.native="dragleave"
@@ -30,7 +31,8 @@ Vue.component('panel', {
 								<div>{{item.STATUS}}</div>
 							</div>
 						</div>
-						<div>{{item.TITLE}}</div>
+						<div style="max-height: 60px; overflow: hidden; font-weight: 700;">{{item.TITLE}}</div>
+						<div>{{item.ORD_NO}}</div>
 						<div style="text-align: right">{{toDate(item.PK)}}</div>
 						</div>
 					</ListItem>

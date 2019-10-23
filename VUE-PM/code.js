@@ -60,15 +60,16 @@ new Vue({
 		await this.onSearch();
 		if(this.datas.length == 0){
 			let arr = [
-				{CD_KIND: "部門", CD_NAME: "RD", CD_KEY: ""},
-				{CD_KIND: "部門", CD_NAME: "PM", CD_KEY: ""},
-				{CD_KIND: "部門", CD_NAME: "客服", CD_KEY: ""},
-				{CD_KIND: "職務", CD_NAME: "主管", CD_KEY: ""},
-				{CD_KIND: "職務", CD_NAME: "工程師", CD_KEY: ""},
-				{CD_KIND: "職務", CD_NAME: "助理", CD_KEY: ""},
-				{CD_KIND: "進度", CD_NAME: "評估中", CD_KEY: "0"},
+				{CD_KIND: "部門", CD_NAME: "RD", CD_KEY: "0"},
+				{CD_KIND: "部門", CD_NAME: "PM", CD_KEY: "1"},
+				{CD_KIND: "部門", CD_NAME: "客服", CD_KEY: "2"},
+				{CD_KIND: "職務", CD_NAME: "主管", CD_KEY: "0"},
+				{CD_KIND: "職務", CD_NAME: "工程師", CD_KEY: "1"},
+				{CD_KIND: "職務", CD_NAME: "助理", CD_KEY: "2"},
+				{CD_KIND: "進度", CD_NAME: "評估中", CD_KEY: "00"},
+				{CD_KIND: "進度", CD_NAME: "待處理", CD_KEY: "01"},
 				{CD_KIND: "進度", CD_NAME: "進行中", CD_KEY: "10"},
-				{CD_KIND: "進度", CD_NAME: "本週工作", CD_KEY: "11"},
+				{CD_KIND: "進度", CD_NAME: "本週工作", CD_KEY: "20"},
 				{CD_KIND: "進度", CD_NAME: "Pending", CD_KEY: "P"},
 				{CD_KIND: "進度", CD_NAME: "待修正", CD_KEY: "Q"},
 				{CD_KIND: "進度", CD_NAME: "待測試", CD_KEY: "W"},
@@ -156,8 +157,7 @@ new Vue({
 		async onBtnDel(){
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					let result = await window.sqlite.execute("delete from CODE Where PK=" + this.dels[i].PK);
-					
+					let result = await window.sqlite.delete("CODE", this.dels[i].PK);
 				} catch(e) {
 					break;
 				}

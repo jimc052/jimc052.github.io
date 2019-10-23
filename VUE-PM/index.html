@@ -71,6 +71,10 @@
 		.panel + .panel {
 			margin-left: 10px;
 		}
+		.panel div {
+			text-overflow: ellipsis;
+			white-space: nowrap; 
+		}
 		.row {
 			display: flex; 
 			flex-direction: row; 
@@ -89,6 +93,9 @@
 			border-style: dashed !important;
 			border-width: 1px !important;
 			border-color: red !important; /* rgb(232, 234, 236) */ 
+		}
+		.panel .ivu-list-item {
+			padding: 8px 12px;
 		}
 	</style>
 </head>

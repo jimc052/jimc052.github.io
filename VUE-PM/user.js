@@ -156,8 +156,7 @@ new Vue({
 		async onBtnDel(){
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					let result = await window.sqlite.execute("delete from USER Where PK=" + this.dels[i].PK);
-					
+					let result = await window.sqlite.delete("USER", this.dels[i].PK);
 				} catch(e) {
 					break;
 				}

@@ -95,6 +95,17 @@ class Sqlite{
 		return {sql: "Update " + tblName + " set " + s1 + " Where PK=" + PK, values};
 	}
 
+	async delete(tblName, PK){
+		try {
+			let result = await this.execute("delete from " + tblName + 
+				" Where PK=" + PK);
+			console.log(result)
+			return result;
+		} catch(e) {
+			throw e;
+		}
+	}
+
 	execute(sql, values){
 		if(typeof sql == "object") {
 			values = sql.values;
