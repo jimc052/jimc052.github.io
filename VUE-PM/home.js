@@ -171,7 +171,6 @@ new Vue({
 
 			let y = target.id.split("_")[2];
 			this.datas[target.getAttribute("data-title")].splice(y, 0, obj[0]);
-			// sqlite.execute(sqlite.convertToUpdate("SHEET", obj[0]))
 			FireStore.update("SHEET", obj[0]);
 		}
 	}
