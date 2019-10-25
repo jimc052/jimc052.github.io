@@ -63,15 +63,33 @@ new Vue({
   },
 	methods: {
 		async onSearch(){
+			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
+
 			vm.loading("載入 CODE 資料......");
 			this.datas = [];
 			let ref = FireStore.db.collection('CODE');
-			ref.get().then(querySnapshot => {
-				querySnapshot.forEach(doc => {
+			let snapshot = await ref.get();
+			snapshot.forEach(doc => {
+				if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
 					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-				});
-				vm.loading(false);
 			});
+			if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
+				let arr = this.order.split(",")
+				this.datas.sort(function (a, b) {
+					if(arr[1] == "desc")
+						return a[arr[0]] < b[arr[0]] ? 1 : -1;
+					else 
+						return a[arr[0]] > b[arr[0]] ? 1 : -1;
+				});
+			}
+			vm.loading(false);
+			// .then(snapshot => {
+			// 	querySnapshot.forEach(doc => {
+			// 		if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
+			// 			this.datas.push(Object.assign({PK: doc.id}, doc.data()))
+			// 	});
+			// 	vm.loading(false);
+			// });
 			
 			/* sqlite ok 的，但不用了
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
@@ -105,7 +123,7 @@ new Vue({
 			}
 		},
 		onSort(item){
-			this.order = item.key + " " + item.order;
+			this.order = item.key + "," + item.order;
 			this.onSearch();
 		},
 		async onSave() {

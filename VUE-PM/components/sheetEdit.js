@@ -104,18 +104,16 @@ Vue.component('SheetEdit', {
 				this.project.push({"PRJ_NAME": doc.data().PRJ_NAME, MEMBER: doc.data().MEMBER});
 			});
 
-			let snapshot2 = await FireStore.db.collection('CODE')
-				.where("ACTIVE", "==", "Y")
-				.where("CD_KIND", "==", "進度")
-				// .orderBy("CD_KEY", "asc")
-				.get();
+			let ref = FireStore.db.collection('CODE')
+				.where("ACTIVE", "==", "Y").where("CD_KIND", "==", "進度")
+			let snapshot2 = await ref.get();
 			snapshot2.forEach(doc => {
 				this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});
 			});
 			this.status.sort(function (a, b) {
 				return a.CD_KEY > b.CD_KEY ? 1 : -1;
 			});
-			// this.dataSheet.STATUS = this.status.length > 0 ? this.status[0].CD_NAME : "";
+			this.dataSheet.STATUS = this.status.length > 0 ? this.status[0].CD_NAME : "";
 		} catch(e) {
 			console.log(e)
 		} finally {

@@ -45,7 +45,7 @@ new Vue({
 		return {
 			columns: [
 				{ title: '姓名', key: 'USR_NAME', width: 120, sortable: true, require: true},
-				{ title: '部門', key: 'DEP', width: 100},
+				{ title: '部門', key: 'DEP', width: 100, sortable: true},
 				{ title: '職務', key: 'JOB', width: 100},
 				{ title: '信箱', key: 'MAIL', width: 180, require: true},
 				{ title: '說明', key: 'MEMO'},
@@ -95,16 +95,26 @@ new Vue({
   },
 	methods: {
 		async onSearch(){
+			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
+
 			vm.loading("載入 USER 資料......");
 			this.datas = [];
 			let ref = FireStore.db.collection('USER');
-			ref.get().then(querySnapshot => {
-				querySnapshot.forEach(doc => {
-					// console.log(doc.id, doc.data());
+			let snapshot = await ref.get();
+			snapshot.forEach(doc => {
+				if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
 					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-				});
-				vm.loading(false);
 			});
+			if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
+				let arr = this.order.split(",")
+				this.datas.sort(function (a, b) {
+					if(arr[1] == "desc")
+						return a[arr[0]] < b[arr[0]] ? 1 : -1;
+					else 
+						return a[arr[0]] > b[arr[0]] ? 1 : -1;
+				});
+			}
+			vm.loading(false);
 
 			/*
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
@@ -140,7 +150,7 @@ new Vue({
 			}
 		},
 		onSort(item){
-			this.order = item.key + " " + item.order;
+			this.order = item.key + "," + item.order;
 			this.onSearch();
 		},
 		async onSave() {

@@ -67,8 +67,10 @@ new Vue({
 				*/
 				vm.loading();
 				let rows = [];
-				let snapshot = await FireStore.db.collection('SHEET')
-					.where("ACTIVE", "==", "Y").get();
+				let ref = FireStore.db.collection('SHEET');
+				ref.where("ACTIVE", "==", "Y");
+				ref.orderBy("PRJ_NAME", "desc")
+				let snapshot = await ref.get();
 				snapshot.forEach(doc => {
 					rows.push(Object.assign({PK: parseInt(doc.id, 10)}, doc.data()));
 				});
