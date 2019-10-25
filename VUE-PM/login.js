@@ -43,6 +43,7 @@ new Vue({
 	created(){
 	},
 	async mounted () {
+		
 		let aes = window.localStorage["aes"];
 		if(typeof aes == "string" && aes.length > 0) {
 			this.first = false;
@@ -83,7 +84,12 @@ new Vue({
 				}	else 
 					delete window.localStorage["password"];
 					vm.loading(false);
-					vm.onSelect(1); //"home");
+					// console.log(location.href)
+					if(location.href.indexOf("file:///Users/") == 0){
+						vm.onSelect(1); //"home");
+					} else 
+						vm.onSelect("home");
+					
 					this.$destroy();
 					this.$el.parentNode.removeChild(this.$el);
 			} catch(e) {
