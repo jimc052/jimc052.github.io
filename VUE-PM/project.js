@@ -37,7 +37,7 @@ new Vue({
 	data() {
 		return {
 			columns: [
-				{ title: '名稱', key: 'PRJ_NAME', width: 120},
+				{ title: '名稱', key: 'PRJ_NAME', width: 120, require: true},
 				{ title: '成員', key: 'MEMBER', width: 200},
 				{ title: '版本', key: 'VERSION', width: 150},
 				{ title: '說明', key: 'MEMO'},
@@ -56,17 +56,42 @@ new Vue({
 	created(){
 	},
 	async mounted () {
-		try {
-			let sql = "Select * from USER where ACTIVE = 'Y' order by DEP, JOB";
-			this.user = await window.sqlite.execute(sql);
-		} catch(e) {
-		}
+		vm.loading();
+		this.user = [];
+		this.datas = [];
+		let ref = FireStore.db.collection('USER'); // 
+		ref.where("ACTIVE", "==", "Y").get()
+		.then(snapshot => {
+			snapshot.forEach(doc => {
+				// console.log(doc.id, doc.data());
+				this.user.push({"USR_NAME": doc.data().USR_NAME});
+			});
+			vm.loading(false);
+		});
+
+		// try {
+		// 	let sql = "Select * from USER where ACTIVE = 'Y' order by DEP, JOB";
+		// 	this.user = await window.sqlite.execute(sql);
+		// } catch(e) {
+		// }
 		await this.onSearch();
 	},
 	destroyed() {
   },
 	methods: {
 		async onSearch(){
+			vm.loading("載入 PROJECT 資料......");
+			this.datas = [];
+			let ref = FireStore.db.collection('PROJECT');
+			ref.get().then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					// console.log(doc.id, doc.data());
+					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
+				});
+				vm.loading(false);
+			});
+
+			/*
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
 			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
 
@@ -76,10 +101,11 @@ new Vue({
 				let rows = await window.sqlite.execute(sql);
 				this.datas = rows;
 			} catch(e) {
-			}
+			}*/
 		},
 		onEdit(type, item, index){
 			this.dlgWidth = document.body.clientWidth > 600 ? 550 : document.body.clientWidth - 10;
+
 			if(type == "new") {
 				let obj = {ACTIVE: "Y"};
 				this.editData = obj;
@@ -125,6 +151,23 @@ new Vue({
 				}
 			}
 
+			try {
+				let first = typeof obj.PK == "undefined" ? true : false;
+				if(first == true)
+					FireStore.insert("PROJECT", obj)
+				else {
+					FireStore.update("PROJECT", obj)
+				}
+				if(first == true) {
+					this.$refs["tbl"].addRows(obj)
+				} else {
+					this.$refs["tbl"].updateRow(obj)
+				}
+			} catch(e) {
+				vm.showMessage(e.message)
+			}
+
+			/*
 			if(typeof obj.PK == "undefined") {
 				obj.PK = (new Date()).getTime();
 				sql = sqlite.convertToInsert("PROJECT", obj);
@@ -143,14 +186,14 @@ new Vue({
 			} catch(e){
 				return;
 			}
+			*/
 			this.modal = false;
 		},
 		async onBtnDel(){
-			console.log(this.dels)
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					let result = await window.sqlite.delete("PROJECT", this.dels[i].PK);
-					
+					// let result = await window.sqlite.delete("PROJECT", this.dels[i].PK);
+					await FireStore.delete("PROJECT", this.dels[i].PK);
 				} catch(e) {
 					break;
 				}

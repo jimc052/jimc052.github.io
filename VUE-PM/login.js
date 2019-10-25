@@ -72,7 +72,6 @@ new Vue({
 			vm.loading();
 			FireStore.initial(this.aes);
 			try {
-				
 				await FireStore.signIn(this.email, this.password)
 				if(this.first == true) {
 					window.localStorage["aes"] = this.aes;
@@ -83,17 +82,15 @@ new Vue({
 					window.localStorage["password"] = this.password;
 				}	else 
 					delete window.localStorage["password"];
+					vm.loading(false);
+					vm.onSelect(1); //"home");
+					this.$destroy();
+					this.$el.parentNode.removeChild(this.$el);
 			} catch(e) {
 				vm.loading(false);
 				vm.showMessage(e.message);
 				return;
 			}
-
-			vm.loading(false);
-
-			vm.onSelect("home");
-			this.$destroy();
-			this.$el.parentNode.removeChild(this.$el);
 		},
 		onClickPassword(){
 			this.isPassword = ! this.isPassword;

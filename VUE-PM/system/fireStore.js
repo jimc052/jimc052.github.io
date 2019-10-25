@@ -6,9 +6,8 @@ class FireStore{
 	static db;
 	static initial(key){
 		let crypt = new Crypt({key: key, iv: "project-management"});
-		let apiKey = crypt.decrypt("U2FsdGVkX1/J03bNAwroXcELZgs7htVMHZrE6TxNHV7641qCHgC6pYMW6S5grcZTKnqYjNtHJjqBuCOYwc/p1Q==")
+		let apiKey = crypt.decrypt("U2FsdGVkX1+xsjJxLdoG8UrHLiL5csQJXBKKf5+DS6CsL36zngVlYeYNbuUxRUZGTSxn/hdOQb8NE5VdB+DlqA==")
 		let pid = "jpmanage-245d1";
-		// window.localStorage["dbVersion"];
 		firebase.initializeApp({
 			apiKey: apiKey,
 			authDomain: pid + ".firebaseapp.com",
@@ -33,7 +32,7 @@ class FireStore{
 		}
 	}
 	static query() { // 測試用
-		var ref = this.db.collection('CODE');
+		let ref = this.db.collection('CODE');
 		ref.get().then(querySnapshot => {
 			querySnapshot.forEach(doc => {
 				console.log(doc.id, doc.data());
@@ -41,12 +40,47 @@ class FireStore{
 		});
 	}
 	static listen() { //監聽, 測試用
-		var ref = this.db.collection('CODE'); // 
+		let ref = this.db.collection('CODE'); // 
 		ref.onSnapshot(querySnapshot => {
 			querySnapshot.forEach(doc => {
 				console.log(doc.id, doc.data());
 			});
 		});
+	}
+
+	static async insert(tblName, json){
+		let date = (new Date()).getTime();
+		let ref = this.db.collection(tblName).doc("" + date);
+		json.MODIFY_DATE = date;
+		let obj = Object.assign({}, json);
+		json.PK = date;
+		try {
+			let x = await ref.set(obj);
+		} catch(e) {
+			throw e;
+		}
+		delete obj.PK;
+	}
+
+	static async update(tblName, json){
+		let date = (new Date()).getTime();
+		let ref = this.db.collection(tblName).doc("" + json.PK);
+		json.MODIFY_DATE = date;
+		let obj = Object.assign({}, json);
+		delete obj.PK;
+		try {
+			let x = await ref.set(obj);
+		} catch(e) {
+			throw e;
+		}
+	}
+	static async delete(tblName, PK){
+		let ref = this.db.collection(tblName).doc("" + PK);
+		try {
+			let x = await ref.delete();
+		} catch(e) {
+			throw e;
+		}
 	}
 
 	static async defaultCode(){
@@ -109,7 +143,7 @@ class FireStore{
 		});
 		/*
 		task.on('state_changed', function(snapshot){
-			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
 			console.log('Upload is ' + progress + '% done');
 			switch (snapshot.state) {
 				case firebase.storage.TaskState.PAUSED: // or 'paused'
@@ -134,7 +168,7 @@ class FireStore{
 	static async downloadFileURL(){ // URL
 		// https://firebase.google.com/docs/storage/web/download-files?hl=zh-cn
 		let ref = firebase.storage().ref().child('images/angel.jpg');
-		// var starsRef = storageRef.child('images/stars.jpg');
+		// let starsRef = storageRef.child('images/stars.jpg');
 		// Get the download URL
 		ref.getDownloadURL().then(function(url) {
 			console.log(url)

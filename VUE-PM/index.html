@@ -159,17 +159,9 @@
 				document.body.style.visibility = "visible";
 
 				await window.sqlite.initial();
-
 				loadScript(["system/AES.js", "system/crypt.js", "login.js"])
 			},
 			methods: {
-				login(){
-					if(location.href.indexOf("file:///") == 0) {
-						this.onSelect("home");
-					} else {
-						this.onSelect("home");
-					}
-				},
 				showDrawer() {
 					this.drawer = true;
 				},
@@ -225,25 +217,28 @@
 					});
 				},
 				loading(arg) {
-					if(typeof arg == "boolean") {
-						this.$Spin.hide();
+					if(typeof arg == "boolean" && arg == false) {
+						this.spinID = setTimeout(()=>{
+							this.$Spin.hide();
+						}, 1000)
 					} else {
+						clearTimeout(this.spinID)
+						this.$Spin.hide();
 						this.$Spin.show({
 							render: (h) => {
 								return h('div', [
-										h('Icon', {
-												'class': 'spin-icon-load',
-												props: {
-														type: 'ios-loading',
-														size: 18
-												}
-										}),
-										h('div', typeof arg == "string" ? arg : 'Loading')
+									h('Icon', {
+										'class': 'spin-icon-load',
+										props: {
+											type: 'ios-loading',
+											size: 30
+										}
+									}),
+									h('div', typeof arg == "string" ? arg : 'Loading')
 								])
 							}
 						});						
 					}
-
 				}
 			}
 		})

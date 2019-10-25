@@ -58,35 +58,22 @@ new Vue({
 	},
 	async mounted(){
 		await this.onSearch();
-		if(this.datas.length == 0){
-			let arr = [
-				{CD_KIND: "部門", CD_NAME: "RD", CD_KEY: "0"},
-				{CD_KIND: "部門", CD_NAME: "PM", CD_KEY: "1"},
-				{CD_KIND: "部門", CD_NAME: "客服", CD_KEY: "2"},
-				{CD_KIND: "職務", CD_NAME: "主管", CD_KEY: "0"},
-				{CD_KIND: "職務", CD_NAME: "工程師", CD_KEY: "1"},
-				{CD_KIND: "職務", CD_NAME: "助理", CD_KEY: "2"},
-				{CD_KIND: "進度", CD_NAME: "評估中", CD_KEY: "00"},
-				{CD_KIND: "進度", CD_NAME: "待處理", CD_KEY: "01"},
-				{CD_KIND: "進度", CD_NAME: "進行中", CD_KEY: "10"},
-				{CD_KIND: "進度", CD_NAME: "本週工作", CD_KEY: "20"},
-				{CD_KIND: "進度", CD_NAME: "Pending", CD_KEY: "P"},
-				{CD_KIND: "進度", CD_NAME: "待修正", CD_KEY: "Q"},
-				{CD_KIND: "進度", CD_NAME: "待測試", CD_KEY: "W"},
-				{CD_KIND: "進度", CD_NAME: "已完成", CD_KEY: "Z"},
-			];
-
-			for(let i = 0; i < arr.length; i++) {
-				let sql = sqlite.convertToInsert("CODE", arr[i]);
-				await window.sqlite.execute(sql);
-			}
-			await this.onSearch();
-		}
 	},
 	destroyed(){
   },
 	methods: {
 		async onSearch(){
+			vm.loading("載入 CODE 資料......");
+			this.datas = [];
+			let ref = FireStore.db.collection('CODE');
+			ref.get().then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
+				});
+				vm.loading(false);
+			});
+			
+			/* sqlite ok 的，但不用了
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
 			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
 
@@ -97,6 +84,7 @@ new Vue({
 				this.datas = rows;
 			} catch(e) {
 			}
+			*/
 		},
 		onEdit(type, item, index){
 			this.dlgWidth = document.body.clientWidth > 600 ? 550 : document.body.clientWidth - 10;
@@ -134,6 +122,22 @@ new Vue({
 					}
 				}
 			}
+			try {
+				let first = typeof this.editData.PK == "undefined" ? true : false;
+				if(first == true)
+					FireStore.insert("CODE", this.editData)
+				else {
+					FireStore.update("CODE", this.editData)
+				}
+				if(first == true) {
+					this.$refs["tbl"].addRows(this.editData)
+				} else {
+					this.$refs["tbl"].updateRow(this.editData)
+				}
+			} catch(e) {
+				vm.showMessage(e.message)
+			}
+			/*
 			if(typeof this.editData.PK == "undefined") {
 				this.editData.PK = (new Date()).getTime();
 				sql = sqlite.convertToInsert("CODE", this.editData);
@@ -152,16 +156,21 @@ new Vue({
 			} catch(e){
 				return;
 			}
+			*/
 			this.modal = false;
 		},
 		async onBtnDel(){
+			vm.loading()
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					let result = await window.sqlite.delete("CODE", this.dels[i].PK);
+					// let result = await window.sqlite.delete("CODE", this.dels[i].PK);
+					await FireStore.delete("CODE", this.dels[i].PK);
 				} catch(e) {
+					vm.loading(false)
 					break;
 				}
 			}
+			vm.loading(false)
 			this.$refs["tbl"].removeRows();
 			this.dels = [];
 		}
