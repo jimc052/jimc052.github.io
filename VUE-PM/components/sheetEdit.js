@@ -1,7 +1,7 @@
 Vue.component('SheetEdit', {
 	template: `
 	<modal v-model="modal" class-name="vertical-center-modal" title="需求單" :width="600" footer-hide @on-visible-change="onVisibleChange">
-		<table style="width: 100%;" class="sheetEdit">
+		<table style="width: 100%;" class="layout">
 			<tr>
 				<td class="label">專案：</td>
 				<td>
