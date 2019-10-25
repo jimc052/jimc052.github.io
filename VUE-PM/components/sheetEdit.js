@@ -95,7 +95,33 @@ Vue.component('SheetEdit', {
 	created(){
 	},
 	async mounted () {
-		this.dataSheet = Object.assign(this.dataSheet, this.data)
+		this.dataSheet = Object.assign(this.dataSheet, this.data);
+		vm.loading();
+		try {
+			let snapshot1 = await FireStore.db.collection('PROJECT')
+				.where("ACTIVE", "==", "Y").get();
+			snapshot1.forEach(doc => {
+				this.project.push({"PRJ_NAME": doc.data().PRJ_NAME, MEMBER: doc.data().MEMBER});
+			});
+
+			let snapshot2 = await FireStore.db.collection('CODE')
+				.where("ACTIVE", "==", "Y")
+				.where("CD_KIND", "==", "進度")
+				// .orderBy("CD_KEY", "asc")
+				.get();
+			snapshot2.forEach(doc => {
+				this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});
+			});
+			this.status.sort(function (a, b) {
+				return a.CD_KEY > b.CD_KEY ? 1 : -1;
+			});
+			// this.dataSheet.STATUS = this.status.length > 0 ? this.status[0].CD_NAME : "";
+		} catch(e) {
+			console.log(e)
+		} finally {
+			vm.loading(false);
+		}
+		/*
 		try {
 			let sql = "Select PRJ_NAME from PROJECT where ACTIVE = 'Y' order by PRJ_NAME";
 			this.project = await window.sqlite.execute(sql);
@@ -104,6 +130,7 @@ Vue.component('SheetEdit', {
 			this.status = await window.sqlite.execute(sql);
 		} catch(e) {
 		}
+		*/
 	},
 	destroyed() {
   },
@@ -117,6 +144,17 @@ Vue.component('SheetEdit', {
 			} else if(this.dataSheet.TITLE.length == 0) {
 				vm.showMessage("請輸入主旨");
 			} else {
+				let mode = typeof this.dataSheet.PK == "undefined" ? "insert" : "update";
+				try {
+					if(mode == "insert")
+						FireStore.insert("SHEET", this.dataSheet)
+					else {
+						FireStore.update("SHEET", this.dataSheet)
+					}
+				} catch(e) {
+					vm.showMessage(e.message)
+				}
+				/*
 				let mode = "update", sql;
 				if(typeof this.dataSheet.PK == "undefined") {
 					mode = "new";
@@ -126,10 +164,51 @@ Vue.component('SheetEdit', {
 					sql = sqlite.convertToUpdate("SHEET", this.dataSheet);
 				}
 				let result = await window.sqlite.execute(sql);
+				*/
 				this.$emit("onClose", mode, this.dataSheet);
 			}
 		},
 		async changeProject(){
+			if(this.dataSheet.PRJ_NAME.length == 0) return;
+			this.rd = [];
+			this.pm = [];
+			if(typeof this.dataSheet.PK == "undefined") {
+					this.dataSheet.RD = "";
+					this.dataSheet.PM = "";
+			}
+
+			vm.loading();
+			try {
+				let project = this.project.filter(item=>{
+					return item.PRJ_NAME == this.dataSheet.PRJ_NAME;
+				})
+
+				let snapshot = await FireStore.db.collection('USER')
+					.where("ACTIVE", "==", "Y")
+					.get();
+				snapshot.forEach(doc => {
+					if(("," + project[0].MEMBER + ",").indexOf("," + doc.data().USR_NAME + ",") == -1) {
+
+					} else if(doc.data().DEP == "RD") {
+						this.rd.push(doc.data())
+					} else if(doc.data().DEP == "PM") {
+						this.pm.push(doc.data())
+					}
+				});
+
+				if(typeof this.dataSheet.PK == "undefined") {
+					if(this.rd.length == 1)
+						this.dataSheet.RD = this.rd[0].USR_NAME;
+					if(this.pm.length == 1)
+						this.dataSheet.PM = this.pm[0].USR_NAME;
+				}
+			} catch(e) {
+				console.log(e)
+			} finally {
+				vm.loading(false);
+			}
+			
+			/*
 			try {
 				let sql = "Select MEMBER from PROJECT where PRJ_NAME = '" + this.dataSheet.PRJ_NAME + "' and ACTIVE = 'Y' ";
 				let rows = await window.sqlite.execute(sql);
@@ -153,6 +232,7 @@ Vue.component('SheetEdit', {
 				}
 			} catch(e) {
 			}
+			*/
 		},
 		onVisibleChange(v){
 			if(v == false) {
@@ -168,6 +248,9 @@ Vue.component('SheetEdit', {
 	},
 	watch: {
 		visible(value) {
+			if(value == true) {
+
+			}
 			this.modal = value;
 		},
 		data(value) {

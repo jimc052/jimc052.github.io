@@ -14,9 +14,9 @@ new Vue({
 	data() {
 		return {
 			columns: [
-				{ title: '建檔日', key: 'PK', width: 100, fixed: 'left', sortable: true, 
+				{ title: '建檔日', key: 'PK', width: 90, fixed: 'left', sortable: true, 
 					render: (h, {row}) => {
-						let d = new Date(row.PK)
+						let d = new Date(parseInt(row.PK,10));
 						return h('span', d.toString("yyyy/mm/dd") )
 					}
 				},
@@ -40,17 +40,31 @@ new Vue({
 	created(){
 	},
 	async mounted () {
+		/*
 		try {
 			let sql = "Select * from USER where ACTIVE = 'Y' order by DEP, JOB";
 			this.user = await window.sqlite.execute(sql);
 		} catch(e) {
 		}
+		*/
 		await this.onSearch();
 	},
 	destroyed() {
   },
 	methods: {
 		async onSearch(){
+			vm.loading("載入 SHEET 資料......");
+			this.datas = [];
+			let ref = FireStore.db.collection('SHEET');
+			ref.get().then(querySnapshot => {
+				querySnapshot.forEach(doc => {
+					// console.log(doc.id, doc.data());
+					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
+				});
+				vm.loading(false);
+			});
+
+			/*
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
 			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
 
@@ -67,6 +81,7 @@ new Vue({
 				this.datas = rows;
 			} catch(e) {
 			}
+			*/
 		},
 		onEdit(type, item, index){
 			if(type == "new") {
@@ -87,32 +102,11 @@ new Vue({
 			this.order = item.key + " " + item.order;
 			this.onSearch();
 		},
-		async onSave() {
-			let sql = {}
-			
-			if(typeof this.editData.PK == "undefined") {
-				sql = sqlite.convertToInsert("SHEET", this.editData);
-			} else {
-				sql = sqlite.convertToUpdate("SHEET", this.editData);
-			}
-			try {
-				let result = await window.sqlite.execute(sql);
-				if(result > 0) {
-					if(sql.sql.indexOf("Insert Into") == 0) {
-						this.$refs["tbl"].addRows(this.editData)
-					} else {
-						this.$refs["tbl"].updateRow(this.editData)
-					}
-				}
-			} catch(e){
-				return;
-			}
-			this.modal = false;
-		},
 		async onBtnDel(){
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					let result = await window.sqlite.delete("SHEET", this.dels[i].PK);
+					// let result = await window.sqlite.delete("SHEET", this.dels[i].PK);
+					await FireStore.delete("SHEET", this.dels[i].PK);
 				} catch(e) {
 					break;
 				}
@@ -122,7 +116,7 @@ new Vue({
 		},
 		onClose(mode, data){
 			if(typeof mode == "string") {
-				if(mode == "new")
+				if(mode == "insert")
 					this.$refs["tbl"].addRows(data)
 				else
 					this.$refs["tbl"].updateRow(data)

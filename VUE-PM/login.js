@@ -86,7 +86,7 @@ new Vue({
 					vm.loading(false);
 					// console.log(location.href)
 					if(location.href.indexOf("file:///Users/") == 0){
-						vm.onSelect(1); //"home");
+						vm.onSelect("home");
 					} else 
 						vm.onSelect("home");
 					

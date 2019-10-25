@@ -25,12 +25,24 @@ new Vue({
 			datas: {},
 			visible: false,
 			editData: {},
-			msg: ""
+			msg: "",
+			status: []
 		};
 	},
 	created(){
 	},
 	async mounted () {
+		let snapshot2 = await FireStore.db.collection('CODE')
+			.where("ACTIVE", "==", "Y")
+			.where("CD_KIND", "==", "進度")
+			// .orderBy("CD_KEY", "asc")
+			.get();
+		snapshot2.forEach(doc => {
+			this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});
+		});
+		this.status.sort(function (a, b) {
+			return a.CD_KEY > b.CD_KEY ? 1 : -1;
+		});
 		this.onChangeType(this.type)
 	},
 	destroyed() {
@@ -39,6 +51,7 @@ new Vue({
 		async onChangeType(e){
 			this.datas = {}, obj = {};
 			try {
+				/*
 				let sql = "Select * from SHEET where ACTIVE = 'Y' order by " + e;
 				sql = "Select a.* " +
 						"from SHEET a " +
@@ -51,6 +64,21 @@ new Vue({
 				} else 
 					sql += ", PRJ_NAME"
 				let rows = await window.sqlite.execute(sql);
+				*/
+				vm.loading();
+				let rows = [];
+				let snapshot = await FireStore.db.collection('SHEET')
+					.where("ACTIVE", "==", "Y").get();
+				snapshot.forEach(doc => {
+					rows.push(Object.assign({PK: parseInt(doc.id, 10)}, doc.data()));
+				});
+
+				rows.sort(function (a, b) {
+					if(e == "STATUS")
+						return a[e] + "=" + a["PRJ_NAME"] > b[e] + "=" + a["PRJ_NAME"] ? 1 : -1;
+					else 
+						return a[e] > b[e] ? 1 : -1;
+				});
 
 				let pk = "";
 				for(let i = 0; i < rows.length; i++) {
@@ -58,14 +86,21 @@ new Vue({
 						pk = rows[i][e];
 						obj[pk] = [];
 					}
-
 					obj[pk].push(rows[i]);
 				}
-				
-				for(let key in obj) {
-					this.$set(this.datas, key, obj[key])
+				if(e == "STATUS") {
+					this.status.forEach(item=>{
+						if(typeof obj[item.CD_NAME] != "undefined")
+							this.$set(this.datas, item.CD_NAME, obj[item.CD_NAME])
+					});
+				} else {
+					for(let key in obj) {
+						this.$set(this.datas, key, obj[key])
+					}					
 				}
+
 				this.msg = rows.length == 0 ? "暫無資料" : "";
+				vm.loading(false);
 			} catch(e) {
 			}
 		},
@@ -78,7 +113,7 @@ new Vue({
 			if(typeof mode == "string") {
 				let key = data[this.type];
 
-				if(mode == "new") {
+				if(mode == "insert") {
 					if(Array.isArray(this.datas[key]) ){
 						this.datas[key].push(data)
 					} else {
@@ -136,7 +171,8 @@ new Vue({
 
 			let y = target.id.split("_")[2];
 			this.datas[target.getAttribute("data-title")].splice(y, 0, obj[0]);
-			sqlite.execute(sqlite.convertToUpdate("SHEET", obj[0]))
+			// sqlite.execute(sqlite.convertToUpdate("SHEET", obj[0]))
+			FireStore.update("SHEET", obj[0]);
 		}
 	}
 }).$mount('#frame');
