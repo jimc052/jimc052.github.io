@@ -31,3 +31,7 @@ Date.prototype.toString = function (format = "yyyy/mm/dd hh:MM:ss.ms") {
 	r = r.replace("ms", ms);
 	return r;
 };
+
+var isDebug = function(params) {
+	return location.href.indexOf("file:///") > -1 ? true : false;
+}

@@ -84,8 +84,7 @@ new Vue({
 				}	else 
 					delete window.localStorage["password"];
 					vm.loading(false);
-					// console.log(location.href)
-					if(location.href.indexOf("file:///Users/") == 0){
+					if(isDebug() == true){
 						vm.onSelect(0) //"home");
 					} else 
 						vm.onSelect("home");

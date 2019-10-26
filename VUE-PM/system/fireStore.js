@@ -4,6 +4,9 @@
 
 class FireStore{
 	static db;
+	// static member = [];
+	static user = null;
+
 	static initial(key){
 		let crypt = new Crypt({key: key, iv: "project-management"});
 		let apiKey = crypt.decrypt("U2FsdGVkX1+xsjJxLdoG8UrHLiL5csQJXBKKf5+DS6CsL36zngVlYeYNbuUxRUZGTSxn/hdOQb8NE5VdB+DlqA==")
@@ -19,7 +22,7 @@ class FireStore{
 		});
 		this.db = firebase.firestore();
 	}
-	static user(){
+	static mail(){
 		return firebase.auth().currentUser.email;
 	}
 	static async signIn(email, password){

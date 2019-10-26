@@ -112,15 +112,18 @@
   <div id="app">
 		<div id='frame'></div>
 		<Drawer :closable="false" v-model="drawer" placement="left">
-			<div style="height: 80px;"></div>
+			<div @click="onSelect('home')"
+				style="height: 80px; font-size: 30px; color: white; display: flex; justify-content: center; align-items: center; border-bottom: 1px rgba(255,255,255,.7) solid; cursor: pointer; padding-right: 40px;">
+				宣揚電腦
+			</div>
 			<i-menu theme="dark" :active-name="0" @on-select="onSelect">
 				<Menu-item :name="index" v-for="(item, index) in menu" :key="index">
 					<Icon :type="item.icon"></Icon>{{item.title}}
 				</Menu-item>
 			</i-menu>
 			<div style="flex: 1;"></div>
-			<div style="text-align: right; color: white; padding: 10px; font-size: 18px;">
-				Jim Chen 2019-10-25 16:30
+			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
+				Jim Chen 2019-10-26 12:00
 			</div>
 		</Drawer>
 		<div id='login'></div>
@@ -159,7 +162,7 @@
 				},
 				onSelect(index){
 					let arr = [];
-					if(index == "home") {
+					if(index == "home" || typeof index == "undefined") {
 						arr.push("home.js");
 					} else {
 						if(typeof this.menu[index].file == "string") {

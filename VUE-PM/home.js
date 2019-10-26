@@ -7,6 +7,13 @@ new Vue({
 						<Radio label="PRJ_NAME">專案</Radio>
 						<Radio label="RD">RD</Radio>
 				</RadioGroup>
+				<span style="padding-left: 20px;" v-if="rd.length > 0 && type == 'STATUS' ">RD：</span>
+				<i-select v-model="RD" style="width:120px; margin-right: 5px;" v-if="rd.length > 0 && type == 'STATUS' " @on-change="changeRD">
+					<i-option value="">全部</i-option>
+					<i-option v-for="item in rd" :value="item.USR_NAME" :key="item.USR_NAME">
+						{{ item.USR_NAME }}
+					</i-option>
+				</i-select>
 			</div>
 			<div style="flex: 1; overflow: auto hidden; display: flex; flex-direction: row; padding: 10px;">
 				<div v-if="msg.length > 0" style="flex: 1; color: red;" class="row">{{msg}}</div>
@@ -26,16 +33,53 @@ new Vue({
 			visible: false,
 			editData: {},
 			msg: "",
-			status: []
+			status: [],
+			rd: [],
+			RD: "",
+			isBoss: false,
 		};
 	},
 	created(){
 	},
 	async mounted () {
+		let snapshot1 = await FireStore.db.collection('USER')
+			.where("ACTIVE", "==", "Y").get();
+		let arr = [];
+		snapshot1.forEach(doc => {
+			let mail = doc.data().MAIL;
+			if(mail.indexOf("@") == -1) mail += "@bethel.com.tw";
+			
+			if(mail == FireStore.mail()) {
+				FireStore.user = doc.data();
+				if(FireStore.user.JOB == "主管") {
+					this.isBoss = true;
+				}
+			}
+			if(doc.data().DEP == "RD") {
+				this.rd.push(doc.data())
+				// arr.push(doc.data())
+			}
+		});
+		if(FireStore.user == null) {
+			document.getElementById("frame").innerHTML = "USER 檔找不到你的資料";
+			return;
+		}
+
+		if(this.isBoss == false){
+			this.rd = [];
+		}
+		
+		// if(FireStore.user.JOB == "主管") {
+		// 	arr.forEach(item=>{
+		// 		if(FireStore.user.DEP == item.DEP) {
+		// 			FireStore.member.push(item)
+		// 		}
+		// 	});
+		// }
+		
 		let snapshot2 = await FireStore.db.collection('CODE')
 			.where("ACTIVE", "==", "Y")
 			.where("CD_KIND", "==", "進度")
-			// .orderBy("CD_KEY", "asc")
 			.get();
 		snapshot2.forEach(doc => {
 			this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});
@@ -49,6 +93,7 @@ new Vue({
   },
 	methods: {
 		async onChangeType(e){
+			if(FireStore.user == null) return;
 			this.datas = {}, obj = {};
 			try {
 				/*
@@ -67,9 +112,20 @@ new Vue({
 				*/
 				vm.loading();
 				let rows = [];
-				let ref = FireStore.db.collection('SHEET');
-				ref.where("ACTIVE", "==", "Y");
-				ref.orderBy("PRJ_NAME", "desc")
+				let ref;
+				if(this.RD.length > 0 && e == "STATUS") {
+					ref = FireStore.db.collection('SHEET')
+						.where("ACTIVE", "==", "Y")
+						.where("RD", "==", this.RD);
+				} else if(this.isBoss == false){
+					ref = FireStore.db.collection('SHEET')
+						.where("ACTIVE", "==", "Y")
+						.where("RD", "==", FireStore.user.USR_NAME);
+				} else {
+					ref = FireStore.db.collection('SHEET')
+						.where("ACTIVE", "==", "Y");
+				}
+				// ref.orderBy("PRJ_NAME", "desc")
 				let snapshot = await ref.get();
 				snapshot.forEach(doc => {
 					rows.push(Object.assign({PK: parseInt(doc.id, 10)}, doc.data()));
@@ -174,6 +230,9 @@ new Vue({
 			let y = target.id.split("_")[2];
 			this.datas[target.getAttribute("data-title")].splice(y, 0, obj[0]);
 			FireStore.update("SHEET", obj[0]);
+		},
+		changeRD(){
+			this.onChangeType(this.type)
 		}
 	}
 }).$mount('#frame');

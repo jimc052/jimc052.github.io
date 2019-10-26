@@ -59,7 +59,11 @@ new Vue({
 			let ref = FireStore.db.collection('SHEET');
 			let snapshot = await ref.get();
 			snapshot.forEach(doc => {
-				if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
+				if(keyword == "PK") {
+					let d = new Date(parseInt(doc.id, 10)).toString("yyyy/mm/dd");
+					if(d.indexOf(this.search) > -1)
+						this.datas.push(Object.assign({PK: doc.id}, doc.data()))
+				} else if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
 					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
 			});
 			if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {

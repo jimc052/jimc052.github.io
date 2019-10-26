@@ -53,7 +53,6 @@ Vue.component('SheetEdit', {
 					<i-input v-if="editing == true"
 						v-model="dataSheet.MEMO" size="large" style="flex: 1;"  
 						type="textarea" :rows="5"></i-input>
-					
 					<div v-else v-html="compiledMarkdown"></div>
 				</td>
 			</tr>
@@ -105,7 +104,8 @@ Vue.component('SheetEdit', {
 			});
 
 			let ref = FireStore.db.collection('CODE')
-				.where("ACTIVE", "==", "Y").where("CD_KIND", "==", "進度")
+				.where("ACTIVE", "==", "Y")
+				.where("CD_KIND", "==", "進度")
 			let snapshot2 = await ref.get();
 			snapshot2.forEach(doc => {
 				this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});

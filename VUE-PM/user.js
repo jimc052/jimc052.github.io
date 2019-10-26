@@ -68,8 +68,8 @@ new Vue({
 		try {
 			vm.loading();
 			this.datas = [];
-			let ref = FireStore.db.collection('CODE'); // 
-			ref.where("ACTIVE", "==", "Y").get()
+			FireStore.db.collection('CODE')
+			.where("ACTIVE", "==", "Y").get()
 			.then(snapshot => {
 				snapshot.forEach(doc => {
 					// console.log(doc.id, doc.data());

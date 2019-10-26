@@ -59,9 +59,9 @@ new Vue({
 		vm.loading();
 		this.user = [];
 		this.datas = [];
-		let ref = FireStore.db.collection('USER'); // 
-		ref.where("ACTIVE", "==", "Y").get()
-		.then(snapshot => {
+		FireStore.db.collection('USER')
+		.where("ACTIVE", "==", "Y")
+		.get().then(snapshot => {
 			snapshot.forEach(doc => {
 				// console.log(doc.id, doc.data());
 				this.user.push({"USR_NAME": doc.data().USR_NAME});
