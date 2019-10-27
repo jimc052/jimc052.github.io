@@ -13,10 +13,10 @@ new Vue({
 				<td class="label">密碼：</td>
 				<td>
 					<i-input v-if="isPassword" v-model="password" type="password" size="large" style="flex: 1;">
-						<Icon type="ios-eye" style="cursor: pointer;" slot="suffix" @click.native="onClickPassword" />
+						<Icon type="ios-eye" style="cursor: pointer;" slot="suffix" @click.native="onClickIcon" />
 					</i-input>
 					<i-input v-else v-model="password"  size="large" style="flex: 1;">
-						<Icon type="ios-eye-off" style="cursor: pointer;" slot="suffix" @click.native="onClickPassword" />
+						<Icon type="ios-eye-off" style="cursor: pointer;" slot="suffix" @click.native="onClickIcon" />
 					</i-input>
 				</td>
 			</tr>
@@ -85,7 +85,7 @@ new Vue({
 					delete window.localStorage["password"];
 					vm.loading(false);
 					if(isDebug() == true){
-						vm.onSelect(0) //"home");
+						vm.onSelect("home");
 					} else 
 						vm.onSelect("home");
 					
@@ -97,7 +97,7 @@ new Vue({
 				return;
 			}
 		},
-		onClickPassword(){
+		onClickIcon(){
 			this.isPassword = ! this.isPassword;
 		}
 	}

@@ -1,6 +1,8 @@
 new Vue({
 	template: `<div id="frame" style="height: 100%; display: flex; flex-direction: column;">
-			<header-bar title="首頁"></header-bar>
+			<header-bar title="首頁">
+				<Icon type="md-refresh" @click="reload" slot='right' color="white" size="24" style="padding: 10px;" />
+			</header-bar>
 			<div style="padding: 5px 5px 0 5px ; ">
 				<RadioGroup v-model="type" type="button" @on-change="onChangeType">
 						<Radio label="STATUS">進度</Radio>
@@ -37,6 +39,7 @@ new Vue({
 			rd: [],
 			RD: "",
 			isBoss: false,
+			onSnapshot: null
 		};
 	},
 	created(){
@@ -92,6 +95,12 @@ new Vue({
 	destroyed() {
   },
 	methods: {
+		reload(){
+			this.$destroy();
+			// this.$el.parentNode.removeChild(this.$el);
+			vm.onSelect("home");
+			console.clear();
+		},
 		async onChangeType(e){
 			if(FireStore.user == null) return;
 			this.datas = {}, obj = {};
@@ -112,24 +121,93 @@ new Vue({
 				*/
 				vm.loading();
 				let rows = [];
-				let ref;
+				let ref1, ref2, date = (new Date()).getTime();
 				if(this.RD.length > 0 && e == "STATUS") {
-					ref = FireStore.db.collection('SHEET')
+					ref1 = FireStore.db.collection('SHEET')
 						.where("ACTIVE", "==", "Y")
 						.where("RD", "==", this.RD);
+					ref2 = FireStore.db.collection('SHEET')
+						.where("MODIFY_DATE", ">", date)
+						.where("RD", "==", this.RD);
 				} else if(this.isBoss == false){
-					ref = FireStore.db.collection('SHEET')
+					ref1 = FireStore.db.collection('SHEET')
 						.where("ACTIVE", "==", "Y")
 						.where("RD", "==", FireStore.user.USR_NAME);
+					ref2 = FireStore.db.collection('SHEET')
+						.where("MODIFY_DATE", ">", date)
+						.where("RD", "==", FireStore.user.USR_NAME);
 				} else {
-					ref = FireStore.db.collection('SHEET')
+					ref1 = FireStore.db.collection('SHEET')
 						.where("ACTIVE", "==", "Y");
+					ref2 = FireStore.db.collection('SHEET')
+						.where("MODIFY_DATE", ">", date);
 				}
-				// ref.orderBy("PRJ_NAME", "desc")
-				let snapshot = await ref.get();
+				// ref1.orderBy("PRJ_NAME", "desc")
+				let snapshot = await ref1.get();
 				snapshot.forEach(doc => {
 					rows.push(Object.assign({PK: parseInt(doc.id, 10)}, doc.data()));
 				});
+
+				if(this.onSnapshot) this.onSnapshot();
+				this.onSnapshot = ref2.onSnapshot(snapshot => { // 監聽........
+					// var source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
+					if(snapshot.metadata.hasPendingWrites) return; // local
+
+					snapshot.docChanges().forEach(change => {
+						// if(change.type == "modified") {
+						// } else if (change.type === 'removed') {
+						// }
+
+						snapshot.forEach(doc => {
+							let key = doc.data()[e];
+							let PK = parseInt(doc.id, 10);
+							// console.log(doc.data().PRJ_NAME + ": " + doc.data().TITLE + " ==> " + key)
+							if (change.type === 'removed') { // 有問題，delete 的 modify_date 沒有用....
+								let rows = this.datas[key];
+								for(let i = 0; i < rows.length; i++) {
+									if(rows[i].PK == PK) {
+										rows.splice(i, 1);
+									}
+								}
+							} else {
+								let msg = "";
+								let b = false;
+								for(let key2 in this.datas) {
+									let rows = this.datas[key2];
+									for(let i = 0; i < rows.length; i++) {
+										if(rows[i].PK == PK) {
+											if(key == key2) {
+												this.$set(this.datas[key], i, Object.assign({PK}, doc.data()));
+											} else {
+												this.datas[key2].splice(i, 1)
+												if(typeof this.datas[key] == "undefined") {
+													this.$set(this.datas, key, [Object.assign({PK}, doc.data())])
+												} else {
+													this.datas[key].push(Object.assign({PK}, doc.data()))
+												}
+											}
+											b = true;
+										}
+									}
+								}
+								if(b == false) {
+									if(typeof this.datas[key] == "undefined") {
+										this.$set(this.datas, key, [Object.assign({PK}, doc.data())])
+									} else {
+										this.datas[key].push(Object.assign({PK}, doc.data()))
+									}
+								}
+
+								this.$Message.destroy();
+								this.$Message.info({
+									content: (b == false ? "新增" : "異動") + "：" + doc.data().PRJ_NAME,
+									duration: 30,
+									closable: true
+								});
+							}
+						})
+					})
+				})
 
 				rows.sort(function (a, b) {
 					if(e == "STATUS")
@@ -165,6 +243,7 @@ new Vue({
 		onNew(){
 			this.editData = {};
 			this.visible = true;
+			this.$Message.destroy();
 		},
 		onClose(mode, data){
 			let self = this;
@@ -221,6 +300,7 @@ new Vue({
 			this.current = arg;
 			this.editData = arg.item;
 			this.visible = true;
+			this.$Message.destroy();
 		},
 		onDrop(source, target) {
 			let x = source.id.split("_")[2];

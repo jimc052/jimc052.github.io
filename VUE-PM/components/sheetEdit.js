@@ -97,12 +97,6 @@ Vue.component('SheetEdit', {
 		this.dataSheet = Object.assign(this.dataSheet, this.data);
 		vm.loading();
 		try {
-			let snapshot1 = await FireStore.db.collection('PROJECT')
-				.where("ACTIVE", "==", "Y").get();
-			snapshot1.forEach(doc => {
-				this.project.push({"PRJ_NAME": doc.data().PRJ_NAME, MEMBER: doc.data().MEMBER});
-			});
-
 			let ref = FireStore.db.collection('CODE')
 				.where("ACTIVE", "==", "Y")
 				.where("CD_KIND", "==", "進度")
@@ -245,9 +239,23 @@ Vue.component('SheetEdit', {
     }
 	},
 	watch: {
-		visible(value) {
-			if(value == true) {
-
+		async visible(value) {
+			if(value == true && this.project.length == 0) {
+				vm.loading();
+				let ref = FireStore.db.collection('PROJECT')
+					.where("ACTIVE", "==", "Y");
+				let snapshot1 = await ref.get();
+				snapshot1.forEach(doc => {
+					if(FireStore.user.JOB == "主管") {
+						this.project.push({"PRJ_NAME": doc.data().PRJ_NAME, MEMBER: doc.data().MEMBER});
+					} else {
+						let MEMBER = "," + doc.data().MEMBER + ",";
+						if(MEMBER.indexOf("," + FireStore.user.USR_NAME + ",") > -1) {
+							this.project.push({"PRJ_NAME": doc.data().PRJ_NAME, MEMBER: doc.data().MEMBER});
+						}
+					}
+				});
+				vm.loading(false);
 			}
 			this.modal = value;
 		},
