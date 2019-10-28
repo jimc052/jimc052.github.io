@@ -174,6 +174,10 @@ Vue.component('SheetEdit', {
 				let project = this.project.filter(item=>{
 					return item.PRJ_NAME == this.dataSheet.PRJ_NAME;
 				})
+				if(project.length == 0) {
+					vm.loading(false);
+					return;
+				}
 
 				let snapshot = await FireStore.db.collection('USER')
 					.where("ACTIVE", "==", "Y")

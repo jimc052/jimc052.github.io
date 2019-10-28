@@ -114,8 +114,9 @@ Vue.component('panel', {
 				if(el == null) return;
 				i++; // 預防用
 			}
+			let update = e.dataTransfer.getData('text/plain').indexOf('li_' + this.serial + '_') == -1 ? true : false;
 			let source = document.getElementById(e.dataTransfer.getData('text/plain'));
-			this.$emit("onDrop", source, el)
+			this.$emit("onDrop", source, el, update)				
 		},
 		toDate(value) {
 			return (new Date(value)).toString("yyyy/mm/dd hh:MM");

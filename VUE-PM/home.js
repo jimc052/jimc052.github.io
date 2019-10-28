@@ -17,7 +17,7 @@ new Vue({
 					</i-option>
 				</i-select>
 			</div>
-			<div style="flex: 1; overflow: auto hidden; display: flex; flex-direction: row; padding: 10px;">
+			<div style="flex: 1; overflow: auto hidden; display: flex; flex-direction: row; padding: 10px 0;">
 				<div v-if="msg.length > 0" style="flex: 1; color: red;" class="row">{{msg}}</div>
 				<panel v-else v-for="(item, key, index) in datas" :key="key" :serial="index" :type="type"  :title="key" :datas="item"
 					@onClick="onClick" @onDrop="onDrop"
@@ -161,7 +161,7 @@ new Vue({
 						snapshot.forEach(doc => {
 							let key = doc.data()[e];
 							let PK = parseInt(doc.id, 10);
-							// console.log(doc.data().PRJ_NAME + ": " + doc.data().TITLE + " ==> " + key)
+							
 							if (change.type === 'removed') { // 有問題，delete 的 modify_date 沒有用....
 								let rows = this.datas[key];
 								for(let i = 0; i < rows.length; i++) {
@@ -200,8 +200,8 @@ new Vue({
 
 								this.$Message.destroy();
 								this.$Message.info({
-									content: (b == false ? "新增" : "異動") + "：" + doc.data().PRJ_NAME,
-									duration: 30,
+									content: (b == false ? "新增" : "異動") + "：" + doc.data().PRJ_NAME + "<br/>" + doc.data().TITLE,
+									duration: 3,
 									closable: true
 								});
 							}
@@ -302,14 +302,15 @@ new Vue({
 			this.visible = true;
 			this.$Message.destroy();
 		},
-		onDrop(source, target) {
+		onDrop(source, target, update) {
 			let x = source.id.split("_")[2];
 			let obj = this.datas[source.getAttribute("data-title")].splice(x, 1);
 			obj[0][this.type] = target.getAttribute("data-title");
 
 			let y = target.id.split("_")[2];
 			this.datas[target.getAttribute("data-title")].splice(y, 0, obj[0]);
-			FireStore.update("SHEET", obj[0]);
+			if(update == true)
+				FireStore.update("SHEET", obj[0]);
 		},
 		changeRD(){
 			this.onChangeType(this.type)
