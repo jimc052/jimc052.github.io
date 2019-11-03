@@ -68,24 +68,26 @@ new Vue({
 		try {
 			vm.loading();
 			this.datas = [];
-			FireStore.db.collection('CODE')
-			.where("ACTIVE", "==", "Y").get()
-			.then(snapshot => {
-				snapshot.forEach(doc => {
-					// console.log(doc.id, doc.data());
-					if(doc.data().CD_KIND == "部門")
-						this.dep.push({"CD_NAME": doc.data().CD_NAME});
-					else if(doc.data().CD_KIND == "職務")
-						this.job.push({"CD_NAME": doc.data().CD_NAME});
+			if(vm.isSQL == false) {
+				FireStore.db.collection('CODE')
+				.where("ACTIVE", "==", "Y").get()
+				.then(snapshot => {
+					snapshot.forEach(doc => {
+						// console.log(doc.id, doc.data());
+						if(doc.data().CD_KIND == "部門")
+							this.dep.push({"CD_NAME": doc.data().CD_NAME});
+						else if(doc.data().CD_KIND == "職務")
+							this.job.push({"CD_NAME": doc.data().CD_NAME});
+					});
+					vm.loading(false);
 				});
-				vm.loading(false);
-			});
+			} else {
+				let sql = "Select * from CODE where CD_KIND = '部門' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
+				this.dep = await window.sqlite.execute(sql);
 
-			// let sql = "Select * from CODE where CD_KIND = '部門' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
-			// this.dep = await window.sqlite.execute(sql);
-
-			// sql = "Select * from CODE where CD_KIND = '職務' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
-			// this.job = await window.sqlite.execute(sql);
+				sql = "Select * from CODE where CD_KIND = '職務' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
+				this.job = await window.sqlite.execute(sql);
+			}
 		} catch(e) {
 
 		}
@@ -99,35 +101,35 @@ new Vue({
 
 			vm.loading("載入 USER 資料......");
 			this.datas = [];
-			let ref = FireStore.db.collection('USER');
-			let snapshot = await ref.get();
-			snapshot.forEach(doc => {
-				if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
-					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-			});
-			if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
-				let arr = this.order.split(",")
-				this.datas.sort(function (a, b) {
-					if(arr[1] == "desc")
-						return a[arr[0]] < b[arr[0]] ? 1 : -1;
-					else 
-						return a[arr[0]] > b[arr[0]] ? 1 : -1;
+			if(vm.isSQL == false) {
+				let ref = FireStore.db.collection('USER');
+				let snapshot = await ref.get();
+				snapshot.forEach(doc => {
+					if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
+						this.datas.push(Object.assign({PK: doc.id}, doc.data()))
 				});
+				if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
+					let arr = this.order.split(",")
+					this.datas.sort(function (a, b) {
+						if(arr[1] == "desc")
+							return a[arr[0]] < b[arr[0]] ? 1 : -1;
+						else 
+							return a[arr[0]] > b[arr[0]] ? 1 : -1;
+					});
+				}
+			} else {
+				let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
+				let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
+	
+				let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : "DEP";
+				let sql = "Select * from USER " + where +  " order by " + sort;
+				try {
+					let rows = await window.sqlite.execute(sql);
+					this.datas = rows;
+				} catch(e) {
+				}
 			}
 			vm.loading(false);
-
-			/*
-			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
-			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
-
-			let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : "DEP";
-			let sql = "Select * from USER " + where +  " order by " + sort;
-			try {
-				let rows = await window.sqlite.execute(sql);
-				this.datas = rows;
-			} catch(e) {
-			}
-			*/
 		},
 		onEdit(type, item, index){
 			this.dlgWidth = document.body.clientWidth > 600 ? 550 : document.body.clientWidth - 10;
@@ -164,51 +166,53 @@ new Vue({
 					}
 				}
 			}
-
-			try {
-				let first = typeof this.editData.PK == "undefined" ? true : false;
-				if(first == true)
-					FireStore.insert("USER", this.editData)
-				else {
-					FireStore.update("USER", this.editData)
-				}
-				if(first == true) {
-					this.$refs["tbl"].addRows(this.editData)
-				} else {
-					this.$refs["tbl"].updateRow(this.editData)
-				}
-			} catch(e) {
-				vm.showMessage(e.message)
-			}
-
-			/*
-			if(typeof this.editData.PK == "undefined") {
-				this.editData.PK = (new Date()).getTime();
-				sql = sqlite.convertToInsert("USER", this.editData);
-			} else {
-				sql = sqlite.convertToUpdate("USER", this.editData);
-			}
-			try {
-				let result = await window.sqlite.execute(sql);
-				if(result > 0) {
-					if(sql.sql.indexOf("Insert Into") == 0) {
+			if(vm.isSQL == false) {
+				try {
+					let first = typeof this.editData.PK == "undefined" ? true : false;
+					if(first == true)
+						FireStore.insert("USER", this.editData)
+					else {
+						FireStore.update("USER", this.editData)
+					}
+					if(first == true) {
 						this.$refs["tbl"].addRows(this.editData)
 					} else {
 						this.$refs["tbl"].updateRow(this.editData)
 					}
+				} catch(e) {
+					vm.showMessage(e.message)
 				}
-				
-			} catch(e){
-				return;
+			} else {
+				if(typeof this.editData.PK == "undefined") {
+					this.editData.PK = (new Date()).getTime();
+					sql = sqlite.convertToInsert("USER", this.editData);
+				} else {
+					sql = sqlite.convertToUpdate("USER", this.editData);
+				}
+				try {
+					let result = await window.sqlite.execute(sql);
+					if(result > 0) {
+						if(sql.sql.indexOf("Insert Into") == 0) {
+							this.$refs["tbl"].addRows(this.editData)
+						} else {
+							this.$refs["tbl"].updateRow(this.editData)
+						}
+					}
+					
+				} catch(e){
+					return;
+				}
 			}
-			*/
 			this.modal = false;
 		},
 		async onBtnDel(){
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					// let result = await window.sqlite.delete("USER", this.dels[i].PK);
-					await FireStore.delete("USER", this.dels[i].PK);
+					// let result = 
+					if(vm.isSQL == true)
+						await window.sqlite.delete("USER", this.dels[i].PK);
+					else
+						await FireStore.delete("USER", this.dels[i].PK);
 				} catch(e) {
 					break;
 				}

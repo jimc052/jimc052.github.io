@@ -99,7 +99,7 @@ class Sqlite{
 		try {
 			let result = await this.execute("delete from " + tblName + 
 				" Where PK=" + PK);
-			console.log(result)
+			// console.log(result)
 			return result;
 		} catch(e) {
 			throw e;

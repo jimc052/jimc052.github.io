@@ -56,44 +56,46 @@ new Vue({
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
 			vm.loading("載入 SHEET 資料......");
 			this.datas = [];
-			let ref = FireStore.db.collection('SHEET');
-			let snapshot = await ref.get();
-			snapshot.forEach(doc => {
-				if(keyword == "PK") {
-					let d = new Date(parseInt(doc.id, 10)).toString("yyyy/mm/dd");
-					if(d.indexOf(this.search) > -1)
+			if(vm.isSQL == false) {
+				let ref = FireStore.db.collection('SHEET');
+				let snapshot = await ref.get();
+				snapshot.forEach(doc => {
+					if(keyword == "PK") {
+						let d = new Date(parseInt(doc.id, 10)).toString("yyyy/mm/dd");
+						if(d.indexOf(this.search) > -1)
+							this.datas.push(Object.assign({PK: doc.id}, doc.data()))
+					} else if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
 						this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-				} else if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
-					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-			});
-			if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
-				let arr = this.order.split(",")
-				this.datas.sort(function (a, b) {
-					if(arr[1] == "desc")
-						return a[arr[0]] < b[arr[0]] ? 1 : -1;
-					else 
-						return a[arr[0]] > b[arr[0]] ? 1 : -1;
 				});
+				if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
+					let arr = this.order.split(",")
+					this.datas.sort(function (a, b) {
+						if(arr[1] == "desc")
+							return a[arr[0]] < b[arr[0]] ? 1 : -1;
+						else 
+							return a[arr[0]] > b[arr[0]] ? 1 : -1;
+					});
+				}
+			} else {
+				let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
+				let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : " PK desc ";
+				let sql = "Select * from SHEET " + where + (sort.length > 0 ? " order by " + sort : "") ;
+				try {
+					let rows = await window.sqlite.execute(sql);
+					rows.forEach(item=>{
+						if(typeof item.MEMBER == "string" && item.MEMBER.length > 0){
+							let arr = item.MEMBER.split(",");
+							item.MEMBER = JSON.parse('["' + arr.join('", "') + '"]');
+						}
+					})
+					this.datas = rows;
+				} catch(e) {
+				}
 			}
 			vm.loading(false);
 
 			/*
-			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
-			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
 
-			let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : " PK desc ";
-			let sql = "Select * from SHEET " + where + (sort.length > 0 ? " order by " + sort : "") ;
-			try {
-				let rows = await window.sqlite.execute(sql);
-				rows.forEach(item=>{
-					if(typeof item.MEMBER == "string" && item.MEMBER.length > 0){
-						let arr = item.MEMBER.split(",");
-						item.MEMBER = JSON.parse('["' + arr.join('", "') + '"]');
-					}
-				})
-				this.datas = rows;
-			} catch(e) {
-			}
 			*/
 		},
 		onEdit(type, item, index){

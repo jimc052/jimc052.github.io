@@ -90,7 +90,7 @@ new Vue({
 
 				let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : "CD_KIND, CD_KEY, CD_NAME";
 				let sql = "Select * from CODE " + where +  " order by " + sort;
-				console.log(sql)
+				// console.log(sql)
 				try {
 					let rows = await window.sqlite.execute(sql);
 					this.datas = rows;
@@ -155,7 +155,7 @@ new Vue({
 					} else {
 						sql = sqlite.convertToUpdate("CODE", this.editData);
 					}
-					console.log(sql)
+					// console.log(sql)
 					try {
 						let result = await window.sqlite.execute(sql);
 						if(result > 0) {
@@ -178,8 +178,11 @@ new Vue({
 			vm.loading()
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					// let result = await window.sqlite.delete("CODE", this.dels[i].PK);
-					await FireStore.delete("CODE", this.dels[i].PK);
+					if(vm.isSQL == false) {
+						await window.sqlite.delete("CODE", this.dels[i].PK);
+					} else {
+						await FireStore.delete("CODE", this.dels[i].PK);
+					}
 				} catch(e) {
 					vm.loading(false)
 					break;
