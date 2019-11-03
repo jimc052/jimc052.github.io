@@ -138,6 +138,7 @@
 			data() {
 				return {
 					drawer: false, 
+					isSQL: true,
 					menu: [
 						{title: "需求單", icon: "md-person", js: "sheet"},
 						{title: "專案資料", icon: "md-person", js: "project"},
@@ -154,7 +155,11 @@
 				document.body.style.visibility = "visible";
 
 				await window.sqlite.initial();
-				loadScript(["system/AES.js", "system/crypt.js", "login.js"])
+				if(this.isSQL == false) {
+					loadScript(["system/AES.js", "system/crypt.js", "login.js"])
+				} else {
+					this.onSelect(3);
+				}
 			},
 			methods: {
 				showDrawer() {

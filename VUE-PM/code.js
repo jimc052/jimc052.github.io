@@ -66,43 +66,38 @@ new Vue({
 			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
 
 			vm.loading("載入 CODE 資料......");
+
 			this.datas = [];
-			let ref = FireStore.db.collection('CODE');
-			let snapshot = await ref.get();
-			snapshot.forEach(doc => {
-				if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
-					this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-			});
-			if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
-				let arr = this.order.split(",")
-				this.datas.sort(function (a, b) {
-					if(arr[1] == "desc")
-						return a[arr[0]] < b[arr[0]] ? 1 : -1;
-					else 
-						return a[arr[0]] > b[arr[0]] ? 1 : -1;
+			if(this.isSQL == false) {
+				let ref = FireStore.db.collection('CODE');
+				let snapshot = await ref.get();
+				snapshot.forEach(doc => {
+					if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
+						this.datas.push(Object.assign({PK: doc.id}, doc.data()))
 				});
+				if(this.order.length > 0 && this.order.indexOf(",normal") == -1) {
+					let arr = this.order.split(",")
+					this.datas.sort(function (a, b) {
+						if(arr[1] == "desc")
+							return a[arr[0]] < b[arr[0]] ? 1 : -1;
+						else 
+							return a[arr[0]] > b[arr[0]] ? 1 : -1;
+					});
+				}
+			} else {
+				let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
+				let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
+
+				let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : "CD_KIND, CD_KEY, CD_NAME";
+				let sql = "Select * from CODE " + where +  " order by " + sort;
+				console.log(sql)
+				try {
+					let rows = await window.sqlite.execute(sql);
+					this.datas = rows;
+				} catch(e) {
+				}				
 			}
 			vm.loading(false);
-			// .then(snapshot => {
-			// 	querySnapshot.forEach(doc => {
-			// 		if(keyword == "" || this.search.trim() == "" || (keyword.length > 0 && doc.data()[keyword].indexOf(this.search) > -1))
-			// 			this.datas.push(Object.assign({PK: doc.id}, doc.data()))
-			// 	});
-			// 	vm.loading(false);
-			// });
-			
-			/* sqlite ok 的，但不用了
-			let keyword = (typeof this.$refs["options"].keyword != "string") ? "" : this.$refs["options"].keyword;
-			let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
-
-			let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : "CD_KIND, CD_KEY, CD_NAME";
-			let sql = "Select * from CODE " + where +  " order by " + sort;
-			try {
-				let rows = await window.sqlite.execute(sql);
-				this.datas = rows;
-			} catch(e) {
-			}
-			*/
 		},
 		onEdit(type, item, index){
 			this.dlgWidth = document.body.clientWidth > 600 ? 550 : document.body.clientWidth - 10;
@@ -141,40 +136,42 @@ new Vue({
 				}
 			}
 			try {
-				let first = typeof this.editData.PK == "undefined" ? true : false;
-				if(first == true)
-					FireStore.insert("CODE", this.editData)
-				else {
-					FireStore.update("CODE", this.editData)
-				}
-				if(first == true) {
-					this.$refs["tbl"].addRows(this.editData)
-				} else {
-					this.$refs["tbl"].updateRow(this.editData)
-				}
-			} catch(e) {
-				vm.showMessage(e.message)
-			}
-			/*
-			if(typeof this.editData.PK == "undefined") {
-				this.editData.PK = (new Date()).getTime();
-				sql = sqlite.convertToInsert("CODE", this.editData);
-			} else {
-				sql = sqlite.convertToUpdate("CODE", this.editData);
-			}
-			try {
-				let result = await window.sqlite.execute(sql);
-				if(result > 0) {
-					if(sql.sql.indexOf("Insert Into") == 0) {
+				if(vm.isSQL == false) {
+					let first = typeof this.editData.PK == "undefined" ? true : false;
+					if(first == true)
+						FireStore.insert("CODE", this.editData)
+					else {
+						FireStore.update("CODE", this.editData)
+					}
+					if(first == true) {
 						this.$refs["tbl"].addRows(this.editData)
 					} else {
 						this.$refs["tbl"].updateRow(this.editData)
 					}
+				} else {
+					if(typeof this.editData.PK == "undefined") {
+						this.editData.PK = (new Date()).getTime();
+						sql = sqlite.convertToInsert("CODE", this.editData);
+					} else {
+						sql = sqlite.convertToUpdate("CODE", this.editData);
+					}
+					console.log(sql)
+					try {
+						let result = await window.sqlite.execute(sql);
+						if(result > 0) {
+							if(sql.sql.indexOf("Insert Into") == 0) {
+								this.$refs["tbl"].addRows(this.editData)
+							} else {
+								this.$refs["tbl"].updateRow(this.editData)
+							}
+						}
+					} catch(e){
+						return;
+					}
 				}
-			} catch(e){
-				return;
+			} catch(e) {
+				vm.showMessage(e.message)
 			}
-			*/
 			this.modal = false;
 		},
 		async onBtnDel(){

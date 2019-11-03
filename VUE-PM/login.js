@@ -72,6 +72,8 @@ new Vue({
 					
 			vm.loading();
 			FireStore.initial(this.aes);
+			
+			// await FireStore.uploadFile();
 			try {
 				await FireStore.signIn(this.email, this.password)
 				if(this.first == true) {

@@ -7,7 +7,7 @@ new Vue({
 				<RadioGroup v-model="type" type="button" @on-change="onChangeType">
 						<Radio label="STATUS">進度</Radio>
 						<Radio label="PRJ_NAME">專案</Radio>
-						<Radio label="RD">RD</Radio>
+						<Radio label="RD" v-if="isBoss || isPM">RD</Radio>
 				</RadioGroup>
 				<span style="padding-left: 20px;" v-if="rd.length > 0 && type == 'STATUS' ">RD：</span>
 				<i-select v-model="RD" style="width:120px; margin-right: 5px;" v-if="rd.length > 0 && type == 'STATUS' " @on-change="changeRD">
@@ -20,8 +20,7 @@ new Vue({
 			<div style="flex: 1; overflow: auto hidden; display: flex; flex-direction: row; padding: 10px 0;">
 				<div v-if="msg.length > 0" style="flex: 1; color: red;" class="row">{{msg}}</div>
 				<panel v-else v-for="(item, key, index) in datas" :key="key" :serial="index" :type="type"  :title="key" :datas="item"
-					@onClick="onClick" @onDrop="onDrop"
-					class="panel"
+					@onClick="onClick" @onDrop="onDrop" class="panel"
 				/>
 			</div>
 			<i-button type="primary" shape="circle" class="absolute-bottom" icon="md-add" 
@@ -39,6 +38,7 @@ new Vue({
 			rd: [],
 			RD: "",
 			isBoss: false,
+			isPM: false,
 			onSnapshot: null
 		};
 	},
@@ -56,6 +56,8 @@ new Vue({
 				FireStore.user = doc.data();
 				if(FireStore.user.JOB == "主管") {
 					this.isBoss = true;
+				} else if(FireStore.user.DEP == "PM") {
+					this.isPM = true;
 				}
 			}
 			if(doc.data().DEP == "RD") {
@@ -129,18 +131,19 @@ new Vue({
 					ref2 = FireStore.db.collection('SHEET')
 						.where("MODIFY_DATE", ">", date)
 						.where("RD", "==", this.RD);
-				} else if(this.isBoss == false){
-					ref1 = FireStore.db.collection('SHEET')
-						.where("ACTIVE", "==", "Y")
-						.where("RD", "==", FireStore.user.USR_NAME);
-					ref2 = FireStore.db.collection('SHEET')
-						.where("MODIFY_DATE", ">", date)
-						.where("RD", "==", FireStore.user.USR_NAME);
-				} else {
+				} else if(this.isBoss == true){
 					ref1 = FireStore.db.collection('SHEET')
 						.where("ACTIVE", "==", "Y");
 					ref2 = FireStore.db.collection('SHEET')
 						.where("MODIFY_DATE", ">", date);
+				} else {
+					let role = this.isPM ? "PM" : "RD";
+					ref1 = FireStore.db.collection('SHEET')
+						.where("ACTIVE", "==", "Y")
+						.where(role, "==", FireStore.user.USR_NAME);
+					ref2 = FireStore.db.collection('SHEET')
+						.where("MODIFY_DATE", ">", date)
+						.where(role, "==", FireStore.user.USR_NAME);
 				}
 				// ref1.orderBy("PRJ_NAME", "desc")
 				let snapshot = await ref1.get();
