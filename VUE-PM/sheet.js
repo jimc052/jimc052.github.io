@@ -40,13 +40,6 @@ new Vue({
 	created(){
 	},
 	async mounted () {
-		/*
-		try {
-			let sql = "Select * from USER where ACTIVE = 'Y' order by DEP, JOB";
-			this.user = await window.sqlite.execute(sql);
-		} catch(e) {
-		}
-		*/
 		await this.onSearch();
 	},
 	destroyed() {
@@ -77,11 +70,19 @@ new Vue({
 					});
 				}
 			} else {
-				let where = keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
+				let where = keyword != "PK" && keyword.length > 0 && this.search.length > 0 ? "where " + keyword + " like '%" + this.search + "%' " : "";
 				let sort = this.order.length > 0 && this.order.indexOf("normal") == -1 ? this.order : " PK desc ";
 				let sql = "Select * from SHEET " + where + (sort.length > 0 ? " order by " + sort : "") ;
 				try {
 					let rows = await window.sqlite.execute(sql);
+					if(keyword == "PK"){
+						for(let i = rows.length - 1; i >= 0; i--) {
+							let d = new Date(parseInt(rows[i].PK, 10)).toString("yyyy/mm/dd");
+							if(d.indexOf(this.search) == -1) {
+								rows.splice(i, 1)
+							}
+						}
+					}
 					rows.forEach(item=>{
 						if(typeof item.MEMBER == "string" && item.MEMBER.length > 0){
 							let arr = item.MEMBER.split(",");
@@ -93,10 +94,6 @@ new Vue({
 				}
 			}
 			vm.loading(false);
-
-			/*
-
-			*/
 		},
 		onEdit(type, item, index){
 			if(type == "new") {
