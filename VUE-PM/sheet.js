@@ -120,7 +120,6 @@ new Vue({
 		async onBtnDel(){
 			for(let i = 0; i < this.dels.length; i++){
 				try {
-					// let result = 
 					if(vm.isSQL) 
 						await window.sqlite.delete("SHEET", this.dels[i].PK);
 					else

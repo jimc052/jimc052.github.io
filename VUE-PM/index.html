@@ -123,7 +123,7 @@
 			</i-menu>
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
-				Jim Chen 2019-10-27 12:00
+				Jim Chen 2019-11-04 13:00
 			</div>
 		</Drawer>
 		<div id='login'></div>
@@ -154,11 +154,23 @@
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
 
-				await window.sqlite.initial();
+				
 				if(this.isSQL == false) {
 					loadScript(["system/AES.js", "system/crypt.js", "login.js"])
 				} else {
-					this.onSelect(0);
+					await window.sqlite.initial();
+					let result = await await window.sqlite.execute("Select * from CODE ");
+					if(result.length == 0) {
+						this.onSelect(3);
+					} else {
+						result = await await window.sqlite.execute("Select * from USER");
+						if(result.length == 0) {
+							this.onSelect(2);
+						} else {
+							// this.onSelect("home");
+							loadScript(["system/AES.js", "system/crypt.js", "login.js"])
+						}
+					}
 				}
 			},
 			methods: {
@@ -192,6 +204,7 @@
 					})
 				},
 				showMessage(){
+					// vm.loading(false);
 					let args = arguments;
 					this.$Modal.error({
 						title: "專案管理",

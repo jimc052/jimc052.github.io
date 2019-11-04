@@ -45,53 +45,71 @@ new Vue({
 	created(){
 	},
 	async mounted () {
-		let snapshot1 = await FireStore.db.collection('USER')
-			.where("ACTIVE", "==", "Y").get();
-		let arr = [];
-		snapshot1.forEach(doc => {
-			let mail = doc.data().MAIL;
-			if(mail.indexOf("@") == -1) mail += "@bethel.com.tw";
-			
-			if(mail == FireStore.mail()) {
-				FireStore.user = doc.data();
-				if(FireStore.user.JOB == "主管") {
-					this.isBoss = true;
-				} else if(FireStore.user.DEP == "PM") {
-					this.isPM = true;
+		if(vm.isSQL == false) {
+			let snapshot1 = await FireStore.db.collection('USER')
+				.where("ACTIVE", "==", "Y").get();
+			snapshot1.forEach(doc => {
+				let mail = doc.data().MAIL;
+				if(mail.indexOf("@") == -1) mail += "@bethel.com.tw";
+				
+				if(mail == FireStore.mail()) {
+					FireStore.user = doc.data();
+					if(FireStore.user.JOB == "主管") {
+						this.isBoss = true;
+					} else if(FireStore.user.DEP == "PM") {
+						this.isPM = true;
+					}
 				}
+				if(doc.data().DEP == "RD") {
+					this.rd.push(doc.data())
+				}
+			});
+			if(FireStore.user == null) {
+				document.getElementById("frame").innerHTML = "USER 檔找不到你的資料";
+				return;
 			}
-			if(doc.data().DEP == "RD") {
-				this.rd.push(doc.data())
-				// arr.push(doc.data())
-			}
-		});
-		if(FireStore.user == null) {
-			document.getElementById("frame").innerHTML = "USER 檔找不到你的資料";
-			return;
-		}
 
-		if(this.isBoss == false){
-			this.rd = [];
+			if(this.isBoss == false){
+				this.rd = [];
+			}
+			
+			let snapshot2 = await FireStore.db.collection('CODE')
+				.where("ACTIVE", "==", "Y")
+				.where("CD_KIND", "==", "進度")
+				.get();
+			snapshot2.forEach(doc => {
+				this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});
+			});
+			this.status.sort(function (a, b) {
+				return a.CD_KEY > b.CD_KEY ? 1 : -1;
+			});
+		} else {
+			let rows = await window.sqlite.execute("Select * from USER where ACTIVE = 'Y'");
+			rows.forEach(item=>{
+				if(item.MAIL == window.localStorage["email"]) {
+					Sqlite.user = item;
+					if(item.JOB == "主管") {
+						this.isBoss = true;
+					} else if(item.DEP == "PM") {
+						this.isPM = true;
+					}
+				}
+				if(item.DEP == "RD") {
+					this.rd.push(item);
+				}
+			});
+
+			if(Sqlite.user == null) {
+				document.getElementById("frame").innerHTML = "USER 檔找不到你的資料";
+				return;
+			}
+
+			if(this.isBoss == false){
+				this.rd = [];
+			}
+
+			this.status = await window.sqlite.execute("Select * from CODE where ACTIVE = 'Y' and CD_KIND == '進度' order by CD_KEY ");
 		}
-		
-		// if(FireStore.user.JOB == "主管") {
-		// 	arr.forEach(item=>{
-		// 		if(FireStore.user.DEP == item.DEP) {
-		// 			FireStore.member.push(item)
-		// 		}
-		// 	});
-		// }
-		
-		let snapshot2 = await FireStore.db.collection('CODE')
-			.where("ACTIVE", "==", "Y")
-			.where("CD_KIND", "==", "進度")
-			.get();
-		snapshot2.forEach(doc => {
-			this.status.push({CD_KEY: doc.data().CD_KEY, CD_NAME: doc.data().CD_NAME});
-		});
-		this.status.sort(function (a, b) {
-			return a.CD_KEY > b.CD_KEY ? 1 : -1;
-		});
 		this.onChangeType(this.type)
 	},
 	destroyed() {
@@ -104,113 +122,110 @@ new Vue({
 			console.clear();
 		},
 		async onChangeType(e){
-			if(FireStore.user == null) return;
-			this.datas = {}, obj = {};
+			if(vm.isSQL == false && FireStore.user == null) return;
+			this.datas = {}, obj = {}, rows = [];
 			try {
-				/*
-				let sql = "Select * from SHEET where ACTIVE = 'Y' order by " + e;
-				sql = "Select a.* " +
-						"from SHEET a " +
-						"Left Join CODE b on(a.STATUS = b.CD_NAME) " +
-						"where a.ACTIVE = 'Y' and b.CD_KIND = '進度' " +
-						"order by CD_KEY, CD_NAME";
-
-				if(e != "STATUS") {
-					sql = sql.replace("order by ", "order by " + e + ",");
-				} else 
-					sql += ", PRJ_NAME"
-				let rows = await window.sqlite.execute(sql);
-				*/
 				vm.loading();
-				let rows = [];
-				let ref1, ref2, date = (new Date()).getTime();
-				if(this.RD.length > 0 && e == "STATUS") {
-					ref1 = FireStore.db.collection('SHEET')
-						.where("ACTIVE", "==", "Y")
-						.where("RD", "==", this.RD);
-					ref2 = FireStore.db.collection('SHEET')
-						.where("MODIFY_DATE", ">", date)
-						.where("RD", "==", this.RD);
-				} else if(this.isBoss == true){
-					ref1 = FireStore.db.collection('SHEET')
-						.where("ACTIVE", "==", "Y");
-					ref2 = FireStore.db.collection('SHEET')
-						.where("MODIFY_DATE", ">", date);
-				} else {
-					let role = this.isPM ? "PM" : "RD";
-					ref1 = FireStore.db.collection('SHEET')
-						.where("ACTIVE", "==", "Y")
-						.where(role, "==", FireStore.user.USR_NAME);
-					ref2 = FireStore.db.collection('SHEET')
-						.where("MODIFY_DATE", ">", date)
-						.where(role, "==", FireStore.user.USR_NAME);
-				}
-				// ref1.orderBy("PRJ_NAME", "desc")
-				let snapshot = await ref1.get();
-				snapshot.forEach(doc => {
-					rows.push(Object.assign({PK: parseInt(doc.id, 10)}, doc.data()));
-				});
+				if(vm.isSQL == false) {
+					let ref1, ref2, date = (new Date()).getTime();
+					if(FireStore.user.DEP == "RD" && e == "STATUS") { // 有問題
+						ref1 = FireStore.db.collection('SHEET')
+							.where("ACTIVE", "==", "Y")
+							.where("RD", "==", FireStore.user.USR_NAME);
+						ref2 = FireStore.db.collection('SHEET')
+							.where("MODIFY_DATE", ">", date)
+							.where("RD", "==", FireStore.user.USR_NAME);
+					} else if(this.isBoss == true){
+						ref1 = FireStore.db.collection('SHEET')
+							.where("ACTIVE", "==", "Y");
+						ref2 = FireStore.db.collection('SHEET')
+							.where("MODIFY_DATE", ">", date);
+					} else {
+						let role = this.isPM ? "PM" : "RD";
+						ref1 = FireStore.db.collection('SHEET')
+							.where("ACTIVE", "==", "Y")
+							.where(role, "==", FireStore.user.USR_NAME);
+						ref2 = FireStore.db.collection('SHEET')
+							.where("MODIFY_DATE", ">", date)
+							.where(role, "==", FireStore.user.USR_NAME);
+					}
+					// ref1.orderBy("PRJ_NAME", "desc")
+					let snapshot = await ref1.get();
+					snapshot.forEach(doc => {
+						rows.push(Object.assign({PK: parseInt(doc.id, 10)}, doc.data()));
+					});
 
-				if(this.onSnapshot) this.onSnapshot();
-				this.onSnapshot = ref2.onSnapshot(snapshot => { // 監聽........
-					// var source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
-					if(snapshot.metadata.hasPendingWrites) return; // local
+					if(this.onSnapshot) this.onSnapshot();
+					this.onSnapshot = ref2.onSnapshot(snapshot => { // 監聽........
+						// var source = snapshot.metadata.hasPendingWrites ? "Local" : "Server";
+						if(snapshot.metadata.hasPendingWrites) return; // local
 
-					snapshot.docChanges().forEach(change => {
-						// if(change.type == "modified") {
-						// } else if (change.type === 'removed') {
-						// }
+						snapshot.docChanges().forEach(change => {
+							// if(change.type == "modified") {
+							// } else if (change.type === 'removed') {
+							// }
 
-						snapshot.forEach(doc => {
-							let key = doc.data()[e];
-							let PK = parseInt(doc.id, 10);
-							
-							if (change.type === 'removed') { // 有問題，delete 的 modify_date 沒有用....
-								let rows = this.datas[key];
-								for(let i = 0; i < rows.length; i++) {
-									if(rows[i].PK == PK) {
-										rows.splice(i, 1);
-									}
-								}
-							} else {
-								let msg = "";
-								let b = false;
-								for(let key2 in this.datas) {
-									let rows = this.datas[key2];
+							snapshot.forEach(doc => {
+								let key = doc.data()[e];
+								let PK = parseInt(doc.id, 10);
+								
+								if (change.type === 'removed') { // 有問題，delete 的 modify_date 沒有用....
+									let rows = this.datas[key];
 									for(let i = 0; i < rows.length; i++) {
 										if(rows[i].PK == PK) {
-											if(key == key2) {
-												this.$set(this.datas[key], i, Object.assign({PK}, doc.data()));
-											} else {
-												this.datas[key2].splice(i, 1)
-												if(typeof this.datas[key] == "undefined") {
-													this.$set(this.datas, key, [Object.assign({PK}, doc.data())])
-												} else {
-													this.datas[key].push(Object.assign({PK}, doc.data()))
-												}
-											}
-											b = true;
+											rows.splice(i, 1);
 										}
 									}
-								}
-								if(b == false) {
-									if(typeof this.datas[key] == "undefined") {
-										this.$set(this.datas, key, [Object.assign({PK}, doc.data())])
-									} else {
-										this.datas[key].push(Object.assign({PK}, doc.data()))
+								} else {
+									let msg = "";
+									let b = false;
+									for(let key2 in this.datas) {
+										let rows = this.datas[key2];
+										for(let i = 0; i < rows.length; i++) {
+											if(rows[i].PK == PK) {
+												if(key == key2) {
+													this.$set(this.datas[key], i, Object.assign({PK}, doc.data()));
+												} else {
+													this.datas[key2].splice(i, 1)
+													if(typeof this.datas[key] == "undefined") {
+														this.$set(this.datas, key, [Object.assign({PK}, doc.data())])
+													} else {
+														this.datas[key].push(Object.assign({PK}, doc.data()))
+													}
+												}
+												b = true;
+											}
+										}
 									}
-								}
+									if(b == false) {
+										if(typeof this.datas[key] == "undefined") {
+											this.$set(this.datas, key, [Object.assign({PK}, doc.data())])
+										} else {
+											this.datas[key].push(Object.assign({PK}, doc.data()))
+										}
+									}
 
-								this.$Message.destroy();
-								this.$Message.info({
-									content: (b == false ? "新增" : "異動") + "：" + doc.data().PRJ_NAME + "<br/>" + doc.data().TITLE,
-									duration: 3,
-									closable: true
-								});
-							}
+									this.$Message.destroy();
+									this.$Message.info({
+										content: (b == false ? "新增" : "異動") + "：" + doc.data().PRJ_NAME + "<br/>" + doc.data().TITLE,
+										duration: 3,
+										closable: true
+									});
+								}
+							})
 						})
 					})
-				})
+				} else {
+					let where = "";
+					if(Sqlite.user.DEP == "RD" && e == "STATUS") {
+						where = "and RD = '" + Sqlite.user.USR_NAME + "' ";
+					} else if(this.isBoss == false){
+						where = " and " + (this.isPM ? "PM" : "RD") + " = '" + Sqlite.user.USR_NAME + "' ";
+					}
+					let sql = "Select * from SHEET where ACTIVE = 'Y' " + where;
+					rows = await window.sqlite.execute(sql);
+				}
+
 
 				rows.sort(function (a, b) {
 					if(e == "STATUS")
@@ -237,7 +252,6 @@ new Vue({
 						this.$set(this.datas, key, obj[key])
 					}					
 				}
-
 				this.msg = rows.length == 0 ? "暫無資料" : "";
 				vm.loading(false);
 			} catch(e) {
@@ -312,8 +326,14 @@ new Vue({
 
 			let y = target.id.split("_")[2];
 			this.datas[target.getAttribute("data-title")].splice(y, 0, obj[0]);
-			if(update == true)
-				FireStore.update("SHEET", obj[0]);
+			if(update == true) {
+				if(vm.isSQL == false)
+					FireStore.update("SHEET", obj[0]);
+				else {
+					let sql = sqlite.convertToUpdate("SHEET", obj[0]);
+					window.sqlite.execute(sql);					
+				}
+			}
 		},
 		changeRD(){
 			this.onChangeType(this.type)

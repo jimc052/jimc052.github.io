@@ -1,12 +1,14 @@
 class Sqlite{
 	constructor(){
 		let self = this;
-		this.version = "20191020";
+		this.version = "20191104";
 		this.db = window.openDatabase("project", '1.0', '', 10*1000*1000);
 
 		// this.db.transaction(function(tx){
 		// });
 	}
+
+	static user = null;
 
 	initial(){
 		let version = window.localStorage["dbVersion"];
@@ -41,6 +43,9 @@ class Sqlite{
 				"MEMO text, ACTIVE nvarchar(1) default 'Y', " +
 				"MODIFY_DATE int NOT NULL, " +
 				"PRIMARY KEY (PK) )");
+		}
+		if(version < "20191104"){
+			arr.push("alter table USER add COLUMN PWD nvarchar(8)");
 		}
 
 		return new Promise( (success, error) => {

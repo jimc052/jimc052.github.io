@@ -7,7 +7,7 @@ new Vue({
 			</tr>
 			<tr>
 				<td class="label">帳號：</td>
-				<td><i-input v-model="email" size="large" style="flex: 1;" :readonly="!first" /></td>
+				<td><i-input v-model="email" size="large" style="flex: 1;" /></td>
 			</tr>
 			<tr>
 				<td class="label">密碼：</td>
@@ -32,7 +32,7 @@ new Vue({
 	data() {
 		return {
 			modal: true,
-			first: true,
+			first: vm.isSQL == false ? true : false,
 			aes: "",
 			email: "",
 			password: "",
@@ -43,11 +43,18 @@ new Vue({
 	created(){
 	},
 	async mounted () {
-		
-		let aes = window.localStorage["aes"];
-		if(typeof aes == "string" && aes.length > 0) {
-			this.first = false;
-			this.aes = aes;
+		if(vm.isSQL == false) {
+			let aes = window.localStorage["aes"];
+			if(typeof aes == "string" && aes.length > 0) {
+				this.first = false;
+				this.aes = aes;
+				this.email = window.localStorage["email"];
+				this.keepPassword = window.localStorage["keepPassword"] == "Y" ? true : false;
+				if(this.keepPassword == true) {
+					this.password = window.localStorage["password"]
+				}
+			}			
+		} else {
 			this.email = window.localStorage["email"];
 			this.keepPassword = window.localStorage["keepPassword"] == "Y" ? true : false;
 			if(this.keepPassword == true) {
@@ -59,7 +66,7 @@ new Vue({
   },
 	methods: {
 		async onOK(){
-			if(this.aes.length == 0){
+			if(vm.isSQL == false && this.aes.length == 0){
 				vm.showMessage("請輸入金鑰");
 				return;
 			} else if(this.email.length == 0){
@@ -70,33 +77,46 @@ new Vue({
 				return;
 			}
 					
-			vm.loading();
-			FireStore.initial(this.aes);
-			
-			// await FireStore.uploadFile();
-			try {
-				await FireStore.signIn(this.email, this.password)
-				if(this.first == true) {
-					window.localStorage["aes"] = this.aes;
-					window.localStorage["email"] = this.email;
-				}
-				window.localStorage["keepPassword"] = this.keepPassword ? "Y" : "N"
-				if(this.keepPassword) {
-					window.localStorage["password"] = this.password;
-				}	else 
-					delete window.localStorage["password"];
+			if(vm.isSQL == false) {
+				vm.loading();
+				FireStore.initial(this.aes);
+				try {
+					await FireStore.signIn(this.email, this.password)
+					if(this.first == true) {
+						window.localStorage["aes"] = this.aes;
+						window.localStorage["email"] = this.email;
+					}
+					window.localStorage["keepPassword"] = this.keepPassword ? "Y" : "N"
+					if(this.keepPassword) {
+						window.localStorage["password"] = this.password;
+					}	else 
+						delete window.localStorage["password"];
+						vm.loading(false);
+						vm.onSelect("home");
+						
+						this.$destroy();
+						this.$el.parentNode.removeChild(this.$el);
+				} catch(e) {
 					vm.loading(false);
-					if(isDebug() == true){
-						vm.onSelect("home");
-					} else 
-						vm.onSelect("home");
-					
+					vm.showMessage(e.message);
+					return;
+				}
+			} else {
+				let result = await await window.sqlite.execute("Select * from USER where MAIL = '" + this.email + "' and PWD = '" + this.password + "'");
+				if(result.length == 0) {
+					vm.showMessage("帳號或密碼輸入錯誤");
+				} else {
+					window.localStorage["email"] = this.email;
+					window.localStorage["keepPassword"] = this.keepPassword ? "Y" : "N"
+					if(this.keepPassword) {
+						window.localStorage["password"] = this.password;
+					}	else 
+						delete window.localStorage["password"];
+			
+					vm.onSelect("home");
 					this.$destroy();
 					this.$el.parentNode.removeChild(this.$el);
-			} catch(e) {
-				vm.loading(false);
-				vm.showMessage(e.message);
-				return;
+				}
 			}
 		},
 		onClickIcon(){

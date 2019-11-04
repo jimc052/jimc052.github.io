@@ -58,7 +58,8 @@ Vue.component('data-table', {
 		}
 		this.columns.forEach(item=>{
 			item.ellipsis = false;
-			this.cols.push(item);
+			if(typeof item.width == "undefined" || item.width > 0)
+				this.cols.push(item);
 		});
 	},
 	mounted(){

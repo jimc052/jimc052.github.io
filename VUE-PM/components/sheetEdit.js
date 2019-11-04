@@ -116,9 +116,7 @@ Vue.component('SheetEdit', {
 			}			
 		} else {
 			try {
-
-
-				sql = "Select CD_NAME from CODE where CD_KIND = '進度' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
+				let sql = "Select CD_NAME from CODE where CD_KIND = '進度' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
 				this.status = await window.sqlite.execute(sql);
 			} catch(e) {
 			}			
@@ -259,8 +257,18 @@ Vue.component('SheetEdit', {
 						}
 					});
 				} else {
-					let sql = "Select PRJ_NAME from PROJECT where ACTIVE = 'Y' order by PRJ_NAME";
-					this.project = await window.sqlite.execute(sql);
+					let sql = "Select PRJ_NAME, MEMBER from PROJECT where ACTIVE = 'Y' order by PRJ_NAME";
+					let arr = await window.sqlite.execute(sql);
+					arr.forEach(item => {
+						if(Sqlite.user.JOB == "主管") {
+							this.project.push({"PRJ_NAME": item.PRJ_NAME, MEMBER: item.MEMBER});
+						} else {
+							let MEMBER = "," + item.MEMBER + ",";
+							if(MEMBER.indexOf("," + Sqlite.user.USR_NAME + ",") > -1) {
+								this.project.push({"PRJ_NAME": item.PRJ_NAME, MEMBER: item.MEMBER});
+							}
+						}						
+					})
 				}
 				vm.loading(false);
 			}

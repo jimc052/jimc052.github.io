@@ -48,6 +48,7 @@ new Vue({
 				{ title: '部門', key: 'DEP', width: 100, sortable: true},
 				{ title: '職務', key: 'JOB', width: 100},
 				{ title: '信箱', key: 'MAIL', width: 180, require: true},
+				{ title: '密碼', key: 'PWD', width: 0, require: true},
 				{ title: '說明', key: 'MEMO'},
 				{ title: '啟用', key: 'ACTIVE', align: 'center', width: 60},
 			],
@@ -69,6 +70,13 @@ new Vue({
 			vm.loading();
 			this.datas = [];
 			if(vm.isSQL == false) {
+				for(let i = 0; i < this.columns.length; i++) {
+					if(this.columns[i].key == "PWD") {
+						this.columns.splice(i, 1)
+						break;
+					}
+				}
+				
 				FireStore.db.collection('CODE')
 				.where("ACTIVE", "==", "Y").get()
 				.then(snapshot => {
