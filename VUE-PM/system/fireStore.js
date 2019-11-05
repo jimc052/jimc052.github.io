@@ -18,7 +18,6 @@ class FireStore{
 			projectId: pid,
 			storageBucket: pid + ".appspot.com",
 			messagingSenderId: "590920170766",
-			// appId: "1:590920170766:web:4c11dec6ebd4dfe6d7eb5f"
 		});
 		this.db = firebase.firestore();
 	}
