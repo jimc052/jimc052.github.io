@@ -19,12 +19,8 @@
 	<script src="components/panel.js"></script>
 	<script src="components/sheetEdit.js"></script>
 
-	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
-
-	<script src="system/fireStore.js"></script>
+	
+	<script src=></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -153,10 +149,14 @@
 			async mounted(){
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
-
-				
 				if(this.isSQL == false) {
-					loadScript(["system/AES.js", "system/crypt.js", "login.js"])
+					loadScript([
+						"https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js",
+						"https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js",
+						"https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js",
+						"https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js",
+						"system/fireStore.js", "system/AES.js", "system/crypt.js", "login.js"
+					])
 				} else {
 					await window.sqlite.initial();
 					let result = await await window.sqlite.execute("Select * from CODE ");
@@ -171,7 +171,7 @@
 							loadScript(["system/AES.js", "system/crypt.js", "login.js"])
 						}
 					}
-				}
+				}			
 			},
 			methods: {
 				showDrawer() {
@@ -255,6 +255,26 @@
 				}
 			}
 		})
+	}
+
+	window.ondragover  = async function(e){ // 可以用
+		e.preventDefault();
+	}
+	window.ondrop  = async function(e){  // 可以用,
+		e.preventDefault(); return;
+		if (e.dataTransfer.items) {
+        // Use DataTransferItemList interface to access the file(s)
+        for (var i = 0; i < e.dataTransfer.items.length; i++) {
+          console.log(e.dataTransfer.items[i])
+          // If dropped items aren't files, reject them
+          if (e.dataTransfer.items[i].kind === 'file') {
+            var file = e.dataTransfer.items[i].getAsFile();
+						console.log('... file[' + i + '].name = ' + file.name);
+						console.log(file)
+            FireStore.uploadFile(file)
+          }
+        }
+      }
 	}
 </script>
 </html>

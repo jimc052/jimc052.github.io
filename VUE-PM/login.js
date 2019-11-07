@@ -80,6 +80,8 @@ new Vue({
 			if(vm.isSQL == false) {
 				vm.loading();
 				FireStore.initial(this.aes);
+
+				
 				try {
 					await FireStore.signIn(this.email, this.password)
 					if(this.first == true) {
@@ -94,6 +96,8 @@ new Vue({
 						vm.loading(false);
 						vm.onSelect("home");
 						
+						await FireStore.downloadFileURL();
+
 						this.$destroy();
 						this.$el.parentNode.removeChild(this.$el);
 				} catch(e) {

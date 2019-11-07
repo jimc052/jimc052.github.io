@@ -78,7 +78,7 @@ class FireStore{
 		}
 	}
 
-	static async uploadFile(){ // 己測過文字
+	static async uploadText(){ // 己測過文字
 		// https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn
 		let ref = firebase.storage().ref().child('images/jim.txt');
 
@@ -88,11 +88,34 @@ class FireStore{
 			console.log(snapshot)
 		});
 		
+		
+	}
+	static async uploadFile(file){ // ok 了
+		// https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn
+		let ref = firebase.storage().ref().child('mp3/'+file.name);
+		let task = ref.put(file); 
+		task.on('state_changed', function(snapshot){
+			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			console.log('Upload is ' + progress + '% done');
+			switch (snapshot.state) {
+				case firebase.storage.TaskState.PAUSED: // or 'paused'
+					console.log('Upload is paused');
+					break;
+				case firebase.storage.TaskState.RUNNING: // or 'running'
+					console.log('Upload is running');
+					break;
+			}
+		}, function(error) {
+			// Handle unsuccessful uploads
+		}, function() {
+			// Handle successful uploads on complete
+		});
+		
 	}
 
-	static async downloadFileURL(){ // 測試用 URL
+	static async downloadFileURL(){ // ok 可以用
 		// https://firebase.google.com/docs/storage/web/download-files?hl=zh-cn
-		let ref = firebase.storage().ref().child('images/angel.jpg');
+		let ref = firebase.storage().ref().child('mp3/index.html');
 		// let starsRef = storageRef.child('images/stars.jpg');
 		// Get the download URL
 		ref.getDownloadURL().then(function(url) {
