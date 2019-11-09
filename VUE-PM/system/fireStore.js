@@ -78,14 +78,30 @@ class FireStore{
 		}
 	}
 
-	static async uploadText(){ // 己測過文字
+	static async uploadString(fileName, data){ // ok
 		// https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn
-		let ref = firebase.storage().ref().child('images/jim.txt');
-
-		let message = 'This is my message.';
-		let task = ref.putString(message).then(function(snapshot) {
-			console.log('Uploaded a raw string!');
-			console.log(snapshot)
+		let ref = firebase.storage().ref().child(fileName);
+		let task = ref.putString(data, 'data_url');
+		task.on('state_changed', function(snapshot){
+			var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+			console.log('Upload is ' + progress + '% done');
+			switch (snapshot.state) {
+				case firebase.storage.TaskState.PAUSED: // or 'paused'
+					console.log('Upload is paused');
+					break;
+				case firebase.storage.TaskState.RUNNING: // or 'running'
+					console.log('Upload is running');
+					break;
+			}
+		}, function(error) {
+			// Handle unsuccessful uploads
+		}, function() {
+			// Handle successful uploads on complete
+			task.snapshot.ref
+			.getDownloadURL()
+			.then(function (downloadURL) {
+					console.log("downloadURL: " + downloadURL);
+			});
 		});
 		
 		

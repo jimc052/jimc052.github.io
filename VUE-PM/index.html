@@ -17,9 +17,7 @@
 	<script src="components/dataTable.js"></script>
 	<script src="components/options.js"></script>
 	<script src="components/panel.js"></script>
-	<script src="components/sheetEdit.js"></script>
-
-	
+	<script src="components/sheetEdit.js"></script>	
 	<script src=></script>
 	<style>
 		* {
@@ -134,7 +132,7 @@
 			data() {
 				return {
 					drawer: false, 
-					isSQL: true,
+					isSQL: false,
 					menu: [
 						{title: "需求單", icon: "md-person", js: "sheet"},
 						{title: "專案資料", icon: "md-person", js: "project"},
@@ -255,26 +253,6 @@
 				}
 			}
 		})
-	}
-
-	window.ondragover  = async function(e){ // 可以用
-		e.preventDefault();
-	}
-	window.ondrop  = async function(e){  // 可以用,
-		e.preventDefault(); return;
-		if (e.dataTransfer.items) {
-        // Use DataTransferItemList interface to access the file(s)
-        for (var i = 0; i < e.dataTransfer.items.length; i++) {
-          console.log(e.dataTransfer.items[i])
-          // If dropped items aren't files, reject them
-          if (e.dataTransfer.items[i].kind === 'file') {
-            var file = e.dataTransfer.items[i].getAsFile();
-						console.log('... file[' + i + '].name = ' + file.name);
-						console.log(file)
-            FireStore.uploadFile(file)
-          }
-        }
-      }
 	}
 </script>
 </html>

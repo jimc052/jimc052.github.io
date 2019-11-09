@@ -113,7 +113,9 @@ Vue.component('SheetEdit', {
 				console.log(e)
 			} finally {
 				vm.loading(false);
-			}			
+			}
+			window.addEventListener('dragover', this.onDragOver,false);
+			window.addEventListener('drop', this.onDrop,false);
 		} else {
 			try {
 				let sql = "Select CD_NAME from CODE where CD_KIND = '進度' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
@@ -123,8 +125,31 @@ Vue.component('SheetEdit', {
 		}
 	},
 	destroyed() {
+		if(vm.isSQL == false) {
+			window.removeEventListener('dragover', this.onDragOver,false);
+			window.removeEventListener('drop', this.onDrop,false);
+		}
   },
 	methods: {
+		onDragOver(e){
+			e.preventDefault();
+		},
+		onDrop(e){
+			e.preventDefault();
+		  if (e.dataTransfer.items && vm.isSQL == false) {
+        for (var i = 0; i < e.dataTransfer.items.length; i++) {
+          if (e.dataTransfer.items[i].kind === 'file') {
+						var file = e.dataTransfer.items[i].getAsFile();
+						console.log('... file[' + i + '].name = ' + file.name);
+						let reader = new FileReader();
+						reader.onload = function (event) {
+							FireStore.uploadString(file.name, event.target.result)
+						};
+						reader.readAsDataURL(file);  
+          }
+        }
+      }
+		},
 		onHide(){
 			this.$emit("onClose");
 		},
