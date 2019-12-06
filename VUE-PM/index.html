@@ -100,6 +100,10 @@
 		.spin-icon-load {
 				animation: ani-demo-spin 1s linear infinite;
 		}
+		.drag {
+			zoom: 1.05;
+			background-color: #eeeeee;
+		}
 	</style>
 </head>
 <body>
@@ -168,6 +172,7 @@
 							// this.onSelect("home");
 							loadScript(["system/AES.js", "system/crypt.js", "login.js"])
 						}
+						this.onSelect(2);
 					}
 				}			
 			},

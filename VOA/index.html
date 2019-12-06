@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VOA</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<link rel="stylesheet" href="https://unpkg.com/iview/dist/styles/iview.css">
+	<script src="https://unpkg.com/vue/dist/vue.js"></script>
+	<script src="https://unpkg.com/iview/dist/iview.min.js"></script>
+	<script src="https://unpkg.com/iview/dist/locale/zh-TW.js"></script>
+	<script src="https://unpkg.com/marked@0.3.6"></script>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
+
+	<script src="system/system.js"></script>
+	<script src="system/loadScript.js"></script>
+	<script src="system/fireStore.js"></script>
+	<script src="components/headerBar.js"></script>
+	<script src="components/listItem.js"></script>
+	<script src="list/newItem.js"></script>
+	<link rel="stylesheet" href="css/reader.css">
+	<script src="list/reader.js"></script>
+	<script src="list/player.js"></script>
+	<script src="list.js"></script>
+	<script src="login.js"></script>
+	<script src="./dist/vue-easycm.js"></script>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			visibility: hidden;
+		}
+		html, body, #app, #list {
+			min-height: 100% !important;
+			height: 100%;
+		}
+		.ivu-drawer-body {
+			padding: 0px;
+			background-color: #515a6e;
+			display: flex; 
+			flex-direction: column;
+		}
+		.ivu-menu {
+			width: auto;
+		}
+		.drag {
+			background-color: #ebecf0;
+			zoom: 1.1;
+		}
+		.text-overflow {
+			text-overflow: ellipsis; 
+			white-space : nowrap; 
+			overflow: hidden;
+		}
+		.list-item {
+			border: 1px solid #eeeeee; 
+			padding: 5px; 
+			cursor: pointer;
+		}
+		.list-active {
+			background-color: #e0ecff;
+			color: #0e2d5f;
+			border: 1px solid #95b8e7;
+		}
+		ul.cm-ul {
+			background-color: #ebecf0 !important;
+		}
+		.chinese {
+			display: none;
+		}
+		.ivu-disable {
+			/* color: #F5F5F5; */
+		}
+	</style>
+</head>
+<body>
+  <div id="app">
+		<Drawer :closable="false" v-model="drawer" placement="left">
+			<div style="height: 80px; font-size: 30px; color: white; display: flex; justify-content: center; align-items: center; border-bottom: 1px rgba(255,255,255,.7) solid; padding-right: 40px;">
+				VOA
+			</div>
+			<i-menu theme="dark" :active-name="activeName" @on-select="onSelect">
+				<Menu-item :name="index" v-for="(item, index) in menu" :key="index">
+					<Icon :type="item.icon"></Icon>{{item}}
+				</Menu-item>
+			</i-menu>
+			<div style="flex: 1;"></div>
+			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
+				Jim Chen 2019-11-04 13:00
+			</div>
+		</Drawer>
+		<list :title="title"></list>
+		<login :visible='modal'></login>
+  </div>
+</body>
+<script>
+	// https://www.iviewui.com/components/menu
+	var vm = null;
+	window.onload = async function(){
+		FireStore.initial();
+
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					drawer: false, 
+					menu: [
+						"農業報導",
+						"科技報導",
+						// "科學新聞"
+					], 
+					activeName: 0,
+					title: "",
+					isDebug: location.href.indexOf("file:///") > -1 ? true : false,
+					modal: false
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				document.querySelector(".ivu-menu").style.width = "100%";
+				document.body.style.visibility = "visible";
+
+				if(this.isDebug == true) {
+					this.modal = true;
+				} else {
+					let active = window.localStorage["activeName"];
+					this.onSelect(typeof active == "undefined" ? 0 : parseInt(active, 10));
+				}
+			},
+			methods: {
+				showDrawer() {
+					this.drawer = true;
+				},
+				onSelect(index){
+					this.activeName = index;
+					window.localStorage["activeName"] = index;
+					this.title = this.menu[index];
+					this.drawer = false;
+				},
+				showMessage(){
+					// vm.loading(false);
+					let args = arguments;
+					this.$Modal.error({
+						title: "VOA",
+						closable: true,
+						render: h => {
+							let fontSize = 20;
+							let arr = [];
+							function createEl(index) {
+								fontSize = fontSize - 2;
+								arr.push( h('div', {
+									style: {
+										color: index == 0 ? 'red' : "#5e5a6e",
+										fontSize: fontSize + 'px',
+										textAlign: "left"
+									}
+								}, args[index] ));
+								if(index < args.length - 1) createEl(index + 1);
+							}
+							createEl(0)
+
+							return h('span', {style: {maxWidth: "80%"}}, arr)
+						}
+					});
+				},
+				loading(arg) {
+					if(typeof arg == "boolean" && arg == false) {
+						this.spinID = setTimeout(()=>{
+							this.$Spin.hide();
+						}, 1000)
+					} else {
+						clearTimeout(this.spinID)
+						this.$Spin.hide();
+						this.$Spin.show({
+							render: (h) => {
+								return h('div', [
+									h('Icon', {
+										'class': 'spin-icon-load',
+										props: {
+											type: 'ios-loading',
+											size: 30
+										}
+									}),
+									h('div', typeof arg == "string" ? arg : 'Loading')
+								])
+							}
+						});						
+					}
+				}
+			}
+		})
+	}
+</script>
+</html>

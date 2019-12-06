@@ -8,6 +8,7 @@ new Vue({
 				<options ref="options" :datas="columns" />
 				<i-input v-model="search" size="large" :search="true" @on-search="onSearch" placeholder="請輸入關鍵字" style="width: 200px;">
 				</i-input>
+				<div>header</div>
 			</div>
 		</data-table>
 		<modal v-model="modal" class-name="vertical-center-modal" title="代碼資料" :width="dlgWidth">
@@ -68,7 +69,7 @@ new Vue({
 			vm.loading("載入 CODE 資料......");
 
 			this.datas = [];
-			if(this.isSQL == false) {
+			if(vm.isSQL == false) {
 				let ref = FireStore.db.collection('CODE');
 				let snapshot = await ref.get();
 				snapshot.forEach(doc => {
@@ -97,6 +98,7 @@ new Vue({
 				} catch(e) {
 				}				
 			}
+			console.log(this.datas)
 			vm.loading(false);
 		},
 		onEdit(type, item, index){

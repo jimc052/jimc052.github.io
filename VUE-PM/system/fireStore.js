@@ -90,7 +90,7 @@ class FireStore{
 					console.log('Upload is paused');
 					break;
 				case firebase.storage.TaskState.RUNNING: // or 'running'
-					console.log('Upload is running');
+					// console.log('Upload is running');
 					break;
 			}
 		}, function(error) {
@@ -102,9 +102,7 @@ class FireStore{
 			.then(function (downloadURL) {
 					console.log("downloadURL: " + downloadURL);
 			});
-		});
-		
-		
+		});	
 	}
 	static async uploadFile(file){ // ok 了
 		// https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn

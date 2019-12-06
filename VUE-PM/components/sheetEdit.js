@@ -1,7 +1,7 @@
 Vue.component('SheetEdit', {
 	template: `
 	<modal v-model="modal" class-name="vertical-center-modal" title="需求單" :width="600" footer-hide @on-visible-change="onVisibleChange">
-		<table style="width: 100%;" class="layout">
+		<table style="width: 100%;" class="layout" ref='tblSheetEdit'>
 			<tr>
 				<td class="label">專案：</td>
 				<td>
@@ -94,6 +94,7 @@ Vue.component('SheetEdit', {
 	created(){
 	},
 	async mounted () {
+		this.count = 0;
 		this.dataSheet = Object.assign(this.dataSheet, this.data);
 		vm.loading();
 		if(vm.isSQL == false) {
@@ -114,8 +115,11 @@ Vue.component('SheetEdit', {
 			} finally {
 				vm.loading(false);
 			}
-			window.addEventListener('dragover', this.onDragOver,false);
-			window.addEventListener('drop', this.onDrop,false);
+			let el = document.querySelector(".ivu-modal-content");
+			el.addEventListener('dragenter', this.onDragEnter,false);
+			el.addEventListener('dragleave', this.onDragLeave,false);
+			el.addEventListener('dragover', this.onDragOver,false);
+			el.addEventListener('drop', this.onDrop,false);
 		} else {
 			try {
 				let sql = "Select CD_NAME from CODE where CD_KIND = '進度' and ACTIVE = 'Y' order by CD_KEY, CD_NAME";
@@ -126,15 +130,34 @@ Vue.component('SheetEdit', {
 	},
 	destroyed() {
 		if(vm.isSQL == false) {
-			window.removeEventListener('dragover', this.onDragOver,false);
-			window.removeEventListener('drop', this.onDrop,false);
+			let el = document.querySelector(".ivu-modal-content");
+			el.removeEventListener('dragenter', this.onDragEnter,false);
+			el.removeEventListener('dragleave', this.onDragLeave,false);
+			el.removeEventListener('dragover', this.onDragOver,false);
+			el.removeEventListener('drop', this.onDrop,false);
 		}
   },
 	methods: {
+		onDragEnter(e){
+			e.preventDefault();
+			let el = document.querySelector(".ivu-modal-content");
+			el.classList.add("drag")
+			this.count++;
+			// console.log(el)
+		},
+		onDragLeave(e){
+			e.preventDefault();
+			this.count--;
+			if(this.count == 0) {
+				let el = document.querySelector(".ivu-modal-content");
+				el.classList.remove("drag")
+			}
+		},
 		onDragOver(e){
 			e.preventDefault();
 		},
 		onDrop(e){
+			this.count = 0;
 			e.preventDefault();
 		  if (e.dataTransfer.items && vm.isSQL == false) {
         for (var i = 0; i < e.dataTransfer.items.length; i++) {
@@ -148,7 +171,9 @@ Vue.component('SheetEdit', {
 						reader.readAsDataURL(file);  
           }
         }
-      }
+			}
+			let el = document.querySelector(".ivu-modal-content");
+			el.classList.remove("drag")
 		},
 		onHide(){
 			this.$emit("onClose");

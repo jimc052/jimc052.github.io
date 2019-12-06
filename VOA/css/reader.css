@@ -1,0 +1,49 @@
+
+#reader .ivu-modal-header {
+	margin: 0px;
+	padding: 0px;
+}
+#reader .ivu-modal-footer{
+	padding: 3px 5px;
+}
+#reader .ivu-modal-body {
+	padding: 0px;
+}
+#context {
+	padding: 8px;
+	zoom: 1.2;
+}
+#context * {
+	font-weight: 500;
+}
+
+#context > .p + .p {
+	margin-top: 6px;
+}
+
+.button {
+	/* align-self: stretch; */
+	display: flex; 
+	flex-direction: row;
+	justify-content: center; 
+	align-items: center;
+	display: inline-block;
+	border: 1px solid #e5e5e5;
+	padding: 0px;
+	margin: 0px !important;
+	padding: 10px 15px 10px 15px;
+	cursor: pointer;
+	background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+	color: white;
+	overflow: hidden;
+	border-radius: 5px;
+}
+
+#context span.active {
+	background-color: #c01921;
+	color: white;
+}
+
+#context [ignore] {
+  color: #707575;
+}

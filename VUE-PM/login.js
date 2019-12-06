@@ -95,8 +95,6 @@ new Vue({
 						delete window.localStorage["password"];
 						vm.loading(false);
 						vm.onSelect("home");
-						
-						await FireStore.downloadFileURL();
 
 						this.$destroy();
 						this.$el.parentNode.removeChild(this.$el);
