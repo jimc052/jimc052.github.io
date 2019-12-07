@@ -30,7 +30,6 @@ class Player {
 			// console.log("timeupdate: " + self.audio.currentTime)
 		}, true);
 
-
 		this.beep = new Audio("./mp3/beep.mp3");
 		this.beep.autoplay = false;
 		this.beep.addEventListener("loadstart", function() { 
@@ -42,7 +41,7 @@ class Player {
 	play(inform){
 		// console.log("play: " + inform)
 		this.repeat = 0;
-		if(this.state == "close" || this.canPlay == false) return;
+		if(this.canPlay == false) return;
 		try {
 			this.audio.playbackRate = this._setting.rate;
 			this.audio.play();
@@ -70,7 +69,7 @@ class Player {
 					clearInterval(this.timeID);
 					this.timeID = null;
 					this.audio.pause();
-					// console.log(this.repeat + "/" + this._setting.repeat)
+					console.log(this.block + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat)
 					// console.log(this._setting.interval)
 					if(this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;

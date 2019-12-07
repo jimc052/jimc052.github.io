@@ -169,7 +169,7 @@ Vue.component('reader', {
 			if(this.state != "stop") {
 				this.finalCountID = setInterval(() => {
 					let now = (new Date()).getTime() - start;
-					this.passTime = Math.floor(now / (1000));
+					this.passTime = Math.ceil(now / (1000));
 
 					if((this.audio.setting.sleep * 60) - this.passTime <= 0) {
 						this.audio.stop(true);
@@ -275,11 +275,13 @@ Vue.component('reader', {
 				if(update == true) {
 					this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 					this.audio.audio.pause();
+					this.audio.currentTime = 0;
+					this.audio.currentRange = null;
 					this.audio.repeat = 0;
 					setTimeout(() => {
 						this.retrieve();
 						if(this.state == "play"){
-							this.audio.onStateChange("sectionChange", this.audio.block, this.audio.lrc);
+							// this.audio.onStateChange("sectionChange", this.audio.block, this.audio.lrc);
 							this.audio.audio.play();
 						}
 					}, 600);
@@ -395,12 +397,14 @@ Vue.component('reader', {
 				lrcs.push(arr3)
 			});
 			this.audio.LRCs = lrcs;
-			if(lrcs.length > 0 && lrcs[0].length > 0) {
-				// console.log("start: " + lrcs[0][0].start)
+			// this.audio.currentRange = null;
+			
+			if(this.audio.setting.autoPlay == true && lrcs.length > 0 && lrcs[0].length > 0) {
 				if(!isNaN(lrcs[0][0].start)) {
 					this.audio.currentTime = lrcs[0][0].start;
 					this.currentTime = this.audio.currentTime;
 					this.audio.block = 0; this.audio.lrc = 0;
+					this.audio.onStateChange("sectionChange", this.audio.block, this.audio.lrc);
 				}
 			}
 		}
@@ -422,27 +426,23 @@ Vue.component('reader', {
 			this.modal = value == null ? false : true;
 			this.title = value == null ? "" : value.title;
 			this.currentTime = 0; this.duration = 0;
+			this.passTime = 0;
 			clearInterval(this.finalCountID);
 			try {
+				if(this.audio == null) {
+					this.initial();
+				}
+				this.audio.canPlay = false;
 				if(value != null) {
-					if(this.audio == null) {
-						this.initial();
-					}
-					this.html = value.html;
+					this.html = value.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 					this.audio.state = "stop";
-
-					this.audio.canPlay = false;
 					this.url = await FireStore.downloadFileURL("VOA/" + value.report + "/" + value.key + ".mp3");
 					this.audio.src = this.url;
 					document.getElementById("context").style.zoom = this.audio.setting.zoom;
 					window.addEventListener('keydown', this.onKeydown, false);
 				} else {
-					
 					this.audio.src = "";
 					this.audio.stop();
-					this.audio.state = "close";
-					// this.audio = null;
-					// delete this.audio;
 					window.removeEventListener('keydown', this.onKeydown, false);
 				}
 			} catch(e) {
