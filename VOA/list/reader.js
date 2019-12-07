@@ -275,15 +275,10 @@ Vue.component('reader', {
 				if(update == true) {
 					this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 					this.audio.audio.pause();
-					this.audio.currentTime = 0;
-					this.audio.currentRange = null;
+					clearInterval(this.audio.timeID);
 					this.audio.repeat = 0;
 					setTimeout(() => {
-						this.retrieve();
-						if(this.state == "play"){
-							// this.audio.onStateChange("sectionChange", this.audio.block, this.audio.lrc);
-							this.audio.audio.play();
-						}
+						this.retrieve(true);
 					}, 600);
 				}
 			} else if(this.cmList[e[0]].text == "重複中斷") {
@@ -339,7 +334,7 @@ Vue.component('reader', {
 				return s.leftPadding(2, '0') + ":" + m.leftPadding(2, '0').substr(0,2);
 			}
 		},
-		retrieve(){
+		retrieve(again){
 			let lrcs = [];
 			let arr1 = document.querySelectorAll(".chinese");
 			if(arr1.length > 0) {
@@ -397,14 +392,17 @@ Vue.component('reader', {
 				lrcs.push(arr3)
 			});
 			this.audio.LRCs = lrcs;
-			// this.audio.currentRange = null;
-			
-			if(this.audio.setting.autoPlay == true && lrcs.length > 0 && lrcs[0].length > 0) {
+			if((this.audio.setting.autoPlay == true || typeof again == "boolean") && lrcs.length > 0 && lrcs[0].length > 0) {
 				if(!isNaN(lrcs[0][0].start)) {
-					this.audio.currentTime = lrcs[0][0].start;
+					this.audio.currentRange = this.audio.LRCs[0][0];
+					this.audio.currentTime = this.audio.LRCs[0][0].start;
 					this.currentTime = this.audio.currentTime;
 					this.audio.block = 0; this.audio.lrc = 0;
 					this.audio.onStateChange("sectionChange", this.audio.block, this.audio.lrc);
+					if(typeof again == "boolean" && this.state == "play") {
+						this.audio.audio.play();
+						this.audio.timing();
+					}
 				}
 			}
 		}

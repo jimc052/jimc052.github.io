@@ -11,6 +11,7 @@ class Player {
 			self.onStateChange("loadStart");
 		}, true);
 		self.audio.addEventListener("canplay", function() {
+			// console.log("canplay: " + self.canPlay)
 			if(self.canPlay == false) {
 				self.onStateChange("canPlay");
 				self.canPlay = true;
@@ -69,7 +70,7 @@ class Player {
 					clearInterval(this.timeID);
 					this.timeID = null;
 					this.audio.pause();
-					console.log(this.block + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat)
+					// console.log(this.block + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat)
 					// console.log(this._setting.interval)
 					if(this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;
@@ -104,7 +105,6 @@ class Player {
 								this.currentRange = this.LRCs[this.block][this.lrc];
 								this.audio.currentTime = this.currentRange.start;
 							}
-
 							this.audio.play();
 							this.timing();
 							delete this.intervalID;
@@ -211,11 +211,11 @@ class Player {
 			if(value + this.block < 0)
 				return;
 			else if(value + this.block >= this.LRCs.length)
-				return;
-			else if(!isNaN(value)) {
+				this.block = 0;
+			else {
 				this.block = value + this.block;
-				this.lrc = 0;
 			}
+			this.lrc = 0;
 		}
 		this.currentRange = this.LRCs[this.block][this.lrc]
 		this.audio.currentTime = this.LRCs[this.block][this.lrc].start;
@@ -241,21 +241,20 @@ class Player {
 		}  else {
 			lrc = value + this.lrc;
 			if(lrc < 0) {
-			block--;
-			if(block > -1) {
-				rows = this.LRCs[block];
-				lrc = rows.length - 1;
-			} else {
-				return;
-			}
+				block--;
+				if(block > -1) {
+					rows = this.LRCs[block];
+					lrc = rows.length - 1;
+				} else {
+					return;
+				}
 			} else if(lrc >= rows.length) {
 				block++;
 				if(block >= this.LRCs.length) {
-					return;
-				} else {
-					rows = this.LRCs[block];
-					lrc = 0;				
+					block = 0;
 				}
+				rows = this.LRCs[block];
+				lrc = 0;
 			}
 		}
 		this.block = block;

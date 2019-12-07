@@ -8,7 +8,7 @@ Vue.component('list', {
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
 		<new-item :json="json" @onClose="onCloseNewItem"></new-item>
-		<reader :source="data" @onClose="onClosePlayer"></reader>
+		<reader :source="source" @onClose="onCloseReader"></reader>
 	</div>`,
 	props: {
 		title: String,
@@ -16,7 +16,7 @@ Vue.component('list', {
 	data() {
 		return {
 			datas: [],
-			data: null,
+			source: null,
 			json: null,
 			isDebug: location.href.indexOf("file:///") > -1 ? true : false,
 			dataKey: ""
@@ -74,11 +74,11 @@ Vue.component('list', {
 				title: this.datas[index].title
 			};
 			history.pushState(state, "reader", "?reader=" + this.datas[index].title);
-			this.data = this.datas[index];
+			this.source = this.datas[index];
 			window.localStorage["VOA-" + this.title] = this.datas[index].key;
 		},
-		onClosePlayer(){
-			this.data = null;
+		onCloseReader(){
+			this.source = null;
 		}
 	},
 	watch: {
