@@ -8,7 +8,7 @@ Vue.component('list', {
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
 		<new-item :json="json" @onClose="onCloseNewItem"></new-item>
-		<reader :source="source" @onClose="onCloseReader"></reader>
+		<reader v-if="source != null" :source="source" @onClose="onCloseReader"></reader>
 	</div>`,
 	props: {
 		title: String,

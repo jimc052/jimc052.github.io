@@ -1,8 +1,8 @@
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
-	  @on-visible-change="onVisibleChange" :closable="false">
+	   :closable="false">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"></header-bar>
-		<div id="context" v-if="modal == true" v-html="html" @contextmenu="$easycm($event,$root,1)"
+		<div id="context" v-html="html" @contextmenu="$easycm($event,$root,1)"
 			style="height: 100%; overflow-y: auto;"
 		>
 		</div>
@@ -45,7 +45,7 @@ Vue.component('reader', {
 	},
 	data() {
 		return {
-			modal: false,
+			modal: true,
 			title: "",
 			audio: null,
 			state: "stop",
@@ -61,8 +61,23 @@ Vue.component('reader', {
 	created(){
 	},
 	async mounted () {
+		this.title = this.source.title;
+		this.initial();
+		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
+		this.audio.state = "stop";
+		this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
+		this.audio.src = this.url;
+		document.getElementById("context").style.zoom = this.audio.setting.zoom;
+		window.addEventListener('keydown', this.onKeydown, false);
 	},
 	destroyed() {
+		this.audio.src = "";
+		this.audio.canPlay = false;
+		this.audio.stop();
+		this.audio = null;
+		clearInterval(this.finalCountID);
+		this.$Notice.destroy();
+		window.removeEventListener('keydown', this.onKeydown, false);
 		window.removeEventListener("popstate", this.onPopState);
   },
 	methods: {
@@ -131,7 +146,9 @@ Vue.component('reader', {
 					} else if(e == "stop") {
 						this.finalCount();
 						this.currentTime = this.audio.currentTime;
-						document.querySelector("#context").scrollTop = 0;
+						let context = document.querySelector("#context");
+						if(context == null) return;
+						context.scrollTop = 0;
 						let el = document.querySelector(".english span.active");
 						if(el != null) {
 							el.classList.remove("active");
@@ -141,6 +158,7 @@ Vue.component('reader', {
 			}
 	
 			function scrollTo(el) {
+				if(el == null) return;
 				let offsetTop = el.offsetTop;
 				let offsetBottom = offsetTop + el.clientHeight;
 	
@@ -293,10 +311,6 @@ Vue.component('reader', {
 		onSlideChange(e){
 			this.audio.currentTime = e;
 		},
-		onVisibleChange(visible){
-			if(visible == false) this.$emit("onClose");
-			this.$Notice.destroy()
-		},
 		format(start) {
 			if(start == 0 || isNaN(start))
 					return "00:00";
@@ -311,15 +325,12 @@ Vue.component('reader', {
 				}
 		},
 		onPopState(e){
-			if(this.modal == false) {
-				return;
-			} else {
-				if(typeof e == "undefined") {
-					history.back();
-				}
-				this.audio.pause();
-				this.modal = false;				
+			this.$emit("onClose");
+			
+			if(typeof e == "undefined") {
+				history.back();
 			}
+			this.$destroy();
 		},
 		convertTime(start){
 			if(start == 0 || isNaN(start))
@@ -380,16 +391,19 @@ Vue.component('reader', {
 				let arr2 = item1.querySelectorAll("span");
 				let arr3 = [];
 				arr2.forEach((item2, index2)=>{
-					item2.id = "l" + index1 + "_" + index2;
-
 					let start = item2.getAttribute("start");
 					let end = item2.getAttribute("end");
 					if(isNaN(start) || start == null || isNaN(end) || end == null) {
-						vm.showMessage("下列位置沒有 lrc ", "block: " + index1 + ", lrc: " + index2 )
-					} else
+						if(item2.innerHTML.lastIndexOf("<strong") == -1)
+							vm.showMessage("下列位置沒有 lrc ", "block: " + index1 + ", lrc: " + index2 )
+					} else {
+						item2.id = "l" + lrcs.length + "_" + arr3.length;
 						arr3.push({start: parseFloat(start),  end: parseFloat(end)})
+					}
+						
 				});
-				lrcs.push(arr3)
+				if(arr3.length > 0)
+					lrcs.push(arr3)
 			});
 			this.audio.LRCs = lrcs;
 			if((this.audio.setting.autoPlay == true || typeof again == "boolean") && lrcs.length > 0 && lrcs[0].length > 0) {
@@ -421,31 +435,31 @@ Vue.component('reader', {
 	},
 	watch: {
 		async source(value) {
-			this.modal = value == null ? false : true;
-			this.title = value == null ? "" : value.title;
-			this.currentTime = 0; this.duration = 0;
-			this.passTime = 0;
-			clearInterval(this.finalCountID);
-			try {
-				if(this.audio == null) {
-					this.initial();
-				}
-				this.audio.canPlay = false;
-				if(value != null) {
-					this.html = value.html + "<div style='display: none;'>" + (new Date()) + "</div>";
-					this.audio.state = "stop";
-					this.url = await FireStore.downloadFileURL("VOA/" + value.report + "/" + value.key + ".mp3");
-					this.audio.src = this.url;
-					document.getElementById("context").style.zoom = this.audio.setting.zoom;
-					window.addEventListener('keydown', this.onKeydown, false);
-				} else {
-					this.audio.src = "";
-					this.audio.stop();
-					window.removeEventListener('keydown', this.onKeydown, false);
-				}
-			} catch(e) {
-				console.log(e)
-			}
+			// this.modal = value == null ? false : true;
+			// this.title = value == null ? "" : value.title;
+			// this.currentTime = 0; this.duration = 0;
+			// this.passTime = 0;
+			// clearInterval(this.finalCountID);
+			// try {
+			// 	if(this.audio == null) {
+			// 		this.initial();
+			// 	}
+			// 	this.audio.canPlay = false;
+			// 	if(value != null) {
+			// 		this.html = value.html + "<div style='display: none;'>" + (new Date()) + "</div>";
+			// 		this.audio.state = "stop";
+			// 		this.url = await FireStore.downloadFileURL("VOA/" + value.report + "/" + value.key + ".mp3");
+			// 		this.audio.src = this.url;
+			// 		document.getElementById("context").style.zoom = this.audio.setting.zoom;
+			// 		window.addEventListener('keydown', this.onKeydown, false);
+			// 	} else {
+			// 		this.audio.src = "";
+			// 		this.audio.stop();
+			// 		window.removeEventListener('keydown', this.onKeydown, false);
+			// 	}
+			// } catch(e) {
+			// 	console.log(e)
+			// }
 		}
 	}
 });

@@ -70,7 +70,7 @@ class Player {
 					clearInterval(this.timeID);
 					this.timeID = null;
 					this.audio.pause();
-					// console.log(this.block + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat)
+					// console.log(this.block + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat + ": " + (new Date()).toString("MM:ss.ms"))
 					// console.log(this._setting.interval)
 					if(this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;
@@ -107,10 +107,10 @@ class Player {
 							}
 							this.audio.play();
 							this.timing();
+							this.state = "play";
 							delete this.intervalID;
 						}
 					}, 1000 * this._setting.interval);
-				
 					this.state = "pendding";
 				} else if(time >= range.end && this.block == this.LRCs.length - 1 && this.lrc == this.LRCs[this.block].length - 1) {
 					clearInterval(this.timeID);
@@ -200,7 +200,6 @@ class Player {
 
 	gotoBlock(value){
 		this.repeat = 0;
-		if(this.intervalID) clearTimeout(this.intervalID);
 		if(value == "first") {
 			this.block = 0;
 			this.lrc = 0;
@@ -217,9 +216,11 @@ class Player {
 			}
 			this.lrc = 0;
 		}
+		if(this.intervalID) clearTimeout(this.intervalID);
 		this.currentRange = this.LRCs[this.block][this.lrc]
 		this.audio.currentTime = this.LRCs[this.block][this.lrc].start;
 		if(this.state == "pendding") {
+			clearTimeout(this.timeID);
 			this.state = "play";
 			this.audio.play();
 			this.timing();
@@ -230,7 +231,6 @@ class Player {
 	}
 	gotoLRC(value) {
 		this.repeat = 0;
-		if(this.intervalID) clearTimeout(this.intervalID);
 		let rows = this.LRCs[this.block];
 		let block = this.block;
 		let lrc = 0;
@@ -261,7 +261,9 @@ class Player {
 		this.lrc = lrc;
 		this.currentRange =  this.LRCs[block][lrc];
 		this.audio.currentTime = this.LRCs[block][lrc].start;
+		if(this.intervalID) clearTimeout(this.intervalID);
 		if(this.state == "pendding") {
+			clearTimeout(this.timeID);
 			this.state = "play";
 			this.audio.play();
 			this.timing();
