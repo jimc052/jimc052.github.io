@@ -15,6 +15,7 @@
 }
 #context * {
 	font-weight: 500;
+	user-select: text;
 }
 
 #context > .p + .p {
