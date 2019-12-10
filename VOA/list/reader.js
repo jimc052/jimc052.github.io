@@ -22,7 +22,8 @@ Vue.component('reader', {
 
 			<Slider v-model="currentTime" :tip-format="format" 
 				v-if="audio != null && audio.setting != null && audio.setting.repeat == 0"
-				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;" />
+				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
+				:marks="marks" />
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
 			<Dropdown v-if="state != 'stop'">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
@@ -55,7 +56,18 @@ Vue.component('reader', {
 			cmList: [],
 			limits: [15, 20, 30, 45, 60, 90],
 			html: "",
-			msg: ""
+			msg: "",
+			marks: {
+				// 0: '0°C',
+				// 12: '12°C',
+				// 32: '32°C',
+				// 55: {
+				// 		style: {
+				// 				color: '#ff0000'
+				// 		},
+				// 		label: this.$createElement('strong', '55°C')
+				// }
+			}
 		};
 	},
 	created(){
@@ -111,6 +123,7 @@ Vue.component('reader', {
 
 				} else if(e == "timeUpdate") {
 					this.currentTime = v1;
+					// console.log(this.currentTime)
 				} else if(e == "sectionChange") {
 					let arr = document.querySelectorAll(".english span.active");
 					arr.forEach(item=>{
@@ -346,7 +359,7 @@ Vue.component('reader', {
 			}
 		},
 		retrieve(again){
-			let lrcs = [];
+			let lrcs = []; this.marks = {};
 			let arr1 = document.querySelectorAll(".chinese");
 			if(arr1.length > 0) {
 				let i = arr1.length - 1;
@@ -402,8 +415,15 @@ Vue.component('reader', {
 					}
 						
 				});
-				if(arr3.length > 0)
-					lrcs.push(arr3)
+				if(arr3.length > 0) {
+					lrcs.push(arr3);
+
+					let start = arr3[0].start;
+					let rate = Math.floor(start);
+					console.log(lrcs.length + ": " + start + "/" + this.duration + ": " + rate )
+					if(lrcs.length > 1)
+						this.marks[rate] = lrcs.length + "";
+				}
 			});
 			this.audio.LRCs = lrcs;
 			if((this.audio.setting.autoPlay == true || typeof again == "boolean") && lrcs.length > 0 && lrcs[0].length > 0) {
