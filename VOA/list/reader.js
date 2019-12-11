@@ -109,7 +109,7 @@ Vue.component('reader', {
 			clearTimeout(this.resizeId);
 			this.resizeId = setTimeout(()=>{
 				this.renderBubble();
-				this.onScroll()
+				
 			}, 300);
 		},
 		initial(){
@@ -265,7 +265,7 @@ Vue.component('reader', {
 				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
 			});
 
-			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}, {text: "小", value: 0.8}];
+			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
 			children.forEach(item=>{
 				if(this.audio.setting.zoom == item.value)
 					item.icon = "ivu-icon-md-checkmark ivu-icon";
@@ -313,7 +313,8 @@ Vue.component('reader', {
 				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
 			} else if(this.cmList[e[0]].text == "字體") {
 				this.audio.setting.zoom = this.cmList[e[0]].children[e[1]].value;
-				document.getElementById("context").style.zoom = this.audio.setting.zoom;
+				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+				this.renderBubble();
 			} else if(this.cmList[e[0]].text.indexOf("速率") > -1) {
 				this.audio.setting = Object.assign(this.audio.setting, {rate: this.cmList[e[0]].children[e[1]].value});
 			} else  if(this.cmList[e[0]].text.indexOf("重複播放") > -1) {
@@ -480,6 +481,8 @@ Vue.component('reader', {
 					marginTop: (index > 0) ? 6 : 0
 				});
 			});
+
+			this.onScroll();
 		}
 	},
 	computed: {
