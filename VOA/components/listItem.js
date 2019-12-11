@@ -32,12 +32,7 @@ Vue.component('list-item', {
 	},
 	async mounted () {
 		let self = this;
-		window.onresize = () => {
-      return (() => {
-          // self.screenWidth = document.body.clientWidth;
-          self.onResize();
-      })()
-		}
+		this.broadcast.$on('onResize', this.onResize);
 	},
 	destroyed() {
   },
@@ -68,10 +63,6 @@ Vue.component('list-item', {
 			} else {
 				viewer.scrollTop = offsetTop - 65;
 			}
-
-			// if(offsetTop <= scrollTop || offsetTop >= scrollTop + clientHeight){
-			// 		viewer.scrollTop = offsetTop + el.clientHeight;
-			// }
 		}
 	},
 	watch: {

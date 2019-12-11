@@ -116,6 +116,8 @@
 	window.onload = async function(){
 		FireStore.initial();
 
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+
 		vm = new Vue({
 			el: '#app',
 			data() {
@@ -136,6 +138,7 @@
 				iview.lang('zh-TW');
 			},
 			async mounted(){
+				let self = this;
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
 
@@ -145,6 +148,13 @@
 					let active = window.localStorage["activeName"];
 					this.onSelect(typeof active == "undefined" ? 0 : parseInt(active, 10));
 				}
+
+				window.onresize = () => {
+				return (() => {
+						// self.screenWidth = document.body.clientWidth;
+						self.broadcast.$emit('onResize');
+				})()
+			}
 			},
 			methods: {
 				showDrawer() {

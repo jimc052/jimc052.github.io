@@ -9,10 +9,7 @@
 #reader .ivu-modal-body {
 	padding: 0px;
 }
-#context {
-	padding: 8px;
-	zoom: 1.2;
-}
+
 #context * {
 	font-weight: 500;
 	user-select: text;
@@ -20,6 +17,43 @@
 
 #context > .p + .p {
 	margin-top: 6px;
+}
+
+#context > .p {
+	/* border-bottom: 1px solid red; */
+}
+#readerScale > div {
+	/* border-bottom: 1px solid red; */
+}
+
+#readerScale * {
+	font-size: 12px;
+}
+
+.speech-bubble {
+	position: absolute;
+	top: 6px;
+	left: 0px;
+	width: 15px;
+  background: #00bfb6;
+  text-align: center;
+  color: #fff;
+	position: relative;
+	font-size: 8px !important;
+	cursor: pointer;
+}
+
+.speech-bubble:before {
+	content: "";
+  width: 0px;
+  height: 0px;
+  position: absolute;
+  border-left: 3px solid #00bfb6;
+  border-right: 3px solid transparent;
+  border-top: 3px solid #00bfb6;
+  border-bottom: 3px solid transparent;
+  right: -3px;
+  top: 4px;
 }
 
 .button {

@@ -187,14 +187,23 @@ class Player {
 		this.timing();
 	}
 
-	assignBlock(value) { // not yet
+	assignBlock(value) {
 		this.repeat = 0;
 		if(value < this.LRCs.length) {
+			if(this.intervalID) clearTimeout(this.intervalID);
 			this.block = value;
 			this.lrc = 0;
 			this.currentRange = this.LRCs[value][0];
 			this.audio.currentTime = this.currentRange.start;
-			this.onStateChange("sectionChange", value);
+			if(this.state == "pendding") {
+				clearTimeout(this.timeID);
+				this.state = "play";
+				this.audio.play();
+				this.timing();
+				delete this.intervalID;
+				this.onStateChange("play");
+			} 
+			this.onStateChange("sectionChange", value, 0);
 		}
 	}
 

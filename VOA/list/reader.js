@@ -2,13 +2,25 @@ Vue.component('reader', {
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
 	   :closable="false">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"></header-bar>
-		<div id="context" v-html="html" @contextmenu="$easycm($event,$root,1)"
-			style="height: 100%; overflow-y: auto;"
-		>
+		<div id="readerFrame" style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
+			<div v-if="repeat > 0" style="width: 20px; padding: 8px 0px; overflow-y: hidden; overflow-x: visible;" id="readerScale">
+				<div v-for="(item, index) in bubbles" :key="index"
+					:style="{height: item.height + 'px', marginTop: item.marginTop + 'px'}"
+				>
+					<div class='speech-bubble' @click="onClickBubble(index)">
+						{{index + 1}}
+					</div>
+				</div>
+			</div>
+			<div id="context" v-html="html" @contextmenu="$easycm($event,$root,1)"
+				:style="{flex: 1, height: '100%', overflowY: 'auto', 
+					padding: repeat == 0 ? '8px' : '8px 4px 8px 2px'}"
+				@scroll.natvie="onScroll"
+			>
+		</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
 		<div v-show="duration > 0" slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
-			<!-- v-if="audio != null && audio.setting != null && audio.setting.repeat == 0" -->
 			<div style="display: flex; flex-direction: row; align-items: center; ">
 				<Icon v-if="state == 'pause' || state == 'stop'" type="md-play" size="20" color="white" class="button" @click.native="audio.play()" />
 				<Icon v-else type="md-pause" size="20" color="white" class="button" @click.native="audio.pause()" />
@@ -19,12 +31,14 @@ Vue.component('reader', {
 				<div style="font-weight: 500;">{{convertTime(currentTime)}}</div>
 				<div style="font-weight: 500;">{{convertTime(duration)}}</div>
 			</div>
-
+			
 			<Slider v-model="currentTime" :tip-format="format" 
-				v-if="audio != null && audio.setting != null && audio.setting.repeat == 0"
+				v-if="repeat == 0"
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 				:marks="marks" />
+			
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
+			
 			<Dropdown v-if="state != 'stop'">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
 					{{convertTime((audio.setting.sleep * 60) - passTime)}}
@@ -57,17 +71,9 @@ Vue.component('reader', {
 			limits: [15, 20, 30, 45, 60, 90],
 			html: "",
 			msg: "",
-			marks: {
-				// 0: '0°C',
-				// 12: '12°C',
-				// 32: '32°C',
-				// 55: {
-				// 		style: {
-				// 				color: '#ff0000'
-				// 		},
-				// 		label: this.$createElement('strong', '55°C')
-				// }
-			}
+			marks: {},
+			repeat: 0,
+			bubbles: []
 		};
 	},
 	created(){
@@ -79,8 +85,9 @@ Vue.component('reader', {
 		this.audio.state = "stop";
 		this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
 		this.audio.src = this.url;
-		document.getElementById("context").style.zoom = this.audio.setting.zoom;
+		document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
 		window.addEventListener('keydown', this.onKeydown, false);
+		window.addEventListener('resize', this.onResize, false);
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -91,8 +98,20 @@ Vue.component('reader', {
 		this.$Notice.destroy();
 		window.removeEventListener('keydown', this.onKeydown, false);
 		window.removeEventListener("popstate", this.onPopState);
+		this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
+		onClickBubble(index){
+			console.log("onClickBubble: " + index)
+			this.audio.assignBlock(index);
+		},
+		onResize(){
+			clearTimeout(this.resizeId);
+			this.resizeId = setTimeout(()=>{
+				this.renderBubble();
+				this.onScroll()
+			}, 300);
+		},
 		initial(){
 			let self = this;
 			let setting = {
@@ -109,6 +128,7 @@ Vue.component('reader', {
 			let s = window.localStorage["VOA-Reader"];
 			if(typeof s == "string" && s.length > 0) 
 				setting = Object.assign(setting, JSON.parse(s));
+			this.repeat = setting.repeat;
 			this.audio = new Player();
 			this.audio.setting = setting;
 			window.addEventListener("popstate", this.onPopState);
@@ -312,6 +332,7 @@ Vue.component('reader', {
 						this.retrieve(true);
 					}, 600);
 				}
+				this.repeat = this.audio.setting.repeat;
 			} else if(this.cmList[e[0]].text == "重複中斷") {
 				this.audio.setting = Object.assign(this.audio.setting, {interrupt: ! this.audio.setting.interrupt});
 			} else if(this.cmList[e[0]].text.indexOf("重複間距") > -1) {
@@ -400,7 +421,6 @@ Vue.component('reader', {
 			}
 
 			arr1.forEach((item1, index1)=>{
-				item1.id = "p" + index1;
 				let arr2 = item1.querySelectorAll("span");
 				let arr3 = [];
 				arr2.forEach((item2, index2)=>{
@@ -413,14 +433,13 @@ Vue.component('reader', {
 						item2.id = "l" + lrcs.length + "_" + arr3.length;
 						arr3.push({start: parseFloat(start),  end: parseFloat(end)})
 					}
-						
 				});
+	
 				if(arr3.length > 0) {
+					item1.id = "p" + lrcs.length;
 					lrcs.push(arr3);
-
 					let start = arr3[0].start;
 					let rate = Math.floor(start);
-					console.log(lrcs.length + ": " + start + "/" + this.duration + ": " + rate )
 					if(lrcs.length > 1)
 						this.marks[rate] = lrcs.length + "";
 				}
@@ -439,6 +458,28 @@ Vue.component('reader', {
 					}
 				}
 			}
+			setTimeout(()=>{
+				this.renderBubble();
+			}, 300);
+		}, 
+		onScroll(e){
+			if(this.repeat == 0) return;
+
+			let context = document.getElementById("context");
+			let readerScale = document.getElementById("readerScale");
+			readerScale.scrollTop = context.scrollTop;
+		},
+		renderBubble(){
+			if(this.repeat == 0) return;
+			this.bubbles = [];
+
+			let arr = document.querySelectorAll(".p");
+			arr.forEach((item, index)=>{
+				this.bubbles.push({
+					height: item.getBoundingClientRect().height,
+					marginTop: (index > 0) ? 6 : 0
+				});
+			});
 		}
 	},
 	computed: {
