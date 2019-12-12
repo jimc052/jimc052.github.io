@@ -126,7 +126,8 @@ Vue.component('reader', {
 				repeat: 0,
 				interval: 5,
 				interrupt: false,
-				sleep: 30
+				sleep: 30,
+				chinese: true
 			}
 	
 			let s = window.localStorage["VOA-Reader"];
@@ -274,6 +275,14 @@ Vue.component('reader', {
 				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
 			});
 
+			if(this.source.html.indexOf("<div class='chinese'>") > -1) {
+				arr.push({
+					text: '中文',
+					icon: "" + (this.audio.setting.chinese == true ? "ivu-icon-md-checkmark ivu-icon" : "")
+				});
+				this.changeChinese();
+			}
+
 			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
 			children.forEach(item=>{
 				if(this.audio.setting.zoom == item.value)
@@ -321,6 +330,8 @@ Vue.component('reader', {
 			// https://vuejsexamples.com/a-simple-and-easy-to-use-context-menu-with-vue/
 			if(this.cmList[e[0]].text == "自動播放") {
 				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
+			} else if(this.cmList[e[0]].text.indexOf("中文") > -1) {
+					this.audio.setting.chinese = !this.audio.setting.chinese;
 			} else if(this.cmList[e[0]].text == "字體") {
 				this.audio.setting.zoom = this.cmList[e[0]].children[e[1]].value;
 				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
@@ -355,6 +366,13 @@ Vue.component('reader', {
 		},
 		onSlideChange(e){
 			this.audio.currentTime = e;
+		},
+		changeChinese(){
+			let arr = document.querySelectorAll(".chinese");
+			arr.forEach((item)=>{
+				item.style.display = 
+					this.audio.setting.chinese == true ? "block" : "none";
+			});
 		},
 		format(start) {
 			if(start == 0 || isNaN(start))
@@ -393,13 +411,7 @@ Vue.component('reader', {
 		retrieve(again){
 			let lrcs = []; this.marks = {};
 			let arr1 = document.querySelectorAll(".chinese");
-			if(arr1.length > 0) {
-				let i = arr1.length - 1;
-				while(i >= 0) {
-					arr1[i].parentNode.removeChild(arr1[i]);
-					i--;
-				}				
-			}
+			this.changeChinese();
 
 			arr1 = document.querySelectorAll(".english");
 			if(this.audio.setting.repeat > 0 && arr1.length > 0) {
@@ -478,6 +490,8 @@ Vue.component('reader', {
 
 			let context = document.getElementById("context");
 			let readerScale = document.getElementById("readerScale");
+			if(readerScale == null || context == null) return;
+
 			readerScale.scrollTop = context.scrollTop;
 
 			let board = document.getElementById("board");

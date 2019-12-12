@@ -80,7 +80,7 @@
 }
 
 #context [ignore] {
-  color: #707575;
+	color: #707575;
 }
 
 #board {
@@ -94,4 +94,10 @@
 	border: 1px solid #00bfb6;
 	border-radius: 2px;
 	font-size: 10px;
+}
+.chinese {
+	color: #c5c5c5;
+	font-size: 14px;
+	font-weight: 400 !important;
+	/* display: none; */
 }
