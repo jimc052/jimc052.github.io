@@ -75,6 +75,7 @@ class Player {
 					if(this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;
 						this.repeat++;
+						this.onStateChange("repeat", this.repeat);
 				  } else if(this._setting.interrupt == true) {
 						this.repeat = 0;
 						this.onStateChange("interrupt");
@@ -84,6 +85,7 @@ class Player {
 								this.beep.play();
 							} 
 						}, 1000);
+						this.onStateChange("repeat", this.repeat);
 						return;
 					} else {
 						this.repeat = 0;

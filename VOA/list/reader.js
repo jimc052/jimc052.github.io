@@ -17,7 +17,9 @@ Vue.component('reader', {
 					padding: repeat == 0 ? '8px' : '8px 4px 8px 2px'}"
 				@scroll.natvie="onScroll"
 			>
-		</div>
+			
+			</div>
+			<div id="board" v-if="repeat > 0">{{repeatTimes + "/" + repeat}}</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
 		<div v-show="duration > 0" slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
@@ -54,6 +56,7 @@ Vue.component('reader', {
         </dropdown-menu>
   		</Dropdown>
 		</div>
+		
 	</modal>`,
 	props: {
 		source: Object
@@ -72,7 +75,8 @@ Vue.component('reader', {
 			html: "",
 			msg: "",
 			marks: {},
-			repeat: 0,
+			repeat: 0, // 主要是作為在 reader 判斷用
+			repeatTimes: 1,
 			bubbles: []
 		};
 	},
@@ -144,7 +148,8 @@ Vue.component('reader', {
 				} else if(e == "timeUpdate") {
 					this.currentTime = v1;
 					// console.log(this.currentTime)
-				} else if(e == "sectionChange") {
+				} else if(e == "sectionChange"){
+					this.repeatTimes = 1;
 					let arr = document.querySelectorAll(".english span.active");
 					arr.forEach(item=>{
 						item.classList.remove("active");
@@ -166,8 +171,9 @@ Vue.component('reader', {
 					let state = this.state;
 					this.state = e;
 						
-					if(state == "interrupt") {
+					if(state == "interrupt") { // 
 						this.$Notice.close("interrupt");
+
 					} else if(e == "interrupt") {
 						this.$Notice.info({
 							title: '請按空白鍵再聽一次，或按方向鍵',
@@ -187,6 +193,9 @@ Vue.component('reader', {
 							el.classList.remove("active");
 						}
 					}
+				} else if(e == "repeat"){
+					console.log("repeat: " + v1)
+					this.repeatTimes = v1 + 1;
 				}
 			}
 	
@@ -283,7 +292,7 @@ Vue.component('reader', {
 			arr.push({text: '速率' + label, children: children});
 
 			children = [];
-			[0, 3, 5, 10, 50].forEach(item =>{
+			[0, 1, 2, 3, 5, 10, 20].forEach(item =>{
 				children.push({
 					text: item == 0 ? "關閉" : item + " 次", 
 					value: item,
@@ -294,8 +303,9 @@ Vue.component('reader', {
 
 			if(this.audio.setting.repeat > 0) {
 				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
+				
 				children = [];
-				[3, 5, 10, 15].forEach(item =>{
+				[3, 5, 10, 15, 20, 30, 45, 60].forEach(item =>{
 					children.push({
 						text: item + " 秒", 
 						value: item,
@@ -469,6 +479,17 @@ Vue.component('reader', {
 			let context = document.getElementById("context");
 			let readerScale = document.getElementById("readerScale");
 			readerScale.scrollTop = context.scrollTop;
+
+			let board = document.getElementById("board");
+			if(board != null) {
+				if(context.scrollTop > 60){
+					board.style.top = "0px";
+					board.style.removeProperty("bottom")
+				} else {
+					board.style.bottom = "0px";
+					board.style.removeProperty("top")
+				}
+			}
 		},
 		renderBubble(){
 			if(this.repeat == 0) return;

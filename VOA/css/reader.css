@@ -82,3 +82,16 @@
 #context [ignore] {
   color: #707575;
 }
+
+#board {
+	zoom: 1 !important;
+	position: absolute;
+	right: 10px;
+	/* max-width: 60px; */
+	background-color: #00bfb6;
+	color: white;
+	padding: 2px 5px;
+	border: 1px solid #00bfb6;
+	border-radius: 2px;
+	font-size: 10px;
+}
