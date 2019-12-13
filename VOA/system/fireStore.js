@@ -137,19 +137,3 @@
       });
     }
   }
-
-
-/*
-  var firebaseConfig = {
-    apiKey: "AIzaSyBLvDLmJ6p9Ko44Q2gNt0NLgTqu1ewnBR8",
-    authDomain: "jvoa-3c784.firebaseapp.com",
-    databaseURL: "https://jvoa-3c784.firebaseio.com",
-    projectId: "jvoa-3c784",
-    storageBucket: "jvoa-3c784.appspot.com",
-    // messagingSenderId: "837844936578",
-    appId: "1:837844936578:web:dc0cef8a726eb73946519b",
-    // measurementId: "G-ZYH5ZW448S"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-*/

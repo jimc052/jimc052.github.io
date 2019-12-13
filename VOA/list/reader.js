@@ -3,7 +3,8 @@ Vue.component('reader', {
 	   :closable="false">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"></header-bar>
 		<div id="readerFrame" style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
-			<div v-if="repeat > 0" style="width: 20px; padding: 8px 0px; overflow-y: hidden; overflow-x: visible;" id="readerScale">
+			<div id="renderMarker" v-if="repeat > 0" 
+				style="width: 20px; padding: 8px 0px; overflow-y: hidden; overflow-x: visible;">
 				<div v-for="(item, index) in bubbles" :key="index"
 					:style="{height: item.height + 'px', marginTop: item.marginTop + 'px'}"
 				>
@@ -56,8 +57,18 @@ Vue.component('reader', {
         </dropdown-menu>
   		</Dropdown>
 		</div>
-		
+
+
 	</modal>`,
+	/* 	
+		<modal v-model="modal" :footer-hide="true" :width="300" :closable="false"" 
+			title="生字"
+			:draggable="true" :mask-closable="false" >
+			<div slot="header">header</div>
+			
+			<div style="height:250px"></div>
+		</modal>
+	*/
 	props: {
 		source: Object
 	},
@@ -492,10 +503,10 @@ Vue.component('reader', {
 			if(this.repeat == 0) return;
 
 			let context = document.getElementById("context");
-			let readerScale = document.getElementById("readerScale");
-			if(readerScale == null || context == null) return;
+			let renderMarker = document.getElementById("renderMarker");
+			if(renderMarker == null || context == null) return;
 
-			readerScale.scrollTop = context.scrollTop;
+			renderMarker.scrollTop = context.scrollTop;
 
 			let board = document.getElementById("board");
 			if(board != null) {

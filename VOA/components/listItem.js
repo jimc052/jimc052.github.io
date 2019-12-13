@@ -48,7 +48,7 @@ Vue.component('list-item', {
 				this.gutter = 0;
 				this.span = 24;
 			} else {
-				let x = Math.floor(document.body.clientWidth / 320);
+				let x = Math.floor(document.body.clientWidth / 350);
 				this.span = Math.floor(24 / x);
 				this.gutter = 5;
 			}

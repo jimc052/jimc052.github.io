@@ -104,7 +104,6 @@ class Player {
 						if(this.state == "pendding") {
 							this.lrc = _lrc;
 							this.block = _block;
-
 							if(this.repeat == 0) {
 								this.onStateChange("sectionChange", this.block, this.lrc);
 								this.currentRange = this.LRCs[this.block][this.lrc];

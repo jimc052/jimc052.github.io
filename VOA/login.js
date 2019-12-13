@@ -1,5 +1,6 @@
 Vue.component('login', {
-	template:  `<modal v-model="visible" class-name="vertical-center-modal" title="登入" :width="400" :closable="false" :mask-closable="false">
+	template:  `<modal v-model="visible" class-name="vertical-center-modal" 
+			title="登入" :width="400" :closable="false" :mask-closable="false">
 		<table style="width: 100%;" class="layout">
 			<tr>
 				<td class="label">帳號：</td>
@@ -60,10 +61,8 @@ Vue.component('login', {
 						window.localStorage["password"] = this.password;
 					}	else 
 						delete window.localStorage["password"];
-					vm.loading(false);
-
-					let active = window.localStorage["activeName"];
-					vm.onSelect(typeof active == "undefined" ? 0 : parseInt(active, 10));
+					// vm.loading(false); 自己要在實作 on-close 時關閉
+					this.$emit("on-close");
 					this.$destroy();
 					this.$el.parentNode.removeChild(this.$el);
 				} catch(e) {

@@ -53,18 +53,18 @@ Vue.component('list', {
 			let self = this;
 			try {
 				let snapshot1 = await FireStore.db.collection('VOA')
-					.where("report", "==", this.title).get();
+					.where("report", "==", this.title)
+					.orderBy("date", "desc").get();
 				snapshot1.forEach(doc => {
-					// console.log(doc.id, doc.data());
 					self.datas.push(Object.assign({key: doc.id}, doc.data()))
 				});				
 			} catch(e) {
 				console.log(e)
-				vm.showMessage(e);
+				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
 			}
 			setTimeout(()=>{
 				vm.loading(false);
-			}, self.datas * 100);
+			}, self.datas.length * 5);
 		},
 		onClick(index){
 			this.dataKey = this.datas[index].key;
