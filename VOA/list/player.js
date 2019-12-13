@@ -60,6 +60,7 @@ class Player {
 			this.onStateChange("timeUpdate", this.audio.currentTime);
 			let time = this.audio.currentTime;
 			let range = this.currentRange;
+			let self = this;
 			if(range == null){
 				this.currentRange = this.LRCs[0][0];
 				this.block = 0;
@@ -99,22 +100,34 @@ class Player {
 							_lrc++;
 						}
 					}
-				
-					this.intervalID = setTimeout(()=>{ 
-						if(this.state == "pendding") {
-							this.lrc = _lrc;
-							this.block = _block;
-							if(this.repeat == 0) {
-								this.onStateChange("sectionChange", this.block, this.lrc);
-								this.currentRange = this.LRCs[this.block][this.lrc];
-								this.audio.currentTime = this.currentRange.start;
+
+					if(_block == 0 && _lrc == 0 && this.block > 0 || (this.repeat == 0 && this._setting.repeat >= 5)) {
+						this.intervalID = setTimeout(()=>{
+							if(this.state == "pendding") {
+								this.beep.play();
+								waitToNext();
 							}
-							this.audio.play();
-							this.timing();
-							this.state = "play";
-							delete this.intervalID;
-						}
-					}, 1000 * this._setting.interval);
+						}, 1000);
+					} else 
+						waitToNext();
+
+					function waitToNext() {						
+						self.intervalID = setTimeout(()=>{ 
+							if(self.state == "pendding") {
+								self.lrc = _lrc;
+								self.block = _block;
+								if(self.repeat == 0) {
+									self.onStateChange("sectionChange", self.block, self.lrc);
+									self.currentRange = self.LRCs[self.block][self.lrc];
+									self.audio.currentTime = self.currentRange.start;
+								}
+								self.audio.play();
+								self.timing();
+								self.state = "play";
+								delete self.intervalID;
+							}
+						}, 1000 * self._setting.interval);
+					}
 					this.state = "pendding";
 				} else if(time >= range.end && this.block == this.LRCs.length - 1 && this.lrc == this.LRCs[this.block].length - 1) {
 					clearInterval(this.timeID);
@@ -123,12 +136,13 @@ class Player {
 					this.block = 0;
 					this.lrc = 0;
 					this.audio.pause();
-					this.assignBlock(0);
-					// this.audio.currentTime = this.LRCs[0][0].start;
 					this.intervalID = setTimeout(()=>{
 						if(this.state == "pendding") {
 							this.beep.play();
-						} 
+							this.intervalID = setTimeout(()=>{
+								this.assignBlock(0);
+							}, 3000);
+						}
 					}, 1000);
 					setTimeout(() => {
 						if(this.state == "pendding") {

@@ -45,7 +45,18 @@ Vue.component('list', {
 			});
 		},
 		onCloseNewItem(obj) {
-			if(typeof obj == "object") this.datas.push(obj)
+			if(typeof obj == "object") {
+				for(let i = 0; i < this.datas.length; i++){
+					if(this.datas[i].report == obj.report && this.datas[i].key == obj.key){
+						this.datas[i].html = obj.html;
+						obj = undefined;
+						break;
+					}
+				}
+				if(typeof obj == "object") {
+					this.datas.push(obj);
+				}
+			}
 			this.json = null;
 		},
 		async retrieve() {
@@ -57,7 +68,9 @@ Vue.component('list', {
 					// .orderBy("date", "desc")
 					.get();
 				snapshot1.forEach(doc => {
-					self.datas.push(Object.assign({key: doc.id}, doc.data()))
+					self.datas.push(Object.assign({key: doc.id}, doc.data()));
+					// let row = self.datas[self.datas.length - 1];
+					// console.log(row.report + ": " + row.key)
 				});				
 			} catch(e) {
 				console.log(e)
