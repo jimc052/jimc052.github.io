@@ -72,6 +72,7 @@ class Player {
 					this.audio.pause();
 					// console.log(this.block + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat + ": " + (new Date()).toString("MM:ss.ms"))
 					// console.log(this._setting.interval)
+					let _block = this.block, _lrc = this.lrc;
 					if(this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;
 						this.repeat++;
@@ -89,19 +90,21 @@ class Player {
 						return;
 					} else {
 						this.repeat = 0;
-						if(this.lrc == this.LRCs[this.block].length - 1) {
-							this.lrc = 0;
-							if(this.block == this.LRCs.length - 1)
-								this.block = 0;
-							else
-								this.block++;
+						if(_lrc == this.LRCs[_block].length - 1) {
+							_lrc = 0;
+							_block++;
+							if(_block >= this.LRCs.length)
+								_block = 0;
 						} else {
-							this.lrc++;
+							_lrc++;
 						}
 					}
 				
 					this.intervalID = setTimeout(()=>{ 
 						if(this.state == "pendding") {
+							this.lrc = _lrc;
+							this.block = _block;
+
 							if(this.repeat == 0) {
 								this.onStateChange("sectionChange", this.block, this.lrc);
 								this.currentRange = this.LRCs[this.block][this.lrc];

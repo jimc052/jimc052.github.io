@@ -19,7 +19,7 @@ Vue.component('reader', {
 			>
 			
 			</div>
-			<div id="board" v-if="repeat > 0">{{repeatTimes + "/" + repeat}}</div>
+			<div id="board" v-if="repeat > 1">{{repeatTimes + "/" + repeat}}</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
 		<div v-show="duration > 0" slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
@@ -281,6 +281,9 @@ Vue.component('reader', {
 					icon: "" + (this.audio.setting.chinese == true ? "ivu-icon-md-checkmark ivu-icon" : "")
 				});
 				this.changeChinese();
+				setTimeout(()=>{
+					this.renderBubble();
+				}, 300);
 			}
 
 			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
