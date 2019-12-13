@@ -54,7 +54,8 @@ Vue.component('list', {
 			try {
 				let snapshot1 = await FireStore.db.collection('VOA')
 					.where("report", "==", this.title)
-					.orderBy("date", "desc").get();
+					// .orderBy("date", "desc")
+					.get();
 				snapshot1.forEach(doc => {
 					self.datas.push(Object.assign({key: doc.id}, doc.data()))
 				});				
