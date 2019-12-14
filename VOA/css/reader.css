@@ -10,6 +10,9 @@
 	padding: 0px;
 }
 
+#context {
+	
+}
 #context * {
 	/* font-weight: 500; */
 	user-select: text;
@@ -37,7 +40,7 @@
 	width: 15px;
   background: #00bfb6;
   text-align: center;
-  color: #fff;
+  color: #fff !important;
 	position: relative;
 	font-size: 8px !important;
 	cursor: pointer;
@@ -78,9 +81,8 @@
 	background-color: #c01921;
 	color: white;
 }
-
 #context [ignore] {
-	color: #707575;
+	color: #707575 !important;
 }
 
 #board {
