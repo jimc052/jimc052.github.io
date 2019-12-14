@@ -31,12 +31,25 @@ class Player {
 			// console.log("timeupdate: " + self.audio.currentTime)
 		}, true);
 
+		self.audio.addEventListener("ended", function() {
+			self.state = "pendding";
+			self.intervalID = setTimeout(()=>{
+				if(self.state == "pendding") {
+					self.beep.play();
+					self.intervalID = setTimeout(()=>{
+						self.assignBlock(0);
+					}, 3000);
+				}
+			}, 1000);
+		}, true);
+
 		this.beep = new Audio("./mp3/beep.mp3");
 		this.beep.autoplay = false;
 		this.beep.addEventListener("loadstart", function() { 
 		}, true);
 		this.beep.addEventListener("canplay", function() { 
 		}, true);
+		this.beep.volume = 0.7;
 	}
 
 	play(inform){
