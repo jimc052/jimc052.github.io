@@ -15,11 +15,12 @@
 }
 #context * {
 	/* font-weight: 500; */
-	user-select: text;
+	user-select: text !important;
+	line-height: 1.2 !important;
 }
 
 #context > .p + .p {
-	margin-top: 6px;
+	margin-top: 14px;
 }
 
 #context > .p {

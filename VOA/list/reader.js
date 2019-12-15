@@ -18,7 +18,6 @@ Vue.component('reader', {
 					padding: repeat == 0 ? '8px' : '8px 4px 8px 2px'}"
 				@scroll.natvie="onScroll"
 			>
-			
 			</div>
 			<div id="board" v-if="repeat > 1">{{repeatTimes + "/" + repeat}}</div>
 		</div>
@@ -94,6 +93,10 @@ Vue.component('reader', {
 	created(){
 	},
 	async mounted () {
+		let context = document.querySelector("#context");
+		if(context != null) context.style.visibility = "hidden";
+		console.log(context)
+
 		this.title = this.source.title;
 		this.initial();
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
@@ -424,6 +427,9 @@ Vue.component('reader', {
 		},
 		retrieve(again){
 			let lrcs = []; this.marks = {};
+			let context = document.querySelector("#context");
+			if(context != null) context.style.visibility = "hidden";
+
 			let arr1 = document.querySelectorAll(".chinese");
 			this.changeChinese();
 
@@ -497,6 +503,7 @@ Vue.component('reader', {
 			}
 			setTimeout(()=>{
 				this.renderBubble();
+				if(context != null) context.style.visibility = "visible";
 			}, 300);
 		}, 
 		onScroll(e){
@@ -527,7 +534,7 @@ Vue.component('reader', {
 			arr.forEach((item, index)=>{
 				this.bubbles.push({
 					height: item.getBoundingClientRect().height,
-					marginTop: (index > 0) ? 6 : 0
+					marginTop: (index > 0) ? 14 : 0
 				});
 			});
 
