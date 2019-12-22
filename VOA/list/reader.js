@@ -1,3 +1,4 @@
+
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
 	   :closable="false">
@@ -8,7 +9,7 @@ Vue.component('reader', {
 				<div v-for="(item, index) in bubbles" :key="index"
 					:style="{height: item.height + 'px', marginTop: item.marginTop + 'px'}"
 				>
-					<div class='speech-bubble' @click="onClickBubble(index)">
+					<div class='speech-bubble' :id="'bubble' + index" @click="onClickBubble($event, index)">
 						{{index + 1}}
 					</div>
 				</div>
@@ -87,7 +88,8 @@ Vue.component('reader', {
 			marks: {},
 			repeat: 0, // 主要是作為在 reader 判斷用
 			repeatTimes: 1,
-			bubbles: []
+			bubbles: [],
+			block: []
 		};
 	},
 	created(){
@@ -95,7 +97,6 @@ Vue.component('reader', {
 	async mounted () {
 		let context = document.querySelector("#context");
 		if(context != null) context.style.visibility = "hidden";
-		console.log(context)
 
 		this.title = this.source.title;
 		this.initial();
@@ -119,9 +120,84 @@ Vue.component('reader', {
 		this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
-		onClickBubble(index){
-			console.log("onClickBubble: " + index)
-			this.audio.assignBlock(index);
+		onClickBubble(e, index){
+			let self = this;
+			// console.log(e)
+			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+			if(pk == false) {
+				clearBubble();
+				if(this.audio.paragraph != index)
+					this.audio.assignParagraph(index, true);
+			}	else {
+				let start = -1, end = -1;
+				let current = e.target.id.replace("bubble", "");
+				let arr = document.querySelectorAll("#renderMarker .active");
+				if(arr.length > 0) {
+					arr.forEach(item=>{
+						let el = item.id.replace("bubble", "");
+						if(start == -1 || el < start)
+							start = el;
+						if(end == -1 || el > end)
+							end = el;
+					});
+
+					if(current >= start && current <= end) {
+						clearBubble();					
+					} else {
+						if(current < start) 
+							start = current;
+						else if(current > end) 
+							end = current;
+						let arr = document.querySelectorAll("#renderMarker .speech-bubble");
+						arr.forEach((item, index)=>{
+							if(index >= start && index <= end)
+								item.classList.add("active");
+						});
+						this.audio.block = [parseInt(start, 10), parseInt(end, 10)];
+					}
+				} else {
+					e.target.classList.add("active");
+					this.audio.block = [index, index];
+				}
+
+				if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){
+					this.audio.assignParagraph(this.audio.block[0], true);
+				}
+				saveBlock();
+			}
+			
+			function clearBubble() {
+				let arr = document.querySelectorAll("#renderMarker .active");
+				arr.forEach(item=>{
+					item.classList.remove("active");
+				});
+				self.audio.block = [];
+				return arr.length;
+			}
+
+			function saveBlock(params) {
+				let s = window.localStorage["VOA-Blocks-" + self.source.report];
+				let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
+				for(let i = 0; i < arr.length; i++){
+					if(arr[i].key == self.source.key) {
+						arr.splice(i, 1);
+						break;
+					}
+				}
+				arr.unshift({key: self.source.key, block: self.audio.block});
+				for(let i = arr.length - 1; i >= 0; i--){
+					if(arr[i].block.length == 0)
+						arr.splice(i, 1);
+				}
+
+				for(let i = arr.length - 1; i >= 10; i--){
+					arr.splice(i, 1);
+				}
+				if(arr.length > 0)
+					window.localStorage["VOA-Blocks-" + self.source.report] = JSON.stringify(arr);
+				else
+					delete window.localStorage["VOA-Blocks-" + self.source.report];
+			}
 		},
 		onResize(){
 			clearTimeout(this.resizeId);
@@ -148,7 +224,18 @@ Vue.component('reader', {
 			if(typeof s == "string" && s.length > 0) 
 				setting = Object.assign(setting, JSON.parse(s));
 			this.repeat = setting.repeat;
-			this.audio = new Player();
+			
+			s = window.localStorage["VOA-Blocks-" + this.source.report];
+			let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
+			this.block = [];
+			if(Array.isArray(arr)) {
+				arr.forEach(item=>{
+					if(item.key == this.source.key) {
+						this.block = item.block;
+					}
+				});				
+			}
+			this.audio = new Player({block: this.repeat == 0 ? [] : this.block});
 			this.audio.setting = setting;
 			window.addEventListener("popstate", this.onPopState);
 	
@@ -261,18 +348,24 @@ Vue.component('reader', {
 			let sk = event.shiftKey, code = event.keyCode;
 			// console.log("key: " + code + "/" + pk)
 			if(code == 32){ //空格鍵，interrupt
-				if(this.state == "interrupt") this.audio.continue();
+				if(this.state == "interrupt" || this.audio.state == "pendding") 
+					this.audio.continue();
 			} else if(code == 37 || code == 39 || code == 38 || code == 40) { // l, r, u, d
+				let arr = document.querySelectorAll(".english span.active");
 				if(code == 37 || code == 39) {
-					if(pk == true)
+					if(arr.length == 0)
+						this.audio.gotoLRC("first");
+					else if(pk == true)
 						this.audio.gotoLRC(code == 37 ? "first" : "end")
 					else
 						this.audio.gotoLRC(code == 37 ? -1 : 1)
 				}	else 
-					if(pk == true)
-						this.audio.gotoBlock(code == 38 ? "first" : "end")
+					if(arr.length == 0)
+						this.audio.gotoParagraph("first");
+					else  if(pk == true)
+						this.audio.gotoParagraph(code == 38 ? "first" : "end")
 					else
-						this.audio.gotoBlock(code == 38 ? -1 : 1)
+						this.audio.gotoParagraph(code == 38 ? -1 : 1)
 			} else {
 				return;
 			}
@@ -362,6 +455,8 @@ Vue.component('reader', {
 					this.audio.setting.interrupt = false;
 				}
 
+				this.audio.block = this.audio.setting.repeat == 0 ? [] : this.block;
+
 				if(update == true) {
 					this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 					this.audio.audio.pause();
@@ -369,7 +464,7 @@ Vue.component('reader', {
 					this.audio.repeat = 0;
 					setTimeout(() => {
 						this.retrieve(true);
-					}, 600);
+					}, 300);
 				}
 				this.repeat = this.audio.setting.repeat;
 			} else if(this.cmList[e[0]].text == "重複中斷") {
@@ -488,23 +583,23 @@ Vue.component('reader', {
 				}
 			});
 			this.audio.LRCs = lrcs;
-			if((this.audio.setting.autoPlay == true || typeof again == "boolean") && lrcs.length > 0 && lrcs[0].length > 0) {
-				if(!isNaN(lrcs[0][0].start)) {
-					this.audio.currentRange = this.audio.LRCs[0][0];
-					this.audio.currentTime = this.audio.LRCs[0][0].start;
+			let start = this.audio.setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
+			if((this.audio.setting.autoPlay == true || typeof again == "boolean") && lrcs.length > 0 && lrcs[start].length > 0) {
+				if(!isNaN(lrcs[start][0].start)) {
+					this.audio.currentRange = lrcs[start][0];
+					this.audio.currentTime = lrcs[start][0].start;
 					this.currentTime = this.audio.currentTime;
-					this.audio.block = 0; this.audio.lrc = 0;
-					this.audio.onStateChange("sectionChange", this.audio.block, this.audio.lrc);
+					this.audio.assignParagraph(start)
 					if(typeof again == "boolean" && this.state == "play") {
 						this.audio.audio.play();
 						this.audio.timing();
 					}
 				}
 			}
+			this.renderBubble();
 			setTimeout(()=>{
-				this.renderBubble();
 				if(context != null) context.style.visibility = "visible";
-			}, 300);
+			}, 100);
 		}, 
 		onScroll(e){
 			if(this.repeat == 0) return;
@@ -538,6 +633,15 @@ Vue.component('reader', {
 				});
 			});
 
+			setTimeout(()=>{
+				if(this.block.length > 0) {
+					arr = document.querySelectorAll("#renderMarker .speech-bubble");
+					arr.forEach((item, index)=>{
+						if(index >= this.block[0] && index <= this.block[1])
+							item.classList.add("active");
+					});				
+				}				
+			}, 300);
 			this.onScroll();
 		}
 	},
@@ -554,32 +658,5 @@ Vue.component('reader', {
 		}
 	},
 	watch: {
-		async source(value) {
-			// this.modal = value == null ? false : true;
-			// this.title = value == null ? "" : value.title;
-			// this.currentTime = 0; this.duration = 0;
-			// this.passTime = 0;
-			// clearInterval(this.finalCountID);
-			// try {
-			// 	if(this.audio == null) {
-			// 		this.initial();
-			// 	}
-			// 	this.audio.canPlay = false;
-			// 	if(value != null) {
-			// 		this.html = value.html + "<div style='display: none;'>" + (new Date()) + "</div>";
-			// 		this.audio.state = "stop";
-			// 		this.url = await FireStore.downloadFileURL("VOA/" + value.report + "/" + value.key + ".mp3");
-			// 		this.audio.src = this.url;
-			// 		document.getElementById("context").style.zoom = this.audio.setting.zoom;
-			// 		window.addEventListener('keydown', this.onKeydown, false);
-			// 	} else {
-			// 		this.audio.src = "";
-			// 		this.audio.stop();
-			// 		window.removeEventListener('keydown', this.onKeydown, false);
-			// 	}
-			// } catch(e) {
-			// 	console.log(e)
-			// }
-		}
 	}
 });

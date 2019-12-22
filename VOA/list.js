@@ -25,7 +25,6 @@ Vue.component('list', {
 	created(){
 	},
 	async mounted () {
-		
 	},
 	destroyed() {
   },

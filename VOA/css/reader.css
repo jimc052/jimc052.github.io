@@ -10,11 +10,7 @@
 	padding: 0px;
 }
 
-#context {
-	
-}
 #context * {
-	/* font-weight: 500; */
 	user-select: text !important;
 	line-height: 1.2 !important;
 }
@@ -35,8 +31,7 @@
 }
 
 .speech-bubble {
-	position: absolute;
-	top: 6px;
+	margin-top: 4px;
 	left: 0px;
 	width: 15px;
   background: #00bfb6;
@@ -58,6 +53,13 @@
   border-bottom: 3px solid transparent;
   right: -3px;
   top: 4px;
+}
+.speech-bubble.active {
+	background-color: #c01921;
+}
+.speech-bubble.active:before {
+  border-left-color: #c01921;
+  border-top-color: #c01921;
 }
 
 .button {

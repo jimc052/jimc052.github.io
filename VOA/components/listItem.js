@@ -7,7 +7,7 @@ Vue.component('list-item', {
 						<div class="list-item" 
 							:class="{'list-active': item.key == dataKey}"
 							@click.stop='onClickItem(index)'>
-							<div style="font-size: 20px; " class="text-overflow">{{item.title}}</div>
+							<div style="font-size: 20px;" class="text-overflow">{{item.title}}</div>
 							<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
 								<div style="width: 30px;">{{index + 1}}</div>
 								<div v-if="item.html.indexOf(\`<div class='chinese'>\`) > -1" style="font-size: 8px; color: #c01921;">
