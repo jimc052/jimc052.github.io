@@ -78,7 +78,18 @@ Vue.component('dlg-vocabulary', {
 	},
 	watch: {
 		data(value) {
-			this.rows = typeof value == "string" ? value.split("\n") : [];
+			let arr = typeof value == "string" ? value.split("\n") : []
+			arr.sort((a, b) => {
+				a = a.toUpperCase();
+				b = b.toUpperCase();
+				if(a > b)
+					return 1;
+				else if(a < b)
+					return -1;
+				else
+					return 0;
+			});
+			this.rows = arr;
 		},
 	}
 });

@@ -151,7 +151,7 @@ Vue.component('reader', {
 		updateVocabulary(rows){
 			rows = rows.filter(word => typeof word == "string" && word.length > 0);
 			if(rows.length > 0)
-				this.vocabulary = rows.sort().join("\n");
+				this.vocabulary = rows.join("\n");
 			else 
 				this.vocabulary = ""
 			this.setVocab();

@@ -31,7 +31,7 @@
       try {
         let result = await firebase.auth().signInWithEmailAndPassword(email, password);
         FireStore.login = true;
-        console.log(result)
+        // console.log(result)
         return result;
       } catch(e) {
         throw e;
