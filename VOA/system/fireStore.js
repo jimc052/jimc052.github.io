@@ -1,7 +1,7 @@
 
 	// https://firebase.google.com/docs/firestore/quickstart?authuser=1
 	// https://www.oxxostudio.tw/articles/201905/firebase-firestore.html
-
+  // https://t.codebug.vip/questions-1920875.htm
   class FireStore{
     static db;
     static user = null;
@@ -23,6 +23,9 @@
     }
     static mail(){
       return firebase.auth().currentUser.email;
+    }
+    static uid(){
+      return firebase.auth().currentUser.uid;
     }
     static async signIn(email, password){
       try {
@@ -54,7 +57,7 @@
       }
     }
   
-    static async uploadString(fileName, data){ // ok
+    static async uploadString(fileName, data){ // 不知為何又不能用了
       // https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn
       return new Promise( (success, error) => {
         let ref = firebase.storage().ref().child(fileName);
@@ -87,7 +90,7 @@
       });
     }
 
-    static async uploadFile(file){ // ok 了
+    static async uploadFile(file){ // 不知為何又不能用了
       // https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn
       let ref = firebase.storage().ref().child('mp3/'+file.name);
       let task = ref.put(file); 

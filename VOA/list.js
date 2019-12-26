@@ -70,7 +70,7 @@ Vue.component('list', {
 					self.datas.push(Object.assign({key: doc.id}, doc.data()));
 					// let row = self.datas[self.datas.length - 1];
 					// console.log(row.report + ": " + row.key)
-				});				
+				});
 			} catch(e) {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);

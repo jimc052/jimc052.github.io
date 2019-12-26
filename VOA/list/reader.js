@@ -1,7 +1,7 @@
 
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
-	   :closable="false">
+	   :closable="false" style="overflow: hidden;">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"></header-bar>
 		<div id="readerFrame" style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
 			<div id="renderMarker" v-if="repeat > 0" 
@@ -57,18 +57,9 @@ Vue.component('reader', {
         </dropdown-menu>
   		</Dropdown>
 		</div>
-
-
+		<dlg-vocabulary :visible="displayVocabulary" :data="vocabulary" 
+			@close="displayVocabulary = false" @update="updateVocabulary"/>
 	</modal>`,
-	/* 	
-		<modal v-model="modal" :footer-hide="true" :width="300" :closable="false"" 
-			title="生字"
-			:draggable="true" :mask-closable="false" >
-			<div slot="header">header</div>
-			
-			<div style="height:250px"></div>
-		</modal>
-	*/
 	props: {
 		source: Object
 	},
@@ -89,7 +80,9 @@ Vue.component('reader', {
 			repeat: 0, // 主要是作為在 reader 判斷用
 			repeatTimes: 1,
 			bubbles: [],
-			block: []
+			block: [],
+			vocabulary: "",
+			displayVocabulary: false
 		};
 	},
 	created(){
@@ -99,6 +92,7 @@ Vue.component('reader', {
 		if(context != null) context.style.visibility = "hidden";
 
 		this.title = this.source.title;
+		await this.getVocab();
 		this.initial();
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.audio.state = "stop";
@@ -107,6 +101,8 @@ Vue.component('reader', {
 		document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
 		window.addEventListener('keydown', this.onKeydown, false);
 		window.addEventListener('resize', this.onResize, false);
+		// await this.setVocab()
+		// await this.getVocab();
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -120,46 +116,100 @@ Vue.component('reader', {
 		this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
+		async getVocab(){
+			try {
+				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
+					.collection("VOA").doc(this.source.key)
+					.get();
+				if(typeof snapshot1.data().vocabulary == "string") {
+					this.vocabulary = snapshot1.data().vocabulary;
+				}
+				if(this.vocabulary.length > 0) this.displayVocabulary = true;
+				// console.log("vocabulary: " + this.vocabulary);
+			} catch(e) {
+				// console.log(e)
+				// vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
+			}
+		},
+		async setVocab(){
+			let ref = FireStore.db.collection("users").doc(FireStore.uid())
+				.collection("VOA").doc(this.source.key);
+			let obj = {
+				modifyDate: (new Date()).toString("yyyymmddThhMM"),
+				vocabulary: this.vocabulary
+			}
+			try {
+				let x = await ref.set(obj,{merge: true});
+
+				this.$Notice.success({
+					title: "生字已上傳",
+				});
+			} catch(e) {
+				console.log(e)
+				throw e;
+			}
+		},
+		updateVocabulary(rows){
+			rows = rows.filter(word => typeof word == "string" && word.length > 0);
+			if(rows.length > 0)
+				this.vocabulary = rows.sort().join("\n");
+			else 
+				this.vocabulary = ""
+			this.setVocab();
+		},
 		onClickBubble(e, index){
 			let self = this;
 			// console.log(e)
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
-			if(pk == false) {
-				clearBubble();
-				if(this.audio.paragraph != index)
-					this.audio.assignParagraph(index, true);
+			let sk = event.shiftKey, code = event.keyCode;
+			if(pk == false && sk == false) {
+				let arr = document.querySelectorAll("#renderMarker .active");
+				if(arr.length == 0 && e.target.classList.contains("active") == false){
+					clearBubble();
+					if(this.audio.paragraph != index)
+						this.audio.assignParagraph(index, true);					
+				}
 			}	else {
 				let start = -1, end = -1;
-				let current = e.target.id.replace("bubble", "");
-				let arr = document.querySelectorAll("#renderMarker .active");
-				if(arr.length > 0) {
-					arr.forEach(item=>{
-						let el = item.id.replace("bubble", "");
+				let current = parseInt(e.target.id.replace("bubble", ""));
+				if(pk == true) {
+					let active = e.target.classList.contains("active");
+					clearBubble();
+					if(active == false) {
+						e.target.classList.add("active");
+						this.audio.block = [index, index];						
+					} else {
+						this.audio.block = [];
+					}
+				} else if(sk == true) {
+					let arr = document.querySelectorAll("#renderMarker .active");
+					for (let i = 0; i < arr.length; ++i) {
+						let item = arr[i];
+						let el = parseInt(item.id.replace("bubble", ""), 10);
 						if(start == -1 || el < start)
 							start = el;
 						if(end == -1 || el > end)
 							end = el;
-					});
-
-					if(current >= start && current <= end) {
-						clearBubble();					
-					} else {
-						if(current < start) 
-							start = current;
-						else if(current > end) 
-							end = current;
-						let arr = document.querySelectorAll("#renderMarker .speech-bubble");
-						arr.forEach((item, index)=>{
-							if(index >= start && index <= end)
-								item.classList.add("active");
-						});
-						this.audio.block = [parseInt(start, 10), parseInt(end, 10)];
 					}
-				} else {
-					e.target.classList.add("active");
-					this.audio.block = [index, index];
-				}
+					if(start == -1) return;
 
+					if(current < start) 
+						start = current;
+					else if(current > end) 
+						end = current;
+					else if(current > start) 
+						start = current;
+					arr = document.querySelectorAll("#renderMarker .speech-bubble");
+					arr.forEach((item, index)=>{
+						if(index >= start && index <= end)
+							item.classList.add("active");
+						else 
+						item.classList.remove("active");
+					});
+					this.audio.block = [start, end];	
+				} else {
+					return
+				}
 				if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){
 					this.audio.assignParagraph(this.audio.block[0], true);
 				}
@@ -203,7 +253,6 @@ Vue.component('reader', {
 			clearTimeout(this.resizeId);
 			this.resizeId = setTimeout(()=>{
 				this.renderBubble();
-				
 			}, 300);
 		},
 		initial(){
@@ -342,12 +391,23 @@ Vue.component('reader', {
 		},
 		onKeydown(event){
 			if(this.audio.canPlay == false) return;
+
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// console.log("key: " + code + "/" + pk)
-			if(code == 32){ //空格鍵，interrupt
+			// console.log("key: " + code + "/" + pk)			
+			if(pk == true && code == 77){ // m, 加入筆記
+				let ss = window.getSelection().toString().trim();
+				
+				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
+					console.log(window.getSelection())
+					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
+					this.setVocab()
+				}
+			} else if(pk && sk && code == 86){ // Cmd ＋ shift + V, 單字清單, 還沒寫
+				this.displayVocabulary = true;
+			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 
 					this.audio.continue();
 			} else if(code == 37 || code == 39 || code == 38 || code == 40) { // l, r, u, d
@@ -433,6 +493,8 @@ Vue.component('reader', {
 				}) 
 				arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});					
 			}
+
+
 
 			this.cmList = arr;
 		},

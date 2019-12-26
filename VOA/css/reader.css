@@ -1,8 +1,27 @@
-
+/*, #vocabulary .ivu-modal-header
+*/
+#vocabulary .ivu-modal-header, #vocabulary .ivu-modal-body {
+	margin: 0px;
+	padding: 0px;	
+}
+#vocabulary .ivu-modal-content {
+	border: 1px solid rgb(70, 160, 240);
+	border-radius: 5px;
+	background-color: #ebecf0;
+}
 #reader .ivu-modal-header {
 	margin: 0px;
 	padding: 0px;
 }
+
+.vocabulary + .vocabulary {
+	border-top: 1px solid #c5c5c5;
+}
+#vocabularyFrame > .vocabulary:last-child {
+	border-bottom: 1px solid #c5c5c5;
+}
+
+
 #reader .ivu-modal-footer{
 	padding: 3px 5px;
 }
