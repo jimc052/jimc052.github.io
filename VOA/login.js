@@ -38,16 +38,7 @@ Vue.component('login', {
 	created(){
 	},
 	async mounted () {
-		this.email = window.localStorage["email"];
-		this.keepPassword = window.localStorage["keepPassword"] == "Y" ? true : false;
-		if(this.keepPassword == true) {
-			this.password = window.localStorage["password"];
-			// if(location.href.indexOf("file:///") > -1) {
-				setTimeout(() => {
-					this.onOK();
-				}, 600);
-			// }
-		}
+
 	},
 	destroyed() {
   },
@@ -80,6 +71,22 @@ Vue.component('login', {
 		},
 		onClickIcon(){
 			this.isPassword = ! this.isPassword;
+		}
+	},
+	watch: {
+		visible(value) {
+			if(value == true) {
+				this.email = window.localStorage["email"];
+				this.keepPassword = window.localStorage["keepPassword"] == "Y" ? true : false;
+				if(typeof this.email == "string" && this.email.length > 0 && this.keepPassword == true) {
+					this.password = window.localStorage["password"];
+					// if(location.href.indexOf("file:///") > -1) {
+						setTimeout(() => {
+							this.onOK();
+						}, 600);
+					// }
+				}				
+			}
 		}
 	}
 })

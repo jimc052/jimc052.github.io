@@ -92,7 +92,8 @@ Vue.component('reader', {
 		if(context != null) context.style.visibility = "hidden";
 
 		this.title = this.source.title;
-		await this.getVocab();
+		if(FireStore.login == true)
+			await this.getVocab();
 		this.initial();
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.audio.state = "stop";
@@ -101,8 +102,6 @@ Vue.component('reader', {
 		document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
 		window.addEventListener('keydown', this.onKeydown, false);
 		window.addEventListener('resize', this.onResize, false);
-		// await this.setVocab()
-		// await this.getVocab();
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -397,7 +396,7 @@ Vue.component('reader', {
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
 			// console.log("key: " + code + "/" + pk)			
-			if(pk == true && code == 77){ // m, 加入筆記
+			if(pk == true && code == 77 && FireStore.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
 				
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
@@ -405,7 +404,7 @@ Vue.component('reader', {
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
 					this.setVocab()
 				}
-			} else if(pk && sk && code == 86){ // Cmd ＋ shift + V, 單字清單, 還沒寫
+			} else if(pk && sk && code == 86 && FireStore.login == true){ // Cmd ＋ shift + V, 單字清單, 還沒寫
 				this.displayVocabulary = true;
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 

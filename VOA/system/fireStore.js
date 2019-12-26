@@ -4,7 +4,7 @@
   // https://t.codebug.vip/questions-1920875.htm
   class FireStore{
     static db;
-    static user = null;
+    static login = false;
   
     static initial(key){
       var firebaseConfig = {
@@ -30,6 +30,8 @@
     static async signIn(email, password){
       try {
         let result = await firebase.auth().signInWithEmailAndPassword(email, password);
+        FireStore.login = true;
+        console.log(result)
         return result;
       } catch(e) {
         throw e;

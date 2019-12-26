@@ -148,7 +148,7 @@
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
 				let email = window.localStorage["email"];
-				if(typeof email == "string" && location.href.indexOf("?email=") > -1) {
+				if((typeof email == "string" && email.length > 0) || location.href.indexOf("?email=") > -1) {
 					this.modal = true;
 				} else {
 					this.homePage();
