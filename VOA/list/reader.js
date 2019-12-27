@@ -118,7 +118,7 @@ Vue.component('reader', {
 		async getVocab(){
 			try {
 				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
-					.collection("VOA").doc(this.source.key)
+					.collection("history").doc(this.source.key)
 					.get();
 				if(typeof snapshot1.data().vocabulary == "string") {
 					this.vocabulary = snapshot1.data().vocabulary;
@@ -132,17 +132,17 @@ Vue.component('reader', {
 		},
 		async setVocab(){
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-				.collection("VOA").doc(this.source.key);
+				.collection("history").doc(this.source.key);
 			let obj = {
 				modifyDate: (new Date()).toString("yyyymmddThhMM"),
-				vocabulary: this.vocabulary
+				vocabulary: this.vocabulary,
+				report: this.source.report
 			}
 			try {
 				let x = await ref.set(obj,{merge: true});
-
-				this.$Notice.success({
-					title: "生字已上傳",
-				});
+				// this.$Notice.success({
+				// 	title: "生字已上傳",
+				// });
 			} catch(e) {
 				console.log(e)
 				throw e;
@@ -171,7 +171,7 @@ Vue.component('reader', {
 			}	else {
 				let start = -1, end = -1;
 				let current = parseInt(e.target.id.replace("bubble", ""));
-				if(pk == true) {
+				if(pk == true && sk == false) {
 					let active = e.target.classList.contains("active");
 					clearBubble();
 					if(active == false) {
@@ -180,7 +180,7 @@ Vue.component('reader', {
 					} else {
 						this.audio.block = [];
 					}
-				} else if(sk == true) {
+				} else if(sk == true && pk == false) {
 					let arr = document.querySelectorAll("#renderMarker .active");
 					for (let i = 0; i < arr.length; ++i) {
 						let item = arr[i];
@@ -404,6 +404,10 @@ Vue.component('reader', {
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
 					this.setVocab()
 				}
+			} else if(code == 27){ //
+				this.displayVocabulary = false;
+			} else if(this.displayVocabulary == true) {
+				return;
 			} else if(pk && sk && code == 86 && FireStore.login == true){ // Cmd ＋ shift + V, 單字清單, 還沒寫
 				this.displayVocabulary = true;
 			} else if(code == 32){ //空格鍵，interrupt

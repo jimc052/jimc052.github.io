@@ -60,13 +60,16 @@ Vue.component('dlg-vocabulary', {
 			window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, '_blank');
 		},
 		close(){
-			this.$emit("close")
+			this.cursor = -1; this.model = "";
+			this.$emit("close");
 		},
 		del(index){
-			this.rows.splice(index, 1);
+			if(this.cursor == -1) {
+				this.rows.splice(index, 1);
+				this.$emit("update", this.rows)
+			}
 			this.cursor = -1;
 			this.model = "";
-			this.$emit("update", this.rows)
 		},
 		upload(){
 			this.rows[this.cursor] = this.model;
