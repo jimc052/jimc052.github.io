@@ -1,7 +1,7 @@
 {
   "name": "VOA",
   "short_name": "VOA",
-  "start_url": ".",
+  "start_url": "./VOA",
   "display": "fullscreen",
   "background_color": "#fff",
   "orientation": "landscape",
