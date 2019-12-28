@@ -8,7 +8,10 @@ Vue.component('list', {
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
 		<new-item :json="json" @onClose="onCloseNewItem"></new-item>
-		<reader v-if="source != null" :source="source" @onClose="onCloseReader"></reader>
+		<reader v-if="source != null" :source="source" 
+			@onClose="onCloseReader" 
+			@onUpdate="onUpdate"
+		></reader>
 	</div>`,
 	props: {
 		title: String,
@@ -92,6 +95,17 @@ Vue.component('list', {
 		},
 		onCloseReader(){
 			this.source = null;
+		}, 
+		async onUpdate(html) {
+			this.source.html = html;
+			try {
+				await FireStore.update(this.source)
+				this.$Notice.success({
+					title: "已上傳",
+				});
+			} catch(e) {
+				console.log(e)
+			}
 		}
 	},
 	watch: {

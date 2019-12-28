@@ -32,6 +32,7 @@ class Player {
 		}, true);
 
 		self.audio.addEventListener("ended", function() {
+			this.onStateChange("sectionChange", -1);
 			self.state = "pendding";
 			self.intervalID = setTimeout(()=>{
 				if(self.state == "pendding") {
@@ -149,7 +150,7 @@ class Player {
 					}
 					this.state = "pendding";
 				} else if(time >= range.end && this.paragraph == this.LRCs.length - 1 && this.lrc == this.LRCs[this.paragraph].length - 1) {
-					clearInterval(this.timeID);
+					this.onStateChange("sectionChange", -1);
 					this.state = "pendding";
 					this.currentRange = null;
 					this.paragraph = 0;
@@ -159,15 +160,15 @@ class Player {
 						if(this.state == "pendding") {
 							this.beep.play();
 							this.intervalID = setTimeout(()=>{
-								this.assignParagraph(0);
-							}, 3000);
+								// this.intervalID = setTimeout(() => {
+									this.assignParagraph(0);
+									// if(this.state == "pendding") {
+									// 	this.play(false);
+									// }	
+								// }, 1000 * 5);
+							}, 5000);
 						}
 					}, 1000);
-					setTimeout(() => {
-						if(this.state == "pendding") {
-							this.play(false);
-						}	
-					}, 1000 * 5);
 					return;
 				} else {
 					for(let i = 0; i < this.LRCs.length; i++) {

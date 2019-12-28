@@ -70,3 +70,13 @@ Date.prototype.toString = function (format = "yyyy/mm/dd hh:MM:ss.ms") {
 	r = r.replace("ms", ms);
 	return r;
 };
+
+Vue.prototype.$isSmallScreen = function () {
+	return document.body.clientWidth > 600 ? false : true;
+}
+
+Vue.prototype.$isAdmin = function () {
+	return FireStore.login == true && (
+		FireStore.mail().indexOf("jimc@") > -1 || FireStore.mail().indexOf("jimchen5342@") > -1
+	) ? true : false;
+}

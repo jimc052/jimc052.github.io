@@ -27,6 +27,7 @@
 }
 #reader .ivu-modal-body {
 	padding: 0px;
+	overflow: hidden;
 }
 
 #context * {

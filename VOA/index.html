@@ -145,6 +145,7 @@
 				iview.lang('zh-TW');
 			},
 			async mounted(){
+				
 				let self = this;
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
@@ -174,6 +175,7 @@
 					this.drawer = false;
 				},
 				homePage(index){
+					
 					if(!isNaN(index)) {
 						if(FireStore.login == true){
 							document.getElementById("email").innerText = "帳號：" + FireStore.mail();

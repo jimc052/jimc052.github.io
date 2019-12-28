@@ -1,9 +1,13 @@
 
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
-	   :closable="false" style="overflow: hidden;">
+		 :closable="false" style="overflow: hidden;"
+		 :footer-hide="mode == 'edit'">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"></header-bar>
-		<div id="readerFrame" style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
+		<textarea v-if="mode=='edit'" ref="textarea"
+			style="height: 100%; width: 100%; font-size: 18px;"
+		>{{source.html}}</textarea>
+		<div id="readerFrame" v-else style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
 			<div id="renderMarker" v-if="repeat > 0" 
 				style="width: 20px; padding: 8px 0px; overflow-y: hidden; overflow-x: visible;">
 				<div v-for="(item, index) in bubbles" :key="index"
@@ -23,7 +27,7 @@ Vue.component('reader', {
 			<div id="board" v-if="repeat > 1">{{repeatTimes + "/" + repeat}}</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
-		<div v-show="duration > 0" slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
+		<div v-show="duration > 0 && mode == '' " slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
 			<div style="display: flex; flex-direction: row; align-items: center; ">
 				<Icon v-if="state == 'pause' || state == 'stop'" type="md-play" size="20" color="white" class="button" @click.native="audio.play()" />
 				<Icon v-else type="md-pause" size="20" color="white" class="button" @click.native="audio.pause()" />
@@ -82,7 +86,8 @@ Vue.component('reader', {
 			bubbles: [],
 			block: [],
 			vocabulary: "",
-			displayVocabulary: false
+			displayVocabulary: false,
+			mode: "",
 		};
 	},
 	created(){
@@ -93,7 +98,7 @@ Vue.component('reader', {
 
 		this.title = this.source.title;
 		if(FireStore.login == true)
-			await this.getVocab();
+			await this.getHistory();
 		this.initial();
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.audio.state = "stop";
@@ -115,7 +120,7 @@ Vue.component('reader', {
 		this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
-		async getVocab(){
+		async getHistory(){
 			try {
 				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("history").doc(this.source.key)
@@ -130,7 +135,7 @@ Vue.component('reader', {
 				// vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
 			}
 		},
-		async setVocab(){
+		async setHistory(){
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 				.collection("history").doc(this.source.key);
 			let obj = {
@@ -154,7 +159,7 @@ Vue.component('reader', {
 				this.vocabulary = rows.join("\n");
 			else 
 				this.vocabulary = ""
-			this.setVocab();
+			this.setHistory();
 		},
 		onClickBubble(e, index){
 			let self = this;
@@ -224,7 +229,7 @@ Vue.component('reader', {
 				return arr.length;
 			}
 
-			function saveBlock(params) {
+			function saveBlock() {
 				let s = window.localStorage["VOA-Blocks-" + self.source.report];
 				let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
 				for(let i = 0; i < arr.length; i++){
@@ -258,7 +263,6 @@ Vue.component('reader', {
 			let self = this;
 			let setting = {
 				autoPlay: false,
-				mode: "all",
 				zoom: 1.2,
 				rate: 1,
 				repeat: 0,
@@ -390,24 +394,40 @@ Vue.component('reader', {
 		},
 		onKeydown(event){
 			if(this.audio.canPlay == false) return;
-
+			let self = this;
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// console.log("key: " + code + "/" + pk)			
+			// console.log("key: " + code + "/" + pk)
+			// console.log(o.tagName + ": " + o.contentEditable)
+			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA")	return;
+		
 			if(pk == true && code == 77 && FireStore.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
 				
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
 					console.log(window.getSelection())
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
-					this.setVocab()
+					this.setHistory()
 				}
+			} else if(pk == true && code == 69 && this.$isAdmin() == true){ // 編輯
+				if(this.mode == "edit") {
+					refresh();
+				} else {
+					this.mode = "edit";
+					this.audio.pause();
+					this.displayVocabulary = false;
+				}
+			} else if(pk == true && code == 83 && this.mode == "edit"){ // 存檔，還沒寫
+				// refresh();
+				let html = this.$refs["textarea"].value;
+				this.$emit("onUpdate", html);
+				this.onPopState();
 			} else if(code == 27){ //
 				this.displayVocabulary = false;
-			} else if(this.displayVocabulary == true) {
-				return;
+			// } else if(this.displayVocabulary == true) {
+			// 	return;
 			} else if(pk && sk && code == 86 && FireStore.login == true){ // Cmd ＋ shift + V, 單字清單, 還沒寫
 				this.displayVocabulary = true;
 			} else if(code == 32){ //空格鍵，interrupt
@@ -435,9 +455,18 @@ Vue.component('reader', {
 
 			event.preventDefault();
       event.stopImmediatePropagation();
-      event.stopPropagation();
+			event.stopPropagation();
+			
+			function refresh() {
+				self.mode = "";
+				setTimeout(() => {
+					document.getElementById("readerFrame").style.zoom = self.audio.setting.zoom;
+					self.retrieve(true);
+				}, 600);
+			}
 		},
 		buildMenu(){
+			if(this.$isSmallScreen()) return;
 			let arr = [], children = [];
 
 			arr.push({
@@ -496,9 +525,6 @@ Vue.component('reader', {
 				}) 
 				arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});					
 			}
-
-
-
 			this.cmList = arr;
 		},
 		onMenuClick(e){
@@ -630,8 +656,10 @@ Vue.component('reader', {
 					let start = item2.getAttribute("start");
 					let end = item2.getAttribute("end");
 					if(isNaN(start) || start == null || isNaN(end) || end == null) {
-						if(item2.innerHTML.lastIndexOf("<strong") == -1)
+						if(item2.innerHTML.lastIndexOf("<strong") == -1){
 							vm.showMessage("下列位置沒有 lrc ", "block: " + index1 + ", lrc: " + index2 )
+							console.log(item1)
+						}
 					} else {
 						item2.id = "l" + lrcs.length + "_" + arr3.length;
 						arr3.push({start: parseFloat(start),  end: parseFloat(end)})
@@ -643,8 +671,9 @@ Vue.component('reader', {
 					lrcs.push(arr3);
 					let start = arr3[0].start;
 					let rate = Math.floor(start);
-					if(lrcs.length > 1)
+					if(lrcs.length > 1 && !this.$isSmallScreen()) {
 						this.marks[rate] = lrcs.length + "";
+					}
 				}
 			});
 			this.audio.LRCs = lrcs;
