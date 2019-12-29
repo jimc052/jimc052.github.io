@@ -273,12 +273,12 @@ Vue.component('reader', {
 			if(FireStore.login == true) {
 				let data = await this.getHistory();
 				// console.log(data);
-				if(typeof data.vocabulary == "string") {
+				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
-				if(this.vocabulary.length > 0) this.displayVocabulary = true;
+				if(data && this.vocabulary.length > 0) this.displayVocabulary = true;
 
-				if(Array.isArray(data.block)) {
+				if(data && Array.isArray(data.block)) {
 					this.block = data.block;
 				}
 			} else {
