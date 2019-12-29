@@ -4,29 +4,19 @@ Vue.component('reader', {
 		 :closable="false" style="overflow: hidden;"
 		 :footer-hide="mode == 'edit'">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState">
-			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px">
+			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
+				trigger="click"
+			>
 				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
 				<DropdownMenu slot="list" v-if="audio && audio.setting">
-				
 					<DropdownItem name="自動播放">
 						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.autoPlay == true ? '' : '#e5e5e5'}"></Icon>
 						自動播放
 					</DropdownItem>
-	
 					<DropdownItem name="中文" v-if="isChinese()" divided>
 						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.chinese == true ? '' : '#e5e5e5'}"></Icon>
 						中文
 					</DropdownItem>
-
-				<!--
-				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
-
-						<DropdownItem name="1">驴打滚</DropdownItem>
-						<DropdownItem name="2">炸酱面</DropdownItem>
-						<DropdownItem disabled  name="3">豆汁儿</DropdownItem>
-						<DropdownItem>冰糖葫芦</DropdownItem>
-						<DropdownItem divided>北京烤鸭</DropdownItem>
-				-->
 				</DropdownMenu>
 			</Dropdown>
 		</header-bar>
