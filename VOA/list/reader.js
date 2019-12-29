@@ -95,18 +95,9 @@ Vue.component('reader', {
 	async mounted () {
 		let context = document.querySelector("#context");
 		if(context != null) context.style.visibility = "hidden";
-
-		this.title = this.source.title;
-		if(FireStore.login == true)
-			await this.getHistory();
-		this.initial();
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
-		this.audio.state = "stop";
-		this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
-		this.audio.src = this.url;
-		document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
-		window.addEventListener('keydown', this.onKeydown, false);
-		window.addEventListener('resize', this.onResize, false);
+		this.title = this.source.title;
+		this.initial();
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -125,11 +116,8 @@ Vue.component('reader', {
 				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("history").doc(this.source.key)
 					.get();
-				if(typeof snapshot1.data().vocabulary == "string") {
-					this.vocabulary = snapshot1.data().vocabulary;
-				}
-				if(this.vocabulary.length > 0) this.displayVocabulary = true;
-				// console.log("vocabulary: " + this.vocabulary);
+				return snapshot1.data();
+				
 			} catch(e) {
 				// console.log(e)
 				// vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
@@ -141,8 +129,10 @@ Vue.component('reader', {
 			let obj = {
 				modifyDate: (new Date()).toString("yyyymmddThhMM"),
 				vocabulary: this.vocabulary,
-				report: this.source.report
+				report: this.source.report,
+				block: this.audio.block.length == 2 ? [this.audio.block[0], this.audio.block[1]] : []
 			}
+
 			try {
 				let x = await ref.set(obj,{merge: true});
 				// this.$Notice.success({
@@ -217,7 +207,10 @@ Vue.component('reader', {
 				if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){
 					this.audio.assignParagraph(this.audio.block[0], true);
 				}
-				saveBlock();
+				if(FireStore.login == true)
+					this.setHistory()
+				else
+					saveBlock();
 			}
 			
 			function clearBubble() {
@@ -259,7 +252,7 @@ Vue.component('reader', {
 				this.renderBubble();
 			}, 300);
 		},
-		initial(){
+		async initial(){
 			let self = this;
 			let setting = {
 				autoPlay: false,
@@ -271,25 +264,46 @@ Vue.component('reader', {
 				sleep: 30,
 				chinese: true
 			}
-	
+
 			let s = window.localStorage["VOA-Reader"];
 			if(typeof s == "string" && s.length > 0) 
 				setting = Object.assign(setting, JSON.parse(s));
 			this.repeat = setting.repeat;
-			
-			s = window.localStorage["VOA-Blocks-" + this.source.report];
-			let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
-			this.block = [];
-			if(Array.isArray(arr)) {
-				arr.forEach(item=>{
-					if(item.key == this.source.key) {
-						this.block = item.block;
-					}
-				});				
+
+			if(FireStore.login == true) {
+				let data = await this.getHistory();
+				// console.log(data);
+				if(typeof data.vocabulary == "string") {
+					this.vocabulary = data.vocabulary;
+				}
+				if(this.vocabulary.length > 0) this.displayVocabulary = true;
+
+				if(Array.isArray(data.block)) {
+					this.block = data.block;
+				}
+			} else {
+				s = window.localStorage["VOA-Blocks-" + this.source.report];
+				let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
+				this.block = [];
+				if(Array.isArray(arr)) {
+					arr.forEach(item=>{
+						if(item.key == this.source.key) {
+							this.block = item.block;
+						}
+					});				
+				}
 			}
+
 			this.audio = new Player({block: this.repeat == 0 ? [] : this.block});
 			this.audio.setting = setting;
+			this.audio.state = "stop";
+			this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
+			this.audio.src = this.url;
+			document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+			window.addEventListener('keydown', this.onKeydown, false);
+			window.addEventListener('resize', this.onResize, false);
 			window.addEventListener("popstate", this.onPopState);
+
 	
 			self.audio.onStateChange = (e, v1, v2) => {
 				// console.log(e)

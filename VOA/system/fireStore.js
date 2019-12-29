@@ -58,7 +58,29 @@
         throw e;
       }
     }
-  
+
+    static async getSetting(key){
+			try {
+				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
+					.collection("setting").doc(key)
+          .get();
+        return snapshot1.data();
+      } catch(e) {
+        // console.log(e)
+        // vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
+      }
+    }
+    static async setSetting(key, json){
+      let ref = FireStore.db.collection("users").doc(FireStore.uid())
+        .collection("setting").doc(key);
+      try {
+        let x = await ref.set(json,{merge: true});
+      } catch(e) {
+        console.log(e)
+        throw e;
+      }
+    }
+
     static async uploadString(fileName, data){ // 不知為何又不能用了
       // https://firebase.google.com/docs/storage/web/upload-files?hl=zh-cn
       return new Promise( (success, error) => {

@@ -91,7 +91,11 @@ Vue.component('list', {
 			};
 			history.pushState(state, "reader", "?reader=" + this.datas[index].title);
 			this.source = this.datas[index];
-			window.localStorage["VOA-" + this.title] = this.datas[index].key;
+			if(FireStore.login == true){
+				FireStore.setSetting(this.title, {active: this.datas[index].key});
+			} else {
+				window.localStorage["VOA-" + this.title] = this.datas[index].key;
+			}
 		},
 		onCloseReader(){
 			this.source = null;
@@ -109,12 +113,19 @@ Vue.component('list', {
 		}
 	},
 	watch: {
-		title(value) {
+		async title(value) {
 			this.datas = [];
 			if(typeof value == "string" && value.length > 0) {
-				let s = window.localStorage["VOA-" + this.title];
-				if(typeof s == "string" && s.length > 0) {
-					this.dataKey = s;
+				if(FireStore.login == true){
+					let json = await FireStore.getSetting(this.title);
+					if(typeof json != "undefined"){
+						this.dataKey = json.active;
+					}
+				} else {
+					let s = window.localStorage["VOA-" + this.title];
+					if(typeof s == "string" && s.length > 0) {
+						this.dataKey = s;
+					}					
 				}
 				this.retrieve();
 			}

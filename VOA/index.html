@@ -109,11 +109,11 @@
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
 				<div id='email'></div>
-				Jim Chen 2019-12-28 21:00
+				Jim Chen 2019-12-29 11:00
 			</div>
 		</Drawer>
 		<list :title="title"></list>
-		<login :visible='modal' @on-close="homePage(0);"></login>
+		<login :visible='modal' @on-close="homePage();"></login>
   </div>
 </body>
 <script>
@@ -145,18 +145,20 @@
 				iview.lang('zh-TW');
 			},
 			async mounted(){
-				
 				let self = this;
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
-				let email = window.localStorage["email"];
-				if((typeof email == "string" && email.length > 0) || location.href.indexOf("?email=") > -1) {
-					this.modal = true;
-				} else if(location.href.indexOf("?anonymous=") > -1) { // 
+				if(location.href.indexOf("?anonymous=") > -1) {
 					this.homePage();
 				} else {
-					this.menu = [];
+					let email = window.localStorage["email"];
+						if((typeof email == "string" && email.length > 0) || location.href.indexOf("?email=") > -1) {
+						this.modal = true;
+					} else {
+						this.menu = [];
+					}
 				}
+				
 				window.onresize = () => {
 				return (() => {
 						// self.screenWidth = document.body.clientWidth;
@@ -168,21 +170,29 @@
 				showDrawer() {
 					this.drawer = true;
 				},
-				onSelect(index){
+				async onSelect(index, upload){
 					this.activeName = index;
-					window.localStorage["VOA-activeName"] = index;
+					if(typeof upload == "undefined") {
+						if(FireStore.login == true){
+							FireStore.setSetting("home", {active: index});
+						} else
+							window.localStorage["VOA-activeName"] = index;						
+					}
 					this.title = this.menu[index];
 					this.drawer = false;
 				},
-				homePage(index){
-					
-					if(!isNaN(index)) {
-						if(FireStore.login == true){
-							document.getElementById("email").innerText = "帳號：" + FireStore.mail();
+				async homePage(){
+					let active = 0;
+					if(FireStore.login == true){
+						document.getElementById("email").innerText = "帳號：" + FireStore.mail();
+						let json = await FireStore.getSetting("home");
+						if(typeof json != "undefined"){
+							active = json.active;
 						}
+					} else {
+						active = window.localStorage["VOA-activeName"];
 					}
-					let active = window.localStorage["VOA-activeName"];
-					this.onSelect(typeof active == "undefined" ? 0 : parseInt(active, 10));
+					this.onSelect(typeof active == "undefined" ? 0 : parseInt(active, 10), false);
 				},
 				showMessage(){
 					// vm.loading(false);
