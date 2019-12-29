@@ -3,7 +3,33 @@ Vue.component('reader', {
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
 		 :closable="false" style="overflow: hidden;"
 		 :footer-hide="mode == 'edit'">
-		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"></header-bar>
+		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState">
+			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px">
+				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
+				<DropdownMenu slot="list" v-if="audio && audio.setting">
+				
+					<DropdownItem name="自動播放">
+						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.autoPlay == true ? '' : '#e5e5e5'}"></Icon>
+						自動播放
+					</DropdownItem>
+	
+					<DropdownItem name="中文" v-if="isChinese()" divided>
+						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.chinese == true ? '' : '#e5e5e5'}"></Icon>
+						中文
+					</DropdownItem>
+
+				<!--
+				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
+
+						<DropdownItem name="1">驴打滚</DropdownItem>
+						<DropdownItem name="2">炸酱面</DropdownItem>
+						<DropdownItem disabled  name="3">豆汁儿</DropdownItem>
+						<DropdownItem>冰糖葫芦</DropdownItem>
+						<DropdownItem divided>北京烤鸭</DropdownItem>
+				-->
+				</DropdownMenu>
+			</Dropdown>
+		</header-bar>
 		<textarea v-if="mode=='edit'" ref="textarea"
 			style="height: 100%; width: 100%; font-size: 18px;"
 		>{{source.html}}</textarea>
@@ -111,6 +137,117 @@ Vue.component('reader', {
 		this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
+		onClickMore(item){
+			if(item == "自動播放")
+				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
+			else if(item == "中文") {
+				this.audio.setting.chinese = !this.audio.setting.chinese;
+			}
+			this.buildMenu();
+			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			// console.log(item)
+		},
+		buildMenu(){
+			if(this.$isSmallScreen()) return;
+			let arr = [], children = [];
+
+			arr.push({
+				text: '自動播放',
+				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
+			});
+
+			if(this.isChinese() == true) {
+				arr.push({
+					text: '中文',
+					icon: "" + (this.audio.setting.chinese == true ? "ivu-icon-md-checkmark ivu-icon" : "")
+				});
+				this.changeChinese();
+				setTimeout(()=>{
+					this.renderBubble();
+				}, 300);
+			}
+
+			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
+			children.forEach(item=>{
+				if(this.audio.setting.zoom == item.value)
+					item.icon = "ivu-icon-md-checkmark ivu-icon";
+			})
+			arr.push({text: '字體',children: children});
+
+			children = [{text: "慢", value: 0.9}, {text: "正常", value: 1}, {text: "快", value: 1.4}];
+			let label = "";
+			children.forEach(item=>{
+				if(this.audio.setting.rate == item.value) {
+					label = " - " + item.text;
+					item.icon = "ivu-icon-md-checkmark ivu-icon";
+				}
+			})
+			arr.push({text: '速率' + label, children: children});
+
+			children = [];
+			[0, 1, 2, 3, 5, 10, 20].forEach(item =>{
+				children.push({
+					text: item == 0 ? "關閉" : item + " 次", 
+					value: item,
+					icon: this.audio.setting.repeat == item ? "ivu-icon-md-checkmark ivu-icon" : ""
+				});
+			}) 
+			arr.push({text: '重複播放 - ' + (this.audio.setting.repeat > 0 ? this.audio.setting.repeat + "次" : "關閉"), children: children});
+
+			if(this.audio.setting.repeat > 0) {
+				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
+				
+				children = [];
+				[3, 5, 10, 15, 20, 30, 45, 60].forEach(item =>{
+					children.push({
+						text: item + " 秒", 
+						value: item,
+						icon: this.audio.setting.interval == item ? "ivu-icon-md-checkmark ivu-icon" : ""
+					});
+				}) 
+				arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});					
+			}
+			this.cmList = arr;
+		},
+		onMenuClick(e){
+			// https://vuejsexamples.com/a-simple-and-easy-to-use-context-menu-with-vue/
+			if(this.cmList[e[0]].text == "自動播放") {
+				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
+			} else if(this.cmList[e[0]].text.indexOf("中文") > -1) {
+					this.audio.setting.chinese = !this.audio.setting.chinese;
+			} else if(this.cmList[e[0]].text == "字體") {
+				this.audio.setting.zoom = this.cmList[e[0]].children[e[1]].value;
+				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+				this.renderBubble();
+			} else if(this.cmList[e[0]].text.indexOf("速率") > -1) {
+				this.audio.setting = Object.assign(this.audio.setting, {rate: this.cmList[e[0]].children[e[1]].value});
+			} else  if(this.cmList[e[0]].text.indexOf("重複播放") > -1) {
+				let update = this.audio.setting.repeat == 0 || this.cmList[e[0]].children[e[1]].value == 0 ? true : false;
+				this.audio.setting = Object.assign(this.audio.setting, {repeat: this.cmList[e[0]].children[e[1]].value});
+				if(this.cmList[e[0]].children[e[1]].value == 0) {
+					this.audio.setting.interrupt = false;
+				}
+
+				this.audio.block = this.audio.setting.repeat == 0 ? [] : this.block;
+				if(update == true) {
+					this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
+					this.audio.audio.pause();
+					clearInterval(this.audio.timeID);
+					this.audio.repeat = 0;
+					setTimeout(() => {
+						this.retrieve(true);
+					}, 300);
+				}
+				this.repeat = this.audio.setting.repeat;
+			} else if(this.cmList[e[0]].text == "重複中斷") {
+				this.audio.setting = Object.assign(this.audio.setting, {interrupt: ! this.audio.setting.interrupt});
+			} else if(this.cmList[e[0]].text.indexOf("重複間距") > -1) {
+				this.audio.setting = Object.assign(this.audio.setting, {interval: this.cmList[e[0]].children[e[1]].value});
+			}
+
+			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			this.buildMenu();
+		},
 		async getHistory(){
 			try {
 				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
@@ -479,107 +616,8 @@ Vue.component('reader', {
 				}, 600);
 			}
 		},
-		buildMenu(){
-			if(this.$isSmallScreen()) return;
-			let arr = [], children = [];
-
-			arr.push({
-				text: '自動播放',
-				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
-			});
-
-			if(this.source.html.indexOf("<div class='chinese'>") > -1) {
-				arr.push({
-					text: '中文',
-					icon: "" + (this.audio.setting.chinese == true ? "ivu-icon-md-checkmark ivu-icon" : "")
-				});
-				this.changeChinese();
-				setTimeout(()=>{
-					this.renderBubble();
-				}, 300);
-			}
-
-			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
-			children.forEach(item=>{
-				if(this.audio.setting.zoom == item.value)
-					item.icon = "ivu-icon-md-checkmark ivu-icon";
-			})
-			arr.push({text: '字體',children: children});
-
-			children = [{text: "慢", value: 0.9}, {text: "正常", value: 1}, {text: "快", value: 1.4}];
-			let label = "";
-			children.forEach(item=>{
-				if(this.audio.setting.rate == item.value) {
-					label = " - " + item.text;
-					item.icon = "ivu-icon-md-checkmark ivu-icon";
-				}
-			})
-			arr.push({text: '速率' + label, children: children});
-
-			children = [];
-			[0, 1, 2, 3, 5, 10, 20].forEach(item =>{
-				children.push({
-					text: item == 0 ? "關閉" : item + " 次", 
-					value: item,
-					icon: this.audio.setting.repeat == item ? "ivu-icon-md-checkmark ivu-icon" : ""
-				});
-			}) 
-			arr.push({text: '重複播放 - ' + (this.audio.setting.repeat > 0 ? this.audio.setting.repeat + "次" : "關閉"), children: children});
-
-			if(this.audio.setting.repeat > 0) {
-				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
-				
-				children = [];
-				[3, 5, 10, 15, 20, 30, 45, 60].forEach(item =>{
-					children.push({
-						text: item + " 秒", 
-						value: item,
-						icon: this.audio.setting.interval == item ? "ivu-icon-md-checkmark ivu-icon" : ""
-					});
-				}) 
-				arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});					
-			}
-			this.cmList = arr;
-		},
-		onMenuClick(e){
-			// https://vuejsexamples.com/a-simple-and-easy-to-use-context-menu-with-vue/
-			if(this.cmList[e[0]].text == "自動播放") {
-				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
-			} else if(this.cmList[e[0]].text.indexOf("中文") > -1) {
-					this.audio.setting.chinese = !this.audio.setting.chinese;
-			} else if(this.cmList[e[0]].text == "字體") {
-				this.audio.setting.zoom = this.cmList[e[0]].children[e[1]].value;
-				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
-				this.renderBubble();
-			} else if(this.cmList[e[0]].text.indexOf("速率") > -1) {
-				this.audio.setting = Object.assign(this.audio.setting, {rate: this.cmList[e[0]].children[e[1]].value});
-			} else  if(this.cmList[e[0]].text.indexOf("重複播放") > -1) {
-				let update = this.audio.setting.repeat == 0 || this.cmList[e[0]].children[e[1]].value == 0 ? true : false;
-				this.audio.setting = Object.assign(this.audio.setting, {repeat: this.cmList[e[0]].children[e[1]].value});
-				if(this.cmList[e[0]].children[e[1]].value == 0) {
-					this.audio.setting.interrupt = false;
-				}
-
-				this.audio.block = this.audio.setting.repeat == 0 ? [] : this.block;
-
-				if(update == true) {
-					this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
-					this.audio.audio.pause();
-					clearInterval(this.audio.timeID);
-					this.audio.repeat = 0;
-					setTimeout(() => {
-						this.retrieve(true);
-					}, 300);
-				}
-				this.repeat = this.audio.setting.repeat;
-			} else if(this.cmList[e[0]].text == "重複中斷") {
-				this.audio.setting = Object.assign(this.audio.setting, {interrupt: ! this.audio.setting.interrupt});
-			} else if(this.cmList[e[0]].text.indexOf("重複間距") > -1) {
-				this.audio.setting = Object.assign(this.audio.setting, {interval: this.cmList[e[0]].children[e[1]].value});
-			}
-
-			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
-			this.buildMenu();
+		isChinese() {
+			return this.source && this.source.html.indexOf("<div class='chinese'>") > -1;
 		},
 		onSlideChange(e){
 			this.audio.currentTime = e;

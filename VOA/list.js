@@ -1,6 +1,8 @@
 Vue.component('list', { 
 	template:  `<div id="list" style="display: flex; flex-direction: column;">
-		<header-bar :title="title"></header-bar>
+		<header-bar :title="title">
+		
+		</header-bar>
 		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
 		<i-button v-if="isDebug" type="primary" shape="circle" icon="md-add" 
