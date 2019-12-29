@@ -415,13 +415,18 @@ Vue.component('reader', {
 			let sk = event.shiftKey, code = event.keyCode;
 			// console.log("key: " + code + "/" + pk)
 			// console.log(o.tagName + ": " + o.contentEditable)
-			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA")	return;
-		
-			if(pk == true && code == 77 && FireStore.login == true){ // m, 加入筆記
+			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
+				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
+					let html = this.$refs["textarea"].value;
+					this.$emit("onUpdate", html);
+					this.onPopState();
+				} else
+					return;
+			} else if(pk == true && code == 77 && FireStore.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
 				
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
-					console.log(window.getSelection())
+					// console.log(window.getSelection())
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
 					this.setHistory()
 				}
@@ -432,12 +437,7 @@ Vue.component('reader', {
 					this.mode = "edit";
 					this.audio.pause();
 					this.displayVocabulary = false;
-				}
-			} else if(pk == true && code == 83 && this.mode == "edit"){ // 存檔，還沒寫
-				// refresh();
-				let html = this.$refs["textarea"].value;
-				this.$emit("onUpdate", html);
-				this.onPopState();
+				}				
 			} else if(code == 27){ //
 				this.displayVocabulary = false;
 			// } else if(this.displayVocabulary == true) {
@@ -648,18 +648,19 @@ Vue.component('reader', {
 			}
 
 			let arr = document.querySelectorAll(".english span");
+			let dealine = 0.5;
 			for(let i = 0; i < arr.length; i++) {
 				let start = arr[i].getAttribute("start");
 				let end = arr[i].getAttribute("end");
 				if(start != 0 && i > 0) {
 					if(arr[i - 1].getAttribute("end") == null)
-						arr[i - 1].setAttribute("end", start - 0.3);
+						arr[i - 1].setAttribute("end", start - dealine);
 				}
-				// console.log(i + ":" + start + "/" + end)
+			
 				if(i == 0 && start == null){
 					arr[i].setAttribute("start", 0);
-				} else if(i == arr.length - 1 && end == null){
-					arr[i].setAttribute("end", this.duration - 0.3);
+				} else if(i == arr.length - 1 && (end == null || end >= this.duration)){
+					arr[i].setAttribute("end", this.duration - dealine);
 				}
 			}
 
@@ -708,6 +709,7 @@ Vue.component('reader', {
 			setTimeout(()=>{
 				if(context != null) context.style.visibility = "visible";
 			}, 100);
+			// this.audio.currentTime = this.duration - 3;
 		}, 
 		onScroll(e){
 			if(this.repeat == 0) return;

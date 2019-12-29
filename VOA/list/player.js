@@ -6,13 +6,14 @@ class Player {
 		this.currentRange = null;
 		let self = this;
 		self.audio = new Audio();
-
+		this.audio.autoplay = false;
 		self.audio.addEventListener("loadstart", function() { 
 			self.onStateChange("loadStart");
 		}, true);
 		self.audio.addEventListener("canplay", function() {
 			// console.log("canplay: " + self.canPlay)
 			if(self.canPlay == false) {
+				self.audio.autoplay = false;
 				self.onStateChange("canPlay");
 				self.canPlay = true;
 				if(self._setting.autoPlay == true) {
@@ -22,24 +23,30 @@ class Player {
 					}, 1000);
 				}				
 			}
+			self.audio.removeEventListener("canplay", null)
 		}, true);
 		self.audio.addEventListener("durationchange", function() { 
-			self.onStateChange("durationChange", self.audio.duration);
-			// self.$emit('onPlayState', "durationchange", self.duration);
+			if(self.canPlay == false)
+				self.onStateChange("durationChange", self.audio.duration);
+				self.audio.removeEventListener("durationchange", null)
 		}, true);
 		self.audio.addEventListener("timeupdate", function() {
 			// console.log("timeupdate: " + self.audio.currentTime)
 		}, true);
 
 		self.audio.addEventListener("ended", function() {
-			this.onStateChange("sectionChange", -1);
+			self.onStateChange("sectionChange", -1);
 			self.state = "pendding";
+			self.currentRange = null;
+			// self.paragraph =  self.block.length > 0 ? self.block[0] : 0;
+			// self.lrc = 0;
+			self.audio.pause();
 			self.intervalID = setTimeout(()=>{
 				if(self.state == "pendding") {
 					self.beep.play();
 					self.intervalID = setTimeout(()=>{
 						self.assignParagraph(0);
-					}, 3000);
+					}, 5000);
 				}
 			}, 1000);
 		}, true);
@@ -54,7 +61,6 @@ class Player {
 	}
 
 	play(inform){
-		// console.log("play: " + inform)
 		this.repeat = 0;
 		if(this.canPlay == false) return;
 		try {
@@ -70,11 +76,12 @@ class Player {
 	}
 
 	timing(){
+		clearTimeout(this.timeID);
+		let self = this;
 		this.timeID = setInterval(() => {
 			this.onStateChange("timeUpdate", this.audio.currentTime);
 			let time = this.audio.currentTime;
 			let range = this.currentRange;
-			let self = this;
 			if(range == null){
 				if(this.block.length > 0)
 					this.paragraph = this.block[0];
@@ -150,18 +157,19 @@ class Player {
 					}
 					this.state = "pendding";
 				} else if(time >= range.end && this.paragraph == this.LRCs.length - 1 && this.lrc == this.LRCs[this.paragraph].length - 1) {
+					clearTimeout(this.timeID);
 					this.onStateChange("sectionChange", -1);
 					this.state = "pendding";
 					this.currentRange = null;
-					this.paragraph = 0;
-					this.lrc = 0;
+					// this.paragraph = this.block.length > 0 ? this.block[0] : 0;
+					// this.lrc = 0;
 					this.audio.pause();
 					this.intervalID = setTimeout(()=>{
 						if(this.state == "pendding") {
 							this.beep.play();
 							this.intervalID = setTimeout(()=>{
 								// this.intervalID = setTimeout(() => {
-									this.assignParagraph(0);
+									this.assignParagraph(this.block.length > 0 ? this.block[0] : 0);
 									// if(this.state == "pendding") {
 									// 	this.play(false);
 									// }	
@@ -174,7 +182,6 @@ class Player {
 					for(let i = 0; i < this.LRCs.length; i++) {
 						let row = this.LRCs[i];
 						for(let j = 0; j < row.length; j++) {
-							// console.log(i + "-" + j + ": " + row[j].start + "~" + row[j].end)
 							if(time >= row[j].start && time <= row[j].end) {
 								this.currentRange = row[j];
 								this.paragraph = i;
@@ -218,6 +225,7 @@ class Player {
 	}
 
 	continue(){
+		console.log("continue");
 		if(this.intervalID) clearTimeout(this.intervalID);
 		clearTimeout(this.timeID);
 		this.audio.currentTime = this.currentRange.start;
@@ -232,20 +240,21 @@ class Player {
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
 		let end = this._setting.repeat > 0 && this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
 		if(value >= start && value <= end) {
-			if(this.intervalID) clearTimeout(this.intervalID);
-			this.paragraph = value;
-			this.lrc = 0;
-			this.currentRange = this.LRCs[value][0];
-			this.audio.currentTime = this.currentRange.start;
-			if(this.state == "pendding" || play == true) {
-				clearTimeout(this.timeID);
-				this.state = "play";
-				this.audio.play();
-				this.timing();
-				delete this.intervalID;
-				this.onStateChange("play");
-			} 
-			this.onStateChange("sectionChange", value, 0);
+			// if(this.intervalID) clearTimeout(this.intervalID);
+			// this.paragraph = value;
+			// this.lrc = 0;
+			// this.currentRange = this.LRCs[value][0];
+			// this.audio.currentTime = this.currentRange.start;
+			// if(this.state == "pendding" || play == true) {
+			// 	clearTimeout(this.timeID);
+			// 	this.state = "play";
+			// 	this.audio.play();
+			// 	this.timing();
+			// 	delete this.intervalID;
+			// 	this.onStateChange("play");
+			// } 
+			// this.onStateChange("sectionChange", value, 0);
+			this.restart(value, 0);
 		}
 	}
 
@@ -253,34 +262,33 @@ class Player {
 		this.repeat = 0;
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
 		let end = this._setting.repeat > 0 && this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
+		let block = 0;
 		if(value == "first") {
-			this.paragraph = start;
-			this.lrc = 0;
+			block = start;
 		} else if(value == "end") {
-			this.paragraph = end;
-			this.lrc = 0;
+			block = end;
 		} else if(!isNaN(value)) {
 			if(value + this.paragraph < 0)
 				return;
 			else if(value + this.paragraph >= end + 1)
-				this.paragraph = start;
+				block = start;
 			else {
-				this.paragraph = value + this.paragraph;
+				block = value + this.paragraph;
 			}
-			this.lrc = 0;
 		}
-		if(this.intervalID) clearTimeout(this.intervalID);
-		this.currentRange = this.LRCs[this.paragraph][this.lrc]
-		this.audio.currentTime = this.LRCs[this.paragraph][this.lrc].start;
-		if(this.state == "pendding") {
-			clearTimeout(this.timeID);
-			this.state = "play";
-			this.audio.play();
-			this.timing();
-			delete this.intervalID;
-			this.onStateChange("play");
-		} 
-		this.onStateChange("sectionChange", this.paragraph, this.lrc);
+		this.restart(block, 0);
+		// if(this.intervalID) clearTimeout(this.intervalID);
+		// this.currentRange = this.LRCs[this.paragraph][this.lrc]
+		// this.audio.currentTime = this.LRCs[this.paragraph][this.lrc].start;
+		// if(this.state == "pendding") {
+		// 	clearTimeout(this.timeID);
+		// 	this.state = "play";
+		// 	this.audio.play();
+		// 	this.timing();
+		// 	delete this.intervalID;
+		// 	this.onStateChange("play");
+		// } 
+		// this.onStateChange("sectionChange", this.paragraph, this.lrc);
 	}
 	gotoLRC(value) {
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
@@ -309,14 +317,32 @@ class Player {
 				if(block >= end + 1) {
 					block = start;
 				}
-				rows = this.LRCs[block];
+				// rows = this.LRCs[block];
 				lrc = 0;
 			}
 		}
-		this.paragraph = block;
+		this.restart(block, lrc);
+		// this.paragraph = block;
+		// this.lrc = lrc;
+		// this.currentRange =  this.LRCs[block][lrc];
+		// this.audio.currentTime = this.LRCs[block][lrc].start;
+		// if(this.intervalID) clearTimeout(this.intervalID);
+		// if(this.state == "pendding") {
+		// 	clearTimeout(this.timeID);
+		// 	this.state = "play";
+		// 	this.audio.play();
+		// 	this.timing();
+		// 	delete this.intervalID;
+		// 	this.onStateChange("play");
+		// } 
+		// this.onStateChange("sectionChange", this.paragraph, this.lrc);
+	}
+
+	restart(paragraph, lrc) {
+		this.paragraph = paragraph;
 		this.lrc = lrc;
-		this.currentRange =  this.LRCs[block][lrc];
-		this.audio.currentTime = this.LRCs[block][lrc].start;
+		this.currentRange =  this.LRCs[paragraph][lrc];
+		this.audio.currentTime = this.LRCs[paragraph][lrc].start;
 		if(this.intervalID) clearTimeout(this.intervalID);
 		if(this.state == "pendding") {
 			clearTimeout(this.timeID);
