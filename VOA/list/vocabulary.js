@@ -49,9 +49,15 @@ Vue.component('dlg-vocabulary', {
 	async mounted () {
 		let el = document.querySelector("#vocabulary .ivu-modal");
 		el.style.margin = "0px";
-		el = document.querySelector("#vocabulary .ivu-modal-content-drag");
-		el.style.left = (document.body.clientWidth - 270) + "px";
-		el.style.top = (document.body.clientHeight - 400) + "px";
+		setTimeout(()=>{
+			el = document.querySelector("#vocabulary .ivu-modal-content-drag");
+			el.style.left = (document.body.clientWidth - 270) + "px";
+			el.style.top = (document.body.clientHeight - 400) + "px";
+			console.log(document.body.clientWidth + "/" + document.body.clientHeight)
+			console.log(el.getBoundingClientRect().width + "/" + el.getBoundingClientRect().height)
+		}, 600)
+
+		this.broadcast.$on('onResize', this.onResize);
 	},
 	destroyed() {
   },
@@ -75,6 +81,20 @@ Vue.component('dlg-vocabulary', {
 			this.rows[this.cursor] = this.model;
 			this.cursor = -1; this.model = "";
 			this.$emit("update", this.rows)
+		},
+		onResize(){
+			clearTimeout(this.resizeId);
+			this.resizeId = setTimeout(()=>{
+				let el = document.querySelector("#vocabulary .ivu-modal-content-drag");
+				if(el == null) 
+					return;
+				let left = el.style.left.replace("px", "");
+				if(left > document.body.clientWidth - 270)
+					el.style.left = (document.body.clientWidth - 270) + "px";
+					let top = el.style.top.replace("px", "");
+				if(top > document.body.clientHeight - 400)
+					el.style.top = (document.body.clientHeight - 400) + "px";
+			}, 300);
 		}
 	},
 	computed: {	

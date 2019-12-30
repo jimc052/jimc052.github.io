@@ -405,11 +405,10 @@ Vue.component('reader', {
 			}
 		},
 		onResize(){
-			// clearTimeout(this.resizeId);
-			// this.resizeId = setTimeout(()=>{
-			// 	this.renderBubble();
-
-			// }, 300);
+			clearTimeout(this.resizeId);
+			this.resizeId = setTimeout(()=>{
+				this.renderBubble();
+			}, 600);
 		},
 		async initial(){
 			let self = this;
@@ -462,8 +461,6 @@ Vue.component('reader', {
 			window.addEventListener('keydown', this.onKeydown, false);
 			// window.addEventListener('resize', this.onResize, false);
 			window.addEventListener("popstate", this.onPopState);
-			
-
 	
 			self.audio.onStateChange = (e, v1, v2) => {
 				// console.log(e)
