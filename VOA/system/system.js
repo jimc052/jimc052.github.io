@@ -80,3 +80,6 @@ Vue.prototype.$isAdmin = function () {
 		FireStore.mail().indexOf("jimc@") > -1 || FireStore.mail().indexOf("jimchen5342@") > -1
 	) ? true : false;
 }
+Vue.prototype.$isLocal = function () {
+	return location.href.indexOf("file:///") > -1 ? true : false;
+}

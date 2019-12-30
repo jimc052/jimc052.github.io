@@ -1,11 +1,12 @@
 Vue.component('list', { 
 	template:  `<div id="list" style="display: flex; flex-direction: column;">
 		<header-bar :title="title">
-		
+			<Icon slot="right" v-if="$isSmallScreen()" @click.native="onReload" type="md-refresh" size="28" color="white" 
+				style="cursor: pointer; margin-right: 10px;"></Icon>
 		</header-bar>
 		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
-		<i-button v-if="isDebug" type="primary" shape="circle" icon="md-add" 
+		<i-button v-if="$isLocal()" type="primary" shape="circle" icon="md-add" 
 			circle @click.native="onAdd" size="large"
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
@@ -23,7 +24,6 @@ Vue.component('list', {
 			datas: [],
 			source: null,
 			json: null,
-			isDebug: location.href.indexOf("file:///") > -1 ? true : false,
 			dataKey: ""
 		};
 	},
@@ -34,6 +34,9 @@ Vue.component('list', {
 	destroyed() {
   },
 	methods: {
+		onReload(){
+			location.reload()
+		},
 		onAdd() {
 			let self = this;
 			navigator.clipboard.readText()

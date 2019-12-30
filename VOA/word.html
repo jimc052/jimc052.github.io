@@ -110,11 +110,11 @@
 			async mounted(){
 				let self = this;
 
-				if(this.isDebug == true) {
-					this.modal = true;
-				} else {
-					this.homePage();
-				}
+				// if(this.isDebug == true) {
+				// 	this.modal = true;
+				// } else {
+				// 	this.homePage();
+				// }
 				window.onresize = () => {
 				return (() => {
 					self.broadcast.$emit('onResize');

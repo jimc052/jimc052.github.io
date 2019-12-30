@@ -204,7 +204,8 @@
 							let fontSize = 20;
 							let arr = [];
 							function createEl(index) {
-								fontSize = fontSize - 2;
+								if(index == 1)
+									fontSize = fontSize - 2;
 								arr.push( h('div', {
 									style: {
 										color: index == 0 ? 'red' : "#5e5a6e",

@@ -80,11 +80,9 @@ Vue.component('login', {
 				this.keepPassword = window.localStorage["keepPassword"] == "Y" ? true : false;
 				if(typeof this.email == "string" && this.email.length > 0 && this.keepPassword == true) {
 					this.password = window.localStorage["password"];
-					// if(location.href.indexOf("file:///") > -1) {
 						setTimeout(() => {
 							this.onOK();
 						}, 600);
-					// }
 				}				
 			}
 		}

@@ -17,6 +17,21 @@ Vue.component('reader', {
 						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.chinese == true ? '' : '#e5e5e5'}"></Icon>
 						中文
 					</DropdownItem>
+
+					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0" divided>
+						生字清單
+					</DropdownItem>
+
+					<!--
+					<DropdownItem name="設定" divided>
+						設定
+					</DropdownItem>
+					-->
+
+					<DropdownItem name="關於" divided>
+						關於
+					</DropdownItem>
+
 				</DropdownMenu>
 			</Dropdown>
 		</header-bar>
@@ -59,9 +74,9 @@ Vue.component('reader', {
 				v-if="repeat == 0"
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 				:marks="marks" />
-			
+
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
-			
+
 			<Dropdown v-if="state != 'stop'">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
 					{{convertTime((audio.setting.sleep * 60) - passTime)}}
@@ -93,7 +108,7 @@ Vue.component('reader', {
 			currentTime: 0,
 			passTime: 0,
 			cmList: [],
-			limits: [15, 20, 30, 45, 60, 90],
+			limits: [10, 15, 20, 30, 45, 60],
 			html: "",
 			msg: "",
 			marks: {},
@@ -114,6 +129,10 @@ Vue.component('reader', {
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.title = this.source.title;
 		this.initial();
+		if(this.$isAdmin()){
+			this.limits = [1, 3, 5].concat(this.limits);
+		}
+		this.broadcast.$on('onResize', this.onResize);
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -124,23 +143,34 @@ Vue.component('reader', {
 		this.$Notice.destroy();
 		window.removeEventListener('keydown', this.onKeydown, false);
 		window.removeEventListener("popstate", this.onPopState);
-		this.broadcast.$on('onResize', this.onResize);
+		
+		// this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
 		onClickMore(item){
+			// console.log(item)
 			if(item == "自動播放")
 				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
 			else if(item == "中文") {
 				this.audio.setting.chinese = !this.audio.setting.chinese;
+			} else if(item == "生字"){
+				this.displayVocabulary = true;
+				return;
+			} else if(item == "設定"){
+
+			} else if(item == "關於"){
+				vm.showMessage(
+					this.source.title, 
+					this.source.report + "：" + this.source.key, 
+					"異動日期：" + new Date(this.source.modifyDate).toString()
+				)
+				return;
 			}
 			this.buildMenu();
 			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
-			// console.log(item)
 		},
 		buildMenu(){
-			if(this.$isSmallScreen()) return;
 			let arr = [], children = [];
-
 			arr.push({
 				text: '自動播放',
 				icon: "" + (this.audio.setting.autoPlay == true ? "ivu-icon-md-checkmark ivu-icon" : "")
@@ -197,7 +227,8 @@ Vue.component('reader', {
 				}) 
 				arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});					
 			}
-			this.cmList = arr;
+
+			this.cmList = this.$isSmallScreen() ? [] : arr;
 		},
 		onMenuClick(e){
 			// https://vuejsexamples.com/a-simple-and-easy-to-use-context-menu-with-vue/
@@ -374,10 +405,11 @@ Vue.component('reader', {
 			}
 		},
 		onResize(){
-			clearTimeout(this.resizeId);
-			this.resizeId = setTimeout(()=>{
-				this.renderBubble();
-			}, 300);
+			// clearTimeout(this.resizeId);
+			// this.resizeId = setTimeout(()=>{
+			// 	this.renderBubble();
+
+			// }, 300);
 		},
 		async initial(){
 			let self = this;
@@ -428,8 +460,9 @@ Vue.component('reader', {
 			this.audio.src = this.url;
 			document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
 			window.addEventListener('keydown', this.onKeydown, false);
-			window.addEventListener('resize', this.onResize, false);
+			// window.addEventListener('resize', this.onResize, false);
 			window.addEventListener("popstate", this.onPopState);
+			
 
 	
 			self.audio.onStateChange = (e, v1, v2) => {
@@ -551,7 +584,6 @@ Vue.component('reader', {
 					return;
 			} else if(pk == true && code == 77 && FireStore.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
-				
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
 					// console.log(window.getSelection())
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
