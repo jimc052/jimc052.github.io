@@ -53,8 +53,6 @@ Vue.component('dlg-vocabulary', {
 			el = document.querySelector("#vocabulary .ivu-modal-content-drag");
 			el.style.left = (document.body.clientWidth - 270) + "px";
 			el.style.top = (document.body.clientHeight - 400) + "px";
-			console.log(document.body.clientWidth + "/" + document.body.clientHeight)
-			console.log(el.getBoundingClientRect().width + "/" + el.getBoundingClientRect().height)
 		}, 600)
 
 		this.broadcast.$on('onResize', this.onResize);

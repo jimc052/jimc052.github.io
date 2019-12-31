@@ -10,17 +10,33 @@ Vue.component('reader', {
 				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
 				<DropdownMenu slot="list" v-if="audio && audio.setting">
 					<DropdownItem name="自動播放">
-						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.autoPlay == true ? '' : '#e5e5e5'}"></Icon>
+						<Icon type="md-checkmark" size="16" :style="{color: audio.setting.autoPlay == true ? '' : '#e5e5e5'}"></Icon>
 						自動播放
 					</DropdownItem>
 					<DropdownItem name="中文" v-if="isChinese()" divided>
-						<Icon  type="md-checkmark" size="16" :style="{color: audio.setting.chinese == true ? '' : '#e5e5e5'}"></Icon>
+						<Icon type="md-checkmark" size="16" :style="{color: audio.setting.chinese == true ? '' : '#e5e5e5'}"></Icon>
 						中文
 					</DropdownItem>
 
 					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0" divided>
 						生字清單
 					</DropdownItem>
+				
+					<dropdown placement="right-start">
+						<dropdown-item>字體 <icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list">
+								<dropdown-item name="字1.6" :selected="audio.setting.zoom == 1.6">大</dropdown-item>
+								<dropdown-item name="字1.2" :selected="audio.setting.zoom == 1.2">正常</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+					<dropdown placement="right-start">
+						<dropdown-item>速率<icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list">
+								<dropdown-item name="速0.9" :selected="audio.setting.rate == 0.9">慢</dropdown-item>
+								<dropdown-item name="速1" :selected="audio.setting.rate == 1">正常</dropdown-item>
+								<dropdown-item name="速1.2" :selected="audio.setting.rate == 1.2">快</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
 
 					<!--
 					<DropdownItem name="設定" divided>
@@ -148,7 +164,7 @@ Vue.component('reader', {
   },
 	methods: {
 		onClickMore(item){
-			// console.log(item)
+			console.log(item)
 			if(item == "自動播放")
 				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
 			else if(item == "中文") {
@@ -156,8 +172,7 @@ Vue.component('reader', {
 			} else if(item == "生字"){
 				this.displayVocabulary = true;
 				return;
-			} else if(item == "設定"){
-
+			// } else if(item == "設定"){
 			} else if(item == "關於"){
 				vm.showMessage(
 					this.source.title, 
@@ -165,6 +180,12 @@ Vue.component('reader', {
 					"異動日期：" + new Date(this.source.modifyDate).toString()
 				)
 				return;
+			} else if(item.indexOf("字") == 0){
+				this.audio.setting.zoom = parseFloat(item.replace("字", ""))
+				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+			} else if(item.indexOf("速") == 0){
+				let rate = parseFloat(item.replace("速", ""))
+				this.audio.setting = Object.assign(this.audio.setting, 	{rate});
 			}
 			this.buildMenu();
 			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
@@ -194,7 +215,7 @@ Vue.component('reader', {
 			})
 			arr.push({text: '字體',children: children});
 
-			children = [{text: "慢", value: 0.9}, {text: "正常", value: 1}, {text: "快", value: 1.4}];
+			children = [{text: "慢", value: 0.9}, {text: "正常", value: 1}, {text: "快", value: 1.2}];
 			let label = "";
 			children.forEach(item=>{
 				if(this.audio.setting.rate == item.value) {

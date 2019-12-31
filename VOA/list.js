@@ -76,8 +76,8 @@ Vue.component('list', {
 					.get();
 				snapshot1.forEach(doc => {
 					self.datas.push(Object.assign({key: doc.id}, doc.data()));
-					// let row = self.datas[self.datas.length - 1];
-					// console.log(row.report + ": " + row.key)
+					if(this.$isLocal()) 
+						render(self.datas[self.datas.length - 1], self.datas.length - 1)
 				});
 			} catch(e) {
 				console.log(e)
@@ -86,6 +86,28 @@ Vue.component('list', {
 			setTimeout(()=>{
 				vm.loading(false);
 			}, self.datas.length * 5);
+
+			function render(row, index){
+				// console.log(index)
+				// console.log(row.html)
+				let div = document.createElement("DIV");
+				div.innerHTML = row.html;
+				// if(index < 10){
+					let arr = div.querySelectorAll(".english span");
+					for(let i = 0; i < arr.length; i++) {
+						let start = arr[i].getAttribute("start");
+						let end = arr[i].getAttribute("end");
+						if(start == null || end == null) {
+							if(arr[i].innerHTML.trim().indexOf("<strong>") == 0)
+								continue;
+							console.log(row.key + ": " + row.title)
+							console.log(arr[i].innerHTML)
+							console.log(arr[i].innerHTML.trim().indexOf("<span><strong>") + "\n--------------")
+							return;
+						}
+					}
+				// }
+			}
 		},
 		onClick(index){
 			this.dataKey = this.datas[index].key;
