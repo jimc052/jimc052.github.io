@@ -22,7 +22,7 @@ Vue.component('reader', {
 						生字清單
 					</DropdownItem>
 				
-					<dropdown placement="right-start">
+					<dropdown placement="right-start" v-if="! $isSmallScreen()">
 						<dropdown-item>字體 <icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list">
 								<dropdown-item name="字1.6" :selected="audio.setting.zoom == 1.6">大</dropdown-item>
@@ -165,6 +165,7 @@ Vue.component('reader', {
 	methods: {
 		onClickMore(item){
 			console.log(item)
+			if(typeof item == "undefined") return;
 			if(item == "自動播放")
 				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
 			else if(item == "中文") {

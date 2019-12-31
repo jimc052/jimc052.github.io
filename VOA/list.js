@@ -76,8 +76,7 @@ Vue.component('list', {
 					.get();
 				snapshot1.forEach(doc => {
 					self.datas.push(Object.assign({key: doc.id}, doc.data()));
-					if(this.$isLocal()) 
-						render(self.datas[self.datas.length - 1], self.datas.length - 1)
+					if(this.$isLocal())	render(self.datas[self.datas.length - 1], self.datas.length - 1)
 				});
 			} catch(e) {
 				console.log(e)
@@ -87,7 +86,7 @@ Vue.component('list', {
 				vm.loading(false);
 			}, self.datas.length * 5);
 
-			function render(row, index){
+			function render(row, index){ // 檢查是否有問題
 				// console.log(index)
 				// console.log(row.html)
 				let div = document.createElement("DIV");
