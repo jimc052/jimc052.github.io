@@ -7,7 +7,7 @@ Vue.component('reader', {
 		 :footer-hide="mode == 'edit'">
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState">
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
-				trigger="click"
+				:trigger="$isSmallScreen() ? 'click' : 'hover'"
 			>
 				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
 				<DropdownMenu slot="list" v-if="audio && audio.setting">
@@ -37,20 +37,20 @@ Vue.component('reader', {
 
 					<dropdown placement="right-start">
 						<dropdown-item>重複播放<icon type="ios-arrow-forward"></icon></dropdown-item>
-						<dropdown-menu slot="list" v-for="(item, index) in repeatOptions" :key="index">
+						<dropdown-menu slot="list" v-for="(item, index) in options.repeat" :key="index">
 								<dropdown-item :name="'重複' + item" :selected="audio.setting.repeat == item">
 								{{item == 0 ? "關閉" : item + "次"}}
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<DropdownItem name="中斷" v-if="audio.setting.repeat > 0">
+					<DropdownItem name="中斷" v-if="!$isSmallScreen() && audio.setting.repeat > 0">
 						<Icon type="md-checkmark" size="16" 
 							:style="{color: audio.setting.repeat > 0 && audio.setting.interrupt == true ? '' : '#e5e5e5'}"></Icon>
 						重複中斷
 					</DropdownItem>
 					<dropdown placement="right-start" v-if="audio.setting.repeat > 0">
 						<dropdown-item>重複間距<icon type="ios-arrow-forward"></icon></dropdown-item>
-						<dropdown-menu slot="list" v-for="(item, index) in intervalOptions" :key="index">
+						<dropdown-menu slot="list" v-for="(item, index) in options.interval" :key="index">
 								<dropdown-item :name="'間距' + item" :selected="audio.setting.interval == item">
 								{{item + "秒"}}
 								</dropdown-item>
@@ -62,16 +62,6 @@ Vue.component('reader', {
 					<DropdownItem name="關於" divided>
 						關於
 					</DropdownItem>
-<!--
-this.intervalOptions.forEach(item =>{
-	children.push({
-		text: item + " 秒", 
-		value: item,
-		icon: this.audio.setting.interval == item ? "ivu-icon-md-checkmark ivu-icon" : ""
-	});
-}) 
-arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});	
--->
 				</DropdownMenu>
 			</Dropdown>
 		</header-bar>
@@ -117,13 +107,13 @@ arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", childre
 
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
 
-			<Dropdown v-if="state != 'stop'">
+			<Dropdown v-if="state != 'stop'" :trigger="$isSmallScreen() ? 'click' : 'hover'">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
 					{{convertTime((audio.setting.sleep * 60) - passTime)}}
 					<Icon type="ios-arrow-down"></Icon>
 				</a>
 				<dropdown-menu slot="list" placement="left-start">
-					<dropdown-item v-for="(item, index) in limits" :key="index"
+					<dropdown-item v-for="(item, index) in options.limits" :key="index"
 						:selected="item == audio.setting.sleep"
 						@click.native="onClickSleep(item)"
 					>
@@ -148,7 +138,6 @@ arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", childre
 			currentTime: 0,
 			passTime: 0,
 			cmList: [],
-			limits: [10, 15, 20, 30, 45, 60],
 			html: "",
 			msg: "",
 			marks: {},
@@ -159,8 +148,11 @@ arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", childre
 			vocabulary: "",
 			displayVocabulary: false,
 			mode: "",
-			repeatOptions: [0, 1, 2, 3, 5, 10, 20],
-			intervalOptions: [3, 5, 10, 15, 20, 30, 45, 60]
+			options: {
+				limits: [10, 15, 20, 30, 45, 60], // 睡眠
+				repeat: [0, 1, 2, 3, 5, 10, 20],
+				interval: [3, 5, 10, 15, 20, 30, 45, 60] // 重複間距
+			}
 		};
 	},
 	created(){
@@ -172,7 +164,7 @@ arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", childre
 		this.title = this.source.title;
 		this.initial();
 		if(this.$isAdmin()){
-			this.limits = [1, 3, 5].concat(this.limits);
+			this.options.limits = [1, 3, 5].concat(this.options.limits);
 		}
 		this.broadcast.$on('onResize', this.onResize);
 	},
@@ -280,7 +272,7 @@ arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", childre
 			arr.push({text: '速率' + label, children: children});
 
 			children = [];
-			this.repeatOptions.forEach(item =>{
+			this.options.repeat.forEach(item =>{
 				children.push({
 					text: item == 0 ? "關閉" : item + " 次", 
 					value: item,
@@ -293,8 +285,8 @@ arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", childre
 				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
 				
 				children = [];
-			// intervalOptions: [3, 5, 10, 15, 20, 30, 45, 60]
-			this.intervalOptions.forEach(item =>{
+			// options.interval: [3, 5, 10, 15, 20, 30, 45, 60]
+			this.options.interval.forEach(item =>{
 					children.push({
 						text: item + " 秒", 
 						value: item,
