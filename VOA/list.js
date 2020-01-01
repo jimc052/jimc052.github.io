@@ -6,7 +6,7 @@ Vue.component('list', {
 		</header-bar>
 		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
-		<i-button v-if="$isLocal()" type="primary" shape="circle" icon="md-add" 
+		<i-button v-if="$isAdmin()" type="primary" shape="circle" icon="md-add" 
 			circle @click.native="onAdd" size="large"
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
@@ -57,11 +57,13 @@ Vue.component('list', {
 					if(this.datas[i].report == obj.report && this.datas[i].key == obj.key){
 						this.datas[i].html = obj.html;
 						obj = undefined;
+						this.checkHTML(obj, i)
 						break;
 					}
 				}
 				if(typeof obj == "object") {
 					this.datas.push(obj);
+					this.checkHTML(obj, this.datas.length - 1)
 				}
 			}
 			this.json = null;
@@ -76,7 +78,7 @@ Vue.component('list', {
 					.get();
 				snapshot1.forEach(doc => {
 					self.datas.push(Object.assign({key: doc.id}, doc.data()));
-					if(this.$isLocal())	render(self.datas[self.datas.length - 1], self.datas.length - 1)
+					// if(this.$isLocal()) this.checkHTML(self.datas[self.datas.length - 1], self.datas.length - 1)
 				});
 			} catch(e) {
 				console.log(e)
@@ -85,27 +87,25 @@ Vue.component('list', {
 			setTimeout(()=>{
 				vm.loading(false);
 			}, self.datas.length * 5);
-
-			function render(row, index){ // 檢查是否有問題
-				// console.log(index)
-				// console.log(row.html)
-				let div = document.createElement("DIV");
-				div.innerHTML = row.html;
-				// if(index < 10){
-					let arr = div.querySelectorAll(".english span");
-					for(let i = 0; i < arr.length; i++) {
-						let start = arr[i].getAttribute("start");
-						let end = arr[i].getAttribute("end");
-						if(start == null || end == null) {
-							if(arr[i].innerHTML.trim().indexOf("<strong>") == 0)
-								continue;
-							console.log(row.key + ": " + row.title)
-							console.log(arr[i].innerHTML)
-							console.log(arr[i].innerHTML.trim().indexOf("<span><strong>") + "\n--------------")
-							return;
-						}
-					}
-				// }
+		},
+		checkHTML(row, index){ // 檢查是否有問題
+			// console.log(index)
+			// console.log(row.html)
+			let div = document.createElement("DIV");
+			div.innerHTML = row.html;
+			let arr = div.querySelectorAll(".english span");
+			for(let i = 0; i < arr.length; i++) {
+				let start = arr[i].getAttribute("start");
+				let end = arr[i].getAttribute("end");
+				if(start == null || end == null) {
+					if(arr[i].innerHTML.trim().indexOf("<strong>") == 0)
+						continue;
+					console.log("第" + (index + 1) + "筆;" + row.key + ": " + row.title)
+					console.log(arr[i].innerHTML)
+					// console.log(arr[i].innerHTML.trim().indexOf("<span><strong>") + "\n--------------")
+					vm.showMessage("第" + (index + 1) + "筆，HTML 有問題", "請看 console")
+					return;
+				}
 			}
 		},
 		onClick(index){
