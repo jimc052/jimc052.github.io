@@ -1,4 +1,6 @@
 
+
+
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
 		 :closable="false" style="overflow: hidden;"
@@ -16,20 +18,15 @@ Vue.component('reader', {
 					<DropdownItem name="中文" v-if="isChinese()" divided>
 						<Icon type="md-checkmark" size="16" :style="{color: audio.setting.chinese == true ? '' : '#e5e5e5'}"></Icon>
 						中文
-					</DropdownItem>
-
-					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0" divided>
-						生字清單
-					</DropdownItem>
-				
-					<dropdown placement="right-start" v-if="! $isSmallScreen()">
+					</DropdownItem>				
+					<dropdown placement="right-start" v-if="! $isSmallScreen()" divided>
 						<dropdown-item>字體 <icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list">
 								<dropdown-item name="字1.6" :selected="audio.setting.zoom == 1.6">大</dropdown-item>
 								<dropdown-item name="字1.2" :selected="audio.setting.zoom == 1.2">正常</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<dropdown placement="right-start">
+					<dropdown placement="right-start" :divide="$isSmallScreen()">
 						<dropdown-item>速率<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list">
 								<dropdown-item name="速0.9" :selected="audio.setting.rate == 0.9">慢</dropdown-item>
@@ -38,16 +35,43 @@ Vue.component('reader', {
 						</dropdown-menu>
 					</dropdown>
 
-					<!--
-					<DropdownItem name="設定" divided>
-						設定
+					<dropdown placement="right-start">
+						<dropdown-item>重複播放<icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list" v-for="(item, index) in repeatOptions" :key="index">
+								<dropdown-item :name="'重複' + item" :selected="audio.setting.repeat == item">
+								{{item == 0 ? "關閉" : item + "次"}}
+								</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+					<DropdownItem name="中斷" v-if="audio.setting.repeat > 0">
+						<Icon type="md-checkmark" size="16" 
+							:style="{color: audio.setting.repeat > 0 && audio.setting.interrupt == true ? '' : '#e5e5e5'}"></Icon>
+						重複中斷
 					</DropdownItem>
-					-->
-
+					<dropdown placement="right-start" v-if="audio.setting.repeat > 0">
+						<dropdown-item>重複間距<icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list" v-for="(item, index) in intervalOptions" :key="index">
+								<dropdown-item :name="'間距' + item" :selected="audio.setting.interval == item">
+								{{item + "秒"}}
+								</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0" divided>
+						生字清單
+					</DropdownItem>
 					<DropdownItem name="關於" divided>
 						關於
 					</DropdownItem>
-
+<!--
+this.intervalOptions.forEach(item =>{
+	children.push({
+		text: item + " 秒", 
+		value: item,
+		icon: this.audio.setting.interval == item ? "ivu-icon-md-checkmark ivu-icon" : ""
+	});
+}) 
+arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});	
+-->
 				</DropdownMenu>
 			</Dropdown>
 		</header-bar>
@@ -135,6 +159,8 @@ Vue.component('reader', {
 			vocabulary: "",
 			displayVocabulary: false,
 			mode: "",
+			repeatOptions: [0, 1, 2, 3, 5, 10, 20],
+			intervalOptions: [3, 5, 10, 15, 20, 30, 45, 60]
 		};
 	},
 	created(){
@@ -166,6 +192,7 @@ Vue.component('reader', {
 		onClickMore(item){
 			console.log(item)
 			if(typeof item == "undefined") return;
+			item += "";
 			if(item == "自動播放")
 				this.audio.setting.autoPlay = !this.audio.setting.autoPlay;
 			else if(item == "中文") {
@@ -187,7 +214,33 @@ Vue.component('reader', {
 			} else if(item.indexOf("速") == 0){
 				let rate = parseFloat(item.replace("速", ""))
 				this.audio.setting = Object.assign(this.audio.setting, 	{rate});
+			} else if(item.indexOf("間距") == 0){
+				let interval = parseFloat(item.replace("間距", ""))
+				this.audio.setting = Object.assign(this.audio.setting, 	{interval});
+			} else if(item.indexOf("中斷") == 0){ // 
+				let interrupt = ! this.audio.setting.interrupt;
+				this.audio.setting = Object.assign(this.audio.setting, 	{interrupt});
+			} else if(item.indexOf("重複") == 0){
+				let repeat = parseFloat(item.replace("重複", ""))
+				let update = this.audio.setting.repeat == 0 || repeat == 0 ? true : false;
+				this.audio.setting = Object.assign(this.audio.setting, {repeat: repeat});
+				if(repeat == 0) {
+					this.audio.setting.interrupt = false;
+				}
+
+				this.audio.block = this.audio.setting.repeat == 0 ? [] : this.block;
+				if(update == true) {
+					this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
+					this.audio.audio.pause();
+					clearInterval(this.audio.timeID);
+					this.audio.repeat = 0;
+					setTimeout(() => {
+						this.retrieve(true);
+					}, 300);
+				}
+				this.repeat = this.audio.setting.repeat;
 			}
+			// 中斷
 			this.buildMenu();
 			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
 		},
@@ -227,7 +280,7 @@ Vue.component('reader', {
 			arr.push({text: '速率' + label, children: children});
 
 			children = [];
-			[0, 1, 2, 3, 5, 10, 20].forEach(item =>{
+			this.repeatOptions.forEach(item =>{
 				children.push({
 					text: item == 0 ? "關閉" : item + " 次", 
 					value: item,
@@ -240,7 +293,8 @@ Vue.component('reader', {
 				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
 				
 				children = [];
-				[3, 5, 10, 15, 20, 30, 45, 60].forEach(item =>{
+			// intervalOptions: [3, 5, 10, 15, 20, 30, 45, 60]
+			this.intervalOptions.forEach(item =>{
 					children.push({
 						text: item + " 秒", 
 						value: item,
@@ -541,7 +595,7 @@ Vue.component('reader', {
 						}
 					}
 				} else if(e == "repeat"){
-					console.log("repeat: " + v1)
+					// console.log("repeat: " + v1)
 					this.repeatTimes = v1 + 1;
 				}
 			}
