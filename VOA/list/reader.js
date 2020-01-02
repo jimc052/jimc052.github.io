@@ -56,6 +56,9 @@ Vue.component('reader', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
+					<DropdownItem name="段落" v-if="audio.setting.repeat > 0">
+						段落
+					</DropdownItem>		
 					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0" divided>
 						生字清單
 					</DropdownItem>
@@ -124,6 +127,13 @@ Vue.component('reader', {
 		</div>
 		<dlg-vocabulary :visible="displayVocabulary" :data="vocabulary" 
 			@close="displayVocabulary = false" @update="updateVocabulary"/>
+	
+		<dlg-paragraph :visible="displayParagraph"
+			:paragraph="audio == null ? [] : audio.LRCs"
+			:block="audio == null ? [] : audio.block"
+			@close="onParagraphOK" @on-cancel="displayParagraph = false"
+		>
+		</dlg-paragraph>
 	</modal>`,
 	props: {
 		source: Object
@@ -147,6 +157,7 @@ Vue.component('reader', {
 			block: [],
 			vocabulary: "",
 			displayVocabulary: false,
+			displayParagraph: false,
 			mode: "",
 			options: {
 				limits: [10, 15, 20, 30, 45, 60], // 睡眠
@@ -181,6 +192,26 @@ Vue.component('reader', {
 		// this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
+		onParagraphOK(block){
+			if(Array.isArray(block)) {
+				this.block = block;
+
+				let arr = document.querySelectorAll("#renderMarker .speech-bubble");
+				arr.forEach((item, index)=>{
+					if(block.length == 2 && index >= block[0] && index <= block[1])
+						item.classList.add("active");
+					else 
+					item.classList.remove("active");
+				});
+				this.audio.block = block;	
+				
+				if(block.length == 2 && (this.audio.paragraph < block[0] || this.audio.paragraph > block[1])){
+					this.audio.assignParagraph(this.audio.block[0], true);
+				}
+				this.saveBlock();
+			}
+			this.displayParagraph = false;
+		},
 		onClickMore(item){
 			console.log(item)
 			if(typeof item == "undefined") return;
@@ -212,6 +243,8 @@ Vue.component('reader', {
 			} else if(item.indexOf("中斷") == 0){ // 
 				let interrupt = ! this.audio.setting.interrupt;
 				this.audio.setting = Object.assign(this.audio.setting, 	{interrupt});
+			} else if(item.indexOf("段落") == 0){ //
+				this.displayParagraph = true;
 			} else if(item.indexOf("重複") == 0){
 				let repeat = parseFloat(item.replace("重複", ""))
 				let update = this.audio.setting.repeat == 0 || repeat == 0 ? true : false;
@@ -232,7 +265,6 @@ Vue.component('reader', {
 				}
 				this.repeat = this.audio.setting.repeat;
 			}
-			// 中斷
 			this.buildMenu();
 			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
 		},
@@ -380,8 +412,9 @@ Vue.component('reader', {
 		onClickBubble(e, index){
 			let self = this;
 			// console.log(e)
-			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
-			let sk = event.shiftKey, code = event.keyCode;
+			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? e.metaKey : e.ctrlKey;
+			let sk = e.shiftKey, code = e.keyCode;
+
 			if(pk == false && sk == false) {
 				let arr = document.querySelectorAll("#renderMarker .active");
 				if(arr.length == 0 && e.target.classList.contains("active") == false){
@@ -389,6 +422,7 @@ Vue.component('reader', {
 					if(this.audio.paragraph != index)
 						this.audio.assignParagraph(index, true);					
 				}
+			} else if(pk == true && sk == true) {
 			}	else {
 				let start = -1, end = -1;
 				let current = parseInt(e.target.id.replace("bubble", ""));
@@ -433,10 +467,7 @@ Vue.component('reader', {
 				if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){
 					this.audio.assignParagraph(this.audio.block[0], true);
 				}
-				if(FireStore.login == true)
-					this.setHistory()
-				else
-					saveBlock();
+				this.saveBlock();
 			}
 			
 			function clearBubble() {
@@ -446,30 +477,33 @@ Vue.component('reader', {
 				});
 				self.audio.block = [];
 				return arr.length;
-			}
-
-			function saveBlock() {
-				let s = window.localStorage["VOA-Blocks-" + self.source.report];
-				let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
-				for(let i = 0; i < arr.length; i++){
-					if(arr[i].key == self.source.key) {
-						arr.splice(i, 1);
-						break;
+			}	
+		},
+		saveBlock(){
+			if(FireStore.login == true)
+				this.setHistory()
+			else{
+					let s = window.localStorage["VOA-Blocks-" + self.source.report];
+					let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
+					for(let i = 0; i < arr.length; i++){
+						if(arr[i].key == self.source.key) {
+							arr.splice(i, 1);
+							break;
+						}
 					}
-				}
-				arr.unshift({key: self.source.key, block: self.audio.block});
-				for(let i = arr.length - 1; i >= 0; i--){
-					if(arr[i].block.length == 0)
+					arr.unshift({key: self.source.key, block: self.audio.block});
+					for(let i = arr.length - 1; i >= 0; i--){
+						if(arr[i].block.length == 0)
+							arr.splice(i, 1);
+					}
+	
+					for(let i = arr.length - 1; i >= 10; i--){
 						arr.splice(i, 1);
-				}
-
-				for(let i = arr.length - 1; i >= 10; i--){
-					arr.splice(i, 1);
-				}
-				if(arr.length > 0)
-					window.localStorage["VOA-Blocks-" + self.source.report] = JSON.stringify(arr);
-				else
-					delete window.localStorage["VOA-Blocks-" + self.source.report];
+					}
+					if(arr.length > 0)
+						window.localStorage["VOA-Blocks-" + self.source.report] = JSON.stringify(arr);
+					else
+						delete window.localStorage["VOA-Blocks-" + self.source.report];
 			}
 		},
 		onResize(){

@@ -26,6 +26,7 @@
 	<script src="list/reader.js"></script>
 	<script src="list/player.js"></script>
 	<script src="list/vocabulary.js"></script>
+	<script src="list/paragraph.js"></script>
 	<script src="list.js"></script>
 	<script src="login.js"></script>
 	<script src="./dist/vue-easycm.js"></script>
@@ -109,7 +110,7 @@
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
 				<div id='email'></div>
-				Jim Chen 2020-01-01 09:20
+				Jim Chen 2020-01-02 20:20
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -118,6 +119,8 @@
 </body>
 <script>
 	// https://www.iviewui.com/components/menu
+	// https://www.iviewui.com/components/modal
+	// https://www.iviewui.com/components/icon
 	var vm = null;
 	window.onload = async function(){
 		FireStore.initial();
