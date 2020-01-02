@@ -592,7 +592,7 @@ Vue.component('reader', {
 					let el = document.querySelector("#l" + v1 + "_" + v2);
 					if(el != null)
 						el.classList.add("active");						
-					scrollTo(document.querySelector("#p" + v1));				
+					this.scrollTo(document.querySelector("#p" + v1));
 				} else if(e == "play" || e == "stop" || e == "pause" || e == "interrupt") {
 					// console.log(e)
 					let state = this.state;
@@ -625,21 +625,20 @@ Vue.component('reader', {
 					this.repeatTimes = v1 + 1;
 				}
 			}
-	
-			function scrollTo(el) {
-				if(el == null) return;
-				let offsetTop = el.offsetTop;
-				let offsetBottom = offsetTop + el.clientHeight;
-	
-				let viewer = document.querySelector("#context");
-				let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;
-	
-				if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
-				} else {
-					viewer.scrollTop = offsetTop - 60;
-				}
-			}
 			this.buildMenu();
+		},
+		scrollTo(el) {
+			if(el == null) return;
+			let offsetTop = el.offsetTop;
+			let offsetBottom = offsetTop + el.clientHeight;
+
+			let viewer = document.querySelector("#context");
+			let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;
+
+			if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
+			} else {
+				viewer.scrollTop = offsetTop - 60;
+			}
 		},
 		onClickSleep(e) {
 			this.audio.setting.sleep = e;
@@ -865,6 +864,8 @@ Vue.component('reader', {
 				}
 			}
 			this.renderBubble();
+			if(this.block.length > 0)
+				this.scrollTo(document.querySelector("#p" + this.block[0]));
 			setTimeout(()=>{
 				if(context != null) context.style.visibility = "visible";
 			}, 100);
