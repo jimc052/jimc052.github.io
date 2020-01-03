@@ -1,6 +1,3 @@
-
-
-
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
 		 :closable="false" style="overflow: hidden;"
@@ -908,9 +905,8 @@ Vue.component('reader', {
 			});
 			let context = document.querySelector("#context");
 			let el = document.querySelector("#renderMarker");
-			el.style.height = top + "px";
+			if(el != null) el.style.height = top + "px";
 			setTimeout(()=>{
-
 				if(this.block.length > 0) {
 					arr = document.querySelectorAll("#renderMarker .speech-bubble");
 					arr.forEach((item, index)=>{

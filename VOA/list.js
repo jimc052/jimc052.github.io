@@ -1,8 +1,16 @@
 Vue.component('list', { 
 	template:  `<div id="list" style="display: flex; flex-direction: column;">
 		<header-bar :title="title">
-			<Icon slot="right" v-if="$isSmallScreen()" @click.native="onReload" type="md-refresh" size="28" color="white" 
-				style="cursor: pointer; margin-right: 10px;"></Icon>
+			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
+				:trigger="$isSmallScreen() ? 'click' : 'hover'"
+			>
+				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
+				<DropdownMenu slot="list">
+					<DropdownItem name="生字清單">生字清單</DropdownItem>
+					<DropdownItem name="重新下載" v-if="$isSmallScreen()" divided>重新下載</DropdownItem>
+				</DropdownMenu>
+			</Dropdown>
+		
 		</header-bar>
 		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
@@ -14,7 +22,10 @@ Vue.component('list', {
 		<reader v-if="source != null" :source="source" 
 			@onClose="onCloseReader" 
 			@onUpdate="onUpdate"
-		></reader>
+		>
+		</reader>
+		<voc-list :title="title" ref="vocList">
+		</voc-list>
 	</div>`,
 	props: {
 		title: String,
@@ -30,12 +41,34 @@ Vue.component('list', {
 	created(){
 	},
 	async mounted () {
+		
 	},
 	destroyed() {
   },
 	methods: {
-		onReload(){
-			location.reload()
+		async onClickMore(item) {
+			console.log(item)
+			if(item == "生字清單") {
+				vm.loading();
+				let ds = await this.$refs["vocList"].initital((data)=>{
+						this.datas.forEach(item1=>{
+								if(item1.key == data.key)
+									data.title = item1.title;
+						});					
+				});
+				if(ds.length > 0) {
+					var state = {
+						id: 2,
+						name: "voc-list",
+						title: this.title
+					};
+					history.pushState(state, "voc-list", "?voc-list=" + this.title);					
+				}
+				// console.log(ds);
+				vm.loading(false);
+			} else if(item == "重新下載") {
+				location.reload()
+			}
 		},
 		onAdd() {
 			let self = this;
@@ -87,6 +120,10 @@ Vue.component('list', {
 			setTimeout(()=>{
 				vm.loading(false);
 			}, self.datas.length * 5);
+
+			// setTimeout(() => {
+			// 	this.onClickMore('生字清單');
+			// }, 5000);
 		},
 		checkHTML(row, index){ // 檢查是否有問題
 			// console.log(index)
