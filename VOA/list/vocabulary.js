@@ -51,7 +51,7 @@ Vue.component('dlg-vocabulary', {
 		el.style.margin = "0px";
 		setTimeout(()=>{
 			el = document.querySelector("#vocabulary .ivu-modal-content-drag");
-			el.style.left = (document.body.clientWidth - 270) + "px";
+			el.style.left = (document.body.clientWidth - 270 + (this.$isSmallScreen() ? 15 : 0)) + "px";
 			el.style.top = (document.body.clientHeight - 400) + "px";
 		}, 600)
 

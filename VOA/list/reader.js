@@ -68,14 +68,17 @@ Vue.component('reader', {
 				</DropdownMenu>
 			</Dropdown>
 		</header-bar>
+
 		<textarea v-if="mode=='edit'" ref="textarea"
 			style="height: 100%; width: 100%; font-size: 18px;"
 		>{{source.html}}</textarea>
+
 		<div id="readerFrame" v-else style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
 			<div id="renderMarker" v-if="repeat > 0" 
-				style="width: 20px; padding: 8px 0px; overflow-y: hidden; overflow-x: visible;">
+				style="width: 20px; padding: 8px 0px; overflow-y: hidden; 
+					overflow-x: visible; position: relative;">
 				<div v-for="(item, index) in bubbles" :key="index"
-					:style="{height: item.height + 'px', marginTop: item.marginTop + 'px'}"
+					:style="{position: 'absolute', top: item.top + 'px', height: item.height + 'px',}"
 				>
 					<div class='speech-bubble' :id="'bubble' + index" @click="onClickBubble($event, index)">
 						{{index + 1}}
@@ -83,7 +86,7 @@ Vue.component('reader', {
 				</div>
 			</div>
 			<div id="context" v-html="html" @contextmenu="$easycm($event,$root,1)"
-				:style="{flex: 1, height: '100%', overflowY: 'auto', 
+				:style="{flex: 1,  
 					padding: repeat == 0 ? '8px' : '8px 4px 8px 2px'}"
 				@scroll.natvie="onScroll"
 			>
@@ -510,7 +513,7 @@ Vue.component('reader', {
 			clearTimeout(this.resizeId);
 			this.resizeId = setTimeout(()=>{
 				this.renderBubble();
-			}, 600);
+			}, 300);
 		},
 		async initial(){
 			let self = this;
@@ -896,14 +899,19 @@ Vue.component('reader', {
 			this.bubbles = [];
 
 			let arr = document.querySelectorAll(".p");
+			let top = 7;
 			arr.forEach((item, index)=>{
 				this.bubbles.push({
-					height: item.getBoundingClientRect().height,
-					marginTop: (index > 0) ? 14 : 0
+					top: top,
+					height: item.getBoundingClientRect().height + (index > 0 ? 14 : 0)
 				});
+				top += item.getBoundingClientRect().height + 14;
 			});
-
+			let context = document.querySelector("#context");
+			let el = document.querySelector("#renderMarker");
+			el.style.height = top + "px";
 			setTimeout(()=>{
+
 				if(this.block.length > 0) {
 					arr = document.querySelectorAll("#renderMarker .speech-bubble");
 					arr.forEach((item, index)=>{
