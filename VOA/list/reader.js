@@ -513,7 +513,7 @@ Vue.component('reader', {
 			clearTimeout(this.resizeId);
 			this.resizeId = setTimeout(()=>{
 				this.renderBubble();
-			}, 300);
+			}, 100);
 		},
 		async initial(){
 			let self = this;
@@ -635,7 +635,7 @@ Vue.component('reader', {
 			let offsetTop = el.offsetTop;
 			let offsetBottom = offsetTop + el.clientHeight;
 
-			let viewer = document.querySelector("#context");
+			let viewer = document.querySelector("#readerFrame");
 			let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;
 
 			if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
@@ -872,7 +872,6 @@ Vue.component('reader', {
 			setTimeout(()=>{
 				if(context != null) context.style.visibility = "visible";
 			}, 100);
-			// this.audio.currentTime = this.duration - 3;
 		}, 
 		onScroll(e){
 			if(this.repeat == 0) return;
