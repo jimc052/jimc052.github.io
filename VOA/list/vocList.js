@@ -3,14 +3,15 @@ Vue.component('voc-list', {
 		:fullscreen="true"
 		 :closable="false" style="overflow: hidden;"
 		 :footer-hide="true">
-		<header-bar :title="'生字清單 [' + title + ']'" slot="header" icon="md-arrow-back" 
+		<header-bar :title="'生字清單 [' + title + ']'" slot="header" 
+			icon="md-arrow-back" 
 			@goBack="onPopState"
 		>
 		</header-bar>
 		<div style="height: 100%; font-size: 18px; overflow-y: auto; padding: 0 5px 10px 5px;">
 			<div v-for="(item1, index1) in datas" :key="index1" style="padding-top: 10px;">
 				<div class="text-overflow" 
-					:style="{'font-size': '22px', 'margin-left': '10px', 
+					:style="{'font-size': '22px', 'margin-left': '0 5px', 
 						'margin-top': index1 > 0 ? '20px' : '0px',
 						color: 'rgb(45, 140, 240)'
 					}"

@@ -4,7 +4,8 @@ Vue.component('header-bar', {
 			<Icon :type="icon" size="28" color="white" @click.native="onClickIcon" 
 				style="cursor: pointer; margin-left: 10px;"></Icon>
 			<div :style="{flex: 1, color: 'white', 
-					'font-size': $isSmallScreen() ? '16px' : '20px', 'margin': '0px 10px', 
+					'font-size': $isSmallScreen() ? '16px' : '20px', 
+					'margin': '0px 10px', 
 					'user-select': 'text !important',
 				}" 
 				class="text-overflow">{{title}}</div>
@@ -17,7 +18,7 @@ Vue.component('header-bar', {
 			type: String,
 			default: 'md-menu',
 			require: true
-		}, // ios-arrow-back
+		},
 	},
 	data() {
 		return {
