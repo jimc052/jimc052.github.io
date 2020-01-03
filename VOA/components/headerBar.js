@@ -7,6 +7,7 @@ Vue.component('header-bar', {
 					'font-size': $isSmallScreen() ? '16px' : '20px', 
 					'margin': '0px 10px', 
 					'user-select': 'text !important',
+					'padding': '5px 0px'
 				}" 
 				class="text-overflow">{{title}}</div>
 			<slot name="right"></slot>
