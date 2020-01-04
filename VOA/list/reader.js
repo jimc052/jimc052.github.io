@@ -536,7 +536,8 @@ Vue.component('reader', {
 				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
-				if(data && this.vocabulary.length > 0) this.displayVocabulary = true;
+				if(data && this.vocabulary.length > 0 && setting.autoPlay == false) 
+					this.displayVocabulary = true;
 
 				if(data && Array.isArray(data.block)) {
 					this.block = data.block;
@@ -799,6 +800,15 @@ Vue.component('reader', {
 						arr1[i].parentNode.parentNode.removeChild(arr1[i].parentNode);
 					} else if(arr1[i].getAttribute("ignore") != null) {
 						arr1[i].parentNode.parentNode.removeChild(arr1[i].parentNode);
+					} else if(arr1[i].innerHTML.indexOf("ignore") > -1) {
+						let arr2 = arr1[i].querySelectorAll("span");
+						let j = arr2.length - 1;
+						while(j >= 0) {
+							if(arr2[j].getAttribute("ignore") != null) {
+								arr2[j].parentNode.removeChild(arr2[j]);
+							}
+							j--;
+						}
 					}
 					i--;
 				}
@@ -864,7 +874,7 @@ Vue.component('reader', {
 				}
 			}
 			this.renderBubble();
-			if(this.block.length > 0)
+			if(this.audio.setting.repeat > 0 && this.block.length > 0)
 				this.scrollTo(document.querySelector("#p" + this.block[0]));
 			setTimeout(()=>{
 				if(context != null) context.style.visibility = "visible";

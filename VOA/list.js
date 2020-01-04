@@ -63,6 +63,8 @@ Vue.component('list', {
 						title: this.title
 					};
 					history.pushState(state, "voc-list", "?voc-list=" + this.title);					
+				} else {
+					vm.showMessage("沒有生字!!")
 				}
 				// console.log(ds);
 				vm.loading(false);
