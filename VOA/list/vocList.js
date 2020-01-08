@@ -1,15 +1,15 @@
 Vue.component('voc-list', { 
-	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" 
-		:fullscreen="true"
-		 :closable="false" style="overflow: hidden;"
-		 :footer-hide="true">
+	template:  `<modal v-model="modal" class-name="vertical-center-modal" 
+			id="vocList" class="page"
+		  :fullscreen="true" :closable="false" :footer-hide="true"
+			style="overflow: hidden;">
 		<header-bar :title="'生字清單 [' + title + ']'" slot="header" 
 			icon="md-arrow-back" 
 			@goBack="onPopState"
 		>
 		</header-bar>
 		<div style="height: 100%; font-size: 18px; overflow-y: auto; padding: 0 5px 10px 5px;">
-			<div v-for="(item1, index1) in datas" :key="index1" style="padding-top: 10px;">
+			<div v-for="(item1, index1) in datas" :key="index1" style="padding-top: 10px; overflow: hidden;">
 				<div class="text-overflow" 
 					:style="{'font-size': '22px', 'margin-left': '0 5px', 
 						'margin-top': index1 > 0 ? '20px' : '0px',

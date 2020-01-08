@@ -1,8 +1,12 @@
 Vue.component('reader', { 
-	template:  `<modal v-model="modal" class-name="vertical-center-modal" id="reader" :fullscreen="true"
-		 :closable="false" style="overflow: hidden;"
-		 :footer-hide="mode == 'edit'">
-		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState">
+	template:  `<modal v-model="modal" class-name="vertical-center-modal" 
+		  id="reader"  class="page" 
+		  :fullscreen="true" :closable="false" :footer-hide="mode == 'edit'"
+		  style="overflow: hidden;"
+		>
+		<!-- header -->
+		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"
+		>
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
 				:trigger="$isSmallScreen() ? 'click' : 'hover'"
 			>
@@ -66,11 +70,13 @@ Vue.component('reader', {
 			</Dropdown>
 		</header-bar>
 
+		<!-- body -->
 		<textarea v-if="mode=='edit'" ref="textarea"
 			style="height: 100%; width: 100%; font-size: 18px;"
 		>{{source.html}}</textarea>
 
-		<div id="readerFrame" v-else style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
+		<div id="readerFrame" v-else 
+			style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
 			<div id="renderMarker" v-if="repeat > 0" 
 				style="width: 20px; padding: 8px 0px; overflow-y: hidden; 
 					overflow-x: visible; position: relative;">
@@ -91,6 +97,8 @@ Vue.component('reader', {
 			<div id="board" v-if="repeat > 1">{{repeatTimes + "/" + repeat}}</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
+		
+		<!-- footer -->
 		<div v-show="duration > 0 && mode == '' " slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
 			<div style="display: flex; flex-direction: row; align-items: center; ">
 				<Icon v-if="state == 'pause' || state == 'stop'" type="md-play" size="20" color="white" class="button" @click.native="audio.play()" />
@@ -177,7 +185,7 @@ Vue.component('reader', {
 		if(this.$isAdmin()){
 			this.options.limits = [1, 3, 5].concat(this.options.limits);
 		}
-		this.broadcast.$on('onResize', this.onResize);
+		this.broadcast.$on('onResize', this.onResize);		
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -188,7 +196,7 @@ Vue.component('reader', {
 		this.$Notice.destroy();
 		window.removeEventListener('keydown', this.onKeydown, false);
 		window.removeEventListener("popstate", this.onPopState);
-		
+		// this.$Modal.remove();
 		// this.broadcast.$on('onResize', this.onResize);
   },
 	methods: {
@@ -672,7 +680,7 @@ Vue.component('reader', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// console.log("key: " + code + "/" + pk)
+			console.log("key: " + code + "/" + pk)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔

@@ -1,5 +1,4 @@
-/*, #vocabulary .ivu-modal-header
-*/
+
 #vocabulary .ivu-modal-header, #vocabulary .ivu-modal-body {
 	margin: 0px;
 	padding: 0px;	
@@ -9,9 +8,16 @@
 	border-radius: 5px;
 	background-color: #ebecf0;
 }
-#reader .ivu-modal-header {
+.page .ivu-modal-header {
 	margin: 0px;
 	padding: 0px;
+	z-index: 10;
+	background: #2d8cf0;
+}
+.page .ivu-modal-body {
+	padding: 0px;
+	overflow: hidden;
+	z-index: 1;
 }
 
 .vocabulary + .vocabulary {
@@ -21,13 +27,8 @@
 	border-bottom: 1px solid #c5c5c5;
 }
 
-
 #reader .ivu-modal-footer{
 	padding: 3px 5px;
-}
-#reader .ivu-modal-body {
-	padding: 0px;
-	overflow: hidden;
 }
 
 #context * {
@@ -45,13 +46,12 @@
 #readerScale > div {
 	/* border-bottom: 1px solid red; */
 }
-
 #readerScale * {
 	font-size: 12px;
 }
 
 .speech-bubble {
-	margin-top: 4px;
+	margin-top: 3px;
 	left: 0px;
 	width: 15px;
   background: #00bfb6;
@@ -60,6 +60,7 @@
 	position: relative;
 	font-size: 8px !important;
 	cursor: pointer;
+	padding: 1px 0;
 	/* height: 20px; */
 }
 

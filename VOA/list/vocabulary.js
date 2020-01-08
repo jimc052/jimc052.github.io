@@ -13,7 +13,7 @@ Vue.component('dlg-vocabulary', {
 					"
 					class="vocabulary"
 				>
-					<i-input v-if="cursor == index" size="large" 
+					<i-input v-if="cursor == index" size="large" element-id="editVocabulary"
 						v-model="model" style="flex: 1; " />
 					<div v-else style="cursor: pointer; flex: 1; font-size: 18px;"
 						@click="yahoo(item)"
@@ -26,7 +26,7 @@ Vue.component('dlg-vocabulary', {
 					<Icon v-else type="md-create" size="18" 
 						@click.native="cursor = index; model = item;" 
 						style="cursor: pointer; margin-left: 6px;" />
-					<Icon type="md-close" size="18"
+					<Icon :type="cursor == index ? 'md-close' : 'md-trash'" size="18"
 						@click.native="del(index)" 
 						style="cursor: pointer; margin-left: 6px;" />
 				</div>
@@ -54,12 +54,30 @@ Vue.component('dlg-vocabulary', {
 			el.style.left = (document.body.clientWidth - 270 + (this.$isSmallScreen() ? 15 : 0)) + "px";
 			el.style.top = (document.body.clientHeight - 400) + "px";
 		}, 600)
-
 		this.broadcast.$on('onResize', this.onResize);
 	},
 	destroyed() {
+		
   },
 	methods: {
+		onKeydown(event) {
+			let self = this;
+			let o = document.activeElement;
+			// let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+			// let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let sk = event.shiftKey, code = event.keyCode;
+			// console.log("key: " + code + "/" + pk)
+			if(o.tagName == "INPUT" && event.target.id == "editVocabulary" && this.visible == true){
+				if(code == 13) {
+					this.upload();
+				} else if(code == 27) {
+					this.cursor = -1; this.model = "";
+				}
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				event.stopPropagation();
+			}
+		},
 		yahoo(word){
 			window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, '_blank');
 		},
@@ -76,9 +94,11 @@ Vue.component('dlg-vocabulary', {
 			this.model = "";
 		},
 		upload(){
-			this.rows[this.cursor] = this.model;
+			if(this.rows[this.cursor] != this.model) {
+				this.rows[this.cursor] = this.model;
+				this.$emit("update", this.rows);				
+			}
 			this.cursor = -1; this.model = "";
-			this.$emit("update", this.rows)
 		},
 		onResize(){
 			clearTimeout(this.resizeId);
@@ -112,5 +132,21 @@ Vue.component('dlg-vocabulary', {
 			});
 			this.rows = arr;
 		},
+		cursor(value) {
+			let self = this;
+			if(value > -1) {
+				setTimeout(() => {
+					let el = document.getElementById("editVocabulary");
+					el.focus();
+					el.addEventListener('keydown', this.onKeydown, false);
+					el.addEventListener('blur', function(e) {
+						self.cursor = -1; self.model = "";
+					}, false);
+				}, 300);
+			} else {
+				let el = document.getElementById("editVocabulary");
+				el.removeEventListener('keydown', this.onKeydown, false);
+			}
+		}
 	}
 });

@@ -86,7 +86,6 @@
 		ul.cm-ul {
 			background-color: #ebecf0 !important;
 		}
-
 		.ivu-slider-button-wrap {
 			top: -6px;
 		}
@@ -96,6 +95,9 @@
 		}
 		.ivu-modal-no-mask {
 			overflow: hidden;
+		}
+		.ivu-dropdown-item {
+			/* font-size: 14px !important; */
 		}
 	</style>
 </head>
@@ -164,7 +166,6 @@
 						this.menu = [];
 					}
 				}
-				
 				window.onresize = () => {
 				return (() => {
 						// self.screenWidth = document.body.clientWidth;
@@ -258,5 +259,16 @@
 			}
 		})
 	}
+
+	//  flutter 
+	function callJS(arg) { // ok 了.. flutter call js
+		console.log("callJS: " + arg + " ...................." + navigator.userAgent)
+		return  "navigator.userAgent: " + navigator.userAgent;
+	}
+/* 	
+	if(this.$isFlutter()) // js call flutter
+		Toaster.postMessage('js call flutter success!! 陳進明')
+	
+	*/
 </script>
 </html>

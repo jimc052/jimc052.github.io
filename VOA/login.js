@@ -76,6 +76,8 @@ Vue.component('login', {
 	watch: {
 		visible(value) {
 			if(value == true) {
+				// if(this.$isFlutter()) window.localStorage["email"] = "jimc@bethel.com.tw";
+				
 				this.email = window.localStorage["email"];
 				this.keepPassword = window.localStorage["keepPassword"] == "Y" ? true : false;
 				if(typeof this.email == "string" && this.email.length > 0 && this.keepPassword == true) {

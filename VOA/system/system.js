@@ -83,3 +83,11 @@ Vue.prototype.$isAdmin = function () {
 Vue.prototype.$isLocal = function () {
 	return location.href.indexOf("file:///") > -1 ? true : false;
 }
+
+Vue.prototype.$isMobile = function () {
+	return this.$isFlutter() ? true : false;
+}
+Vue.prototype.$isFlutter = function () {
+	return navigator.userAgent.indexOf("Flutter") > -1 ? true : false;
+}
+// navigator.userAgent
