@@ -100,7 +100,7 @@ class Player {
 					this.audio.pause();
 					// console.log(this.paragraph + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat + ": " + (new Date()).toString("MM:ss.ms"))
 					// console.log(this._setting.interval)
-					let _block = this.paragraph, _lrc = this.lrc;
+					let _block = this.paragraph, _lrc = this.lrc, beep = false;
 					if(this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;
 						this.repeat++;
@@ -118,17 +118,20 @@ class Player {
 						return;
 					} else {
 						this.repeat = 0;
+						// console.log("start: " + start + ", end: " + end + ", block: " + _block + ", lrc: " + _lrc)
 						if(_lrc == this.LRCs[_block].length - 1) {
 							_lrc = 0;
 							_block++;
-							if(_block >= end + 1)
+							if(_block >= end + 1){
 								_block = start;
+								beep = true;
+							}
 						} else {
 							_lrc++;
 						}
 					}
-
-					if((_block == start && _lrc == 0) || (this.repeat == 0 && this._setting.repeat >= 5)) {
+	
+					if(beep == true || (this.repeat == 0 && this._setting.repeat >= 5)) {
 						this.intervalID = setTimeout(()=>{
 							if(this.state == "pendding") {
 								this.beep.play();
@@ -192,6 +195,10 @@ class Player {
 						}
 					}					
 				}
+			} else {
+				this.pause();
+				this.audio.currentTime = range.start;
+				this.play();
 			}
 		}, 100);
 	}

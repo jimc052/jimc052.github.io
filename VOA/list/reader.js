@@ -94,7 +94,7 @@ Vue.component('reader', {
 				@scroll.natvie="onScroll"
 			>
 			</div>
-			<div id="board" v-if="repeat > 1">{{repeatTimes + "/" + repeat}}</div>
+			<div id="board" v-if="repeat > 1 && state != 'stop'">{{repeatTimes + "/" + repeat}}</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
 		
@@ -221,7 +221,7 @@ Vue.component('reader', {
 			this.displayParagraph = false;
 		},
 		onClickMore(item){
-			console.log(item)
+			// console.log(item)
 			if(typeof item == "undefined") return;
 			item += "";
 			if(item == "自動播放")
@@ -320,6 +320,7 @@ Vue.component('reader', {
 				});
 			}) 
 			arr.push({text: '重複播放 - ' + (this.audio.setting.repeat > 0 ? this.audio.setting.repeat + "次" : "關閉"), children: children});
+			if(this.audio.setting.repeat > 1) this.displayVocabulary = false;
 
 			if(this.audio.setting.repeat > 0) {
 				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});

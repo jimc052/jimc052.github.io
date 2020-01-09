@@ -72,6 +72,8 @@ Vue.component('dlg-vocabulary', {
 					this.upload();
 				} else if(code == 27) {
 					this.cursor = -1; this.model = "";
+				} else {
+					return;
 				}
 				event.preventDefault();
 				event.stopImmediatePropagation();
