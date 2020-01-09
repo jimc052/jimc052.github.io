@@ -195,10 +195,19 @@ class Player {
 						}
 					}					
 				}
-			} else {
-				this.pause();
-				this.audio.currentTime = range.start;
-				this.play();
+			} else { // 有問題，
+				// if(this.block.length > 0)
+				// 	this.paragraph = this.block[0];
+				// else
+				// 	this.paragraph = 0;
+				// this.currentRange = this.LRCs[this.paragraph][0];
+				// this.audio.currentTime = this.currentRange.start
+				// this.lrc = 0;
+				// this.onStateChange("sectionChange", this.paragraph, 0);
+
+				// this.pause();
+				// this.audio.currentTime = range.start;
+				// this.play();
 			}
 		}, 100);
 	}
