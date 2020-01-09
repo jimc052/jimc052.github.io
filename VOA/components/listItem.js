@@ -38,6 +38,7 @@ Vue.component('list-item', {
 		this.broadcast.$on('onResize', this.onResize);
 	},
 	destroyed() {
+		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
 		onClickItem(index) {

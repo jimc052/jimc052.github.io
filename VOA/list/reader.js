@@ -185,7 +185,9 @@ Vue.component('reader', {
 		if(this.$isAdmin()){
 			this.options.limits = [1, 3, 5].concat(this.options.limits);
 		}
-		this.broadcast.$on('onResize', this.onResize);		
+		this.broadcast.$on('onResize', this.onResize);
+		if(this.$isFlutter()) 
+			this.broadcast.$on('onFlutterChange', this.onFlutterChange);
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -196,10 +198,14 @@ Vue.component('reader', {
 		this.$Notice.destroy();
 		window.removeEventListener('keydown', this.onKeydown, false);
 		window.removeEventListener("popstate", this.onPopState);
-		// this.$Modal.remove();
-		// this.broadcast.$on('onResize', this.onResize);
+		this.broadcast.$off('onResize', this.onResize);
+		if(this.$isFlutter()) 
+			this.broadcast.$off('onFlutterChange', this.onFlutterChange);
   },
 	methods: {
+		onFlutterChange(arg){
+
+		},
 		onParagraphOK(block){
 			if(Array.isArray(block)) {
 				this.block = block;
@@ -630,6 +636,10 @@ Vue.component('reader', {
 							el.classList.remove("active");
 						}
 					}
+					if(this.$isFlutter() && (e == "play" || e == "stop")) {
+						let obj = {state: e, title: this.source.title};
+						Flutter.postMessage(JSON.stringify(obj));
+					}
 				} else if(e == "repeat"){
 					// console.log("repeat: " + v1)
 					this.repeatTimes = v1 + 1;
@@ -673,6 +683,7 @@ Vue.component('reader', {
 					// console.log("finalCount: " + now)
 				}, 500);
 			}
+			
 		},
 		onKeydown(event){
 			if(this.audio.canPlay == false) return;

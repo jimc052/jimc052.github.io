@@ -57,7 +57,7 @@ Vue.component('dlg-vocabulary', {
 		this.broadcast.$on('onResize', this.onResize);
 	},
 	destroyed() {
-		
+		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
 		onKeydown(event) {

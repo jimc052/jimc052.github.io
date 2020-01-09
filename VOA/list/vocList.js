@@ -37,9 +37,6 @@ Vue.component('voc-list', {
 		title: String
 	},
 	data() {
-		/*
-			<div v-for="(item2, index2) in item1" :key="index2"></div>
-		*/
 		return {
 			modal: false,
 			datas: [],
@@ -56,6 +53,7 @@ Vue.component('voc-list', {
 	destroyed() {		
 		this.$Notice.destroy();
 		window.removeEventListener("popstate", this.onPopState);
+		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
 		yahoo(word){
