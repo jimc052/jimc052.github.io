@@ -628,7 +628,7 @@ Vue.component('reader', {
 				} else if(e == "play" || e == "stop" || e == "pause" || e == "interrupt") {
 					// console.log(e)
 					let state = this.state;
-
+					this.state = e;
 					if(state == "interrupt") { // 
 						this.$Notice.close("interrupt");
 					} else if(e == "interrupt") {
@@ -650,7 +650,7 @@ Vue.component('reader', {
 							el.classList.remove("active");
 						}
 					}
-					this.state = e;
+					
 					if(this.$isFlutter() && (e == "play" || e == "stop" || e == "pause")) {
 						let obj = {state: e, title: this.source.title, report: this.source.report,
 							index: this.source.index, total: this.source.total};
