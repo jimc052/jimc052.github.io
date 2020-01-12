@@ -628,7 +628,7 @@ Vue.component('reader', {
 				} else if(e == "play" || e == "stop" || e == "pause" || e == "interrupt") {
 					// console.log(e)
 					let state = this.state;
-					this.state = e;
+					
 					if(state == "interrupt") { // 
 						this.$Notice.close("interrupt");
 					} else if(e == "interrupt") {
@@ -638,9 +638,9 @@ Vue.component('reader', {
 							name: "interrupt"
 						});
 					} else if(e == "play") {
-						this.finalCount();
+						this.finalCount(e);
 					} else if(e == "stop") {
-						this.finalCount();
+						this.finalCount(e);
 						this.currentTime = this.audio.currentTime;
 						let context = document.querySelector("#context");
 						if(context == null) return;
@@ -650,6 +650,7 @@ Vue.component('reader', {
 							el.classList.remove("active");
 						}
 					}
+					this.state = e;
 					
 					if(this.$isFlutter() && (e == "play" || e == "stop" || e == "pause")) {
 						let obj = {state: e, title: this.source.title, report: this.source.report,
@@ -680,16 +681,16 @@ Vue.component('reader', {
 		onClickSleep(e) {
 			this.audio.setting.sleep = e;
 			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
-			this.finalCount()
+			this.finalCount(this.state)
 		},
-		finalCount(){
+		finalCount(state){
 			this.passTime = 0;
 			if(typeof this.finalCountID != "undefined") {
 				clearInterval(this.finalCountID);
 				delete this.finalCountID;
 			} 
 			let start = (new Date()).getTime();
-			if(this.state != "stop") {
+			if(state != "stop") {
 				this.finalCountID = setInterval(() => {
 					let now = (new Date()).getTime() - start;
 					this.passTime = Math.ceil(now / (1000));
@@ -700,7 +701,6 @@ Vue.component('reader', {
 					// console.log("finalCount: " + now)
 				}, 500);
 			}
-			
 		},
 		onKeydown(event){
 			if(this.audio.canPlay == false) return;
