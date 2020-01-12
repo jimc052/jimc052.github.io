@@ -155,7 +155,7 @@ Vue.component('list', {
 				title: this.datas[index].title
 			};
 			history.pushState(state, "reader", "?reader=" + this.datas[index].title);
-			this.source = this.datas[index];
+			this.source = Object.assign({total: this.datas.length, index}, this.datas[index]);
 			if(FireStore.login == true){
 				FireStore.setSetting(this.title, {active: this.datas[index].key});
 			} else {
@@ -166,9 +166,11 @@ Vue.component('list', {
 			this.source = null;
 		}, 
 		async onUpdate(html) {
-			this.source.html = html;
 			try {
-				await FireStore.update(this.source)
+				let obj = Object.assign({html}, this.source);
+				delete obj.index;
+				delete obj.total;
+				await FireStore.update(obj);
 				this.$Notice.success({
 					title: "已上傳",
 				});

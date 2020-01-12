@@ -23,7 +23,7 @@ Vue.component('dlg-vocabulary', {
 					<Icon v-if="cursor == index" type="md-cloud-upload" size="18" 
 						@click.native="upload()" 
 						style="cursor: pointer; margin-left: 6px;" />
-					<Icon v-else type="md-create" size="18" 
+					<Icon v-else-if="!$isSmallScreen()" type="md-create" size="18" 
 						@click.native="cursor = index; model = item;" 
 						style="cursor: pointer; margin-left: 6px;" />
 					<Icon :type="cursor == index ? 'md-close' : 'md-trash'" size="18"
@@ -34,7 +34,10 @@ Vue.component('dlg-vocabulary', {
 		</div>
 	</modal>`,
 	props: {
-		visible: Boolean,
+		visible: {
+			type: Boolean,
+			default: false
+		} ,
 		data: String
 	},
 	data() {

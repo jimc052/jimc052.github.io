@@ -144,7 +144,8 @@ Vue.component('reader', {
 		</dlg-paragraph>
 	</modal>`,
 	props: {
-		source: Object
+		source: Object,
+		total: Number
 	},
 	data() {
 		return {
@@ -186,8 +187,9 @@ Vue.component('reader', {
 			this.options.limits = [1, 3, 5].concat(this.options.limits);
 		}
 		this.broadcast.$on('onResize', this.onResize);
-		if(this.$isFlutter()) 
-			this.broadcast.$on('onFlutterChange', this.onFlutterChange);
+		if(this.$isFlutter()) {
+			this.broadcast.$on('onFlutter', this.onFlutter);
+		}
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -199,12 +201,26 @@ Vue.component('reader', {
 		window.removeEventListener('keydown', this.onKeydown, false);
 		window.removeEventListener("popstate", this.onPopState);
 		this.broadcast.$off('onResize', this.onResize);
-		if(this.$isFlutter()) 
-			this.broadcast.$off('onFlutterChange', this.onFlutterChange);
+		if(this.$isFlutter()) {
+			let obj = {state: "close"};
+			Flutter.postMessage(JSON.stringify(obj));
+			console.log("Flutter.postMessage: " + JSON.stringify(obj))
+			this.broadcast.$off('onFlutter', this.onFlutter);
+		}
   },
 	methods: {
-		onFlutterChange(arg){
-
+		onFlutter(arg){
+			console.log("onFlutter: " + arg)
+			if(arg == "unplugged") { // 耳機，已拔
+				this.audio.pause();
+			} else if(arg == "action.TOGGLE") { //
+				if(this.state == "play")
+					this.audio.pause();
+				else 
+					this.audio.play();
+			} else if(arg == "action.STOP") { //
+				this.audio.stop();
+			}
 		},
 		onParagraphOK(block){
 			if(Array.isArray(block)) {
@@ -551,7 +567,7 @@ Vue.component('reader', {
 				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
-				if(data && this.vocabulary.length > 0 && setting.autoPlay == false) 
+				if(this.vocabulary.length > 0 && setting.repeat <= 1 && setting.autoPlay == false && !this.$isSmallScreen()) 
 					this.displayVocabulary = true;
 
 				if(data && Array.isArray(data.block)) {
@@ -612,11 +628,9 @@ Vue.component('reader', {
 				} else if(e == "play" || e == "stop" || e == "pause" || e == "interrupt") {
 					// console.log(e)
 					let state = this.state;
-					this.state = e;
-						
+
 					if(state == "interrupt") { // 
 						this.$Notice.close("interrupt");
-
 					} else if(e == "interrupt") {
 						this.$Notice.info({
 							title: '請按空白鍵再聽一次，或按方向鍵',
@@ -636,9 +650,12 @@ Vue.component('reader', {
 							el.classList.remove("active");
 						}
 					}
-					if(this.$isFlutter() && (e == "play" || e == "stop")) {
-						let obj = {state: e, title: this.source.title};
+					this.state = e;
+					if(this.$isFlutter() && (e == "play" || e == "stop" || e == "pause")) {
+						let obj = {state: e, title: this.source.title, report: this.source.report,
+							index: this.source.index, total: this.source.total};
 						Flutter.postMessage(JSON.stringify(obj));
+						// console.log("Flutter.postMessage: " + JSON.stringify(obj))
 					}
 				} else if(e == "repeat"){
 					// console.log("repeat: " + v1)
