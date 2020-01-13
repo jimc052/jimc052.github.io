@@ -24,7 +24,7 @@ Vue.component('list', {
 			@onUpdate="onUpdate"
 		>
 		</reader>
-		<voc-list :title="title" ref="vocList">
+		<voc-list :title="title" ref="vocList" @onGoto="onGoto">
 		</voc-list>
 	</div>`,
 	props: {
@@ -41,11 +41,19 @@ Vue.component('list', {
 	created(){
 	},
 	async mounted () {
-		
 	},
 	destroyed() {
   },
 	methods: {
+		onGoto(key) {
+			console.log("onGoto: " + key)
+			for(let i = 0; i < this.datas.length; i++) {
+				if(this.datas[i].key == key){
+					this.onClick(i)
+					break;
+				}
+			}
+		},
 		async onClickMore(item) {
 			console.log(item)
 			if(item == "生字清單") {

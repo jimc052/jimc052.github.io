@@ -13,8 +13,10 @@ Vue.component('voc-list', {
 				<div class="text-overflow" 
 					:style="{'font-size': '22px', 'margin-left': '0 5px', 
 						'margin-top': index1 > 0 ? '20px' : '0px',
-						color: 'rgb(45, 140, 240)'
+						color: 'rgb(45, 140, 240)',
+						cursor: 'pointer',
 					}"
+					@click="goto(item1)"
 				>
 					{{item1.title}}
 				</div>
@@ -56,6 +58,10 @@ Vue.component('voc-list', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		goto(item) {
+			this.onPopState();
+			this.$emit("onGoto", item.key);
+		},
 		yahoo(word){
 			window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, '_blank');
 		},
