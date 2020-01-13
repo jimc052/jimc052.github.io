@@ -46,7 +46,6 @@ Vue.component('list', {
   },
 	methods: {
 		onGoto(key) {
-			console.log("onGoto: " + key)
 			for(let i = 0; i < this.datas.length; i++) {
 				if(this.datas[i].key == key){
 					this.onClick(i)

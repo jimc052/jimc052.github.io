@@ -60,7 +60,9 @@ Vue.component('voc-list', {
 	methods: {
 		goto(item) {
 			this.onPopState();
-			this.$emit("onGoto", item.key);
+			setTimeout(() => {
+				this.$emit("onGoto", item.key);
+			}, 600);
 		},
 		yahoo(word){
 			window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, '_blank');
