@@ -76,7 +76,9 @@ Vue.component('reader', {
 		>{{source.html}}</textarea>
 
 		<div id="readerFrame" v-else 
-			style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;">
+			style="height: 100%; overflow-y: auto; display: flex; flex-direction: row;" 
+			@scroll.natvie="onScroll"
+		>
 			<div id="renderMarker" v-if="repeat > 0" 
 				style="width: 20px; padding: 8px 0px; overflow-y: hidden; 
 					overflow-x: visible; position: relative;">
@@ -91,10 +93,9 @@ Vue.component('reader', {
 			<div id="context" v-html="html" @contextmenu="$easycm($event,$root,1)"
 				:style="{flex: 1,  
 					padding: repeat == 0 ? '8px' : '8px 4px 8px 2px'}"
-				@scroll.natvie="onScroll"
 			>
 			</div>
-			<div id="board" v-if="repeat > 1 && state != 'stop'">{{repeatTimes + "/" + repeat}}</div>
+			<div id="board" v-if="repeat > 1 && state != 'stop'" style="bottom: 0px">{{repeatTimes + "/" + repeat}}</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
 		
@@ -342,7 +343,8 @@ Vue.component('reader', {
 				});
 			}) 
 			arr.push({text: '重複播放 - ' + (this.audio.setting.repeat > 0 ? this.audio.setting.repeat + "次" : "關閉"), children: children});
-			if(this.audio.setting.repeat > 1) this.displayVocabulary = false;
+			if(this.audio.setting.repeat > 1 && this.state == "play") 
+				this.displayVocabulary = false;
 
 			if(this.audio.setting.repeat > 0) {
 				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
@@ -567,7 +569,8 @@ Vue.component('reader', {
 				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
-				if(this.vocabulary.length > 0 && setting.repeat <= 1 && setting.autoPlay == false && !this.$isSmallScreen()) 
+				//setting.repeat <= 1 &&
+				if(this.vocabulary.length > 0 && setting.autoPlay == false && !this.$isSmallScreen()) 
 					this.displayVocabulary = true;
 
 				if(data && Array.isArray(data.block)) {
@@ -709,7 +712,7 @@ Vue.component('reader', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			console.log("key: " + code + "/" + pk)
+			// console.log("key: " + code + "/" + pk)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
@@ -920,21 +923,18 @@ Vue.component('reader', {
 		onScroll(e){
 			if(this.repeat == 0) return;
 
-			let context = document.getElementById("context");
-			let renderMarker = document.getElementById("renderMarker");
-			if(renderMarker == null || context == null) return;
-
-			renderMarker.scrollTop = context.scrollTop;
-
+			let readerFrame = document.getElementById("readerFrame");
 			let board = document.getElementById("board");
 			if(board != null) {
-				if(context.scrollTop > 60){
+				if(readerFrame.scrollTop > 100){
 					board.style.top = "0px";
 					board.style.removeProperty("bottom")
 				} else {
 					board.style.bottom = "0px";
 					board.style.removeProperty("top")
 				}
+				// console.log(readerFrame.scrollTop, 
+				// 	"top: " + board.style.top + ", bottom: " + board.style.bottom)
 			}
 		},
 		renderBubble(){
@@ -962,7 +962,9 @@ Vue.component('reader', {
 					});				
 				}				
 			}, 300);
-			this.onScroll();
+			setTimeout(()=>{
+				this.onScroll();
+			}, 1000);
 		}
 	},
 	computed: {
@@ -978,5 +980,19 @@ Vue.component('reader', {
 		}
 	},
 	watch: {
+		repeat(value) {
+			if(value > 1 && this.state == "play") {
+				setTimeout(() => {
+					this.onScroll()
+				}, 300);
+			}
+		},
+		state(value) {
+			if(value == "play" && this.repeat > 1) {
+				setTimeout(() => {
+					this.onScroll()
+				}, 300);
+			}
+		}
 	}
 });
