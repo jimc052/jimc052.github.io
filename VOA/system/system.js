@@ -71,6 +71,10 @@ Date.prototype.toString = function (format = "yyyy/mm/dd hh:MM:ss.ms") {
 	return r;
 };
 
+Vue.prototype.$isLogin = function () {
+	return FireStore.login;
+}
+
 Vue.prototype.$isSmallScreen = function () {
 	return document.body.clientWidth > 600 ? false : true;
 }

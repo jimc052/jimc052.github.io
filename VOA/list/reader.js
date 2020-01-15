@@ -414,7 +414,7 @@ Vue.component('reader', {
 				// vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
 			}
 		},
-		async setHistory(){
+		async setHistory(arg){
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 				.collection("history").doc(this.source.key);
 			let obj = {
@@ -426,6 +426,10 @@ Vue.component('reader', {
 
 			try {
 				let x = await ref.set(obj,{merge: true});
+				if(arg == "vocabulary") {
+					this.$emit("onUpdate", "vocabulary",  this.vocabulary);
+					// this.vocabulary
+				}
 				// this.$Notice.success({
 				// 	title: "生字已上傳",
 				// });
@@ -440,7 +444,7 @@ Vue.component('reader', {
 				this.vocabulary = rows.join("\n");
 			else 
 				this.vocabulary = ""
-			this.setHistory();
+			this.setHistory("vocabulary");
 		},
 		onClickBubble(e, index){
 			let self = this;
@@ -717,7 +721,7 @@ Vue.component('reader', {
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
 					let html = this.$refs["textarea"].value;
-					this.$emit("onUpdate", html);
+					this.$emit("onUpdate", "html", html);
 					this.onPopState();
 				} else
 					return;
@@ -726,7 +730,7 @@ Vue.component('reader', {
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
 					// console.log(window.getSelection())
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
-					this.setHistory()
+					this.setHistory("vocabulary")
 				}
 			} else if(pk == true && code == 69 && this.$isAdmin() == true){ // 編輯
 				if(this.mode == "edit") {

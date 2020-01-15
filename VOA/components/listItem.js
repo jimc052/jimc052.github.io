@@ -13,7 +13,14 @@ Vue.component('list-item', {
 								<div v-if="item.html.indexOf(\`<div class='chinese'>\`) > -1" style="font-size: 8px; color: #c01921;">
 								譯
 								</div>
-								<div style="flex: 1;" />
+								<div style="flex: 1;"></div>
+								<Icon 
+									v-if="typeof item.extend == 'object' && typeof item.extend.vocabulary == 'string' && item.extend.vocabulary.length > 0" 
+									type="md-albums" size="20" color="#c01921" 
+									style="cursor: pointer; padding: 0px 10px;"
+									
+								/>
+								<!-- @click.native.stop="onClickIcon(index)" -->
 								<div style="padding-left: 5px;">{{item.date}}</div>
 							</div>
 						</div>
@@ -41,6 +48,9 @@ Vue.component('list-item', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		onClickIcon(index) {
+			console.log("onClickIcon: " + index)
+		},
 		onClickItem(index) {
 			this.$emit("onClick", index)
 		},

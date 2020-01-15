@@ -3,6 +3,7 @@ Vue.component('list', {
 		<header-bar :title="title">
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
 				:trigger="$isSmallScreen() ? 'click' : 'hover'"
+				v-if="$isLogin()"
 			>
 				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
 				<DropdownMenu slot="list">
@@ -113,15 +114,39 @@ Vue.component('list', {
 		async retrieve() {
 			vm.loading();
 			let self = this;
+			let arr = [];
 			try {
 				let snapshot1 = await FireStore.db.collection('VOA')
 					.where("report", "==", this.title)
 					// .orderBy("date", "desc")
 					.get();
 				snapshot1.forEach(doc => {
-					self.datas.push(Object.assign({key: doc.id}, doc.data()));
+					arr.push(Object.assign({key: doc.id}, doc.data()));
 					// if(this.$isLocal()) this.checkHTML(self.datas[self.datas.length - 1], self.datas.length - 1)
 				});
+				if(this.$isLogin()) {
+					let x = 0; 
+					snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
+						.collection("history")
+						.where("report", "==", this.title)
+						.get();
+					snapshot1.forEach(doc => {
+						if(typeof doc.data().vocabulary == "string" && doc.data().vocabulary.length > 0) {
+							for(let i = x; i < arr.length; i++) {
+								x = i;
+								if(arr[i].key == doc.id) {
+									arr[i].extend = {
+										vocabulary: doc.data().vocabulary
+									}
+									// console.log(self.datas[i])
+									x++;
+									break;
+								}
+							}
+						}
+					});
+				}
+				self.datas = arr;
 				// let i = location.href.indexOf("?reader="); // 不知為何無法回到前一頁
 				// if(i > -1) {
 				// 	let title = decodeURI(location.href.substr(i + "?reader=".length));
@@ -186,15 +211,30 @@ Vue.component('list', {
 		onCloseReader(){
 			this.source = null;
 		}, 
-		async onUpdate(html) {
-			this.source.html = html;
-			try {
-				await FireStore.update(this.source)
-				this.$Notice.success({
-					title: "已上傳",
-				});
-			} catch(e) {
-				console.log(e)
+		async onUpdate(type, data) {
+			if(type == "html") {
+				this.source.html = data;
+				let obj = Object.assign({}, this.source)
+				delete obj.extend; 
+				try {
+					await FireStore.update(obj)
+					this.$Notice.success({
+						title: "已上傳",
+					});
+				} catch(e) {
+					console.log(e)
+				}				
+			} else if(type == "vocabulary") {
+				if(typeof this.source.extend == "undefined") this.source.extend = {};
+				this.source.extend.vocabulary = data; 
+				for(let i = 0; i < this.datas.length; i++) {
+					if(this.datas[i].key == this.source.key) {
+						this.$set(this.datas, i, this.source)
+						break;
+					}
+				}
+
+				// self.datas
 			}
 		}
 	},
