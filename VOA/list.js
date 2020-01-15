@@ -122,6 +122,19 @@ Vue.component('list', {
 					self.datas.push(Object.assign({key: doc.id}, doc.data()));
 					// if(this.$isLocal()) this.checkHTML(self.datas[self.datas.length - 1], self.datas.length - 1)
 				});
+				// let i = location.href.indexOf("?reader="); // 不知為何無法回到前一頁
+				// if(i > -1) {
+				// 	let title = decodeURI(location.href.substr(i + "?reader=".length));
+				// 	for(let i = 0; i < self.datas.length; i++) {
+				// 		if(self.datas[i].title == title) {
+				// 			vm.loading(false);
+				// 			setTimeout(() => {
+				// 				self.onClick(i)
+				// 			}, 6000);
+				// 			return;
+				// 		}
+				// 	}
+				// }
 			} catch(e) {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
@@ -129,14 +142,14 @@ Vue.component('list', {
 			setTimeout(()=>{
 				vm.loading(false);
 			}, self.datas.length * 5);
-
-			// setTimeout(() => {
-			// 	this.onClickMore('生字清單');
-			// }, 5000);
 		},
 		checkHTML(row, index){ // 檢查是否有問題
 			// console.log(index)
 			// console.log(row.html)
+			// if(row.html.indexOf("scion") > -1) {
+			// 	console.log("scion: " + row.key + "/" + (index + 1))
+			// }
+			// return;
 			let div = document.createElement("DIV");
 			div.innerHTML = row.html;
 			let arr = div.querySelectorAll(".english span");
