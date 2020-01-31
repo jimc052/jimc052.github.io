@@ -16,12 +16,12 @@ Vue.component('dlg-vocabulary', {
 					<i-input v-if="cursor == index" size="large" element-id="editVocabulary"
 						v-model="model" style="flex: 1; " />
 					<div v-else style="cursor: pointer; flex: 1; font-size: 18px;"
-						@click="yahoo(item)"
+						@click="$yahoo(item)"
 					>
 						{{item}}
 					</div>
 					<Icon v-if="cursor == index" type="md-cloud-upload" size="18" 
-						@click.native="upload()" 
+						@click.native="upload();" 
 						style="cursor: pointer; margin-left: 6px;" />
 					<Icon v-else-if="!$isSmallScreen()" type="md-create" size="18" 
 						@click.native="cursor = index; model = item;" 
@@ -83,9 +83,6 @@ Vue.component('dlg-vocabulary', {
 				event.stopPropagation();
 			}
 		},
-		yahoo(word){
-			window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, '_blank');
-		},
 		close(){
 			this.cursor = -1; this.model = "";
 			this.$emit("close");
@@ -101,7 +98,9 @@ Vue.component('dlg-vocabulary', {
 		upload(){
 			if(this.rows[this.cursor] != this.model) {
 				this.rows[this.cursor] = this.model;
-				this.$emit("update", this.rows);				
+				setTimeout(() => {
+					this.$emit("update", this.rows);
+				}, 200);
 			}
 			this.cursor = -1; this.model = "";
 		},
@@ -118,6 +117,14 @@ Vue.component('dlg-vocabulary', {
 				if(top > document.body.clientHeight - 400)
 					el.style.top = (document.body.clientHeight - 400) + "px";
 			}, 300);
+		},
+		onFocus(){
+			if(this.cursor >= 0) {
+				setTimeout(() => {
+					this.cursor = -1; 
+					this.model = "";
+				}, 600);
+			}
 		}
 	},
 	computed: {	
@@ -138,19 +145,17 @@ Vue.component('dlg-vocabulary', {
 			this.rows = arr;
 		},
 		cursor(value) {
-			let self = this;
 			if(value > -1) {
 				setTimeout(() => {
 					let el = document.getElementById("editVocabulary");
 					el.focus();
 					el.addEventListener('keydown', this.onKeydown, false);
-					el.addEventListener('blur', function(e) {
-						self.cursor = -1; self.model = "";
-					}, false);
+					el.addEventListener('blur', this.onFocus, false);
 				}, 300);
 			} else {
 				let el = document.getElementById("editVocabulary");
 				el.removeEventListener('keydown', this.onKeydown, false);
+				el.removeEventListener('keydown', this.onFocus, false);
 			}
 		}
 	}

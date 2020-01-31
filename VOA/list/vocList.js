@@ -26,7 +26,7 @@ Vue.component('voc-list', {
 							style="font-size: 20px; border-radius: 5px; border: 1px solid #e5e5e5; 
 								margin-top: 5px; padding: 5px; cursor: pointer; "
 							class="text-overflow"
-							@click="yahoo(item2)"
+							@click="$yahoo(item2)"
 						>
 							{{item2}}
 						</div>
@@ -63,9 +63,6 @@ Vue.component('voc-list', {
 			setTimeout(() => {
 				this.$emit("onGoto", item.key);
 			}, 600);
-		},
-		yahoo(word){
-			window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, '_blank');
 		},
 		onResize(){
 			clearTimeout(this.resizeId);

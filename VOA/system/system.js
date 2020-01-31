@@ -75,6 +75,12 @@ Vue.prototype.$isLogin = function () {
 	return FireStore.login;
 }
 
+Vue.prototype.$yahoo = function (word) {
+	window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, "",
+		"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
+	); // + ",width=200,height=100"
+}
+
 Vue.prototype.$isSmallScreen = function () {
 	return document.body.clientWidth > 600 ? false : true;
 }

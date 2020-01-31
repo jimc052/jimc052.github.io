@@ -610,7 +610,7 @@ Vue.component('reader', {
 					this.duration = v1;
 					this.retrieve();
 				} else if(e == "canPlay") {
-
+				
 				} else if(e == "timeUpdate") {
 					this.currentTime = v1;
 					// console.log(this.currentTime)
@@ -915,6 +915,12 @@ Vue.component('reader', {
 						this.audio.audio.play();
 						this.audio.timing();
 					}
+				}
+			} else if((this.audio.setting.autoPlay == false) && lrcs.length > 0 && lrcs[start].length > 0) { 
+				if(!isNaN(lrcs[start][0].start)) {
+					this.audio.currentRange = lrcs[start][0];
+					this.audio.currentTime = lrcs[start][0].start;
+					this.currentTime = this.audio.currentTime;
 				}
 			}
 			this.renderBubble();
