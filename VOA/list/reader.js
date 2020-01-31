@@ -921,6 +921,7 @@ Vue.component('reader', {
 					this.audio.currentRange = lrcs[start][0];
 					this.audio.currentTime = lrcs[start][0].start;
 					this.currentTime = this.audio.currentTime;
+					this.audio.assignParagraph(start)
 				}
 			}
 			this.renderBubble();
