@@ -905,25 +905,23 @@ Vue.component('reader', {
 			});
 			this.audio.LRCs = lrcs;
 			let start = this.audio.setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
-			if((this.audio.setting.autoPlay == true || typeof again == "boolean") && lrcs.length > 0 && lrcs[start].length > 0) {
-				if(!isNaN(lrcs[start][0].start)) {
-					this.audio.currentRange = lrcs[start][0];
-					this.audio.currentTime = lrcs[start][0].start;
-					this.currentTime = this.audio.currentTime;
-					this.audio.assignParagraph(start)
-					if(typeof again == "boolean" && this.state == "play") {
-						this.audio.audio.play();
-						this.audio.timing();
+			if(this.audio.setting.repeat > 0) {
+				if(lrcs.length > 0 && lrcs[start].length > 0) {
+					if(!isNaN(lrcs[start][0].start)) {
+						this.audio.currentRange = null; //lrcs[start][0];
+						this.audio.currentTime = lrcs[start][0].start;
 					}
 				}
-			} else if((this.audio.setting.autoPlay == false) && lrcs.length > 0 && lrcs[start].length > 0) { 
-				if(!isNaN(lrcs[start][0].start)) {
-					this.audio.currentRange = lrcs[start][0];
-					this.audio.currentTime = lrcs[start][0].start;
-					this.currentTime = this.audio.currentTime;
-					this.audio.assignParagraph(start)
-				}
+			} else {
+				this.audio.currentRange = null;
+				this.audio.currentTime = 0;
 			}
+			this.currentTime = this.audio.currentTime;
+			if(typeof again == "boolean" && this.state == "play") {
+				this.audio.audio.play();
+				this.audio.timing();
+			}
+
 			this.renderBubble();
 			if(this.audio.setting.repeat > 0 && this.block.length > 0)
 				this.scrollTo(document.querySelector("#p" + this.block[0]));
