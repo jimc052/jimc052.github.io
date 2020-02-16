@@ -10,7 +10,10 @@ Vue.component('calendar', {
 			<div style="font-size: 30px;">{{month.toString("yyyy-mm")}}</div>
 			<Icon type="ios-arrow-forward" size="28" @click.native="onClickIcon(1)" 
 			style="cursor: pointer; margin-left: 10px;" />
-			<div style="flex: 1;"></div>
+			<div style="flex: 1; text-align: right;">
+				<Icon type="md-more" size="28" @click.native="onClickIconMore" 
+				style="cursor: pointer; margin-right: 10px;" />
+			</div>
 		</div>
 
 		<div style="display: flex; flex-direction: row; background-color: #e5e5e5">
@@ -35,7 +38,6 @@ Vue.component('calendar', {
 							style="text-align: center; color: rgba(0,0,0, 0.3);  background-color: rgba(0, 255, 0, 0.2);">
 							{{day.holiday}}
 						</div>
-						<!-- <record v-else :datas="recorder" :date="day.date"></record> -->
 					</div>
 					<!-- 國定假日 -->
 					<div v-else-if="typeof day.holiday == 'string'" style="height: 100%;">
@@ -63,7 +65,7 @@ Vue.component('calendar', {
 		</i-button>
 		
 		<datePick ref="datePick" :date="alarm" @onChangeAlarm="onChangeAlarm" />
-	</modal>
+		<setting ref="setting" :date="alarm" @onChangeSetting="onChangeSetting" />
 	</div>`,
 	props: {
 	},
@@ -99,8 +101,14 @@ Vue.component('calendar', {
 	destroyed() {
   },
 	methods: {
+		onClickIconMore(){
+			this.$refs["setting"].visible = true;
+		},
+		onChangeSetting(value){
+			console.log("onChangeSetting: " + value)
+			this.setAlarm(this.alarm)
+		},
 		onAlarmSet(){
-			// this.visible = true;
 			this.$refs["datePick"].visible = true;
 		},
 		onChangeAlarm(d){
@@ -162,17 +170,18 @@ Vue.component('calendar', {
 			// 	periodInMinutes: 3
 			// }, "*");
 		},
-		setAlarm(date, minute){
+		setAlarm(date){
 			// if(date.length < 10) return;
 			this.alarm = date;
 			this.$storage("alarm", date);
-			console.log("alarm: " + this.alarm)
+			let periodInMinutes = this.$storage("periodInMinutes");
+
+			console.log("alarm: " + this.alarm + ", periodInMinutes: " + periodInMinutes)
 
 			let d = new Date(date);
 			window.postMessage({cmd: 'setAlarm', name: date, 
-				// when: Date.now() + (1000 * 60) ,
 				when: d.getTime(),
-				periodInMinutes: typeof minute == "undefined" ? 3 : minute
+				periodInMinutes: parseInt(periodInMinutes, 10)
 			}, "*");
 		},
 		onClickIcon(index) {
@@ -199,6 +208,7 @@ Vue.component('calendar', {
 			//  && this.alarm.length == 0
 			if(this.month.toString("yyyy-mm") == this.today.toString("yyyy-mm")) {
 				let {time, btn} = this.arrangeAlarm(this.today, schedule, recorder);
+				// console.log(time, btn)
 				if(time.length == 0) {
 					if(m == 11) {
 						y++; m = 0;
@@ -211,7 +221,7 @@ Vue.component('calendar', {
 					let {time} = this.arrangeAlarm(d1, schedule, recorder);
 					this.setAlarm(time);
 				} else {
-					if(this.alarm.length == 0)
+					if(this.alarm.length == 0 || this.alarm.substr(0, 10) < this.today.toString("yyyy-mm-dd"))
 						this.setAlarm(time);
 					if(time.substr(0, 10) == this.today.toString("yyyy-mm-dd"))
 						this.btn = btn;
@@ -253,6 +263,8 @@ Vue.component('calendar', {
 		},
 		arrangeAlarm(date, schedule, records){
 			let s1 = date.toString("yyyy-mm-dd");
+			let morning = this.$storage("morning");
+
 			for(let i = 0; i < schedule.length; i++) {
 				let week = schedule[i];
 				for(let j = 0; j < week.length; j++) {
@@ -274,38 +286,12 @@ Vue.component('calendar', {
 								state = "上班";
 						}
 						if(state.length > 0)
-							return {time: row.date + "T" + (state == "" ? "07:00" : "18:00"), btn: state};
+							return {time: row.date + "T" + (state == "" ? morning : "18:00"), btn: state};
 					} else if(row.date >= s1 && row.workday == 3) {
-						return {time: row.date + "T" + "07:00", btn: "上班"};
+						return {time: row.date + "T" + morning, btn: "上班"};
 					}
 				}
 			}
-			// if(typeof date == "undefined") {
-			// 	date = this.today.toString("yyyy-mm-dd");
-			// }
-			// if(typeof time == "undefined") {
-			// 	if(typeof records[date] == "object") {
-			// 		if(typeof records[date].onDuty == "string")
-			// 			time = "18:00";
-			// 		else if(Array.isArray(records[date].leave)) {
-
-			// 		}
-
-			// 	} else {
-			// 		let h = (new Date()).getHours();
-			// 		let m = (new Date()).getMinutes();
-			// 		if(h < 9) {
-			// 			m += 3;
-			// 			if(m >= 59) {
-			// 				h++;
-			// 				m -= 60;
-			// 			}
-			// 			time = "0" + h + ":" + (m < 10 ? "0" : "") + m;
-			// 		} else {
-			// 			time = "18:00"
-			// 		}
-			// 	}
-			// }
 			return {time: "", btn: ""};
 		},
 		onClickDay(day) {

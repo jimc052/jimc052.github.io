@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Schedule</title>
+	<title>宣揚打卡</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="https://unpkg.com/iview/dist/styles/iview.css">
@@ -15,9 +15,9 @@
 	<script src="./system/system.js"></script>
 	<script src="./dist/vue-easycm.js"></script>
 	<script src="./datePick.js"></script>
+	<script src="./setting.js"></script>
 	<script src="./record.js"></script>
 	<script src="./calendar.js"></script>
-
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -74,13 +74,16 @@
 	// https://www.iviewui.com/components/modal
 	// https://www.iviewui.com/components/icon
 	var vm = null;
+	console.log("version: 2020-02-16 09:10")
 	window.onload = async function(){
 		Vue.prototype.$storage = function (key, value) {
 			if(typeof key == "string" && typeof value == "undefined"){
 				let s = window.localStorage[key];
 				if(typeof s == "undefined"){
-					if(key == "periodInMinutes") // records
-						s = "5";
+					if(key == "morning") // records
+						s = "08:50";
+					else if(key == "periodInMinutes") // records
+						s = "3";
 					else if(key.indexOf("schedule=") > -1)
 						return null;
 					else
@@ -98,7 +101,6 @@
 			}
 		}
 
-		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		vm = new Vue({
 			el: '#app',
 			data() {
@@ -111,13 +113,6 @@
 			async mounted(){
 				let self = this;
 				document.body.style.visibility = "visible";
-				
-				window.onresize = () => {
-				return (() => {
-						// self.screenWidth = document.body.clientWidth;
-						self.broadcast.$emit('onResize');
-				})()
-			}
 			},
 			methods: {
 				showMessage(){

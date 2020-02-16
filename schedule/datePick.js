@@ -1,5 +1,5 @@
 Vue.component('datePick', {
-	template:  `<modal title="定時" v-model="visible" :width="310">
+	template:  `<modal title="鬧鈴時間" v-model="visible" :width="310">
 		<DatePicker type="date" placeholder="Select date" style="width: 200px"
 		:options="options" size="large" :value="value" ref="dateP"
 		@on-change="onChangeDate"
