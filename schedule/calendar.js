@@ -279,6 +279,8 @@ Vue.component('calendar', {
 								continue;
 							else if(typeof records[dd]["上班"] == "string")
 								state = "下班";
+							else 
+								state = "上班";
 						} else {
 							if((new Date()).getHours() > 9)
 								state = "下班";
