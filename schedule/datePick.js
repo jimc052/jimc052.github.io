@@ -1,5 +1,7 @@
 Vue.component('datePick', {
-	template:  `<modal title="鬧鈴時間" v-model="visible" :width="310">
+	template:  `<modal title="鬧鈴時間" v-model="visible" :width="310"
+		@on-visible-change="onVisibleChange"	
+	>
 		<DatePicker type="date" placeholder="Select date" style="width: 200px"
 		:options="options" size="large" :value="value" ref="dateP"
 		@on-change="onChangeDate"
@@ -44,8 +46,12 @@ Vue.component('datePick', {
 	destroyed() {
   },
 	methods: {
+		onVisibleChange(v){
+			if(v == true) {
+			}
+		},
 		onOK(){
-			console.log(this.date)
+			// console.log(this.date)
 			if(this.d.length > 0 || this.t.length > 0) {
 				if(this.d.length == 0) 
 					this.d = this.date.substr(0, 10)
@@ -56,7 +62,6 @@ Vue.component('datePick', {
 					alert(holiday[this.d])
 						return;
 				}
-	
 
 				let d1 = (new Date(this.d + "T" + this.t));
 				if((d1.getDay() == 0 || d1.getDay() == 6) && workday.indexOf(this.d) == -1) {
