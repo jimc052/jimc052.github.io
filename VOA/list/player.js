@@ -141,7 +141,13 @@ class Player {
 					} else 
 						waitToNext();
 
-					function waitToNext() {						
+					function waitToNext() {
+						let timeout = 1000 * (self._setting.interval > 0 
+							? self._setting.interval
+							: (range.end - range.start) * Math.abs(self._setting.interval)
+						);
+						// console.log("interval: " + (timeout / 1000) + " second")
+
 						self.intervalID = setTimeout(()=>{ 
 							if(self.state == "pendding") {
 								self.lrc = _lrc;
@@ -156,7 +162,7 @@ class Player {
 								self.state = "play";
 								delete self.intervalID;
 							}
-						}, 1000 * self._setting.interval);
+						}, timeout);
 					}
 					this.state = "pendding";
 				} else if(time >= range.end && this.paragraph == this.LRCs.length - 1 && this.lrc == this.LRCs[this.paragraph].length - 1) {
@@ -245,20 +251,6 @@ class Player {
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
 		let end = this._setting.repeat > 0 && this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
 		if(value >= start && value <= end) {
-			// if(this.intervalID) clearTimeout(this.intervalID);
-			// this.paragraph = value;
-			// this.lrc = 0;
-			// this.currentRange = this.LRCs[value][0];
-			// this.audio.currentTime = this.currentRange.start;
-			// if(this.state == "pendding" || play == true) {
-			// 	clearTimeout(this.timeID);
-			// 	this.state = "play";
-			// 	this.audio.play();
-			// 	this.timing();
-			// 	delete this.intervalID;
-			// 	this.onStateChange("play");
-			// } 
-			// this.onStateChange("sectionChange", value, 0);
 			this.restart(value, 0);
 		}
 	}
@@ -282,18 +274,6 @@ class Player {
 			}
 		}
 		this.restart(block, 0);
-		// if(this.intervalID) clearTimeout(this.intervalID);
-		// this.currentRange = this.LRCs[this.paragraph][this.lrc]
-		// this.audio.currentTime = this.LRCs[this.paragraph][this.lrc].start;
-		// if(this.state == "pendding") {
-		// 	clearTimeout(this.timeID);
-		// 	this.state = "play";
-		// 	this.audio.play();
-		// 	this.timing();
-		// 	delete this.intervalID;
-		// 	this.onStateChange("play");
-		// } 
-		// this.onStateChange("sectionChange", this.paragraph, this.lrc);
 	}
 	gotoLRC(value) {
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
@@ -327,20 +307,6 @@ class Player {
 			}
 		}
 		this.restart(block, lrc);
-		// this.paragraph = block;
-		// this.lrc = lrc;
-		// this.currentRange =  this.LRCs[block][lrc];
-		// this.audio.currentTime = this.LRCs[block][lrc].start;
-		// if(this.intervalID) clearTimeout(this.intervalID);
-		// if(this.state == "pendding") {
-		// 	clearTimeout(this.timeID);
-		// 	this.state = "play";
-		// 	this.audio.play();
-		// 	this.timing();
-		// 	delete this.intervalID;
-		// 	this.onStateChange("play");
-		// } 
-		// this.onStateChange("sectionChange", this.paragraph, this.lrc);
 	}
 
 	restart(paragraph, lrc) {

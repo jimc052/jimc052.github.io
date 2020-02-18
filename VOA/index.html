@@ -129,7 +129,6 @@
 	var vm = null;
 	window.onload = async function(){
 		FireStore.initial();
-
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		vm = new Vue({
 			el: '#app',

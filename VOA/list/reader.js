@@ -53,7 +53,7 @@ Vue.component('reader', {
 						<dropdown-item>重複間距<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list" v-for="(item, index) in options.interval" :key="index">
 								<dropdown-item :name="'間距' + item" :selected="audio.setting.interval == item">
-								{{item + "秒"}}
+								{{(item > 0 ? item : item * -1) + (item > 0 ? "秒" : "倍") }}
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
@@ -172,7 +172,7 @@ Vue.component('reader', {
 			options: {
 				limits: [10, 15, 20, 30, 45, 60], // 睡眠
 				repeat: [0, 1, 2, 3, 5, 10, 20],
-				interval: [3, 5, 10, 15, 20, 30, 45, 60] // 重複間距
+				interval: [3, 5, 10, -1, -1.5, -2, 2.5, -3] // 重複間距
 			}
 		};
 	},
@@ -350,15 +350,18 @@ Vue.component('reader', {
 				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
 				
 				children = [];
-			// options.interval: [3, 5, 10, 15, 20, 30, 45, 60]
+	
 			this.options.interval.forEach(item =>{
 					children.push({
-						text: item + " 秒", 
+						text: Math.abs(item) + (item > 0 ? " 秒" : " 倍"), 
 						value: item,
 						icon: this.audio.setting.interval == item ? "ivu-icon-md-checkmark ivu-icon" : ""
 					});
 				}) 
-				arr.push({text: '重複間距 - ' + this.audio.setting.interval + "秒", children: children});					
+				arr.push({text: '重複間距 - ' + 
+				Math.abs(this.audio.setting.interval) + (this.audio.setting.interval > 0 ? "秒" : "倍"), 
+					children: children
+				});
 			}
 
 			this.cmList = this.$isSmallScreen() ? [] : arr;
