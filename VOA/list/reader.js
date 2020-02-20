@@ -764,7 +764,7 @@ Vue.component('reader', {
 				}	else 
 					if(arr.length == 0)
 						this.audio.gotoParagraph("first");
-					else  if(pk == true)
+					else if(pk == true)
 						this.audio.gotoParagraph(code == 38 ? "first" : "end")
 					else
 						this.audio.gotoParagraph(code == 38 ? -1 : 1)

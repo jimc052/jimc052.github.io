@@ -259,6 +259,7 @@ class Player {
 		this.repeat = 0;
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
 		let end = this._setting.repeat > 0 && this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
+		// console.log("value: " + value + ", " + start + " = " + end)
 		let block = 0;
 		if(value == "first") {
 			block = start;
@@ -272,6 +273,10 @@ class Player {
 			else {
 				block = value + this.paragraph;
 			}
+			if(block < start)
+				return;
+			else if(block > end)
+				block = start;
 		}
 		this.restart(block, 0);
 	}

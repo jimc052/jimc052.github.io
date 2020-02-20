@@ -1,7 +1,6 @@
 Vue.component('dlg-paragraph', { 
 	template:  `<modal title="段落" v-model="v" id="paragraph"
 			:width="310"
-			@on-ok="onOK" @on-cancel="onCancel"
 			@on-visible-change="onVisibleChange"
 		>
 
@@ -19,7 +18,23 @@ Vue.component('dlg-paragraph', {
 			}">
 			<div >{{index + 1}}</div>
 		</div>
-
+		<div slot="footer" style="display: flex; flex-direction: row; justify-content: flex-start;
+			align-items: center;">
+			<div style="flex: 1; text-align: left;">
+				<Icon type="ios-arrow-back" size="28" 
+					:color="iconColor1"
+					style="cursor: pointer; padding: 3px 7px; border-radius: 5px; border: 1px solid #e6e6e6;"
+					@click.native="moveTo(-1)"
+				/>
+				<Icon type="ios-arrow-forward" size="28" 
+					:color="iconColor2"
+					style="cursor: pointer; padding: 3px 7px; border-radius: 5px; border: 1px solid #e6e6e6;"
+					@click.native="moveTo(1)"
+				/>
+			</div>
+			<i-button @click="onCancel">取消</i-button>
+			<i-button type="primary" @click="onOK">登入</i-button>
+		</div>
 	</modal>`,
 	props: {
 		visible: Boolean,
@@ -40,6 +55,21 @@ Vue.component('dlg-paragraph', {
 	destroyed() {
   },
 	methods: {
+		moveTo(index){
+			if(index == -1 && this.iconEable(0)) {
+				this.block2 = [
+					this.block2[0] + index,
+					this.block2[1] + index
+				];
+				this.change();
+			} else if(index == 1 && this.iconEable(1)) {
+				this.block2 = [
+					this.block2[0] + index,
+					this.block2[1] + index
+				];
+				this.change();
+			}
+		},
 		onOK(){
 			this.v = false;
 			let b = this.block2.length != this.block.lengt ||
@@ -77,9 +107,21 @@ Vue.component('dlg-paragraph', {
 					(this.block2.length == 2 && index >= this.block2[0] && index <= this.block2[1])
 					? true : false)
 			});
+		},
+		iconEable(index){
+			if(index == 0)
+				return this.block2.length == 2 && this.block2[0] > 0 ? true : false;
+			else 
+				return this.block2.length == 2 && this.block2[1] < this.paragraph2.length - 1 ? true : false;
 		}
 	},
 	computed: {
+		iconColor1() {
+			return this.iconEable(0) ? 'black' : '#e6e6e6';
+		}, 
+		iconColor2() {
+			return this.iconEable(1) ?  'black' : '#e6e6e6';
+		}
 	},
 	watch: {
 		visible(value) {
@@ -91,7 +133,7 @@ Vue.component('dlg-paragraph', {
 				this.paragraph2.push(false)
 				this.$set(this.paragraph2, index, false);
 			});
-			this.change();
+			if(this.v)this.change();
 		},
 		block(value) {
 			this.block2 = [];
@@ -99,7 +141,7 @@ Vue.component('dlg-paragraph', {
 				this.block2.push(el);
 				this.$set(this.block2, index, el);
 			});
-			this.change();
+			if(this.v) this.change();
 		},
 	}
 });
