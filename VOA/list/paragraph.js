@@ -33,7 +33,7 @@ Vue.component('dlg-paragraph', {
 				/>
 			</div>
 			<i-button @click="onCancel">取消</i-button>
-			<i-button type="primary" @click="onOK">登入</i-button>
+			<i-button type="primary" @click="onOK">確定</i-button>
 		</div>
 	</modal>`,
 	props: {
@@ -83,7 +83,6 @@ Vue.component('dlg-paragraph', {
 			this.$emit("close");
 		}, 
 		onClick(index) {
-			console.log("onClick: " + index)
 			if(this.block2.length == 0) {
 				this.block2 = [index, index];
 			} else if(this.block2[0] <= index && this.block2[1] >= index) {
@@ -94,7 +93,6 @@ Vue.component('dlg-paragraph', {
 				this.block2 = [start, end];
 			}
 			this.change();
-			// console.log(this.block2)
 		},
 		onVisibleChange(v){
 			if(v == true) {
