@@ -114,7 +114,7 @@ Vue.component('reader', {
 					@click.native="moveBlock(block[1] == audio.LRCs.length - 1 ? null : 1)" />
 			</div>
 
-			<div style="margin: 0px 10px 0px 5px; font-size: 20px;">
+			<div v-if="repeat == 0" style="margin: 0px 10px 0px 5px; font-size: 20px;">
 				<div style="font-weight: 500;">{{convertTime(currentTime)}}</div>
 				<div style="font-weight: 500;">{{convertTime(duration)}}</div>
 			</div>
@@ -148,8 +148,7 @@ Vue.component('reader', {
 			:paragraph="audio == null ? [] : audio.LRCs"
 			:block="audio == null ? [] : audio.block"
 			@close="onParagraphOK" @on-cancel="displayParagraph = false"
-		>
-		</dlg-paragraph>
+		/>
 	</modal>`,
 	props: {
 		source: Object,
