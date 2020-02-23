@@ -1,4 +1,3 @@
-
 #vocabulary .ivu-modal-header, #vocabulary .ivu-modal-body {
 	margin: 0px;
 	padding: 0px;	
@@ -100,6 +99,14 @@
 	color: white;
 	overflow: hidden;
 	border-radius: 5px;
+}
+.button.disable {
+	/* background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e); */
+	background-image: -webkit-linear-gradient(top, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
+	border: 1px solid #e5e5e5;
+}
+.button+.button {
+	margin-left: 20px;
 }
 
 #context span.active {

@@ -102,9 +102,16 @@ Vue.component('reader', {
 		<!-- footer -->
 		<div v-show="duration > 0 && mode == '' " slot="footer" style="display: flex; flex-direction: row; align-items: center; ">
 			<div style="display: flex; flex-direction: row; align-items: center; ">
-				<Icon v-if="state == 'pause' || state == 'stop'" type="md-play" size="20" color="white" class="button" @click.native="audio.play()" />
+				<Icon v-if="state == 'pause' || state == 'stop'" type="md-play" 
+					size="20" color="white" class="button" @click.native="audio.play()" />
 				<Icon v-else type="md-pause" size="20" color="white" class="button" @click.native="audio.pause()" />
 				<Icon type="md-square" size="20" color="red" class="button" @click.native="audio.stop()" />
+				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-backward" size="20" color="white" 
+					class="button" :class="{disable: block[0] == 0}"
+					@click.native="moveBlock(block[0] == 0 ? null : -1)" />
+				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-forward" size="20" color="white" 
+					class="button" :class="{disable: block[1] == audio.LRCs.length - 1}"
+					@click.native="moveBlock(block[1] == audio.LRCs.length - 1 ? null : 1)" />
 			</div>
 
 			<div style="margin: 0px 10px 0px 5px; font-size: 20px;">
@@ -210,6 +217,10 @@ Vue.component('reader', {
 		}
   },
 	methods: {
+		moveBlock(index){
+			if(index == null) return;
+			this.onParagraphOK([this.block[0] + index, this.block[1] + index])
+		},
 		onFlutter(arg){
 			console.log("onFlutter: " + arg)
 			if(arg == "unplugged") { // 耳機，已拔

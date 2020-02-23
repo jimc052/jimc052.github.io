@@ -85,6 +85,10 @@ Vue.component('dlg-paragraph', {
 		onClick(index) {
 			if(this.block2.length == 0) {
 				this.block2 = [index, index];
+			} else if(this.block2[0] != this.block2[1] && this.block2[0] == index) {
+				this.block2[0]++;
+			} else if(this.block2[0] != this.block2[1] && this.block2[1] == index) {
+				this.block2[1]--;
 			} else if(this.block2[0] <= index && this.block2[1] >= index) {
 				this.block2 = [];
 			} else {
