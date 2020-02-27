@@ -101,9 +101,12 @@
 	border-radius: 5px;
 }
 .button.disable {
-	background-image: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,
-		rgba(241,241,241,1) 50%,rgba(225,225,225,1) 51%,rgba(246,246,246,1) 100%);;
-	border: 1px solid rgba(241,241,241,1);
+	background-image: -webkit-linear-gradient(top,
+		rgba(246,246,246,1) 0%,
+		rgba(241,241,241,1) 50%,
+		rgba(225,225,225,1) 51%,
+		rgba(246,246,246,1) 100%);
+	/* border: 1px solid rgb(246,246,246); */
 }
 .button+.button {
 	margin-left: 20px;

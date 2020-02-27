@@ -40,7 +40,7 @@ Vue.component('reader', {
 						<dropdown-item>重複播放<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list" v-for="(item, index) in options.repeat" :key="index">
 								<dropdown-item :name="'重複' + item" :selected="audio.setting.repeat == item">
-								{{item == 0 ? "關閉" : item + "次"}}
+								{{item == 0 ? "關閉" : item + " 次"}}
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
@@ -53,7 +53,7 @@ Vue.component('reader', {
 						<dropdown-item>重複間距<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list" v-for="(item, index) in options.interval" :key="index">
 								<dropdown-item :name="'間距' + item" :selected="audio.setting.interval == item">
-								{{(item > 0 ? item : item * -1) + (item > 0 ? "秒" : "倍") }}
+								{{(item > 0 ? item : item * -1) + (item > 0 ? " 秒" : " 倍") }}
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
@@ -106,10 +106,14 @@ Vue.component('reader', {
 					size="20" color="white" class="button" @click.native="audio.play()" />
 				<Icon v-else type="md-pause" size="20" color="white" class="button" @click.native="audio.pause()" />
 				<Icon type="md-square" size="20" color="red" class="button" @click.native="audio.stop()" />
-				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-backward" size="20" color="white" 
+
+				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-backward" size="20" 
+					:color="block[0] == 0 ? '#B8B8B8' : 'white'"
 					class="button" :class="{disable: block[0] == 0}"
 					@click.native="moveBlock(block[0] == 0 ? null : -1)" />
-				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-forward" size="20" color="white" 
+				
+				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-forward" size="20" 
+					:color="block[1] == audio.LRCs.length - 1 ? 'grey' : 'white'"
 					class="button" :class="{disable: block[1] == audio.LRCs.length - 1}"
 					@click.native="moveBlock(block[1] == audio.LRCs.length - 1 ? null : 1)" />
 			</div>
@@ -178,7 +182,7 @@ Vue.component('reader', {
 			options: {
 				limits: [10, 15, 20, 30, 45, 60], // 睡眠
 				repeat: [0, 1, 2, 3, 5, 10, 20],
-				interval: [3, 5, 10, -1, -1.5, -2, 2.5, -3] // 重複間距
+				interval: [3, 5, 10, -0.5, -1, -1.5, -2] // 重複間距
 			}
 		};
 	},
@@ -352,7 +356,7 @@ Vue.component('reader', {
 					icon: this.audio.setting.repeat == item ? "ivu-icon-md-checkmark ivu-icon" : ""
 				});
 			}) 
-			arr.push({text: '重複播放 - ' + (this.audio.setting.repeat > 0 ? this.audio.setting.repeat + "次" : "關閉"), children: children});
+			arr.push({text: '重複播放 - ' + (this.audio.setting.repeat > 0 ? this.audio.setting.repeat + " 次" : "關閉"), children: children});
 			if(this.audio.setting.repeat > 1 && this.state == "play") 
 				this.displayVocabulary = false;
 
@@ -369,7 +373,7 @@ Vue.component('reader', {
 					});
 				}) 
 				arr.push({text: '重複間距 - ' + 
-				Math.abs(this.audio.setting.interval) + (this.audio.setting.interval > 0 ? "秒" : "倍"), 
+				Math.abs(this.audio.setting.interval) + " " + (this.audio.setting.interval > 0 ? "秒" : "倍"), 
 					children: children
 				});
 			}
