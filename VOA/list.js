@@ -15,7 +15,7 @@ Vue.component('list', {
 		</header-bar>
 		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
-		<i-button v-if="$isAdmin()" type="primary" shape="circle" icon="md-add" 
+		<i-button v-if="$isAdmin() && ! $isFlutter()" type="primary" shape="circle" icon="md-add" 
 			circle @click.native="onAdd" size="large"
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
