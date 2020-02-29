@@ -141,11 +141,20 @@ Vue.component('calendar', {
 				this.$set(this.recorder, dd, this.recorder[dd])
 				// this.recorder[dd].push(obj);
 				this.$storage("schedule=" + month, this.recorder);
+				let d1 = this.today;
+				if(this.btn == "下班") {
+					let d1 = this.today.addDays(1);
+					let s1 = d1.toString("yyyy-mm-dd");
+					while(typeof holiday[s1] == "string") {
+						d1 = this.today.addDays(1);
+						s1 = d1.toString("yyyy-mm-dd");
+					}
+				}
 
-				let y = this.today.getFullYear(), m = this.today.getMonth();
+				let y = d1.getFullYear(), m = d1.getMonth();
 				let {schedule, recorder} = this.parseSchedule(y, m);
 				if(recorder == null) recorder = {};
-				let {time, btn} = this.arrangeAlarm(this.today, schedule, recorder);
+				let {time, btn} = this.arrangeAlarm(d1, schedule, recorder);
 				if(time.length == 0) {
 					if(m == 11) {
 						y++; m = 0;
@@ -264,7 +273,6 @@ Vue.component('calendar', {
 		arrangeAlarm(date, schedule, records){
 			let s1 = date.toString("yyyy-mm-dd");
 			let morning = this.$storage("morning");
-
 			for(let i = 0; i < schedule.length; i++) {
 				let week = schedule[i];
 				for(let j = 0; j < week.length; j++) {
