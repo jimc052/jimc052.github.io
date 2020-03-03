@@ -273,6 +273,7 @@ Vue.component('calendar', {
 		arrangeAlarm(date, schedule, records){
 			let s1 = date.toString("yyyy-mm-dd");
 			let morning = this.$storage("morning");
+			// console.log("morning: " + morning)
 			for(let i = 0; i < schedule.length; i++) {
 				let week = schedule[i];
 				for(let j = 0; j < week.length; j++) {
@@ -290,13 +291,14 @@ Vue.component('calendar', {
 							else 
 								state = "上班";
 						} else {
-							if((new Date()).getHours() > 9)
+							if((new Date()).getHours() > 12)
 								state = "下班";
 							else 
 								state = "上班";
 						}
-						if(state.length > 0)
-							return {time: row.date + "T" + (state == "" ? morning : "18:00"), btn: state};
+						if(state.length > 0) {
+							return {time: row.date + "T" + (state == "上班" ? morning : "18:00"), btn: state};
+						}
 					} else if(row.date >= s1 && row.workday == 3) {
 						return {time: row.date + "T" + morning, btn: "上班"};
 					}
