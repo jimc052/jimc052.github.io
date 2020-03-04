@@ -291,7 +291,7 @@ Vue.component('calendar', {
 							else 
 								state = "上班";
 						} else {
-							if((new Date()).getHours() > 12)
+							if(row.date > s1 || (new Date()).getHours() > 12)
 								state = "下班";
 							else 
 								state = "上班";
