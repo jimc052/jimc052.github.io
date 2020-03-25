@@ -9,7 +9,7 @@ Vue.component('dlg-vocabulary', {
 			<div style="height: 100%; overflow-y: auto; " id="vocabularyFrame">
 				<div v-for="(item, index) in rows" :key="index" 
 					style="display: flex; flex-direction: row; justify-content: center; align-items: center;
-						padding: 0px 5px; height: 40px;	
+						padding: 0px 5px; min-height: 40px;	
 					"
 					class="vocabulary"
 				>
