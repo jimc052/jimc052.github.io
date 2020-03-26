@@ -9,12 +9,12 @@ Vue.component('dlg-vocabulary', {
 			<div style="height: 100%; overflow-y: auto; " id="vocabularyFrame">
 				<div v-for="(item, index) in rows" :key="index" 
 					style="display: flex; flex-direction: row; justify-content: center; align-items: center;
-						padding: 0px 5px; min-height: 40px;	
+						padding: 5px 5px; min-height: 44px;	
 					"
 					class="vocabulary"
 				>
 					<i-input v-if="cursor == index" size="large" element-id="editVocabulary"
-						v-model="model" style="flex: 1; " />
+						v-model="model" style="flex: 1; style='height: 100%;' " />
 					<div v-else style="cursor: pointer; flex: 1; font-size: 18px;"
 						@click="$yahoo(item)"
 					>
