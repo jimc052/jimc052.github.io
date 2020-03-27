@@ -1,11 +1,13 @@
 Vue.component('dlg-vocabulary', { 
-	template:  `<modal v-model="visible" id="vocabulary" :footer-hide="true" :width="250" :closable="false"" 
-		:draggable="true" :mask-closable="false" >
+	template:  `<modal v-model="visible" id="vocabulary" :footer-hide="true" :width="width" :closable="false"" 
+			:draggable="true" :mask-closable="false" 
+			style=""
+		>
 		<div slot="header" style="display: flex; flex-direction: row; padding: 10px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white;">生字</div>
 			<Icon type="md-close" size="20" @click.native="close" style="cursor: pointer; color: white;" />
 		</div>
-		<div style="height:250px; overflow: hidden; ">
+		<div :style="{height: height + 'px', overflow: 'hidden'}">
 			<div style="height: 100%; overflow-y: auto; " id="vocabularyFrame">
 				<div v-for="(item, index) in rows" :key="index" 
 					style="display: flex; flex-direction: row; justify-content: center; align-items: center;
@@ -45,17 +47,24 @@ Vue.component('dlg-vocabulary', {
 			rows: [],
 			cursor: -1,
 			model: "",
+			width: 280,
+			height: 350
 		};
 	},
 	created(){
 	},
 	async mounted () {
+		// this.width = this.$isSmallScreen() ? 310 : 320;
+		// console.log(this.rows.length)
+		this.height = this.$isSmallScreen() ? 300 : 350;
 		let el = document.querySelector("#vocabulary .ivu-modal");
 		el.style.margin = "0px";
 		setTimeout(()=>{
 			el = document.querySelector("#vocabulary .ivu-modal-content-drag");
-			el.style.left = (document.body.clientWidth - 270 + (this.$isSmallScreen() ? 15 : 0)) + "px";
-			el.style.top = (document.body.clientHeight - 400) + "px";
+			el.style.left = (document.body.clientWidth - (this.width + 20) + 
+				(this.$isSmallScreen() ? 15 : 0)) + "px";
+			el.style.top = (document.body.clientHeight - (this.height + 150)) + "px";
+			console.log("clientHeight: " + document.body.clientHeight)
 		}, 600)
 		this.broadcast.$on('onResize', this.onResize);
 	},
@@ -111,11 +120,11 @@ Vue.component('dlg-vocabulary', {
 				if(el == null) 
 					return;
 				let left = el.style.left.replace("px", "");
-				if(left > document.body.clientWidth - 270)
-					el.style.left = (document.body.clientWidth - 270) + "px";
-					let top = el.style.top.replace("px", "");
-				if(top > document.body.clientHeight - 400)
-					el.style.top = (document.body.clientHeight - 400) + "px";
+				if(left > document.body.clientWidth - (this.width + 20))
+					el.style.left = (document.body.clientWidth - (this.width + 20)) + "px";
+				let top = el.style.top.replace("px", "");
+				if(top > document.body.clientHeight - (this.height + 150))
+					el.style.top = (document.body.clientHeight - (this.height + 150)) + "px";
 			}, 300);
 		},
 		onFocus(){
@@ -143,6 +152,9 @@ Vue.component('dlg-vocabulary', {
 					return 0;
 			});
 			this.rows = arr;
+
+			this.height = this.rows.length <=5 ? 250 : (this.$isSmallScreen() ? 300 : 350);
+			this.onResize();
 		},
 		cursor(value) {
 			if(value > -1) {
