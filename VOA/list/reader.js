@@ -104,8 +104,13 @@ Vue.component('reader', {
 			<div style="display: flex; flex-direction: row; align-items: center; ">
 				<Icon v-if="state == 'pause' || state == 'stop'" type="md-play" 
 					size="20" color="white" class="button" @click.native="audio.play()" />
-				<Icon v-else type="md-pause" size="20" color="white" class="button" @click.native="audio.pause()" />
-				<Icon type="md-square" size="20" color="red" class="button" @click.native="audio.stop()" />
+				<Icon v-else type="md-pause" size="20" color="white" class="button" 
+					@click.native="audio.pause()" />
+				<Icon type="md-square" size="20"
+					:color="state == 'stop' ? '#B8B8B8' : 'red'"
+					class="button" :class="{disable: state == 'stop'}" 
+					@click.native="audio.stop()" 
+				/>
 
 				<Icon v-if="repeat > 0 && block.length > 0" type="md-skip-backward" size="20" 
 					:color="block[0] == 0 ? '#B8B8B8' : 'white'"

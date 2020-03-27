@@ -99,12 +99,10 @@
 	color: white;
 	overflow: hidden;
 	border-radius: 5px;
+	animation: gradient 2.5s ease infinite;
 }
-.button.disable {
-	/* background-image: -webkit-linear-gradient(top,
-		rgba(235, 236, 240,1) 0%,
-		rgba(235, 236, 240, 1)  100%); */
 
+.button.disable {
 	background-image: -webkit-linear-gradient(top,
 		rgba(235, 236, 240,1) 0%,
 		rgba(241,241,241,1) 50%,
@@ -112,6 +110,7 @@
 		rgba(235, 236, 240,1) 100%); 
 	border: 1px solid #B8B8B8;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1) inset;
+	
 }
 .button+.button {
 	margin-left: 20px;
