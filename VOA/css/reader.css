@@ -95,11 +95,10 @@
 	margin: 0px !important;
 	padding: 10px 15px 10px 15px;
 	cursor: pointer;
-	background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e);
+	background-image: -webkit-linear-gradient(top, #7d7e7d, #0e0e0e, #7d7e7d);
 	color: white;
 	overflow: hidden;
 	border-radius: 5px;
-	animation: gradient 2.5s ease infinite;
 }
 
 .button.disable {

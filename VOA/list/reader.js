@@ -60,9 +60,15 @@ Vue.component('reader', {
 					<DropdownItem name="段落" v-if="audio.setting.repeat > 0">
 						段落
 					</DropdownItem>		
-					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0" divided>
+					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0">
 						生字清單
 					</DropdownItem>
+					<DropdownItem name="google" divided>
+						google
+					</DropdownItem>
+					<DropdownItem name="yahoo">
+					yahoo
+				</DropdownItem>
 					<DropdownItem name="關於" divided>
 						關於
 					</DropdownItem>
@@ -272,6 +278,12 @@ Vue.component('reader', {
 				this.audio.setting.chinese = !this.audio.setting.chinese;
 			} else if(item == "生字"){
 				this.displayVocabulary = true;
+				return;
+			} else if(item == "google"){
+				this.$google("");
+				return;
+			} else if(item == "yahoo"){
+				this.$yahoo("");
 				return;
 			// } else if(item == "設定"){
 			} else if(item == "關於"){
@@ -539,6 +551,7 @@ Vue.component('reader', {
 			}	
 		},
 		saveBlock(){
+			let self = this;
 			if(FireStore.login == true)
 				this.setHistory()
 			else{
@@ -752,8 +765,17 @@ Vue.component('reader', {
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
 					// console.log(window.getSelection())
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
-					this.setHistory("vocabulary")
+					this.setHistory("vocabulary");
 				}
+				// if(ss.length > 0) this.$yahoo(ss);
+			} else if(pk == true && code == 66 && FireStore.login == true){ //b, 開啓段落對話
+				this.displayParagraph = !this.displayParagraph;
+			} else if(pk == true && code == 71){ //g, google
+				let ss = window.getSelection().toString().trim();
+				if(ss.length > 0) this.$google(ss)
+			} else if(pk == true && code == 89){ //y, yahoo
+				let ss = window.getSelection().toString().trim();
+				if(ss.length > 0) this.$yahoo(ss)
 			} else if(pk == true && code == 69 && this.$isAdmin() == true){ // 編輯
 				if(this.mode == "edit") {
 					refresh();
@@ -766,14 +788,14 @@ Vue.component('reader', {
 				this.displayVocabulary = false;
 			// } else if(this.displayVocabulary == true) {
 			// 	return;
-			} else if(pk && sk && code == 86 && FireStore.login == true){ // Cmd ＋ shift + V, 單字清單, 還沒寫
-				this.displayVocabulary = true;
+			} else if(pk && code == 86 && FireStore.login == true){ // Cmd ＋ shift + V, 單字清單
+				this.displayVocabulary = !this.displayVocabulary;
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 
 					this.audio.continue();
-			} else if(code == 37 || code == 39 || code == 38 || code == 40) { // l, r, u, d
+			} else if(code == 37 || code == 39 || code == 38 || code == 40) { // left, right, u, d
 				let arr = document.querySelectorAll(".english span.active");
-				if(code == 37 || code == 39) {
+				if(code == 37 || code == 39) { // left, right
 					if(arr.length == 0)
 						this.audio.gotoLRC("first");
 					else if(pk == true)

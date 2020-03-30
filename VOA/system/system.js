@@ -81,6 +81,12 @@ Vue.prototype.$yahoo = function (word) {
 	); // + ",width=200,height=100"
 }
 
+Vue.prototype.$google = function (word) {
+	window.open('https://www.google.com.tw/#q=' + word, "",
+		"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
+	); // + ",width=200,height=100"
+}
+
 Vue.prototype.$isSmallScreen = function () {
 	return document.body.clientWidth > 600 ? false : true;
 }
