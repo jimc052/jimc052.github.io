@@ -54,8 +54,7 @@ Vue.component('dlg-vocabulary', {
 	created(){
 	},
 	async mounted () {
-		// this.width = this.$isSmallScreen() ? 310 : 320;
-		// console.log(this.rows.length)
+		this.width = this.$isSmallScreen() ? 300 : 320;
 		this.height = this.$isSmallScreen() ? 300 : 350;
 		let el = document.querySelector("#vocabulary .ivu-modal");
 		el.style.margin = "0px";
@@ -153,8 +152,8 @@ Vue.component('dlg-vocabulary', {
 			});
 			this.rows = arr;
 
-			this.height = this.rows.length <=5 ? 250 : (this.$isSmallScreen() ? 300 : 350);
-			this.onResize();
+			// this.height = this.rows.length <=5 ? 250 : (this.$isSmallScreen() ? 300 : 350);
+			// this.onResize();
 		},
 		cursor(value) {
 			if(value > -1) {
