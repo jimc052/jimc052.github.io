@@ -60,8 +60,8 @@ Vue.component('list', {
 				vm.loading();
 				let ds = await this.$refs["vocList"].initital((data)=>{
 						this.datas.forEach(item1=>{
-								if(item1.key == data.key)
-									data.title = item1.title;
+							if(item1.key == data.key)
+								data.title = item1.title;
 						});					
 				});
 				if(ds.length > 0) {
@@ -124,6 +124,7 @@ Vue.component('list', {
 					arr.push(Object.assign({key: doc.id}, doc.data()));
 					// if(this.$isLocal()) this.checkHTML(self.datas[self.datas.length - 1], self.datas.length - 1)
 				});
+
 				if(this.$isLogin()) {
 					let x = 0; 
 					snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
@@ -147,19 +148,6 @@ Vue.component('list', {
 					});
 				}
 				self.datas = arr;
-				// let i = location.href.indexOf("?reader="); // 不知為何無法回到前一頁
-				// if(i > -1) {
-				// 	let title = decodeURI(location.href.substr(i + "?reader=".length));
-				// 	for(let i = 0; i < self.datas.length; i++) {
-				// 		if(self.datas[i].title == title) {
-				// 			vm.loading(false);
-				// 			setTimeout(() => {
-				// 				self.onClick(i)
-				// 			}, 6000);
-				// 			return;
-				// 		}
-				// 	}
-				// }
 			} catch(e) {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);

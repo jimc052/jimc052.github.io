@@ -11,7 +11,7 @@ class Player {
 			self.onStateChange("loadStart");
 		}, true);
 		self.audio.addEventListener("canplay", function() {
-			// console.log("canplay: " + self.canPlay)
+			// console.log("canplay: " + self.canPlay + "; " + (new Date()))
 			if(self.canPlay == false) {
 				self.audio.autoplay = false;
 				self.onStateChange("canPlay");

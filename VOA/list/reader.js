@@ -639,7 +639,7 @@ Vue.component('reader', {
 			window.addEventListener("popstate", this.onPopState);
 	
 			self.audio.onStateChange = (e, v1, v2) => {
-				// console.log(e)
+				// console.log("onStateChange.state: " + e + "; " + (new Date()))
 				if(this.modal == false) return;
 				if(e == "durationChange") {
 					this.duration = v1;
@@ -680,7 +680,7 @@ Vue.component('reader', {
 							name: "interrupt"
 						});
 					} else if(e == "play") {
-						this.finalCount(e);
+						if(this.passTime == 0 ) this.finalCount(e);
 					} else if(e == "stop") {
 						this.finalCount(e);
 						this.currentTime = this.audio.currentTime;
