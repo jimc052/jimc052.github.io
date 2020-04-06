@@ -751,7 +751,7 @@ Vue.component('reader', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// console.log("key: " + code + "/" + pk)
+			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
@@ -793,6 +793,44 @@ Vue.component('reader', {
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 
 					this.audio.continue();
+			} else if(pk == true && sk == true && (code == 38 || code == 40)) { //  up, down
+				let arr = document.querySelectorAll("#renderMarker .active");
+				if(arr.length > 0){
+					let start = -1, end = -1;
+					for (let i = 0; i < arr.length; ++i) {
+						let item = arr[i];
+						let el = parseInt(item.id.replace("bubble", ""), 10);
+						if(start == -1 || el < start)
+							start = el;
+						if(end == -1 || el > end)
+							end = el;
+					}
+					if(start == -1) return;
+					
+					arr = document.querySelectorAll("#renderMarker .speech-bubble");
+					start = start + (code == 38 ? -1 : 1);
+					end = end + (code == 38 ? -1 : 1);
+
+					if(start < 0)
+						start = 0;
+					else if(start > arr.length - 1)
+						start = arr.length - 1;
+					if(end > arr.length - 1) end = arr.length - 1;
+					if(end < start) end = start;
+
+					arr.forEach((item, index)=>{
+						if(index >= start && index <= end)
+							item.classList.add("active");
+						else 
+						item.classList.remove("active");
+					});
+					this.audio.block = [start, end];	
+
+					if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){
+						this.audio.assignParagraph(this.audio.block[0], true);
+					}
+					this.saveBlock();	
+				}
 			} else if(code == 37 || code == 39 || code == 38 || code == 40) { // left, right, u, d
 				let arr = document.querySelectorAll(".english span.active");
 				if(code == 37 || code == 39) { // left, right
