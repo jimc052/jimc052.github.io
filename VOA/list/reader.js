@@ -229,8 +229,51 @@ Vue.component('reader', {
 			console.log("Flutter.postMessage: " + JSON.stringify(obj))
 			this.broadcast.$off('onFlutter', this.onFlutter);
 		}
+		this.$Modal.remove();
   },
 	methods: {
+		toTranslate(){ 
+			this.$Modal.remove();
+			
+			let context = document.getElementById("context");
+			let s = context.innerText.split("\n").join("\n\n");
+
+			this.$Modal.info({
+				title: "複製內容",
+				width: document.body.clientWidth - 100,
+				render: (h) => {
+					return h('textarea', {
+						attrs: {
+							id: "clipboard",
+							style: "height: 300px; width: 100%;",
+							readonly: true
+						},
+						props: {
+							// read
+						},
+						on: {
+							blur: (event) => {
+									this.value = event.target.value;
+							}
+						}
+					}, s)
+				},
+				onOk: () => { 
+					window.open('https://www.deepl.com/translator', "",
+						"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
+					); 
+				}
+			});
+
+			setTimeout(() => {
+				let el = document.getElementById("clipboard");
+				el.select();
+				let range = document.createRange();
+				range.selectNode(el);
+				window.getSelection().addRange(range);
+				document.execCommand("copy");
+			}, 1000);
+		},
 		moveBlock(index){
 			if(index == null) return;
 			this.onParagraphOK([this.block[0] + index, this.block[1] + index])
@@ -251,16 +294,8 @@ Vue.component('reader', {
 		onParagraphOK(block){
 			if(Array.isArray(block)) {
 				this.block = block;
-
-				let arr = document.querySelectorAll("#renderMarker .speech-bubble");
-				arr.forEach((item, index)=>{
-					if(block.length == 2 && index >= block[0] && index <= block[1])
-						item.classList.add("active");
-					else 
-					item.classList.remove("active");
-				});
 				this.audio.block = block;	
-				
+				this.renderActiveBubble();
 				if(block.length == 2 && (this.audio.paragraph < block[0] || this.audio.paragraph > block[1])){
 					this.audio.assignParagraph(this.audio.block[0], true);
 				}
@@ -496,7 +531,7 @@ Vue.component('reader', {
 			} else if(pk == true && sk == true) {
 			}	else {
 				let start = -1, end = -1;
-				let current = parseInt(e.target.id.replace("bubble", ""));
+				let current = parseInt(e.target.id.replace("bubble", ""), 10);
 				if(pk == true && sk == false) {
 					let active = e.target.classList.contains("active");
 					clearBubble();
@@ -506,6 +541,7 @@ Vue.component('reader', {
 					} else {
 						this.audio.block = [];
 					}
+					this.block = this.audio.block;
 				} else if(sk == true && pk == false) {
 					let arr = document.querySelectorAll("#renderMarker .active");
 					for (let i = 0; i < arr.length; ++i) {
@@ -524,14 +560,9 @@ Vue.component('reader', {
 						end = current;
 					else if(current > start) 
 						start = current;
-					arr = document.querySelectorAll("#renderMarker .speech-bubble");
-					arr.forEach((item, index)=>{
-						if(index >= start && index <= end)
-							item.classList.add("active");
-						else 
-						item.classList.remove("active");
-					});
-					this.audio.block = [start, end];	
+					this.audio.block = [start, end];
+					this.block = [start, end];
+					this.renderActiveBubble();
 				} else {
 					return
 				}
@@ -751,7 +782,7 @@ Vue.component('reader', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk)
+			console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
@@ -776,6 +807,8 @@ Vue.component('reader', {
 			} else if(pk == true && code == 89){ //y, yahoo
 				let ss = window.getSelection().toString().trim();
 				if(ss.length > 0) this.$yahoo(ss)
+			} else if(sk == true && code == 84){ //t, 開翻譯網站
+				this.toTranslate();
 			} else if(pk == true && code == 69 && this.$isAdmin() == true){ // 編輯
 				if(this.mode == "edit") {
 					refresh();
@@ -793,7 +826,7 @@ Vue.component('reader', {
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 
 					this.audio.continue();
-			} else if(pk == true && sk == true && (code == 38 || code == 40)) { //  up, down
+			} else if(pk == true && sk == true && (code == 38 || code == 40)) { // up, down； 移動 blocks
 				let arr = document.querySelectorAll("#renderMarker .active");
 				if(arr.length > 0){
 					let start = -1, end = -1;
@@ -805,9 +838,10 @@ Vue.component('reader', {
 						if(end == -1 || el > end)
 							end = el;
 					}
-					if(start == -1) return;
-					
 					arr = document.querySelectorAll("#renderMarker .speech-bubble");
+					if(start == -1 || end == -1 || (code == 38 && start == 0) || (code == 40 && end == arr.length - 1)) 
+						return;
+					
 					start = start + (code == 38 ? -1 : 1);
 					end = end + (code == 38 ? -1 : 1);
 
@@ -818,13 +852,9 @@ Vue.component('reader', {
 					if(end > arr.length - 1) end = arr.length - 1;
 					if(end < start) end = start;
 
-					arr.forEach((item, index)=>{
-						if(index >= start && index <= end)
-							item.classList.add("active");
-						else 
-						item.classList.remove("active");
-					});
 					this.audio.block = [start, end];	
+					this.block = [start, end];
+					this.renderActiveBubble();
 
 					if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){
 						this.audio.assignParagraph(this.audio.block[0], true);
@@ -1045,17 +1075,22 @@ Vue.component('reader', {
 			let el = document.querySelector("#renderMarker");
 			if(el != null) el.style.height = top + "px";
 			setTimeout(()=>{
-				if(this.block.length > 0) {
-					arr = document.querySelectorAll("#renderMarker .speech-bubble");
-					arr.forEach((item, index)=>{
-						if(index >= this.block[0] && index <= this.block[1])
-							item.classList.add("active");
-					});				
-				}				
+				this.renderActiveBubble();
 			}, 300);
 			setTimeout(()=>{
 				this.onScroll();
 			}, 1000);
+		},
+		renderActiveBubble(){
+			if(this.block.length == 2) {
+				let arr = document.querySelectorAll("#renderMarker .speech-bubble");
+				arr.forEach((item, index)=>{
+					if(index >= this.block[0] && index <= this.block[1])
+						item.classList.add("active");
+					else 
+						item.classList.remove("active");
+				});				
+			}
 		}
 	},
 	computed: {
