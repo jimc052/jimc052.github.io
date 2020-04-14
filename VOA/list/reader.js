@@ -782,7 +782,7 @@ Vue.component('reader', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk)
+			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
@@ -809,8 +809,9 @@ Vue.component('reader', {
 				if(ss.length > 0) this.$yahoo(ss)
 			} else if(sk == true && code == 84){ //t, 開翻譯網站
 				this.toTranslate();
-			} else if(pk == true && code == 69 && this.$isAdmin() == true){ // 編輯
+			} else if(pk == true && code == 69 && this.$isAdmin() == true){ //e, 編輯
 				if(this.mode == "edit") {
+					this.html = this.source.html;
 					refresh();
 				} else {
 					this.mode = "edit";
@@ -1033,14 +1034,57 @@ Vue.component('reader', {
 				this.audio.audio.play();
 				this.audio.timing();
 			}
-
-			this.renderBubble();
-			if(this.audio.setting.repeat > 0 && this.block.length > 0)
-				this.scrollTo(document.querySelector("#p" + this.block[0]));
+			
 			setTimeout(()=>{
-				if(context != null) context.style.visibility = "visible";
+				this.renderBubble();
+				if(this.audio.setting.repeat > 0 && this.block.length > 0)
+					this.scrollTo(document.querySelector("#p" + this.block[0]));
 			}, 100);
-		}, 
+			setTimeout(()=>{
+				this.convertVocabulary();
+				if(context != null) context.style.visibility = "visible";
+			}, 200);
+		},
+		convertVocabulary(){
+			let self = this;
+			let html = context.innerHTML;
+			let arr = this.vocabulary.split("\n");
+			arr.forEach((item, index)=>{
+				if(item.indexOf("..") == -1) {
+					if(item.indexOf("(") == -1)
+						replaceItem(item, item);
+					else {
+						let arr2 = item.split("(")
+						replaceItem(arr2[1].replace(")", ""), arr2[0]);
+					}
+				}
+			});
+			context.innerHTML = html;
+
+			setTimeout(() => {
+				let arr = document.querySelectorAll("#context span.highlight");
+				for(let i = 0; i < arr.length; i++) {
+					arr[i].addEventListener('click', function (e) {
+						console.log(e.target)
+						console.log(e.target.getAttribute("data"))
+						let ss = e.target.getAttribute("data");
+						self.$yahoo(ss)
+					}, false);
+				}				
+			}, 300);
+
+			function replaceItem(item, value) {
+				if(item != value) console.log(item, value)
+				item = item.trim();
+				let i = html.toUpperCase().indexOf(item.toUpperCase());
+				if(i > -1) {
+					let s1 = html.substr(0, i)
+					let s2 = html.substr(i, item.length)
+					let s3 = html.substr(i + item.length)
+					html = s1 + "<span class='highlight' data='" + value + "'>" + s2 + "</span>" + s3;
+				}
+			}
+		},
 		onScroll(e){
 			if(this.repeat == 0) return;
 

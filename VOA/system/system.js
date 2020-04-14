@@ -82,6 +82,9 @@ Vue.prototype.$yahoo = function (word) {
 }
 
 Vue.prototype.$google = function (word) {
+	if(word.indexOf("(") > -1) {
+		word = word.substr(0, word.indexOf("("))
+	}
 	window.open('https://www.google.com.tw/#q=' + word, "",
 		"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
 	); // + ",width=200,height=100"

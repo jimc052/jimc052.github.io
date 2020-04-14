@@ -3,9 +3,11 @@ Vue.component('dlg-vocabulary', {
 			:draggable="true" :mask-closable="false" 
 			style=""
 		>
-		<div slot="header" style="display: flex; flex-direction: row; padding: 10px 12px; background-color: rgb(70, 160, 240)">
+		<div slot="header" 
+				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white;">生字</div>
-			<Icon type="md-close" size="20" @click.native="close" style="cursor: pointer; color: white;" />
+			<Icon type="md-add" size="22" @click.native="add" style="cursor: pointer; color: white; margin-right: 10px;" />
+			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
 		</div>
 		<div :style="{height: height + 'px', overflow: 'hidden'}">
 			<div style="height: 100%; overflow-y: auto; " id="vocabularyFrame">
@@ -90,6 +92,10 @@ Vue.component('dlg-vocabulary', {
 				event.stopImmediatePropagation();
 				event.stopPropagation();
 			}
+		},
+		add(){
+			this.rows.push("")
+			this.cursor = this.rows.length - 1;
 		},
 		close(){
 			this.cursor = -1; this.model = "";

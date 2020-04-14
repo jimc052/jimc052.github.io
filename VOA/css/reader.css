@@ -141,3 +141,12 @@
 	font-weight: 400 !important;
 	/* display: none; */
 }
+
+#context span.highlight {
+	color: #c01921;
+	cursor: pointer;
+}
+
+#context span.active span.highlight {
+	color: white;
+}
