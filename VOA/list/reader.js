@@ -67,9 +67,12 @@ Vue.component('reader', {
 						google
 					</DropdownItem>
 					<DropdownItem name="yahoo">
-					yahoo
-				</DropdownItem>
-					<DropdownItem name="關於" divided>
+						yahoo
+					</DropdownItem>
+					<DropdownItem name="help" divided>
+						help
+					</DropdownItem>
+					<DropdownItem name="關於">
 						關於
 					</DropdownItem>
 				</DropdownMenu>
@@ -319,6 +322,9 @@ Vue.component('reader', {
 				return;
 			} else if(item == "yahoo"){
 				this.$yahoo("");
+				return;
+			} else if(item == "help"){
+				this.$open("https://docs.google.com/document/d/1IQ-_LDYGWP-1y0Ogll3jRuyPyu16yzZY0d_ELV9yHD4/edit#heading=h.fwj87joqtqco");
 				return;
 			// } else if(item == "設定"){
 			} else if(item == "關於"){
@@ -1065,8 +1071,6 @@ Vue.component('reader', {
 				let arr = document.querySelectorAll("#context span.highlight");
 				for(let i = 0; i < arr.length; i++) {
 					arr[i].addEventListener('click', function (e) {
-						console.log(e.target)
-						console.log(e.target.getAttribute("data"))
 						let ss = e.target.getAttribute("data");
 						self.$yahoo(ss)
 					}, false);
@@ -1074,7 +1078,7 @@ Vue.component('reader', {
 			}, 300);
 
 			function replaceItem(item, value) {
-				if(item != value) console.log(item, value)
+				// if(item != value) console.log(item, value)
 				item = item.trim();
 				let i = html.toUpperCase().indexOf(item.toUpperCase());
 				if(i > -1) {

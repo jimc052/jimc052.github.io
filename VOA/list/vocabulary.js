@@ -96,6 +96,7 @@ Vue.component('dlg-vocabulary', {
 		add(){
 			this.rows.push("")
 			this.cursor = this.rows.length - 1;
+			this.model = "";
 		},
 		close(){
 			this.cursor = -1; this.model = "";
@@ -103,17 +104,19 @@ Vue.component('dlg-vocabulary', {
 		},
 		del(index){
 			if(this.cursor == -1) {
+				let s = this.rows[index]
 				this.rows.splice(index, 1);
-				this.$emit("update", this.rows)
+				this.$emit("update", this.rows, "del", s)
 			}
 			this.cursor = -1;
 			this.model = "";
 		},
 		upload(){
 			if(this.rows[this.cursor] != this.model) {
+				let s = this.rows[this.cursor];
 				this.rows[this.cursor] = this.model;
 				setTimeout(() => {
-					this.$emit("update", this.rows);
+					this.$emit("update", this.rows, s, this.model);
 				}, 200);
 			}
 			this.cursor = -1; this.model = "";
@@ -157,9 +160,6 @@ Vue.component('dlg-vocabulary', {
 					return 0;
 			});
 			this.rows = arr;
-
-			// this.height = this.rows.length <=5 ? 250 : (this.$isSmallScreen() ? 300 : 350);
-			// this.onResize();
 		},
 		cursor(value) {
 			if(value > -1) {

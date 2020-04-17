@@ -90,6 +90,12 @@ Vue.prototype.$google = function (word) {
 	); // + ",width=200,height=100"
 }
 
+Vue.prototype.$open = function (url) {
+	window.open(url, "",
+		"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
+	); // + ",width=200,height=100"
+}
+
 Vue.prototype.$isSmallScreen = function () {
 	return document.body.clientWidth > 600 ? false : true;
 }
