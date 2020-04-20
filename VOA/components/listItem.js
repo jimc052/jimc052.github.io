@@ -9,16 +9,20 @@ Vue.component('list-item', {
 							@click.stop='onClickItem(index)'>
 							<div style="font-size: 20px;" class="text-overflow">{{item.title}}</div>
 							<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-								<div style="width: 30px;">{{index + 1}}</div>
+								<div style="width: 35px;">{{index + 1}}</div>
 								<div v-if="item.html.indexOf(\`<div class='chinese'>\`) > -1" style="font-size: 8px; color: #c01921;">
 								譯
 								</div>
 								<div style="flex: 1;"></div>
+								<div style="width: 130px; text-align: right;"
+									v-if="typeof item.extend == 'object' && typeof item.extend.listenDate == 'number'"
+								>
+									{{between30(item.extend.listenDate)}}
+								</div>
 								<Icon 
 									v-if="typeof item.extend == 'object' && typeof item.extend.vocabulary == 'string' && item.extend.vocabulary.length > 0" 
 									type="md-albums" size="20" color="#c01921" 
-									style="cursor: pointer; padding: 0px 10px;"
-									
+									style="cursor: pointer; padding: 0px 10px;"									
 								/>
 								<!-- @click.native.stop="onClickIcon(index)" -->
 								<div style="padding-left: 5px;">{{item.date}}</div>
@@ -36,6 +40,7 @@ Vue.component('list-item', {
 		return {
 			span: 12, // default 24
 			gutter: 10,
+			today: new Date()
 		};
 	},
 	created(){
@@ -77,7 +82,16 @@ Vue.component('list-item', {
 			} else {
 				viewer.scrollTop = offsetTop - 65;
 			}
-		}
+		},
+		between30(d){
+			let d1 = new Date(d);
+			let s = "";
+			let days = this.today.between(d1);
+			if(days <= 30){
+				s = d1.toString(d1.toString("yy-mm-dd") == this.today.toString("yy-mm-dd") ? "hh:MM" : "yy-mm-dd hh:MM")
+			}
+			return s;
+		},
 	},
 	watch: {
 		datas(value) {

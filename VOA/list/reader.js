@@ -60,7 +60,7 @@ Vue.component('reader', {
 					<DropdownItem name="段落" v-if="audio.setting.repeat > 0">
 						段落
 					</DropdownItem>		
-					<DropdownItem name="生字" divided v-if="displayVocabulary == false && vocabulary.length > 0">
+					<DropdownItem name="生字" divided v-if="login == true && displayVocabulary == false && vocabulary.length > 0">
 						生字清單
 					</DropdownItem>
 					<DropdownItem name="google" divided>
@@ -175,6 +175,7 @@ Vue.component('reader', {
 	data() {
 		return {
 			modal: true,
+			login: false,
 			title: "",
 			audio: null,
 			state: "stop",
@@ -203,6 +204,7 @@ Vue.component('reader', {
 	created(){
 	},
 	async mounted () {
+		this.login = FireStore.login;
 		let context = document.querySelector("#context");
 		if(context != null) context.style.visibility = "hidden";
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
@@ -493,21 +495,19 @@ Vue.component('reader', {
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 				.collection("history").doc(this.source.key);
 			let obj = {
-				modifyDate: (new Date()).toString("yyyymmddThhMM"),
+				// modifyDate: (new Date()).toString("yyyymmddThhMM"),
 				vocabulary: this.vocabulary,
 				report: this.source.report,
 				block: this.audio.block.length == 2 ? [this.audio.block[0], this.audio.block[1]] : []
 			}
+			if(typeof arg == "object")
+				obj = Object.assign(obj, arg);
 
 			try {
 				let x = await ref.set(obj,{merge: true});
 				if(arg == "vocabulary") {
 					this.$emit("onUpdate", "vocabulary",  this.vocabulary);
-					// this.vocabulary
 				}
-				// this.$Notice.success({
-				// 	title: "生字已上傳",
-				// });
 			} catch(e) {
 				console.log(e)
 				throw e;
@@ -589,7 +589,7 @@ Vue.component('reader', {
 		},
 		saveBlock(){
 			let self = this;
-			if(FireStore.login == true)
+			if(this.login == true)
 				this.setHistory()
 			else{
 					let s = window.localStorage["VOA-Blocks-" + self.source.report];
@@ -639,7 +639,7 @@ Vue.component('reader', {
 				setting = Object.assign(setting, JSON.parse(s));
 			this.repeat = setting.repeat;
 
-			if(FireStore.login == true) {
+			if(this.login == true) {
 				let data = await this.getHistory();
 				// console.log(data);
 				if(data && typeof data.vocabulary == "string") {
@@ -717,7 +717,10 @@ Vue.component('reader', {
 							name: "interrupt"
 						});
 					} else if(e == "play") {
-						if(this.passTime == 0 ) this.finalCount(e);
+						if(this.passTime == 0) {
+							this.finalCount(e);
+						}
+						this.setHistory({listenDate: (new Date()).getTime()});
 					} else if(e == "stop") {
 						this.finalCount(e);
 						this.currentTime = this.audio.currentTime;
@@ -797,7 +800,7 @@ Vue.component('reader', {
 					this.onPopState();
 				} else
 					return;
-			} else if(pk == true && code == 77 && FireStore.login == true){ // m, 加入筆記
+			} else if(pk == true && code == 77 && this.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
 					// console.log(window.getSelection())
@@ -805,8 +808,9 @@ Vue.component('reader', {
 					this.setHistory("vocabulary");
 				}
 				// if(ss.length > 0) this.$yahoo(ss);
-			} else if(pk == true && code == 66 && FireStore.login == true){ //b, 開啓段落對話
-				this.displayParagraph = !this.displayParagraph;
+			} else if(pk == true && code == 66){ //b, 開啓段落對話
+				if(this.audio.setting.repeat > 0)
+					this.displayParagraph = !this.displayParagraph;
 			} else if(pk == true && code == 71){ //g, google
 				let ss = window.getSelection().toString().trim();
 				if(ss.length > 0) this.$google(ss)
@@ -828,7 +832,7 @@ Vue.component('reader', {
 				this.displayVocabulary = false;
 			// } else if(this.displayVocabulary == true) {
 			// 	return;
-			} else if(pk && code == 86 && FireStore.login == true){ // Cmd ＋ shift + V, 單字清單
+			} else if(pk && code == 86 && this.login == true){ // Cmd ＋ shift + V, 單字清單
 				this.displayVocabulary = !this.displayVocabulary;
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 

@@ -71,6 +71,25 @@ Date.prototype.toString = function (format = "yyyy/mm/dd hh:MM:ss.ms") {
 	return r;
 };
 
+Date.prototype.between = function (d, kind) { // 天
+	// 1000*60*60*24 or 86400000 or 864e5, beween 有含當天
+	let seed = 864e5; // 預設為天
+	if(typeof kind == "string") {
+		if(kind == "s") //秒
+			seed = 1000;
+		else if(kind == "M")// 分
+			seed = 1000 * 60;
+		else if(kind == "h")// 時
+			seed = 1000 * 60 * 60;
+	}
+
+	var t = this,
+		i = t.getTime() - d.getTime(),
+		r = Math.ceil(i / seed);
+	//console.log("between: " + i + "ms => " + r + " => " + (Math.round((i / seed) * 100) / 100));
+	return r;
+};
+
 Vue.prototype.$isLogin = function () {
 	return FireStore.login;
 }

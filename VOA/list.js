@@ -137,9 +137,9 @@ Vue.component('list', {
 								x = i;
 								if(arr[i].key == doc.id) {
 									arr[i].extend = {
-										vocabulary: doc.data().vocabulary
+										vocabulary: doc.data().vocabulary,
+										listenDate: doc.data().listenDate
 									}
-									// console.log(self.datas[i])
 									x++;
 									break;
 								}
@@ -148,6 +148,7 @@ Vue.component('list', {
 					});
 				}
 				self.datas = arr;
+				console.log(arr[0].extend)
 			} catch(e) {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
