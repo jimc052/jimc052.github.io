@@ -32,9 +32,7 @@ Vue.component('dlg-paragraph', {
 					@click.native="moveTo(1)"
 				/>
 			</div>
-			<i-button @click="onClickAll" :type="block2.length == 2 ? '' : 'error'">
-				{{block2.length == 2 ? "取消" : "全選"}}
-			</i-button>
+			<i-button v-if="block2.length == 2" @click="onClickAll">{{"取消"}}</i-button>
 			<i-button @click="onCancel">關閉</i-button>
 			<i-button type="primary" @click="onOK">確定</i-button>
 		</div>
