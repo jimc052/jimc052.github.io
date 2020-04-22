@@ -148,7 +148,6 @@ Vue.component('list', {
 					});
 				}
 				self.datas = arr;
-				console.log(arr[0].extend)
 			} catch(e) {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);

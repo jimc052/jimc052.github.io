@@ -16,8 +16,9 @@ Vue.component('list-item', {
 								<div style="flex: 1;"></div>
 								<div style="width: 130px; text-align: right;"
 									v-if="typeof item.extend == 'object' && typeof item.extend.listenDate == 'number'"
+									:style="{color: today.between(new Date(item.extend.listenDate)) <= 7 ? '#c01921' : '#e6e6e6'}"
 								>
-									{{between30(item.extend.listenDate)}}
+									{{showListenDate(item.extend.listenDate)}}
 								</div>
 								<Icon 
 									v-if="typeof item.extend == 'object' && typeof item.extend.vocabulary == 'string' && item.extend.vocabulary.length > 0" 
@@ -83,13 +84,13 @@ Vue.component('list-item', {
 				viewer.scrollTop = offsetTop - 65;
 			}
 		},
-		between30(d){
+		showListenDate(d){
 			let d1 = new Date(d);
 			let s = "";
 			let days = this.today.between(d1);
-			if(days <= 30){
-				s = d1.toString(d1.toString("yy-mm-dd") == this.today.toString("yy-mm-dd") ? "hh:MM" : "yy-mm-dd hh:MM")
-			}
+			// if(days <= 30){
+				s = d1.toString(d1.toString("yy-mm-dd") == this.today.toString("yy-mm-dd") ? "hh:MM" : "yy-mm-dd")
+			// }
 			return s;
 		},
 	},

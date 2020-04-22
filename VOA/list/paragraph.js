@@ -23,16 +23,19 @@ Vue.component('dlg-paragraph', {
 			<div style="flex: 1; text-align: left;">
 				<Icon type="ios-arrow-back" size="28" 
 					:color="iconColor1"
-					style="cursor: pointer; padding: 3px 7px; border-radius: 5px; border: 1px solid #e6e6e6;"
+					style="cursor: pointer; padding: 3px 5px; border-radius: 5px; border: 1px solid #e6e6e6;"
 					@click.native="moveTo(-1)"
 				/>
 				<Icon type="ios-arrow-forward" size="28" 
 					:color="iconColor2"
-					style="cursor: pointer; padding: 3px 7px; border-radius: 5px; border: 1px solid #e6e6e6;"
+					style="cursor: pointer; padding: 3px 5px; border-radius: 5px; border: 1px solid #e6e6e6;"
 					@click.native="moveTo(1)"
 				/>
 			</div>
-			<i-button @click="onCancel">取消</i-button>
+			<i-button @click="onClickAll" :type="block2.length == 2 ? '' : 'error'">
+				{{block2.length == 2 ? "取消" : "全選"}}
+			</i-button>
+			<i-button @click="onCancel">關閉</i-button>
 			<i-button type="primary" @click="onOK">確定</i-button>
 		</div>
 	</modal>`,
@@ -55,6 +58,15 @@ Vue.component('dlg-paragraph', {
 	destroyed() {
   },
 	methods: {
+		onClickAll(){
+			if(this.block2.length == 0) {
+				this.block2[0] = 0;
+				this.block2[1] = this.paragraph2.length - 1;
+			} else {
+				this.block2 = [];
+			}
+			this.change();
+		},
 		moveTo(index){
 			if(index == -1 && this.iconEable(0)) {
 				this.block2 = [

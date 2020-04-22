@@ -1134,15 +1134,15 @@ Vue.component('reader', {
 			}, 1000);
 		},
 		renderActiveBubble(){
-			if(this.block.length == 2) {
+			// if(this.block.length == 2) {
 				let arr = document.querySelectorAll("#renderMarker .speech-bubble");
 				arr.forEach((item, index)=>{
-					if(index >= this.block[0] && index <= this.block[1])
+					if(this.block.length == 2 && index >= this.block[0] && index <= this.block[1])
 						item.classList.add("active");
 					else 
 						item.classList.remove("active");
 				});				
-			}
+			// }
 		}
 	},
 	computed: {
