@@ -14,19 +14,18 @@ Vue.component('list-item', {
 								譯
 								</div>
 								<div style="flex: 1;"></div>
-								<div style="width: 130px; text-align: right;"
+								<div style="width: 130px; text-align: right; margin-right: 10px;"
 									v-if="typeof item.extend == 'object' && typeof item.extend.listenDate == 'number'"
-									:style="{color: today.between(new Date(item.extend.listenDate)) <= 7 ? '#c01921' : '#e6e6e6'}"
+									:style="{color: today.between(new Date(item.extend.listenDate)) <= 7 ? '#c01921' : '#C0C0C0'}"
 								>
 									{{showListenDate(item.extend.listenDate)}}
 								</div>
 								<Icon 
 									v-if="typeof item.extend == 'object' && typeof item.extend.vocabulary == 'string' && item.extend.vocabulary.length > 0" 
 									type="md-albums" size="20" color="#c01921" 
-									style="cursor: pointer; padding: 0px 10px;"									
+									style="cursor: pointer; margin-right: 10px;"									
 								/>
-								<!-- @click.native.stop="onClickIcon(index)" -->
-								<div style="padding-left: 5px;">{{item.date}}</div>
+								<div style="">{{item.date}}</div>
 							</div>
 						</div>
 					</div>

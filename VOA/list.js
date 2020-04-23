@@ -132,7 +132,7 @@ Vue.component('list', {
 						.where("report", "==", this.title)
 						.get();
 					snapshot1.forEach(doc => {
-						if(typeof doc.data().vocabulary == "string" && doc.data().vocabulary.length > 0) {
+						if((typeof doc.data().vocabulary == "string" && doc.data().vocabulary.length > 0) || typeof doc.data().listenDate == "number") {
 							for(let i = x; i < arr.length; i++) {
 								x = i;
 								if(arr[i].key == doc.id) {
@@ -212,17 +212,18 @@ Vue.component('list', {
 				} catch(e) {
 					console.log(e)
 				}				
-			} else if(type == "vocabulary") {
+			} else if(type == "vocabulary" || type == "json") {
 				if(typeof this.source.extend == "undefined") this.source.extend = {};
-				this.source.extend.vocabulary = data; 
+				if(type == "vocabulary")
+					this.source.extend.vocabulary = data; 
+				else 
+					this.source.extend = Object.assign(this.source.extend, data)
 				for(let i = 0; i < this.datas.length; i++) {
 					if(this.datas[i].key == this.source.key) {
 						this.$set(this.datas, i, this.source)
 						break;
 					}
 				}
-
-				// self.datas
 			}
 		}
 	},

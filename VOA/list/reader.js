@@ -507,6 +507,8 @@ Vue.component('reader', {
 				let x = await ref.set(obj,{merge: true});
 				if(arg == "vocabulary") {
 					this.$emit("onUpdate", "vocabulary",  this.vocabulary);
+				} else if(typeof arg == "object") {
+					this.$emit("onUpdate", "json",  arg);
 				}
 			} catch(e) {
 				console.log(e)
