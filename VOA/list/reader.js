@@ -804,12 +804,24 @@ Vue.component('reader', {
 					return;
 			} else if(pk == true && code == 77 && this.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
+
+				let sel = window.getSelection();
+				let range = sel.getRangeAt(0);
+				range.deleteContents(); 
+				let div = document.createElement("span");
+				div.className = "highlight";
+				div.innerHTML = ss;
+				div.setAttribute("data", ss)
+				range.insertNode(div);
+				div.addEventListener('click', function (e) {
+					let ss = e.target.getAttribute("data");
+					self.$yahoo(ss)
+				}, false);
+						
 				if(("\n" + this.vocabulary + "\n").indexOf("\n" + ss + "\n") == -1) {
-					// console.log(window.getSelection())
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
 					this.setHistory("vocabulary");
 				}
-				// if(ss.length > 0) this.$yahoo(ss);
 			} else if(pk == true && code == 66){ //b, 開啓段落對話
 				if(this.audio.setting.repeat > 0)
 					this.displayParagraph = !this.displayParagraph;
