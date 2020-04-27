@@ -1,6 +1,11 @@
 Vue.component('list', { 
 	template:  `<div id="list" style="display: flex; flex-direction: column;">
 		<header-bar :title="title">
+			<div slot="right" v-if="$isLogin()">
+				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
+					size="22" @click.native="onChangeList" 
+					:style="{cursor: 'pointer', 'margin-right': '0px', color: '#e8eaec'}" />
+			</div>
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
 				:trigger="$isSmallScreen() ? 'click' : 'hover'"
 				v-if="$isLogin()"
@@ -15,7 +20,10 @@ Vue.component('list', {
 		</header-bar>
 		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
-		<i-button v-if="$isAdmin() && ! $isFlutter()" type="primary" shape="circle" icon="md-add" 
+		<play-bar v-if="playList == true && datas.length > 0" 
+			:datas="datas" :dataKey="dataKey" ref="playbar">
+		</play-bar>
+		<i-button v-if="playList == false && $isAdmin() && ! $isFlutter()" type="primary" shape="circle" icon="md-add" 
 			circle @click.native="onAdd" size="large"
 			style="position: absolute; bottom: 10px; right: 10px;"
 		></i-button>
@@ -36,7 +44,8 @@ Vue.component('list', {
 			datas: [],
 			source: null,
 			json: null,
-			dataKey: ""
+			dataKey: "",
+			playList: window.localStorage["VOA-PlayList"] == "Y" ? true : false
 		};
 	},
 	created(){
@@ -46,6 +55,11 @@ Vue.component('list', {
 	destroyed() {
   },
 	methods: {
+		onChangeList(){
+			this.playList = !this.playList;
+			window.localStorage["VOA-PlayList"] = this.playList == true ? "Y" : "N";
+			this.retrieve();
+		},
 		onGoto(key) {
 			for(let i = 0; i < this.datas.length; i++) {
 				if(this.datas[i].key == key){
@@ -113,6 +127,19 @@ Vue.component('list', {
 		},
 		async retrieve() {
 			vm.loading();
+			if(FireStore.login == true){
+				let json = await FireStore.getSetting(this.title);
+				if(typeof json != "undefined"){
+					this.dataKey = this.playList == true ? json.playList : json.active;
+				}
+			} else {
+
+				let s = window.localStorage["VOA-" + this.title];
+				if(typeof s == "string" && s.length > 0) {
+					this.dataKey = s;
+				}					
+			}
+
 			let self = this;
 			let arr = [];
 			try {
@@ -150,6 +177,12 @@ Vue.component('list', {
 						}
 					});
 				}
+
+				if(this.playList == true) {
+					arr = arr.filter(item=>{
+						return typeof item.extend == "object" && item.extend.favorite == true
+					})
+				}
 				self.datas = arr;
 			} catch(e) {
 				console.log(e)
@@ -185,18 +218,27 @@ Vue.component('list', {
 		},
 		onClick(index){
 			this.dataKey = this.datas[index].key;
-			var state = {
-				id: 2,
-				name: "reader",
-				title: this.datas[index].title
-			};
-			history.pushState(state, "reader", "?reader=" + this.datas[index].title);
-			this.source = this.datas[index]; 
-				// Object.assign({total: this.datas.length, index}, this.datas[index]);
-			if(FireStore.login == true){
-				FireStore.setSetting(this.title, {active: this.datas[index].key});
-			} else {
-				window.localStorage["VOA-" + this.title] = this.datas[index].key;
+			if(this.playList == false) {
+				var state = {
+					id: 2,
+					name: "reader",
+					title: this.datas[index].title
+				};
+				history.pushState(state, "reader", "?reader=" + this.datas[index].title);
+				this.source = this.datas[index]; 
+					// Object.assign({total: this.datas.length, index}, this.datas[index]);
+				if(FireStore.login == true){
+					FireStore.setSetting(this.title, {active: this.datas[index].key});
+				} else {
+					window.localStorage["VOA-" + this.title] = this.datas[index].key;
+				}				
+			} else if(FireStore.login == true){
+				if(this.$refs["playbar"].index == index && this.$refs["playbar"].state == "play") {
+				} else {
+					this.$refs["playbar"].index = index;
+					this.$refs["playbar"].play();
+					this.$refs["playbar"].state = "play";					
+				}
 			}
 		},
 		onCloseReader(){
@@ -234,17 +276,7 @@ Vue.component('list', {
 		async title(value) {
 			this.datas = [];
 			if(typeof value == "string" && value.length > 0) {
-				if(FireStore.login == true){
-					let json = await FireStore.getSetting(this.title);
-					if(typeof json != "undefined"){
-						this.dataKey = json.active;
-					}
-				} else {
-					let s = window.localStorage["VOA-" + this.title];
-					if(typeof s == "string" && s.length > 0) {
-						this.dataKey = s;
-					}					
-				}
+				
 				this.retrieve();
 			}
 		}

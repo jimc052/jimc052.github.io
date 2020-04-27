@@ -8,9 +8,9 @@ Vue.component('reader', {
 		<!-- header -->
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"
 		>
-			<div slot="right">
+			<div slot="right" v-if="$isLogin()">
 				<Icon type="md-heart" size="22" @click.native="onFavorite" 
-					:style="{cursor: 'pointer', color: favorite ? '#c01921' : '#e5e5e5', 'margin-right': '0px'} " />
+					:style="{cursor: 'pointer', color: favorite ? '#c01921' : '#e8eaec', 'margin-right': '0px'} " />
 			</div>
 
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"

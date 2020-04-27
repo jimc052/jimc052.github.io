@@ -25,7 +25,8 @@ Vue.component('list-item', {
 									type="md-albums" size="20" color="#c01921" 
 									style="cursor: pointer; margin-right: 10px;"									
 								/>
-								<Icon type="md-heart" size="20" style="margin-right: 10px;"				
+								<Icon v-if="$isLogin()"
+								  type="md-heart" size="20" style="margin-right: 10px;"				
 									:color="changeFavorite(item.extend)" 
 								/>
 								<div style="">{{item.date}}</div>
@@ -44,8 +45,6 @@ Vue.component('list-item', {
 			span: 12, // default 24
 			gutter: 10,
 			today: new Date(),
-			// favorite: "#e5e5e5"
-			// :color="{typeof item.extend == 'object' && item.extend.favorite == true ? '#c01921' : '#e5e5e5'}" 
 		};
 	},
 	created(){
@@ -99,7 +98,7 @@ Vue.component('list-item', {
 		},
 		changeFavorite(val){
 			let b = typeof val == 'object' && val.favorite == true ? true : false;
-			return b ? '#c01921' : '#e5e5e5';
+			return b ? '#c01921' : '#e8eaec';
 		}
 	},
 	watch: {
