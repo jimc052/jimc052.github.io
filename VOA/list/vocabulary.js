@@ -6,7 +6,7 @@ Vue.component('dlg-vocabulary', {
 		<div slot="header" 
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white;">生字</div>
-			<Icon type="md-add" size="22" @click.native="add" style="cursor: pointer; color: white; margin-right: 10px;" />
+			<Icon type="md-add" v-if="!$isSmallScreen()" size="22" @click.native="add" style="cursor: pointer; color: white; margin-right: 10px;" />
 			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
 		</div>
 		<div :style="{height: height + 'px', overflow: 'hidden'}">

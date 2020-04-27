@@ -4,9 +4,15 @@ Vue.component('reader', {
 		  :fullscreen="true" :closable="false" :footer-hide="mode == 'edit'"
 		  style="overflow: hidden;"
 		>
+
 		<!-- header -->
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"
 		>
+			<div slot="right">
+				<Icon type="md-heart" size="22" @click.native="onFavorite" 
+					:style="{cursor: 'pointer', color: favorite ? '#c01921' : '#e5e5e5', 'margin-right': '0px'} " />
+			</div>
+
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
 				:trigger="$isSmallScreen() ? 'click' : 'hover'"
 			>
@@ -191,6 +197,7 @@ Vue.component('reader', {
 			bubbles: [],
 			block: [],
 			vocabulary: "",
+			favorite: false,
 			displayVocabulary: false,
 			displayParagraph: false,
 			mode: "",
@@ -209,6 +216,7 @@ Vue.component('reader', {
 		if(context != null) context.style.visibility = "hidden";
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.title = this.source.title;
+		// console.log(this.source)
 		this.initial();
 		if(this.$isAdmin()){
 			this.options.limits = [1, 3, 5].concat(this.options.limits);
@@ -217,6 +225,9 @@ Vue.component('reader', {
 		if(this.$isFlutter()) {
 			this.broadcast.$on('onFlutter', this.onFlutter);
 		}
+		// setTimeout(()=>{
+		// 	this.showContext();
+		// }, 3000)
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -237,7 +248,23 @@ Vue.component('reader', {
 		this.$Modal.remove();
   },
 	methods: {
-		toTranslate(){ 
+		onFavorite(){
+			this.favorite = !this.favorite;
+			this.setHistory({favorite: this.favorite})
+		},
+		showContext(){ //f2, 為了可以 copy 到 google document
+			let win = this.$open("", "課文");
+			let s1 = this.title + "<br />";
+
+			let arr = document.querySelectorAll(".english");
+			arr.forEach(item=>{
+				let s2 = item.innerHTML.replace(/class="highlight"/g, "style='color: #c01921;'")
+				s1 += "<br /><div>" + s2 + "</div>";
+				console.log(s2)
+			})
+			win.document.body.innerHTML = s1;
+		},
+		toTranslate(){ // f1
 			this.$Modal.remove();
 			
 			let context = document.getElementById("context");
@@ -502,7 +529,7 @@ Vue.component('reader', {
 			}
 			if(typeof arg == "object")
 				obj = Object.assign(obj, arg);
-
+			
 			try {
 				let x = await ref.set(obj,{merge: true});
 				if(arg == "vocabulary") {
@@ -643,13 +670,13 @@ Vue.component('reader', {
 
 			if(this.login == true) {
 				let data = await this.getHistory();
-				// console.log(data);
+				this.favorite = data.favorite == true ? true : false;
 				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
-				//setting.repeat <= 1 &&
-				if(this.vocabulary.length > 0 && setting.autoPlay == false && !this.$isSmallScreen()) 
-					this.displayVocabulary = true;
+
+				// if(this.vocabulary.length > 0 && setting.autoPlay == false && !this.$isSmallScreen()) 
+				// 	this.displayVocabulary = true;
 
 				if(data && Array.isArray(data.block)) {
 					this.block = data.block;
@@ -793,7 +820,8 @@ Vue.component('reader', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk)
+			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : ""
+			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + ", char: " + char)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
@@ -802,7 +830,7 @@ Vue.component('reader', {
 					this.onPopState();
 				} else
 					return;
-			} else if(pk == true && code == 77 && this.login == true){ // m, 加入筆記
+			} else if(pk == true && char == "M" && this.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
 
 				let sel = window.getSelection();
@@ -822,18 +850,20 @@ Vue.component('reader', {
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
 					this.setHistory("vocabulary");
 				}
-			} else if(pk == true && code == 66){ //b, 開啓段落對話
+			} else if(pk == true && char == "B"){ //b, 開啓段落對話
 				if(this.audio.setting.repeat > 0)
 					this.displayParagraph = !this.displayParagraph;
-			} else if(pk == true && code == 71){ //g, google
+			} else if(pk == true && char == "G"){ //g, google
 				let ss = window.getSelection().toString().trim();
 				if(ss.length > 0) this.$google(ss)
-			} else if(pk == true && code == 89){ //y, yahoo
+			} else if(pk == true && char == "Y"){ //y, yahoo
 				let ss = window.getSelection().toString().trim();
 				if(ss.length > 0) this.$yahoo(ss)
-			} else if(sk == true && code == 84){ //t, 開翻譯網站
+			} else if(code == 112 || (sk == true && char == "T")){ //t, f1 開翻譯網站
 				this.toTranslate();
-			} else if(pk == true && code == 69 && this.$isAdmin() == true){ //e, 編輯
+			} else if(code == 113){ // f2
+				this.showContext();
+			} else if(pk == true && char == "E" && this.$isAdmin() == true){ //e, 編輯
 				if(this.mode == "edit") {
 					this.html = this.source.html;
 					refresh();
@@ -846,7 +876,7 @@ Vue.component('reader', {
 				this.displayVocabulary = false;
 			// } else if(this.displayVocabulary == true) {
 			// 	return;
-			} else if(pk && code == 86 && this.login == true){ // Cmd ＋ shift + V, 單字清單
+			} else if(pk && char == "V" && this.login == true){ // Cmd ＋ shift + V, 單字清單
 				this.displayVocabulary = !this.displayVocabulary;
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 

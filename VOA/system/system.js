@@ -112,10 +112,12 @@ Vue.prototype.$google = function (word) {
 	); // + ",width=200,height=100"
 }
 
-Vue.prototype.$open = function (url) {
-	window.open(url, "",
+Vue.prototype.$open = function (url, title, setting) {
+	return window.open(url, title,
 		"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
-	); // + ",width=200,height=100"
+		+ (typeof setting == "string" ? "," + setting : "" )
+		//",width=200,height=100"
+	); // + 
 }
 
 Vue.prototype.$isSmallScreen = function () {

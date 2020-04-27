@@ -134,13 +134,14 @@ Vue.component('list', {
 					snapshot1.forEach(doc => {
 						let vocabulary = (typeof doc.data().vocabulary == "string" && doc.data().vocabulary.length > 0) ? doc.data().vocabulary : "";
 
-						if(vocabulary.length > 0 || typeof doc.data().listenDate == "number") {
+						if(vocabulary.length > 0 || typeof doc.data().listenDate == "number" || typeof doc.data().favorite == "boolean") {
 							for(let i = x; i < arr.length; i++) {
 								x = i;
 								if(arr[i].key == doc.id) {
 									arr[i].extend = {
 										vocabulary: vocabulary.length > 0 ? vocabulary : undefined,
-										listenDate: typeof doc.data().listenDate == "number" ? doc.data().listenDate : undefined
+										listenDate: typeof doc.data().listenDate == "number" ? doc.data().listenDate : undefined,
+										favorite: doc.data().favorite == true ? true : false
 									}
 									x++;
 									break;
