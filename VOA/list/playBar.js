@@ -100,8 +100,8 @@ Vue.component('play-bar', {
 		}, true);
 
 		this.audio.addEventListener("ended", function() {
-			self.beep.play();
-			// console.log("ended: " + self.audio.currentTime)
+			setTimeout(() => { self.beep.play(); }, 1000);
+
 			setTimeout(() => {
 				if(self.index >= self.datas.length - 1)
 					self.index = 0;
@@ -119,13 +119,26 @@ Vue.component('play-bar', {
 		}
 		if(typeof window.localStorage["VOA-PlayListTime"] != "undefined")
 			this.sleep = window.localStorage["VOA-PlayListTime"];
+	
+		if(this.$isFlutter()) {
+			this.broadcast.$on('onFlutter', this.onFlutter);
+		}
 	},
 	destroyed() {
 		this.audio.pause();
 		this.audio = null;
 		this.finalCount();
+
+		if(this.$isFlutter())
+			this.broadcast.$off('onFlutter', this.onFlutter);
   },
 	methods: {
+		onFlutter(arg){
+			console.log("onFlutter: " + arg)
+			if(arg == "unplugged") { // 耳機，已拔
+				this.pause();
+			}
+		},
 		format(start) {
 			if(start == 0 || isNaN(start))
 					return "00:00";
