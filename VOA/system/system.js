@@ -145,10 +145,10 @@ Vue.prototype.$MP3 = function (report, key) {
 		// Flutter.postMessage(JSON.stringify(obj));
 		// console.log("$isFlutter: " + this.$isFlutter())
 		let url = "";
-		if(this.$isFlutter()) {
-			url = await checkFile();
-			console.log("checkFile: " + url)
-		}
+		// if(this.$isFlutter()) {
+		// 	url = await checkFile();
+		// 	console.log("checkFile: " + url)
+		// }
 
 		url = await FireStore.downloadFileURL("VOA/" + report + 
 				"/" + key + ".mp3");
