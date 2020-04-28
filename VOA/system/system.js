@@ -139,4 +139,30 @@ Vue.prototype.$isMobile = function () {
 Vue.prototype.$isFlutter = function () {
 	return navigator.userAgent.indexOf("Flutter") > -1 ? true : false;
 }
+
+Vue.prototype.$MP3 = function (report, key) {
+	return new Promise( async (success, error) => {
+		// Flutter.postMessage(JSON.stringify(obj));
+		// console.log("$isFlutter: " + this.$isFlutter())
+		let url = "";
+		if(this.$isFlutter()) {
+			url = await checkFile();
+			console.log("checkFile: " + url)
+		}
+
+		url = await FireStore.downloadFileURL("VOA/" + report + 
+				"/" + key + ".mp3");
+		success(url)
+	});
+
+	// flutter addJavaScriptHandler 還要 study
+	function checkFile() {
+		return new Promise( async (success, error) => {
+			let obj = {func: "checkFile", report, key, success, error}
+			Flutter.postMessage(JSON.stringify(obj));
+		})
+	}
+}
+
+
 // navigator.userAgent

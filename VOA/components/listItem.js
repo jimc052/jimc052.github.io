@@ -78,7 +78,7 @@ Vue.component('list-item', {
 			if(el == null) return;
 			el = el.parentElement;
 			let offsetTop = el.offsetTop;
-			let offsetBottom = offsetTop + el.clientHeight;
+			let offsetBottom = offsetTop + el.clientHeight + 4;
 
 			let viewer = document.querySelector("#listItem");
 			let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;

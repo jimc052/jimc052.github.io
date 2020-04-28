@@ -18,10 +18,12 @@ Vue.component('list', {
 			</Dropdown>
 		
 		</header-bar>
-		<list-item :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
+		<list-item ref="listItem" :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
 		<play-bar v-if="playList == true && datas.length > 0" 
-			:datas="datas" :dataKey="dataKey" ref="playbar">
+			:datas="datas" :dataKey="dataKey" ref="playbar"
+			@onChangePlayList="onChangePlayList"
+		>
 		</play-bar>
 		<i-button v-if="playList == false && $isAdmin() && ! $isFlutter()" type="primary" shape="circle" icon="md-add" 
 			circle @click.native="onAdd" size="large"
@@ -55,6 +57,10 @@ Vue.component('list', {
 	destroyed() {
   },
 	methods: {
+		onChangePlayList(key){
+			this.dataKey = key;
+			this.$refs["listItem"].scrollTo();
+		},
 		onChangeList(){
 			this.playList = !this.playList;
 			window.localStorage["VOA-PlayList"] = this.playList == true ? "Y" : "N";
@@ -133,7 +139,6 @@ Vue.component('list', {
 					this.dataKey = this.playList == true ? json.playList : json.active;
 				}
 			} else {
-
 				let s = window.localStorage["VOA-" + this.title];
 				if(typeof s == "string" && s.length > 0) {
 					this.dataKey = s;
@@ -275,8 +280,7 @@ Vue.component('list', {
 	watch: {
 		async title(value) {
 			this.datas = [];
-			if(typeof value == "string" && value.length > 0) {
-				
+			if(typeof value == "string" && value.length > 0) {		
 				this.retrieve();
 			}
 		}
