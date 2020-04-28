@@ -18,13 +18,13 @@ Vue.component('play-bar', {
 			-->
 		</div>
 
-		<div style="margin: 0px 10px 0px 5px; font-size: 20px;">
+		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-show="state == 'play'">
 			<div style="font-weight: 500;">{{convertTime(currentTime)}}</div>
 			<div style="font-weight: 500;">{{convertTime(duration)}}</div>
 		</div>
 
 		<div style="flex: 1;" >
-			<Slider v-if="!$isSmallScreen()" v-model="currentTime" :tip-format="format" 
+			<Slider v-show="!$isSmallScreen() && state == 'play'" v-model="currentTime" :tip-format="format" 
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 			 />
 		</div>
