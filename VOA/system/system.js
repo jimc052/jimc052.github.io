@@ -163,6 +163,3 @@ Vue.prototype.$MP3 = function (report, key) {
 		})
 	}
 }
-
-
-// navigator.userAgent
