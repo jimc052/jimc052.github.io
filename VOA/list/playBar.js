@@ -1,4 +1,3 @@
-// @click.native="audio.stop()" 
 Vue.component('play-bar', { 
 	template:  `<div style="display: flex; flex-direction: row; align-items: center; padding: 5px; border-top: 1px solid #c5c5c5; background: white;">
 		<div style="display: flex; flex-direction: row; align-items: center; ">
@@ -29,7 +28,8 @@ Vue.component('play-bar', {
 			 />
 		</div>
 		<Dropdown :trigger="$isSmallScreen() ? 'click' : 'hover'">
-				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
+				<a href="javascript:void(0)"
+					style="padding: 10px 10px; display: inline-block; width: 85px; text-align: right;">
 					{{convertTime((sleep * 60) - passTime)}}
 					<Icon type="ios-arrow-down"></Icon>
 				</a>
@@ -100,23 +100,26 @@ Vue.component('play-bar', {
 		}, true);
 
 		this.audio.addEventListener("ended", function() {
-			setTimeout(() => { self.beep.play(); }, 1000);
+			setTimeout(() => { 
+				self.beep.play();
+				if((self.sleep * 60) - self.passTime <= 0) {
+					self.stop(true);
+				} else {
+					setTimeout(() => {
+						next(); 
+					}, 2000);					
+				}
+			}, 1000);
 
-			setTimeout(() => {
+			function next(params) {
 				if(self.index >= self.datas.length - 1)
 					self.index = 0;
 				else 
 					self.index++;
 				self.play();
-			}, 5 * 1000);
+			}
 		}, true);
 
-		for(let i = 0; i < this.datas.length; i++) {
-			if(this.datas[i].key == this.dataKey) {
-				this.index = i;
-				break;
-			}
-		}
 		if(typeof window.localStorage["VOA-PlayListTime"] != "undefined")
 			this.sleep = window.localStorage["VOA-PlayListTime"];
 	
@@ -125,9 +128,9 @@ Vue.component('play-bar', {
 		}
 	},
 	destroyed() {
+		this.finalCount("stop");
 		this.audio.pause();
 		this.audio = null;
-		this.finalCount();
 
 		if(this.$isFlutter())
 			this.broadcast.$off('onFlutter', this.onFlutter);
@@ -156,12 +159,17 @@ Vue.component('play-bar', {
 			this.audio.currentTime = e;
 		},
 		async play() {
-			console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
-			let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
-			// let url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
-			// 	"/" + this.datas[this.index].key + ".mp3");
-			// console.log(url)
-			this.audio.src = url;
+			// console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
+			try{
+				let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
+				// let url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
+				// 	"/" + this.datas[this.index].key + ".mp3");
+				// console.log(url)
+				this.audio.src = url;
+				this.audio.playbackRate = 0.94;
+			} catch(error) {
+				vm.showMessage("MP3\n" + error)
+			}
 		},
 		pause(){
 			this.audio.pause();
@@ -183,15 +191,15 @@ Vue.component('play-bar', {
 			let start = (new Date()).getTime();
 			if(state != "stop") {
 				this.finalCountID = setInterval(() => {
-					if(typeof this.audio.currentTime == "number")
+					if(this.audio != null && typeof this.audio.currentTime == "number")
 						this.currentTime = this.audio.currentTime;
 					let now = (new Date()).getTime() - start;
 					this.passTime = Math.ceil(now / (1000));
 
-					if((this.sleep * 60) - this.passTime <= 0) {
-						this.stop(true);
-						this.beep.play()
-					}
+					// if((this.sleep * 60) - this.passTime <= 0) {
+					// 	this.stop(true);
+					// 	this.beep.play()
+					// }
 				}, 500);
 			}
 		},
@@ -204,18 +212,29 @@ Vue.component('play-bar', {
 			if(start == 0 || isNaN(start))
 				return "00:00";
 			else {
+				let min = start < 0 ? "-" : "";
+				start = Math.abs(start);
 				let s = Math.floor(start / 60);
 				let m = Math.floor(start - (s * 60));
 				if(m == 60){
 					m = 0;
 					s++;
 				}
-				return s.leftPadding(2, '0') + ":" + m.leftPadding(2, '0').substr(0,2);
+				return min + s.leftPadding(2, '0') + ":" + m.leftPadding(2, '0').substr(0,2);
 			}
 		},
 	},
 	computed: {
 	},
 	watch: {
+		dataKey(value) {
+			this.index = 0;
+			for(let i = 0; i < this.datas.length; i++) {
+				if(this.datas[i].key == value) {
+					this.index = i;
+					break;
+				}
+			}
+		}
 	}
 });
