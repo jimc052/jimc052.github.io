@@ -57,7 +57,10 @@ Vue.component('play-bar', {
 			sleep: 30,
 			passTime: 0,
 			currentTime: 0,
-			duration: 0
+			duration: 0,
+			timesLimit: 3,
+			times: 0
+			
 		};
 	},
 	created(){
@@ -106,7 +109,12 @@ Vue.component('play-bar', {
 					self.stop(true);
 				} else {
 					setTimeout(() => {
-						next(); 
+						if(self.times < self.timesLimit - 1) {
+							self.audio.currentTime = 0;
+							self.audio.play();
+							self.times++;
+						} else
+							next(); 
 					}, 2000);					
 				}
 			}, 1000);
@@ -159,6 +167,7 @@ Vue.component('play-bar', {
 			this.audio.currentTime = e;
 		},
 		async play() {
+			this.times = 0;
 			// console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
 			try{
 				let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
@@ -176,11 +185,11 @@ Vue.component('play-bar', {
 			this.state = "pause";
 		},
 		stop(){
-			passTime = 0;
+			this.times = 0;
+			this.passTime = 0;
 			this.audio.pause();
 			this.state = "stop";
 			clearInterval(this.finalCountID);
-			this.passTime = 0;
 		},
 		finalCount(state){
 			this.passTime = 0;

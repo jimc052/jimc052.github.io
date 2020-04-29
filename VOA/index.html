@@ -124,7 +124,7 @@
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
 				<div id='email'></div>
-				Jim Chen 2020-04-29 09:00
+				Jim Chen 2020-04-29 16:00
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -164,11 +164,12 @@
 				let self = this;
 				document.querySelector(".ivu-menu").style.width = "100%";
 				document.body.style.visibility = "visible";
-				if(location.href.indexOf("?anonymous=") > -1) {
+				let email = window.localStorage["email"];
+				if(typeof email == "undefined") email = "";
+				if(email.length == 0 &&  (location.href.indexOf("?anonymous=") > -1 || location.href.indexOf("?reader=") > -1)) {
 					this.homePage();
 				} else {
-					let email = window.localStorage["email"];
-						if((typeof email == "string" && email.length > 0) || location.href.indexOf("?email=") > -1) {
+					if(email.length > 0 || location.href.indexOf("?email=") > -1) {
 						this.modal = true;
 					} else {
 						this.menu = [];
