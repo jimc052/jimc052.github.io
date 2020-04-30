@@ -12,7 +12,25 @@ Vue.component('list', {
 			>
 				<Icon type="md-more" size="28" color="white" style="cursor: pointer; margin-left: 10px;"></Icon>
 				<DropdownMenu slot="list">
-					<DropdownItem name="生字清單">生字清單</DropdownItem>
+					<DropdownItem name="生字清單" v-if="playList == false && datas.length > 0">生字清單</DropdownItem>
+
+					<dropdown v-if="playList == true && datas.length > 0" placement="right-start" :divide="$isSmallScreen()">
+						<dropdown-item>速率<icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list">
+								<dropdown-item name="速0.94" :selected="rate == 0.94">慢</dropdown-item>
+								<dropdown-item name="速1" :selected="rate == 1">正常</dropdown-item>
+								<dropdown-item name="速1.2" :selected="rate == 1.2">快</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+					<dropdown v-if="playList == true && datas.length > 0" placement="right-start">
+						<dropdown-item>重複播放<icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list" v-for="(item, index) in repeatOption" :key="index">
+								<dropdown-item :name="'重複' + item" :selected="repeat == item">
+								{{item + " 次"}}
+								</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+
 					<DropdownItem name="重新下載" v-if="$isSmallScreen()" divided>重新下載</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
@@ -22,6 +40,7 @@ Vue.component('list', {
 		</list-item>
 		<play-bar v-if="playList == true && datas.length > 0" 
 			:datas="datas" :dataKey="dataKey" ref="playbar"
+			:rate="rate" :repeat="repeat"
 			@onChangePlayList="onChangePlayList"
 		>
 		</play-bar>
@@ -47,12 +66,19 @@ Vue.component('list', {
 			source: null,
 			json: null,
 			dataKey: "",
-			playList: window.localStorage["VOA-PlayList"] == "Y" ? true : false
+			playList: window.localStorage["VOA-PlayList"] == "Y" ? true : false,
+			rate: 1,
+			repeat: 1,
+			repeatOption: [1, 2, 3, 5],
 		};
 	},
 	created(){
 	},
 	async mounted () {
+		if(typeof window.localStorage["VOA-PlayList-rate"] != "undefined")
+			this.rate = parseFloat(window.localStorage["VOA-PlayList-rate"]);
+		if(typeof window.localStorage["VOA-PlayList-repeat"] != "undefined")
+			this.repeat = parseInt(window.localStorage["VOA-PlayList-repeat"], 10);
 	},
 	destroyed() {
   },
@@ -75,7 +101,7 @@ Vue.component('list', {
 			}
 		},
 		async onClickMore(item) {
-			console.log(item)
+			// console.log(item)
 			if(item == "生字清單") {
 				vm.loading();
 				let ds = await this.$refs["vocList"].initital((data)=>{
@@ -98,6 +124,13 @@ Vue.component('list', {
 				vm.loading(false);
 			} else if(item == "重新下載") {
 				location.reload()
+			} else if(item.indexOf("速") == 0) {
+				this.rate = parseFloat(item.replace("速", ""))
+				window.localStorage["VOA-PlayList-rate"] = this.rate;
+			} else if(item.indexOf("重複") == 0){
+				this.repeat = parseFloat(item.replace("重複", ""))
+				window.localStorage["VOA-PlayList-repeat"] = this.repeat;
+				// VOA-PlayList
 			}
 		},
 		onAdd() {
@@ -138,6 +171,7 @@ Vue.component('list', {
 				if(typeof json != "undefined"){
 					this.dataKey = this.playList == true ? json.playList : json.active;
 				}
+				console.log(this.dataKey, json)
 			} else {
 				let s = window.localStorage["VOA-" + this.title];
 				if(typeof s == "string" && s.length > 0) {

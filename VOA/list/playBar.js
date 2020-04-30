@@ -46,7 +46,9 @@ Vue.component('play-bar', {
 	`,
 	props: {
 		datas: Array,
-		dataKey: String
+		dataKey: String,
+		rate: Number,
+		repeat: Number
 	},
 	data() {
 		return {
@@ -58,9 +60,7 @@ Vue.component('play-bar', {
 			passTime: 0,
 			currentTime: 0,
 			duration: 0,
-			timesLimit: 3,
 			times: 0
-			
 		};
 	},
 	created(){
@@ -109,7 +109,7 @@ Vue.component('play-bar', {
 					self.stop(true);
 				} else {
 					setTimeout(() => {
-						if(self.times < self.timesLimit - 1) {
+						if(self.times < self.repeat - 1) {
 							self.audio.currentTime = 0;
 							self.audio.play();
 							self.times++;
@@ -134,6 +134,15 @@ Vue.component('play-bar', {
 		if(this.$isFlutter()) {
 			this.broadcast.$on('onFlutter', this.onFlutter);
 		}
+
+		this.index = 0;
+		for(let i = 0; i < this.datas.length; i++) {
+			if(this.datas[i].key == this.dataKey) {
+				this.index = i;
+				break;
+			}
+		}
+		console.log("index 1: " + this.index)
 	},
 	destroyed() {
 		this.finalCount("stop");
@@ -175,7 +184,7 @@ Vue.component('play-bar', {
 				// 	"/" + this.datas[this.index].key + ".mp3");
 				// console.log(url)
 				this.audio.src = url;
-				this.audio.playbackRate = 0.94;
+				this.audio.playbackRate = this.rate;
 			} catch(error) {
 				vm.showMessage("MP3\n" + error)
 			}
@@ -244,6 +253,14 @@ Vue.component('play-bar', {
 					break;
 				}
 			}
+			console.log("index 2: " + this.index)
+		},
+		rate(value)  {
+			if(this.audio != null)
+				this.audio.playbackRate = value;
+		},
+		repeat(value) {
+
 		}
 	}
 });
