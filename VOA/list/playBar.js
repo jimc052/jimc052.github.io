@@ -60,7 +60,8 @@ Vue.component('play-bar', {
 			passTime: 0,
 			currentTime: 0,
 			duration: 0,
-			times: 0
+			times: 0,
+			ended: false
 		};
 	},
 	created(){
@@ -73,7 +74,8 @@ Vue.component('play-bar', {
 
 		let self = this;
 		this.audio.autoplay = false;
-		this.audio.addEventListener("loadstart", function() { 
+		this.audio.addEventListener("loadstart", function() {
+			self.ended = false;
 			// console.log("loadstart: " + self.datas[self.index].title + "; \n  " + (new Date()))
 		}, true);
 		this.audio.addEventListener("loadeddata", function() { 
@@ -119,7 +121,8 @@ Vue.component('play-bar', {
 				}
 			}, 1000);
 
-			function next(params) {
+			function next() {
+				self.ended = true;
 				if(self.index >= self.datas.length - 1)
 					self.index = 0;
 				else 
@@ -215,10 +218,10 @@ Vue.component('play-bar', {
 					let now = (new Date()).getTime() - start;
 					this.passTime = Math.ceil(now / (1000));
 
-					// if((this.sleep * 60) - this.passTime <= 0) {
-					// 	this.stop(true);
-					// 	this.beep.play()
-					// }
+					if(this.ended == true && ((this.sleep * 60) - this.passTime <= 0)) {
+						this.stop(true);
+						this.beep.play()
+					}
 				}, 500);
 			}
 		},
