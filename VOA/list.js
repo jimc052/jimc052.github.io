@@ -1,5 +1,7 @@
+// Dropdown 會太右邊；  https://segmentfault.com/a/1190000019078842
+
 Vue.component('list', { 
-	template:  `<div id="list" style="display: flex; flex-direction: column;">
+	template:  `<div id="list" style="display: flex; flex-direction: column; position: relative; overflow: hidden;">
 		<header-bar :title="title">
 			<div slot="right" v-if="$isLogin()">
 				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
@@ -7,7 +9,9 @@ Vue.component('list', {
 					:style="{cursor: 'pointer', 'margin-right': '0px', 
 					color: playList == true ? '#c01921' : '#e5e5e5'}" />
 			</div>
-			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
+			<Dropdown slot="right" 
+				@on-click="onClickMore($event)" 
+				style="margin-right: 10px;"
 				:trigger="$isSmallScreen() ? 'click' : 'hover'"
 				v-if="$isLogin()"
 			>
@@ -31,7 +35,7 @@ Vue.component('list', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-
+					<DropdownItem name="google doc" v-if="playList == true && doc.length > 0">doc</DropdownItem>
 					<DropdownItem name="重新下載" v-if="$isSmallScreen()" divided>重新下載</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
@@ -71,6 +75,7 @@ Vue.component('list', {
 			rate: 1,
 			repeat: 1,
 			repeatOption: [1, 2, 3, 5],
+			doc: ""
 		};
 	},
 	created(){
@@ -80,6 +85,7 @@ Vue.component('list', {
 			this.rate = parseFloat(window.localStorage["VOA-PlayList-rate"]);
 		if(typeof window.localStorage["VOA-PlayList-repeat"] != "undefined")
 			this.repeat = parseInt(window.localStorage["VOA-PlayList-repeat"], 10);
+	
 	},
 	destroyed() {
   },
@@ -132,7 +138,10 @@ Vue.component('list', {
 				this.repeat = parseFloat(item.replace("重複", ""))
 				window.localStorage["VOA-PlayList-repeat"] = this.repeat;
 				// VOA-PlayList
+			} else if(item == "google doc"){
+				this.$open(this.doc, this.title);
 			}
+			// 
 		},
 		onAdd() {
 			let self = this;
@@ -167,10 +176,14 @@ Vue.component('list', {
 		},
 		async retrieve() {
 			vm.loading();
+			this.doc = "";
 			if(FireStore.login == true){
 				let json = await FireStore.getSetting(this.title);
 				if(typeof json != "undefined"){
 					this.dataKey = this.playList == true ? json.playList : json.active;
+					if(typeof json.doc == "string" && json.doc.length > 0) {
+						this.doc = json.doc;
+					}
 				}
 			} else {
 				let s = window.localStorage["VOA-" + this.title];
@@ -178,7 +191,6 @@ Vue.component('list', {
 					this.dataKey = s;
 				}					
 			}
-
 			let self = this;
 			let arr = [];
 			try {
