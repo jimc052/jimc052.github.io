@@ -4,7 +4,8 @@ Vue.component('list', {
 			<div slot="right" v-if="$isLogin()">
 				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
 					size="22" @click.native="onChangeList" 
-					:style="{cursor: 'pointer', 'margin-right': '0px', color: '#e8eaec'}" />
+					:style="{cursor: 'pointer', 'margin-right': '0px', 
+					color: playList == true ? '#c01921' : '#e5e5e5'}" />
 			</div>
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
 				:trigger="$isSmallScreen() ? 'click' : 'hover'"
@@ -171,7 +172,6 @@ Vue.component('list', {
 				if(typeof json != "undefined"){
 					this.dataKey = this.playList == true ? json.playList : json.active;
 				}
-				console.log(this.dataKey, json)
 			} else {
 				let s = window.localStorage["VOA-" + this.title];
 				if(typeof s == "string" && s.length > 0) {

@@ -16,14 +16,14 @@ Vue.component('play-bar', {
 				<Icon type="md-skip-forward" size="20" color="white" class="button" />
 			-->
 		</div>
-
-		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-show="state == 'play'">
-			<div style="font-weight: 500;">{{convertTime(currentTime)}}</div>
-			<div style="font-weight: 500;">{{convertTime(duration)}}</div>
+		<!--  -->
+		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-if="state == 'play'">
+			<div style="font-weight: 500; font-size: 14px;">{{convertTime(currentTime)}}</div>
+			<div style="font-weight: 500; font-size: 14px;">{{convertTime(duration)}}</div>
 		</div>
 
 		<div style="flex: 1;" >
-			<Slider v-show="!$isSmallScreen() && state == 'play'" v-model="currentTime" :tip-format="format" 
+			<Slider v-if="!$isSmallScreen() && state == 'play'" v-model="currentTime" :tip-format="format" 
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 			 />
 		</div>
@@ -142,7 +142,6 @@ Vue.component('play-bar', {
 				break;
 			}
 		}
-		console.log("index 1: " + this.index)
 	},
 	destroyed() {
 		this.finalCount("stop");
@@ -177,6 +176,7 @@ Vue.component('play-bar', {
 		},
 		async play() {
 			this.times = 0;
+			this.currentTime = 0;
 			// console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
 			try{
 				let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
@@ -196,6 +196,7 @@ Vue.component('play-bar', {
 		stop(){
 			this.times = 0;
 			this.passTime = 0;
+			this.currentTime = 0;
 			this.audio.pause();
 			this.state = "stop";
 			clearInterval(this.finalCountID);
@@ -253,14 +254,12 @@ Vue.component('play-bar', {
 					break;
 				}
 			}
-			console.log("index 2: " + this.index)
 		},
 		rate(value)  {
 			if(this.audio != null)
 				this.audio.playbackRate = value;
 		},
 		repeat(value) {
-
 		}
 	}
 });
