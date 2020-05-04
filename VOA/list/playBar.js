@@ -221,6 +221,9 @@ Vue.component('play-bar', {
 			this.players[this.index].pause();
 			this.state = "stop";
 			clearInterval(this.finalCountID);
+			for(let i = 0; i < this.players.length; i++) {
+				this.players[i].currentTime = 0;
+			}
 		},
 		finalCount(state){
 			this.passTime = 0;

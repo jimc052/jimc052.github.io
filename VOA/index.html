@@ -168,21 +168,45 @@
 				document.body.style.visibility = "visible";
 				let email = window.localStorage["email"];
 				if(typeof email == "undefined") email = "";
-				if(email.length == 0 &&  (location.href.indexOf("?anonymous=") > -1 || location.href.indexOf("?reader=") > -1)) {
-					this.homePage();
-				} else {
-					if(email.length > 0 || location.href.indexOf("?email=") > -1) {
-						this.modal = true;
-					} else {
+				checkConnect(()=>{
+					if(this.$isConnected == false) 
 						this.menu = [];
-					}
-				}
+					else if(email.length == 0 &&  (location.href.indexOf("?anonymous=") > -1 || location.href.indexOf("?reader=") > -1)) {
+						this.homePage();
+					} else {
+						if(email.length > 0 || location.href.indexOf("?email=") > -1) {
+							this.modal = true;
+						} else {
+							this.menu = [];
+						}
+					}					
+				})
+
 				window.onresize = () => {
 					return (() => {
 							// self.screenWidth = document.body.clientWidth;
 							self.broadcast.$emit('onResize');
 					})()
-				}				
+				}
+				
+				function finish(params) {
+					
+				}
+				
+				function checkConnect(callback) {
+					if(self.$isFlutter()) {
+						Flutter.postMessage(JSON.stringify({state: "app.mounted"}));
+		
+						self.broadcast.$on('onFlutter', (arg1, arg2)=>{
+							console.log("app.onFlutter..................")
+							if(arg1 == "onConnectivityChanged")
+							self.$isConnected = arg2 == "Y" ? true : false;
+							callback()
+						});
+					}	else {
+						callback()
+					}
+				}
 			},
 			methods: {
 				showDrawer() {
@@ -270,7 +294,6 @@
 			}
 		})
 	}
-
 
 	function FlutterCallJavaScript(arg) { // ok 了.. flutter call js
 		console.log("callJS: " + arg + " ...................." + navigator.userAgent)

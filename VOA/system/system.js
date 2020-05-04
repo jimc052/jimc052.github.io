@@ -90,6 +90,8 @@ Date.prototype.between = function (d, kind) { // 天
 	return r;
 };
 
+Vue.prototype.$isConnected = false;
+
 Vue.prototype.$isLogin = function () {
 	return FireStore.login;
 }
