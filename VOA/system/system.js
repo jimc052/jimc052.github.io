@@ -140,26 +140,51 @@ Vue.prototype.$isFlutter = function () {
 	return navigator.userAgent.indexOf("Flutter") > -1 ? true : false;
 }
 
-Vue.prototype.$MP3 = function (report, key) {
+Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resource, 所以沒用了
+	let self = this;
+	function checkFile(){
+		console.log("checkFile: start...............")
+		return new Promise( async (success, error) => {
+			self.broadcast.$on('onFlutter', onFlutter)
+			let obj = {func: "checkFile", report, key}
+			Flutter.postMessage(JSON.stringify(obj));
+
+			function onFlutter(arg, result){
+				success(result)
+				self.broadcast.$off('onFlutter', onFlutter)
+			}
+		});
+	}
+	function downloadFile(url){ // 
+		console.log("downloadFile: start...............")
+		return new Promise( async (success, error) => {
+			// self.broadcast.$on('onFlutter', onFlutter)
+			let obj = {func: "downloadFile", report, key, url}
+			Flutter.postMessage(JSON.stringify(obj));
+		});
+	}
+
 	return new Promise( async (success, error) => {
 		// Flutter.postMessage(JSON.stringify(obj));
 		// console.log("$isFlutter: " + this.$isFlutter())
-		let url = "";
-		// if(this.$isFlutter()) {
-		// 	url = await checkFile();
-		// 	console.log("checkFile: " + url)
-		// }
+		let url = "", urlFlutter = "";
+		if(this.$isFlutter()) {
+			urlFlutter = await checkFile();
+			console.log("checkFile: " + url + " ...................")
+		}
 
-		url = await FireStore.downloadFileURL("VOA/" + report + 
-				"/" + key + ".mp3");
+		if(urlFlutter.length > 0 && urlFlutter.indexOf("not exist..") == -1) {
+			url = "file://" + urlFlutter;
+			// url =  "/storage/emulated/0/VOA/04-06-08=17161.mp3";
+		} else {
+			url = await FireStore.downloadFileURL("VOA/" + report + 
+					"/" + key + ".mp3");
+			if(this.$isFlutter()) {
+				// downloadFile(url);
+				let obj = {func: "downloadFile", report, key, url}
+				Flutter.postMessage(JSON.stringify(obj));
+			}			
+		}
 		success(url)
 	});
-
-	// flutter addJavaScriptHandler 還要 study
-	function checkFile() {
-		return new Promise( async (success, error) => {
-			let obj = {func: "checkFile", report, key, success, error}
-			Flutter.postMessage(JSON.stringify(obj));
-		})
-	}
 }

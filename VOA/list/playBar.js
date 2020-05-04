@@ -53,7 +53,7 @@ Vue.component('play-bar', {
 	data() {
 		return {
 			state: "stop",
-			audio: new Audio(), 
+			audio: new Audio(), //[], 
 			index: 0,
 			limits: [10, 15, 20, 30, 45, 60], // 睡眠
 			sleep: 30,
@@ -72,7 +72,9 @@ Vue.component('play-bar', {
 		}
 		this.beep = new Audio("./mp3/beep.mp3");
 
+		console.log(this.datas)
 		let self = this;
+
 		this.audio.autoplay = false;
 		this.audio.addEventListener("loadstart", function() {
 			self.ended = false;
@@ -180,12 +182,13 @@ Vue.component('play-bar', {
 		async play() {
 			this.times = 0;
 			this.currentTime = 0;
-			// console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
+			console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
 			try{
 				let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
-				// let url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
-				// 	"/" + this.datas[this.index].key + ".mp3");
-				// console.log(url)
+				console.log(url)
+				url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
+					"/" + this.datas[this.index].key + ".mp3");
+
 				this.audio.src = url;
 				this.audio.playbackRate = this.rate;
 			} catch(error) {

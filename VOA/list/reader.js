@@ -225,9 +225,6 @@ Vue.component('reader', {
 		if(this.$isFlutter()) {
 			this.broadcast.$on('onFlutter', this.onFlutter);
 		}
-		// setTimeout(()=>{
-		// 	this.showContext();
-		// }, 3000)
 	},
 	destroyed() {
 		this.audio.src = "";
@@ -881,7 +878,7 @@ Vue.component('reader', {
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 
 					this.audio.continue();
-			} else if(pk == true && sk == true && (code == 38 || code == 40)) { // up, down； 移動 blocks
+			} else if(this.block.length == 2 && ((this.block[0] == this.block[1]) || (pk == true && sk == true)) && (code == 38 || code == 40)) { // up, down； 移動 blocks
 				let arr = document.querySelectorAll("#renderMarker .active");
 				if(arr.length > 0){
 					let start = -1, end = -1;

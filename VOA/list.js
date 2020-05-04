@@ -35,16 +35,16 @@ Vue.component('list', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<DropdownItem name="google doc" v-if="playList == true && doc.length > 0">doc</DropdownItem>
+					<DropdownItem name="google doc" v-if="playList == true && doc.length > 0" divided> google doc</DropdownItem>
 					<DropdownItem name="重新下載" v-if="$isSmallScreen()" divided>重新下載</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
 		
 		</header-bar>
-		<list-item ref="listItem" :datas="datas" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
+		<list-item ref="listItem" :datas="datas.length > 0 ? datas : datasPlayList" @onClick="onClick" :dataKey="dataKey" style="felx: 1;">
 		</list-item>
-		<play-bar v-if="playList == true && datas.length > 0" 
-			:datas="datas" :dataKey="dataKey" ref="playbar"
+		<play-bar v-if="playList == true && datasPlayList.length > 0" 
+			:datas="datasPlayList" :dataKey="dataKey" ref="playbar"
 			:rate="rate" :repeat="repeat"
 			@onChangePlayList="onChangePlayList"
 		>
@@ -68,6 +68,7 @@ Vue.component('list', {
 	data() {
 		return {
 			datas: [],
+			datasPlayList: [],
 			source: null,
 			json: null,
 			dataKey: "",
@@ -85,7 +86,6 @@ Vue.component('list', {
 			this.rate = parseFloat(window.localStorage["VOA-PlayList-rate"]);
 		if(typeof window.localStorage["VOA-PlayList-repeat"] != "undefined")
 			this.repeat = parseInt(window.localStorage["VOA-PlayList-repeat"], 10);
-	
 	},
 	destroyed() {
   },
@@ -141,7 +141,6 @@ Vue.component('list', {
 			} else if(item == "google doc"){
 				this.$open(this.doc, this.title);
 			}
-			// 
 		},
 		onAdd() {
 			let self = this;
@@ -177,6 +176,7 @@ Vue.component('list', {
 		async retrieve() {
 			vm.loading();
 			this.doc = "";
+			this.datas = []; this.datasPlayList = [];
 			if(FireStore.login == true){
 				let json = await FireStore.getSetting(this.title);
 				if(typeof json != "undefined"){
@@ -234,7 +234,10 @@ Vue.component('list', {
 						return typeof item.extend == "object" && item.extend.favorite == true
 					})
 				}
-				self.datas = arr;
+				if(this.playList == false)
+					self.datas = arr;
+				else
+					this.datasPlayList = arr;
 			} catch(e) {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
