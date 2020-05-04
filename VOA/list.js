@@ -19,7 +19,7 @@ Vue.component('list', {
 				<DropdownMenu slot="list">
 					<DropdownItem name="生字清單" v-if="playList == false && datas.length > 0">生字清單</DropdownItem>
 
-					<dropdown v-if="playList == true && datas.length > 0" placement="right-start" :divide="$isSmallScreen()">
+					<dropdown v-if="playList == true && datasPlayList.length > 0" placement="right-start" :divide="$isSmallScreen()">
 						<dropdown-item>速率<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list">
 								<dropdown-item name="速0.94" :selected="rate == 0.94">慢</dropdown-item>
@@ -27,7 +27,7 @@ Vue.component('list', {
 								<dropdown-item name="速1.2" :selected="rate == 1.2">快</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<dropdown v-if="playList == true && datas.length > 0" placement="right-start">
+					<dropdown v-if="playList == true && datasPlayList.length > 0" placement="right-start">
 						<dropdown-item>重複播放<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list" v-for="(item, index) in repeatOption" :key="index">
 								<dropdown-item :name="'重複' + item" :selected="repeat == item">
@@ -75,7 +75,7 @@ Vue.component('list', {
 			playList: window.localStorage["VOA-PlayList"] == "Y" ? true : false,
 			rate: 1,
 			repeat: 1,
-			repeatOption: [1, 2, 3, 5],
+			repeatOption: [1, 2, 3, 5, 10],
 			doc: ""
 		};
 	},
@@ -271,7 +271,7 @@ Vue.component('list', {
 			}
 		},
 		onClick(index){
-			this.dataKey = this.datas[index].key;
+			this.dataKey = this.playList == false ?  this.datas[index].key : this.datasPlayList[index].key;
 			if(this.playList == false) {
 				var state = {
 					id: 2,
@@ -289,6 +289,7 @@ Vue.component('list', {
 			} else if(FireStore.login == true){
 				if(this.$refs["playbar"].index == index && this.$refs["playbar"].state == "play") {
 				} else {
+					this.$refs["playbar"].halt();
 					this.$refs["playbar"].index = index;
 					this.$refs["playbar"].play();
 					this.$refs["playbar"].state = "play";					

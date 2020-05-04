@@ -17,33 +17,38 @@ Vue.component('play-bar', {
 			-->
 		</div>
 		<!--  -->
-		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-if="state == 'play'">
+		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-if="state != 'stop'">
 			<div style="font-weight: 500; font-size: 14px;">{{convertTime(currentTime)}}</div>
 			<div style="font-weight: 500; font-size: 14px;">{{convertTime(duration)}}</div>
 		</div>
 
 		<div style="flex: 1;" >
-			<Slider v-if="!$isSmallScreen() && state == 'play'" v-model="currentTime" :tip-format="format" 
+			<Slider v-if="!$isSmallScreen() && state != 'stop'" v-model="currentTime" :tip-format="format" 
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 			 />
 		</div>
 		<Dropdown :trigger="$isSmallScreen() ? 'click' : 'hover'">
-				<a href="javascript:void(0)"
-					style="padding: 10px 10px; display: inline-block; width: 85px; text-align: right;">
-					{{convertTime((sleep * 60) - passTime)}}
-					<Icon type="ios-arrow-down"></Icon>
-				</a>
-				<dropdown-menu slot="list" placement="left-start">
-					<dropdown-item v-for="(item, index) in limits" :key="index"
-						:selected="item == sleep"
-						@click.native="onClickSleep(item)"
-					>
-					{{item + " 分"}}
-					</dropdown-item>
-        </dropdown-menu>
-  		</Dropdown>
+			<a href="javascript:void(0)"
+				style="padding: 10px 10px; display: inline-block; width: 85px; text-align: right;">
+				{{convertTime((sleep * 60) - passTime)}}
+				<Icon type="ios-arrow-down"></Icon>
+			</a>
+			<dropdown-menu slot="list" placement="left-start">
+				<dropdown-item v-for="(item, index) in limits" :key="index"
+					:selected="item == sleep"
+					@click.native="onClickSleep(item)"
+				>
+				{{item + " 分"}}
+				</dropdown-item>
+			</dropdown-menu>
+		</Dropdown>
+		<div v-if="repeat > 1 && state != 'stop' " style="position: fixed; right: 5px; bottom: 58px; background-color: #00bfb6; color: white; padding: 2px 5px; border: 1px solid #00bfb6; border-radius: 2px;">
+			{{(times + 1) + " / " + repeat }}
+		</div>
 	</div>
 	`,
+
+	
 	props: {
 		datas: Array,
 		dataKey: String,
@@ -54,6 +59,7 @@ Vue.component('play-bar', {
 		return {
 			state: "stop",
 			audio: new Audio(), //[], 
+			players:[],
 			index: 0,
 			limits: [10, 15, 20, 30, 45, 60], // 睡眠
 			sleep: 30,
@@ -72,67 +78,8 @@ Vue.component('play-bar', {
 		}
 		this.beep = new Audio("./mp3/beep.mp3");
 
-		console.log(this.datas)
 		let self = this;
-
-		this.audio.autoplay = false;
-		this.audio.addEventListener("loadstart", function() {
-			self.ended = false;
-			// console.log("loadstart: " + self.datas[self.index].title + "; \n  " + (new Date()))
-		}, true);
-		this.audio.addEventListener("loadeddata", function() { 
-			// console.log("loadeddata: " + self.datas[self.index].title + "; \n  " + (new Date()))
-			// self.audio.currentTime = 120;
-			setTimeout(() => {
-				self.audio.play();
-				let obj = self.datas[self.index];
-				FireStore.setSetting(obj.report, {playList: obj.key});
-				if(self.passTime == 0) {
-					self.finalCount("play");
-				} else {
-					self.$emit("onChangePlayList", obj.key)
-				}
-			}, 300);
-		}, true);
-
-		this.audio.addEventListener("canplay", function() {
-			// console.log("canplay: " +  (new Date()))		
-		}, true);
-		this.audio.addEventListener("durationchange", function() {
-			// console.log("durationChange: " + self.audio.duration + "; index: " + )
-			self.duration = self.audio.duration;
-		}, true);
-		this.audio.addEventListener("timeupdate", function() {
-			// console.log("timeupdate: " + self.audio.currentTime)
-		}, true);
-
-		this.audio.addEventListener("ended", function() {
-			setTimeout(() => { 
-				self.beep.play();
-				if((self.sleep * 60) - self.passTime <= 0) {
-					self.stop(true);
-				} else {
-					setTimeout(() => {
-						if(self.times < self.repeat - 1) {
-							self.audio.currentTime = 0;
-							self.audio.play();
-							self.times++;
-						} else
-							next(); 
-					}, 2000);					
-				}
-			}, 1000);
-
-			function next() {
-				self.ended = true;
-				if(self.index >= self.datas.length - 1)
-					self.index = 0;
-				else 
-					self.index++;
-				self.play();
-			}
-		}, true);
-
+		
 		if(typeof window.localStorage["VOA-PlayListTime"] != "undefined")
 			this.sleep = window.localStorage["VOA-PlayListTime"];
 	
@@ -140,18 +87,69 @@ Vue.component('play-bar', {
 			this.broadcast.$on('onFlutter', this.onFlutter);
 		}
 
+		console.log("initial players start: " + (new Date()))
 		this.index = 0;
 		for(let i = 0; i < this.datas.length; i++) {
 			if(this.datas[i].key == this.dataKey) {
 				this.index = i;
-				break;
 			}
+			let player = new MedialPlayer({
+				report: this.datas[i].report,
+				key: this.datas[i].key,
+				rate: this.rate,
+				loadstart: () => {
+					// self.ended = false;
+				},
+				loadeddata: () => {
+					// setTimeout(() => {
+					// 	self.audio[i].play();
+					// 	let obj = self.datas[self.index];
+					// 	FireStore.setSetting(obj.report, {playList: obj.key});
+					// 	if(self.passTime == 0) {
+					// 		self.finalCount("play");
+					// 	} else {
+					// 		self.$emit("onChangePlayList", obj.key)
+					// 	}
+					// }, 300);
+				},
+				ended: () => {
+					setTimeout(() => { 
+						self.beep.play();
+						if((self.sleep * 60) - self.passTime <= 0) {
+							self.stop(true);
+						} else {
+							setTimeout(() => {
+								if(self.times < self.repeat - 1) {
+									self.players[self.index].currentTime = 0;
+									self.players[self.index].play();
+									self.times++;
+								} else
+									next(); 
+							}, 5000);					
+						}
+					}, 1000);
+		
+					function next() {
+						self.ended = true;
+						if(self.index >= self.datas.length - 1)
+							self.index = 0;
+						else 
+							self.index++;
+						self.play();
+					}
+				}
+			})
+			// console.log("index: " + i + ".........................")
+			await player.init()
+			this.players.push(player);
 		}
+		console.log("end: " + (new Date()))
 	},
 	destroyed() {
 		this.finalCount("stop");
-		this.audio.pause();
-		this.audio = null;
+		for(let i = 0; i < this.players.length; i++) {
+			this.players[i].close();
+		}
 
 		if(this.$isFlutter())
 			this.broadcast.$off('onFlutter', this.onFlutter);
@@ -177,33 +175,50 @@ Vue.component('play-bar', {
 				}
 		},
 		onSlideChange(e){
-			this.audio.currentTime = e;
+			if(this.players.length > 0)
+				this.players[this.index].currentTime = e;
 		},
 		async play() {
-			this.times = 0;
-			this.currentTime = 0;
-			console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
-			try{
-				let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
-				console.log(url)
-				url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
-					"/" + this.datas[this.index].key + ".mp3");
+			if(this.players.length == 0) return;
+			if(this.state == "pause") {
+				this.players[this.index].play();
+			} else {
+				this.times = 0;
+				this.currentTime = 0;
+				console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
+				try{
+					this.duration = this.players[this.index].duration;
+					this.players[this.index].rate = this.rate;
+					this.players[this.index].play();
 
-				this.audio.src = url;
-				this.audio.playbackRate = this.rate;
-			} catch(error) {
-				vm.showMessage("MP3\n" + error)
+					let obj = this.datas[this.index];
+					FireStore.setSetting(obj.report, {playList: obj.key});
+					if(this.passTime == 0) {
+						this.finalCount("play");
+					} else {
+						this.$emit("onChangePlayList", obj.key)
+					}
+				} catch(error) {
+					vm.showMessage("MP3\n" + error)
+				}
 			}
 		},
 		pause(){
-			this.audio.pause();
+			if(this.players.length == 0) return;
+			this.players[this.index].pause();
 			this.state = "pause";
 		},
+		halt(){
+			if(this.players.length == 0) return;
+			this.players[this.index].pause();
+			this.players[this.index].currentTime = 0;
+		},
 		stop(){
+			if(this.players.length == 0) return;
 			this.times = 0;
 			this.passTime = 0;
 			this.currentTime = 0;
-			this.audio.pause();
+			this.players[this.index].pause();
 			this.state = "stop";
 			clearInterval(this.finalCountID);
 		},
@@ -216,8 +231,7 @@ Vue.component('play-bar', {
 			let start = (new Date()).getTime();
 			if(state != "stop") {
 				this.finalCountID = setInterval(() => {
-					if(this.audio != null && typeof this.audio.currentTime == "number")
-						this.currentTime = this.audio.currentTime;
+					this.currentTime = this.players[this.index].currentTime;
 					let now = (new Date()).getTime() - start;
 					this.passTime = Math.ceil(now / (1000));
 
@@ -262,8 +276,8 @@ Vue.component('play-bar', {
 			}
 		},
 		rate(value)  {
-			if(this.audio != null)
-				this.audio.playbackRate = value;
+			if(this.players.length > 0 && this.index < this.players.length)
+				this.players[this.index].rate = value;
 		},
 		repeat(value) {
 		}
