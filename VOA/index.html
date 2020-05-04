@@ -126,7 +126,7 @@
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
 				<div id='email'></div>
-				Jim Chen 2020-05-04 12:30
+				Jim Chen 2020-05-04 17:00
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -169,7 +169,7 @@
 				let email = window.localStorage["email"];
 				if(typeof email == "undefined") email = "";
 				checkConnect(()=>{
-					if(this.$isConnected == false) 
+					if(self.$isFlutter() && this.$isConnected == false) 
 						this.menu = [];
 					else if(email.length == 0 &&  (location.href.indexOf("?anonymous=") > -1 || location.href.indexOf("?reader=") > -1)) {
 						this.homePage();
@@ -188,20 +188,17 @@
 							self.broadcast.$emit('onResize');
 					})()
 				}
-				
-				function finish(params) {
-					
-				}
-				
+								
 				function checkConnect(callback) {
 					if(self.$isFlutter()) {
 						Flutter.postMessage(JSON.stringify({state: "app.mounted"}));
-		
+
 						self.broadcast.$on('onFlutter', (arg1, arg2)=>{
-							console.log("app.onFlutter..................")
-							if(arg1 == "onConnectivityChanged")
-							self.$isConnected = arg2 == "Y" ? true : false;
-							callback()
+							if(arg1 == "onConnectivityChanged") {
+								self.$isConnected = arg2 == "Y" ? true : false;
+								callback();
+								self.$Notice.info({title: '網路' + (self.$isConnected == true ? "已連線" : "已斷線")});
+							}
 						});
 					}	else {
 						callback()

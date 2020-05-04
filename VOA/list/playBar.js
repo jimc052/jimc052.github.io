@@ -87,7 +87,8 @@ Vue.component('play-bar', {
 			this.broadcast.$on('onFlutter', this.onFlutter);
 		}
 
-		console.log("initial players start: " + (new Date()))
+		// console.log("initial players start: " + (new Date()))
+		vm.loading("MP3 loading......");
 		this.index = 0;
 		for(let i = 0; i < this.datas.length; i++) {
 			if(this.datas[i].key == this.dataKey) {
@@ -143,7 +144,7 @@ Vue.component('play-bar', {
 			await player.init()
 			this.players.push(player);
 		}
-		console.log("end: " + (new Date()))
+		vm.loading(false);
 	},
 	destroyed() {
 		this.finalCount("stop");
