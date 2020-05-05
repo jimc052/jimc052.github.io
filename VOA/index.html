@@ -126,7 +126,7 @@
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
 				<div id='email'></div>
-				Jim Chen 2020-05-04 17:00
+				Jim Chen 2020-05-05 09:00
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -195,9 +195,12 @@
 
 						self.broadcast.$on('onFlutter', (arg1, arg2)=>{
 							if(arg1 == "onConnectivityChanged") {
-								self.$isConnected = arg2 == "Y" ? true : false;
+								let b = arg2 == "Y" ? true : false;
+								if(b != self.$isConnected) {
+									self.$isConnected = b;
+									self.$Notice.info({title: '網路' + (self.$isConnected == true ? "已連線" : "已斷線")});
+								}
 								callback();
-								self.$Notice.info({title: '網路' + (self.$isConnected == true ? "已連線" : "已斷線")});
 							}
 						});
 					}	else {

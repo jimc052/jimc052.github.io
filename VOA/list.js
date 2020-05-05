@@ -93,6 +93,7 @@ Vue.component('list', {
 		onChangePlayList(key){
 			this.dataKey = key;
 			this.$refs["listItem"].scrollTo();
+			// console.log("onChangePlayList: " + key + ".............")
 		},
 		onChangeList(){
 			this.playList = !this.playList;

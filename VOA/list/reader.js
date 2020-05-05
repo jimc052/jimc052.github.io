@@ -762,7 +762,8 @@ Vue.component('reader', {
 					
 					if(this.$isFlutter() && (e == "play" || e == "stop" || e == "pause")) {
 						let obj = {state: e, title: this.source.title, report: this.source.report,
-							index: this.source.index, total: this.source.total};
+							// index: this.source.index, total: this.source.total
+						};
 						Flutter.postMessage(JSON.stringify(obj));
 						// console.log("Flutter.postMessage: " + JSON.stringify(obj))
 					}

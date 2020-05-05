@@ -47,8 +47,6 @@ Vue.component('play-bar', {
 		</div>
 	</div>
 	`,
-
-	
 	props: {
 		datas: Array,
 		dataKey: String,
@@ -157,9 +155,30 @@ Vue.component('play-bar', {
   },
 	methods: {
 		onFlutter(arg){
-			console.log("onFlutter: " + arg)
+			// console.log("onFlutter: " + arg)
 			if(arg == "unplugged") { // 耳機，已拔
 				this.pause();
+			} else if(arg == "action.TOGGLE") { //
+				if(this.state == "play")
+					this.pause();
+				else 
+					this.play();
+			} else if(arg == "action.STOP") { //
+				this.stop();
+			} else if(arg == "action.NEXT" || arg == "action.PREV") { //
+				if(
+					(arg == "action.NEXT" && this.index >= this.datas.length - 1) || 
+					(arg == "action.PREV" && this.index == 0)
+				) {
+					this.beep.play()
+				} else {
+					this.halt();
+					if(arg == "action.NEXT") 
+						this.index++;
+					else 
+						this.index--;
+					this.play();
+				}
 			}
 		},
 		format(start) {
@@ -179,6 +198,14 @@ Vue.component('play-bar', {
 			if(this.players.length > 0)
 				this.players[this.index].currentTime = e;
 		},
+		toFlutter(e){
+			if(this.$isFlutter()) {
+				let obj = {state: this.state, title: this.datas[this.index].title, 
+					report: this.datas[this.index].report,
+					index: this.index, total: this.datas.length};
+				Flutter.postMessage(JSON.stringify(obj));
+			}
+		},
 		async play() {
 			if(this.players.length == 0) return;
 			if(this.state == "pause") {
@@ -186,7 +213,9 @@ Vue.component('play-bar', {
 			} else {
 				this.times = 0;
 				this.currentTime = 0;
-				console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
+				console.log("play.index: " + this.index + ", time: " + 
+					(new Date()).toString("hh:MM:ss.ms") + "; passTime: " + this.passTime)
+				// self.$Notice.info({title: '播' + (this.index + 1)});
 				try{
 					this.duration = this.players[this.index].duration;
 					this.players[this.index].rate = this.rate;
@@ -200,14 +229,18 @@ Vue.component('play-bar', {
 						this.$emit("onChangePlayList", obj.key)
 					}
 				} catch(error) {
-					vm.showMessage("MP3\n" + error)
+					vm.showMessage("MP3\n" + error);
+					return;
 				}
 			}
+			this.state = "play"
+			this.toFlutter()
 		},
 		pause(){
 			if(this.players.length == 0) return;
 			this.players[this.index].pause();
 			this.state = "pause";
+			this.toFlutter();
 		},
 		halt(){
 			if(this.players.length == 0) return;
@@ -225,6 +258,7 @@ Vue.component('play-bar', {
 			for(let i = 0; i < this.players.length; i++) {
 				this.players[i].currentTime = 0;
 			}
+			this.toFlutter();
 		},
 		finalCount(state){
 			this.passTime = 0;
