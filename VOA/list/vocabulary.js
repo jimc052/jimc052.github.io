@@ -65,7 +65,7 @@ Vue.component('dlg-vocabulary', {
 			el.style.left = (document.body.clientWidth - (this.width + 20) + 
 				(this.$isSmallScreen() ? 15 : 0)) + "px";
 			el.style.top = (document.body.clientHeight - (this.height + 150)) + "px";
-			console.log("clientHeight: " + document.body.clientHeight)
+			// console.log("clientHeight: " + document.body.clientHeight)
 		}, 600)
 		this.broadcast.$on('onResize', this.onResize);
 	},

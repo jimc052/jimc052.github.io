@@ -504,6 +504,8 @@ Vue.component('reader', {
 			this.buildMenu();
 		},
 		async getHistory(){
+			if(!this.login) return;
+
 			try {
 				let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("history").doc(this.source.key)
@@ -516,6 +518,7 @@ Vue.component('reader', {
 			}
 		},
 		async setHistory(arg){
+			if(!this.login) return;
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 				.collection("history").doc(this.source.key);
 			let obj = {
