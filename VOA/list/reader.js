@@ -267,14 +267,14 @@ Vue.component('reader', {
 			let context = document.getElementById("context");
 			let s = context.innerText.split("\n").join("\n\n");
 
-			this.$Modal.info({
+			this.$Modal.confirm({
 				title: "複製內容",
 				width: document.body.clientWidth - 100,
 				render: (h) => {
 					return h('textarea', {
 						attrs: {
 							id: "clipboard",
-							style: "height: 300px; width: 100%;",
+							style: "height: " + (document.body.clientHeight - 300) + "px; width: 100%;",
 							readonly: true
 						},
 						props: {
@@ -291,6 +291,9 @@ Vue.component('reader', {
 					window.open('https://www.deepl.com/translator', "",
 						"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
 					); 
+				},
+				onCancel: () => {
+
 				}
 			});
 

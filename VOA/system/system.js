@@ -102,7 +102,8 @@ Vue.prototype.$yahoo = function (word) {
 	}
 	window.open('https://tw.dictionary.search.yahoo.com/search?p=' + word, "",
 		"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
-	); // + ",width=200,height=100"
+		// + ",width=600,height=100"
+	); 
 }
 
 Vue.prototype.$google = function (word) {

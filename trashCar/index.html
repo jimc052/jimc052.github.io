@@ -1,0 +1,196 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>垃圾車</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
+	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
+	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
+	
+	<script src="https://unpkg.com/marked@0.3.6"></script>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			visibility: hidden;
+			color: rgb(0, 0, 0);
+		}
+		html, body, #app, #list {
+			min-height: 100% !important;
+			height: 100%;
+		}
+	
+	</style>
+</head>
+<body style="overflow: hidden;">
+  <div id="app" style="overflow: hidden;">
+		<Drawer :closable="false" v-model="drawer" placement="left">
+			<div style="height: 80px; font-size: 30px; color: white; display: flex; justify-content: center; align-items: center; border-bottom: 1px rgba(255,255,255,.7) solid; padding-right: 40px;">
+				垃圾車
+			</div>
+			<i-menu theme="dark" :active-name="activeName" @on-select="onSelect">
+				<Menu-item :name="index" v-for="(item, index) in menu" :key="index">
+					<Icon :type="item.icon"></Icon>{{item}}
+				</Menu-item>
+			</i-menu>
+			<div style="flex: 1;"></div>
+			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
+				<div id='email'></div>
+				Jim Chen 2020-05-07 08:30
+			</div>
+		</Drawer>
+		<list :title="title"></list>
+	</div>
+</body>
+<script>
+	// https://www.iviewui.com/components/menu
+	// https://www.iviewui.com/components/modal
+	// https://www.iviewui.com/components/icon
+	var vm = null;
+	window.onload = async function(){
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					drawer: false, 
+					menu: [
+						"",
+					], 
+					activeName: 0,
+					title: "",
+					modal: false
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				let self = this;
+				document.querySelector(".ivu-menu").style.width = "100%";
+				document.body.style.visibility = "visible";
+
+				window.onresize = () => {
+					return (() => {
+							// self.screenWidth = document.body.clientWidth;
+							self.broadcast.$emit('onResize');
+					})()
+				}
+				fetch('https://api.kcg.gov.tw/api/service/get/14fe516d-ac62-4905-9325-70daae7616bd')
+				.then(function(response) {
+					return response.json();
+				})
+				.then(function(result) {
+					let data = result.data.filter(item=>{
+						return item.area == "楠梓區"
+					});
+					data.sort((a, b) => {
+						a = a.toUpperCase();
+						b = b.toUpperCase();
+						if(a > b)
+							return 1;
+						else if(a < b)
+							return -1;
+						else
+							return 0;
+					});
+					console.log(JSON.stringify(data))
+				});
+			},
+			methods: {
+				showDrawer() {
+					this.drawer = true;
+				},
+				async onSelect(index, upload){
+					this.activeName = index;
+					
+							window.localStorage["VOA-activeName"] = index;						
+					this.title = this.menu[index];
+					this.drawer = false;
+				},
+				async homePage(){
+					
+				},
+				showMessage(){
+					// vm.loading(false);
+					let args = arguments;
+					this.$Modal.error({
+						title: "VOA",
+						closable: true,
+						render: h => {
+							let fontSize = 20;
+							let arr = [];
+							function createEl(index) {
+								if(index == 1)
+									fontSize = fontSize - 2;
+								arr.push( h('div', {
+									style: {
+										color: index == 0 ? 'red' : "#5e5a6e",
+										fontSize: fontSize + 'px',
+										textAlign: "left"
+									}
+								}, args[index] ));
+								if(index < args.length - 1) createEl(index + 1);
+							}
+							createEl(0)
+
+							return h('span', {style: {maxWidth: "80%"}}, arr)
+						}
+					});
+				},
+				loading(arg) {
+					if(typeof arg == "boolean" && arg == false) {
+						this.spinID = setTimeout(()=>{
+							this.$Spin.hide();
+						}, 1000)
+					} else {
+						let span = document.querySelector(".ivu-spin-main");
+						if(span == null) {
+							clearTimeout(this.spinID)
+							this.$Spin.hide();
+							this.$Spin.show({
+								render: (h) => {
+									return h('div', [
+										h('Icon', {
+											'class': 'spin-icon-load',
+											props: {
+												type: 'ios-loading',
+												size: 30
+											}
+										}),
+										h('div', typeof arg == "string" ? arg : 'Loading')
+									])
+								}
+							});									
+						}
+				
+					}
+				}
+			}
+		})
+	}
+/* 	
+	
+垃圾車到點時間預估
+https://api.kcg.gov.tw/api/service/get/14fe516d-ac62-4905-9325-70daae7616bd
+
+垃圾車及資源回收車動態資訊
+https://api.kcg.gov.tw/api/service/get/aaf4ce4b-4ca8-43de-bfaf-6dc97e89cac0
+	*/
+</script>
+</html>

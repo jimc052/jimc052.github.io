@@ -125,8 +125,12 @@
 			</i-menu>
 			<div style="flex: 1;"></div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
-				<div id='email'></div>
-				Jim Chen 2020-05-07 08:30
+				<div id='email' :style="{'cursor': doc.length > 0 ? 'pointer' : 'auto'}"
+					@click.stop='onClickDoc()'	
+				>
+
+				</div>
+				Jim Chen 2020-05-08 17:50
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -156,7 +160,8 @@
 					], 
 					activeName: 0,
 					title: "",
-					modal: false
+					modal: false,
+					doc: ""
 				};
 			},
 			created() {
@@ -209,6 +214,10 @@
 				}
 			},
 			methods: {
+				onClickDoc(){
+					if(typeof this.doc == "string" && this.doc.length > 0)
+						this.$open(this.doc);
+				},
 				showDrawer() {
 					this.drawer = true;
 				},
@@ -230,7 +239,9 @@
 						let json = await FireStore.getSetting("home");
 						if(typeof json != "undefined"){
 							active = json.active;
+							if(typeof json.doc == "string") this.doc = json.doc;
 						}
+						console.log(json)
 					} else {
 						active = window.localStorage["VOA-activeName"];
 					}
