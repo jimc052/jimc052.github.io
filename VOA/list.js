@@ -301,6 +301,10 @@ Vue.component('list', {
 			this.source = null;
 		}, 
 		async onUpdate(type, data) {
+			if(this.$isFlutter() && this.$isConnected == false) {
+				
+				return;
+			}
 			if(type == "html") {
 				this.source.html = data;
 				let obj = Object.assign({}, this.source)
