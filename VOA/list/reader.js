@@ -202,8 +202,8 @@ Vue.component('reader', {
 			displayParagraph: false,
 			mode: "",
 			options: {
-				limits: [10, 15, 20, 30, 45, 60], // 睡眠
-				repeat: [0, 1, 2, 3, 5, 10, 20, 30],
+				limits: [10, 15, 20, 30, 60], // 睡眠
+				repeat: [0, 1, 2, 3, 5, 10, 50],
 				interval: [3, 5, 10, 20, -0.75, -1, -1.5, -2] // 重複間距
 			}
 		};
@@ -673,7 +673,7 @@ Vue.component('reader', {
 
 			if(this.login == true) {
 				let data = await this.getHistory();
-				this.favorite = data.favorite == true ? true : false;
+				this.favorite = typeof data == "object" && data.favorite == true ? true : false;
 				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
