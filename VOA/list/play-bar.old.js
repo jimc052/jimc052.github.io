@@ -2,7 +2,7 @@ Vue.component('play-bar', {
 	template:  `<div style="display: flex; flex-direction: row; align-items: center; padding: 5px; border-top: 1px solid #c5c5c5; background: white;">
 		<div style="display: flex; flex-direction: row; align-items: center; ">
 			<Icon v-if="state == 'pause' || state == 'stop'"  type="md-play" size="20" color="white" class="button" 
-				@click.native="play()" 
+				@click.native="play(); state = 'play' " 
 			/>
 			<Icon v-else type="md-pause" size="20" color="white" class="button" 
 				@click.native="pause()"
@@ -11,36 +11,37 @@ Vue.component('play-bar', {
 				:color="state == 'stop' ? 'white' : 'red'"
 				@click.native="stop()"
 			/>
+			<!--
+				<Icon type="md-skip-backward" size="20" color="white" class="button" />
+				<Icon type="md-skip-forward" size="20" color="white" class="button" />
+			-->
 		</div>
 		<!--  -->
-		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-if="state != 'stop'">
+		<div style="margin: 0px 10px 0px 5px; font-size: 18px;" v-if="state == 'play'">
 			<div style="font-weight: 500; font-size: 14px;">{{convertTime(currentTime)}}</div>
 			<div style="font-weight: 500; font-size: 14px;">{{convertTime(duration)}}</div>
 		</div>
 
 		<div style="flex: 1;" >
-			<Slider v-if="!$isSmallScreen() && state != 'stop'" v-model="currentTime" :tip-format="format" 
+			<Slider v-if="!$isSmallScreen() && state == 'play'" v-model="currentTime" :tip-format="format" 
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 			 />
 		</div>
 		<Dropdown :trigger="$isSmallScreen() ? 'click' : 'hover'">
-			<a href="javascript:void(0)"
-				style="padding: 10px 10px; display: inline-block; width: 85px; text-align: right;">
-				{{convertTime((sleep * 60) - passTime)}}
-				<Icon type="ios-arrow-down"></Icon>
-			</a>
-			<dropdown-menu slot="list" placement="left-start">
-				<dropdown-item v-for="(item, index) in limits" :key="index"
-					:selected="item == sleep"
-					@click.native="onClickSleep(item)"
-				>
-				{{item + " 分"}}
-				</dropdown-item>
-			</dropdown-menu>
-		</Dropdown>
-		<div v-if="repeat > 1 && state != 'stop' " style="position: fixed; right: 5px; bottom: 58px; background-color: #00bfb6; color: white; padding: 2px 5px; border: 1px solid #00bfb6; border-radius: 2px;">
-			{{(times + 1) + " / " + repeat }}
-		</div>
+				<a href="javascript:void(0)"
+					style="padding: 10px 10px; display: inline-block; width: 85px; text-align: right;">
+					{{convertTime((sleep * 60) - passTime)}}
+					<Icon type="ios-arrow-down"></Icon>
+				</a>
+				<dropdown-menu slot="list" placement="left-start">
+					<dropdown-item v-for="(item, index) in limits" :key="index"
+						:selected="item == sleep"
+						@click.native="onClickSleep(item)"
+					>
+					{{item + " 分"}}
+					</dropdown-item>
+        </dropdown-menu>
+  		</Dropdown>
 	</div>
 	`,
 	props: {
@@ -71,6 +72,7 @@ Vue.component('play-bar', {
 		}
 		this.beep = new Audio("./mp3/beep.mp3");
 
+		console.log(this.datas)
 		let self = this;
 
 		this.audio.autoplay = false;
@@ -156,30 +158,9 @@ Vue.component('play-bar', {
   },
 	methods: {
 		onFlutter(arg){
-			// console.log("onFlutter: " + arg)
+			console.log("onFlutter: " + arg)
 			if(arg == "unplugged") { // 耳機，已拔
 				this.pause();
-			} else if(arg == "action.TOGGLE") { //
-				if(this.state == "play")
-					this.pause();
-				else 
-					this.play();
-			} else if(arg == "action.STOP") { //
-				this.stop();
-			} else if(arg == "action.NEXT" || arg == "action.PREV") { //
-				if(
-					(arg == "action.NEXT" && this.index >= this.datas.length - 1) || 
-					(arg == "action.PREV" && this.index == 0)
-				) {
-					this.beep.play()
-				} else {
-					this.halt();
-					if(arg == "action.NEXT") 
-						this.index++;
-					else 
-						this.index--;
-					this.play();
-				}
 			}
 		},
 		format(start) {
@@ -198,19 +179,6 @@ Vue.component('play-bar', {
 		onSlideChange(e){
 			this.audio.currentTime = e;
 		},
-		toFlutter(e){
-			return; // 要改寫成，native 
-			if(this.$isFlutter()) {
-				let obj = {
-					state: this.state, 
-					title: this.datas[this.index].title, 
-					report: this.datas[this.index].report,
-					index: this.index, 
-					total: this.datas.length
-				};
-				Flutter.postMessage(JSON.stringify(obj));
-			}
-		},
 		async play() {
 			this.times = 0;
 			this.currentTime = 0;
@@ -226,17 +194,10 @@ Vue.component('play-bar', {
 			} catch(error) {
 				vm.showMessage("MP3\n" + error)
 			}
-			this.state = "play"
-			this.toFlutter()
 		},
 		pause(){
 			this.audio.pause();
 			this.state = "pause";
-			this.toFlutter();
-		},
-		halt(){
-			this.audio.pause();
-			this.audio.currentTime = 0;
 		},
 		stop(){
 			this.times = 0;

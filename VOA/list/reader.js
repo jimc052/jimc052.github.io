@@ -261,12 +261,67 @@ Vue.component('reader', {
 			})
 			win.document.body.innerHTML = s1;
 		},
+		toChinese(){ // f10
+			let self = this;
+			this.$Modal.remove();
+			this.$Modal.confirm({
+				title: "中文寫入",
+				width: document.body.clientWidth - 100,
+				// loading: true,
+				render: (h) => {
+					return h('textarea', {
+						attrs: {
+							id: "clipboard",
+							style: "height: " + (document.body.clientHeight - 300) + "px; width: 100%;",
+							// readonly: true
+						},
+						props: {
+							// read
+						},
+						on: {
+							blur: (event) => {
+							},
+							paste: (event) =>{
+							}
+						}
+					})
+				},
+				onOk: () => {
+					exec();
+				},
+				onCancel: () => {
+				}
+			});
+
+			function exec() {
+				let div = document.createElement("DIV");
+				div.innerHTML = self.source.html;
+				let arr1 = div.querySelectorAll(".english")
+				
+				let el = document.getElementById("clipboard");
+				if(el.value.length > 0) {
+					let arr2 = el.value.replaceAll("\n\n", "\n").split("\n");
+					arr2.forEach((item, index) =>{
+						if(index < arr1.length)
+							arr1[index].insertAdjacentHTML('afterend', "\n  <div class='chinese'>" + item + "</div>");
+					});
+				}
+				console.log(div.innerHTML)
+			}
+		},
 		toTranslate(){ // f1
 			this.$Modal.remove();
-			
-			let context = document.getElementById("context");
-			let s = context.innerText.split("\n").join("\n\n");
-
+			// let context = document.getElementById("context");
+			// let s = context.innerText.split("\n").join("\n\n");
+			let s = "";
+			let div = document.createElement("DIV");
+			div.innerHTML = this.source.html;
+			let arr = div.querySelectorAll(".english")
+			arr.forEach(el =>{
+				s += (s.length > 0 ? "\n\n" : "") + el.innerText.replaceAll("\n", "")
+					.replaceAll("  ", " ").replaceAll("  ", " ").replaceAll("  ", " ")
+					.trim();
+			})
 			this.$Modal.confirm({
 				title: "複製內容",
 				width: document.body.clientWidth - 100,
@@ -283,6 +338,9 @@ Vue.component('reader', {
 						on: {
 							blur: (event) => {
 									this.value = event.target.value;
+							},
+							paste: (event) =>{
+								// console.log(event)
 							}
 						}
 					}, s)
@@ -293,17 +351,18 @@ Vue.component('reader', {
 					); 
 				},
 				onCancel: () => {
-
 				}
 			});
 
 			setTimeout(() => {
 				let el = document.getElementById("clipboard");
-				el.select();
-				let range = document.createRange();
-				range.selectNode(el);
-				window.getSelection().addRange(range);
-				document.execCommand("copy");
+				if(typeof el == "object") {
+					el.select();
+					let range = document.createRange();
+					range.selectNode(el);
+					window.getSelection().addRange(range);
+					document.execCommand("copy");					
+				}
 			}, 1000);
 		},
 		moveBlock(index){
@@ -825,7 +884,7 @@ Vue.component('reader', {
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
 			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : ""
-			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + ", char: " + char)
+			console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + ", char: " + char)
 			// console.log(o.tagName + ": " + o.contentEditable)
 			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
 				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
@@ -865,6 +924,8 @@ Vue.component('reader', {
 				if(ss.length > 0) this.$yahoo(ss)
 			} else if(code == 112 || (sk == true && char == "T")){ //t, f1 開翻譯網站
 				this.toTranslate();
+			} else if(this.$isAdmin() == true && code == 121 || (sk == true && char == "C")){ //c, f10 寫入中文
+				this.toChinese();
 			} else if(code == 113){ // f2
 				this.showContext();
 			} else if(pk == true && char == "E" && this.$isAdmin() == true){ //e, 編輯
