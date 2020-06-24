@@ -35,7 +35,7 @@ Vue.component('list', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<DropdownItem name="google doc" v-if="playList == true && doc.length > 0" divided> google doc</DropdownItem>
+					<DropdownItem name="google doc" v-if="doc.length > 0" divided> google doc</DropdownItem>
 					<DropdownItem name="重新下載" v-if="$isSmallScreen()" divided>重新下載</DropdownItem>
 				</DropdownMenu>
 			</Dropdown>
@@ -243,6 +243,30 @@ Vue.component('list', {
 				console.log(e)
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
 			}
+
+			if(this.playList == true && this.$isFlutter() && this.datasPlayList.length > 0){
+				// 還沒想好，notifiction 如何溝通 2020-06-05
+				/*
+				arr = [];
+				let index = 0;
+				this.datasPlayList.forEach((item) =>{
+					if(item.key == this.dataKey) index = arr.length;
+					// console.log(index + " = " + item.key + " = " + this.dataKey + " => " + index)
+
+					arr.push({key: item.key, title: item.title})
+				})
+				let obj = {
+					playList: arr,
+					index: index,
+					report: this.datasPlayList[0].report, 
+					repeat: this.repeat, 
+					// sleep: this.sleep,
+					rate: this.rate
+				}
+				Flutter.postMessage(JSON.stringify(obj));
+				// console.log(JSON.stringify(obj))
+				*/
+			}
 			setTimeout(()=>{
 				vm.loading(false);
 			}, self.datas.length * 5);
@@ -302,7 +326,6 @@ Vue.component('list', {
 		}, 
 		async onUpdate(type, data) {
 			if(this.$isFlutter() && this.$isConnected == false) {
-				
 				return;
 			}
 			if(type == "html") {

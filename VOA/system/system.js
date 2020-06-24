@@ -146,7 +146,7 @@ Vue.prototype.$isFlutter = function () {
 Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resource, 所以沒用了
 	let self = this;
 	function checkFile(){
-		console.log("checkFile: start...............")
+		// console.log("checkFile: start...............")
 		return new Promise( async (success, error) => {
 			self.broadcast.$on('onFlutter', onFlutter)
 			let obj = {func: "checkFile", report, key}
@@ -159,7 +159,7 @@ Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resourc
 		});
 	}
 	function downloadFile(url){ // 
-		console.log("downloadFile: start...............")
+		// console.log("downloadFile: start...............")
 		return new Promise( async (success, error) => {
 			// self.broadcast.$on('onFlutter', onFlutter)
 			let obj = {func: "downloadFile", report, key, url}
@@ -168,12 +168,10 @@ Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resourc
 	}
 
 	return new Promise( async (success, error) => {
-		// Flutter.postMessage(JSON.stringify(obj));
-		// console.log("$isFlutter: " + this.$isFlutter())
 		let url = "", urlFlutter = "";
 		if(this.$isFlutter()) {
 			urlFlutter = await checkFile();
-			console.log("checkFile: " + url + " ...................")
+			// console.log("checkFile: " + url + " ...................")
 		}
 
 		if(urlFlutter.length > 0 && urlFlutter.indexOf("not exist..") == -1) {
@@ -183,7 +181,7 @@ Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resourc
 			url = await FireStore.downloadFileURL("VOA/" + report + 
 					"/" + key + ".mp3");
 			if(this.$isFlutter()) {
-				// downloadFile(url);
+				downloadFile(url);
 				let obj = {func: "downloadFile", report, key, url}
 				Flutter.postMessage(JSON.stringify(obj));
 			}			

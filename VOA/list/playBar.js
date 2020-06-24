@@ -136,6 +136,9 @@ Vue.component('play-bar', {
 	
 		if(this.$isFlutter()) {
 			this.broadcast.$on('onFlutter', this.onFlutter);
+			// Flutter.postMessage(JSON.stringify({
+			// 	sleep: this.sleep, //
+			// }));
 		}
 
 		this.index = 0;
@@ -216,11 +219,20 @@ Vue.component('play-bar', {
 			this.currentTime = 0;
 			console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
 			try{
-				let url = await this.$MP3(this.datas[this.index].report, this.datas[this.index].key)
-				console.log(url)
-				url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
-					"/" + this.datas[this.index].key + ".mp3");
+				// // 還沒想好，notifiction 如何溝通 2020-06-05
+				/*
+				let url = !this.$isFlutter() ? ""
+					: await this.$MP3(this.datas[this.index].report, this.datas[this.index].key);
 
+				// console.log("this.$MP3: " + url + " ................")
+				if(url.length == 0) {
+					url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
+						"/" + this.datas[this.index].key + ".mp3");
+				}
+				*/
+				// console.log("FireStore: " + url )
+				let url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
+						"/" + this.datas[this.index].key + ".mp3");
 				this.audio.src = url;
 				this.audio.playbackRate = this.rate;
 			} catch(error) {
@@ -270,7 +282,12 @@ Vue.component('play-bar', {
 		onClickSleep(e){
 			this.sleep = e;
 			window.localStorage["VOA-PlayListTime"] = e;
-			this.finalCount(this.state)
+			this.finalCount(this.state);
+			if(this.$isFlutter()) {
+				Flutter.postMessage(JSON.stringify({
+					sleep: this.sleep,
+				}));
+			}
 		},
 		convertTime(start){
 			if(start == 0 || isNaN(start))

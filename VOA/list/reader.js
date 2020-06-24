@@ -144,7 +144,7 @@ Vue.component('reader', {
 			</div>
 			
 			<Slider v-model="currentTime" :tip-format="format" 
-				v-if="repeat == 0"
+				v-if="repeat == 0 && ! $isSmallScreen()"
 				:max=duration @on-change="onSlideChange" style="flex: 1; margin-right: 10px;"
 				:marks="marks" />
 
@@ -214,6 +214,7 @@ Vue.component('reader', {
 		this.login = FireStore.login;
 		let context = document.querySelector("#context");
 		if(context != null) context.style.visibility = "hidden";
+		
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.title = this.source.title;
 		// console.log(this.source)
@@ -261,7 +262,7 @@ Vue.component('reader', {
 			})
 			win.document.body.innerHTML = s1;
 		},
-		toChinese(){ // f10
+		toChinese(){ // f10, 還沒寫，翻譯網站，不滿意
 			let self = this;
 			this.$Modal.remove();
 			this.$Modal.confirm({
@@ -756,6 +757,8 @@ Vue.component('reader', {
 				}
 			}
 
+			// console.log(this.block)
+
 			this.audio = new Player({block: this.repeat == 0 ? [] : this.block});
 			this.audio.setting = setting;
 			this.audio.state = "stop";
@@ -884,15 +887,20 @@ Vue.component('reader', {
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
 			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : ""
-			console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + ", char: " + char)
+			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + ", char: " + char)
 			// console.log(o.tagName + ": " + o.contentEditable)
-			if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
-				if(o.tagName == "TEXTAREA" && pk == true && code == 83 && this.mode == "edit"){// 存檔
-					let html = this.$refs["textarea"].value;
-					this.$emit("onUpdate", "html", html);
-					this.onPopState();
-				} else
-					return;
+			if(pk == true && char == "S" && this.mode == "edit"){// 存檔
+				refresh();
+			} else if(pk == true && char == "E" && this.mode == "edit"){// 存檔
+				refresh();
+				this.mode = "";
+				setTimeout(() => {
+					document.getElementById("readerFrame").style.zoom = self.audio.setting.zoom;
+					self.retrieve(true);
+				}, 600);
+				// this.onPopState();
+			} else if(o.tagName == "INPUT" || o.tagName == "TEXTAREA"){
+				return;
 			} else if(pk == true && char == "M" && this.login == true){ // m, 加入筆記
 				let ss = window.getSelection().toString().trim();
 
@@ -930,18 +938,20 @@ Vue.component('reader', {
 				this.showContext();
 			} else if(pk == true && char == "E" && this.$isAdmin() == true){ //e, 編輯
 				if(this.mode == "edit") {
-					this.html = this.source.html;
-					refresh();
+				
 				} else {
 					this.mode = "edit";
 					this.audio.pause();
 					this.displayVocabulary = false;
+					setTimeout(() => {
+						self.$refs["textarea"].focus();
+					}, 300);
 				}				
 			} else if(code == 27){ //
 				this.displayVocabulary = false;
 			// } else if(this.displayVocabulary == true) {
 			// 	return;
-			} else if(pk && char == "V" && this.login == true){ // Cmd ＋ shift + V, 單字清單
+			} else if(sk && pk && char == "V" && this.login == true && this.mode != "edit"){ // Cmd ＋ shift + V, 單字清單
 				this.displayVocabulary = !this.displayVocabulary;
 			} else if(code == 32){ //空格鍵，interrupt
 				if(this.state == "interrupt" || this.audio.state == "pendding") 
@@ -1006,11 +1016,10 @@ Vue.component('reader', {
 			event.stopPropagation();
 			
 			function refresh() {
-				self.mode = "";
-				setTimeout(() => {
-					document.getElementById("readerFrame").style.zoom = self.audio.setting.zoom;
-					self.retrieve(true);
-				}, 600);
+				let html = self.$refs["textarea"].value;
+				self.$emit("onUpdate", "html", html);
+				self.$set(self.source, 'html', html);
+				self.html = self.source.html;
 			}
 		},
 		isChinese() {
@@ -1267,6 +1276,9 @@ Vue.component('reader', {
 		}
 	},
 	watch: {
+		source(value) {
+			console.log(this.source)
+		},
 		repeat(value) {
 			if(value > 1 && this.state == "play") {
 				setTimeout(() => {
