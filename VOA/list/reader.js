@@ -50,6 +50,15 @@ Vue.component('reader', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
+					<dropdown placement="right-start" v-if="state == 'stop' && audio.setting.repeat > 0">
+						<dropdown-item>重複範圍<icon type="ios-arrow-forward"></icon></dropdown-item>
+						<dropdown-menu slot="list" v-for="(item, index) in options.range" :key="index">
+								<dropdown-item :name="'範圍' + item.value" :selected="audio.setting.range == item.value">
+								{{item.label}}
+								</dropdown-item>
+						</dropdown-menu>
+					</dropdown>
+
 					<DropdownItem name="中斷" v-if="!$isSmallScreen() && audio.setting.repeat > 0">
 						<Icon type="md-checkmark" size="16" 
 							:style="{color: audio.setting.repeat > 0 && audio.setting.interrupt == true ? '' : '#e5e5e5'}"></Icon>
@@ -204,6 +213,7 @@ Vue.component('reader', {
 			options: {
 				limits: [10, 15, 20, 30, 60], // 睡眠
 				repeat: [0, 1, 2, 3, 5, 10, 50],
+				range: [{label: "字幕", value: "lrc"}, {label: "段落", value: "paragraph"}],
 				interval: [3, 5, 10, 20, -0.75, -1, -1.5, -2] // 重複間距
 			}
 		};
@@ -456,6 +466,9 @@ Vue.component('reader', {
 					}, 300);
 				}
 				this.repeat = this.audio.setting.repeat;
+			} else if(item.indexOf("範圍") == 0){
+				let range = item.replace("範圍", "");
+				this.audio.setting = Object.assign(this.audio.setting, 	{range});
 			}
 			this.buildMenu();
 			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
@@ -512,7 +525,7 @@ Vue.component('reader', {
 				
 				children = [];
 	
-			this.options.interval.forEach(item =>{
+				this.options.interval.forEach(item =>{
 					children.push({
 						text: Math.abs(item) + (item > 0 ? " 秒" : " 倍"), 
 						value: item,
@@ -723,7 +736,8 @@ Vue.component('reader', {
 				interval: 5,
 				interrupt: false,
 				sleep: 30,
-				chinese: true
+				chinese: true,
+				range: "lrc"
 			}
 
 			let s = window.localStorage["VOA-Reader"];
@@ -769,7 +783,7 @@ Vue.component('reader', {
 			// window.addEventListener('resize', this.onResize, false);
 			window.addEventListener("popstate", this.onPopState);
 	
-			self.audio.onStateChange = (e, v1, v2) => {
+			self.audio.onStateChange = (e, v1, v2, v3) => {
 				// console.log("onStateChange.state: " + e + "; " + (new Date()))
 				if(this.modal == false) return;
 				if(e == "durationChange") {
@@ -781,7 +795,7 @@ Vue.component('reader', {
 					this.currentTime = v1;
 					// console.log(this.currentTime)
 				} else if(e == "sectionChange"){
-					this.repeatTimes = 1;
+					this.repeatTimes = typeof v3 == "undefined" ? 1 : v3;
 					let arr = document.querySelectorAll(".english span.active");
 					arr.forEach(item=>{
 						item.classList.remove("active");

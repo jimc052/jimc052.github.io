@@ -81,17 +81,22 @@ class Player {
 		this.timeID = setInterval(() => {
 			this.onStateChange("timeUpdate", this.audio.currentTime);
 			let time = this.audio.currentTime;
+
 			let range = this.currentRange;
 			if(range == null){
 				if(this.block.length > 0)
 					this.paragraph = this.block[0];
 				else
 					this.paragraph = 0;
-				this.currentRange = this.LRCs[this.paragraph][0];
-				this.audio.currentTime = this.currentRange.start
+				let arr = this.LRCs[this.paragraph];
+				this.currentRange = Object.assign({}, arr[0]);
+				if(this._setting.range == "paragraph")
+					this.currentRange.end = arr[arr.length - 1].end;
+
+				this.audio.currentTime = this.currentRange.start;
 				this.lrc = 0;
 				this.onStateChange("sectionChange", this.paragraph, 0);
-			} else if(time < range.start || time >= range.end){
+			} else if(time < range.start || time >= range.end){ // 時間到
 				if(this._setting.repeat > 0 && time >= range.end) {
 					let start = this.block.length > 0 ? this.block[0] : 0;
 					let end = this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
@@ -116,9 +121,16 @@ class Player {
 						}, 1000);
 						this.onStateChange("repeat", this.repeat);
 						return;
+					} else if(this._setting.range == "paragraph") {
+						this.repeat = 0;
+						_lrc = 0;
+						_block++;
+						if(_block >= end + 1){
+							_block = start;
+						}
+						beep = true;
 					} else {
 						this.repeat = 0;
-						// console.log("start: " + start + ", end: " + end + ", block: " + _block + ", lrc: " + _lrc)
 						if(_lrc == this.LRCs[_block].length - 1) {
 							_lrc = 0;
 							_block++;
@@ -154,7 +166,13 @@ class Player {
 								self.paragraph = _block;
 								if(self.repeat == 0) {
 									self.onStateChange("sectionChange", self.paragraph, self.lrc);
-									self.currentRange = self.LRCs[self.paragraph][self.lrc];
+									if(self._setting.range == "paragraph"){
+										let arr = self.LRCs[self.paragraph];
+										self.currentRange = Object.assign({}, arr[0]);
+										self.currentRange.end = arr[arr.length - 1].end;
+									} else {
+										self.currentRange = self.LRCs[self.paragraph][self.lrc];
+									}
 									self.audio.currentTime = self.currentRange.start;
 								}
 								self.audio.play();
@@ -199,10 +217,22 @@ class Player {
 								return;
 							}
 						}
-					}					
+					}
 				}
-			} else { 
-				
+			} else if(this._setting.range == "paragraph") { // 段落模式的字幕
+				for(let i = 0; i < this.LRCs.length; i++) {
+					let row = this.LRCs[i];
+					for(let j = 0; j < row.length; j++) {
+						if(time >= row[j].start && time <= row[j].end) {
+							if(j != this.lrc) {
+								this.paragraph = i;
+								this.lrc = j;
+								this.onStateChange("sectionChange", i, j, this.repeat + 1);								
+							}
+							return;
+						}
+					}
+				}
 			}
 		}, 100);
 	}
