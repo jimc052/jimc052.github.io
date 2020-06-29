@@ -471,7 +471,8 @@ Vue.component('reader', {
 				this.audio.setting = Object.assign(this.audio.setting, 	{range});
 			}
 			this.buildMenu();
-			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			// window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			this.storage(this.audio.setting)
 		},
 		buildMenu(){
 			let arr = [], children = [];
@@ -576,7 +577,8 @@ Vue.component('reader', {
 				this.audio.setting = Object.assign(this.audio.setting, {interval: this.cmList[e[0]].children[e[1]].value});
 			}
 
-			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			// window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			this.storage(this.audio.setting)
 			this.buildMenu();
 		},
 		async getHistory(){
@@ -726,23 +728,72 @@ Vue.component('reader', {
 				this.renderBubble();
 			}, 100);
 		},
+		storage(data){
+			let key = "VOA-Reader-" + this.source.report;
+			if(typeof data == "undefined") {
+				let def = {
+					key: this.source.key,
+					autoPlay: false,
+					zoom: 1.2,
+					rate: 1,
+					repeat: 0,
+					interval: 5,
+					interrupt: false,
+					sleep: 30,
+					chinese: true,
+					range: "lrc"
+				}
+				let s = window.localStorage[key], d = null;
+				if(typeof s == "string" && s.length > 0) {
+					let arr = JSON.parse(s);
+					for(let i = 0; i < arr.length; i++) {
+						if(arr[i].key == this.source.key) {
+							d = arr[i]
+							break;
+						}
+					}
+					if(d == null && arr.length > 0) {
+						d = Object.assign(arr[0], {key: this.source.key});
+					}
+				}
+				return Object.assign(def, d);
+			} else {
+				let setting = [data]
+				let s = window.localStorage[key];
+				if(typeof s == "string" && s.length > 0) {
+					let arr = JSON.parse(s);
+					for(let i = 0; i < arr.length; i++) {
+						if(arr[i].key == this.source.key) {
+							continue;
+						} else if(i > 50) {
+							break;
+						} else {
+							setting.push(arr[i])
+						}
+					}
+				}
+				window.localStorage[key] = JSON.stringify(setting)
+			}
+		},
 		async initial(){
 			let self = this;
-			let setting = {
-				autoPlay: false,
-				zoom: 1.2,
-				rate: 1,
-				repeat: 0,
-				interval: 5,
-				interrupt: false,
-				sleep: 30,
-				chinese: true,
-				range: "lrc"
-			}
+			// let setting = {
+			// 	autoPlay: false,
+			// 	zoom: 1.2,
+			// 	rate: 1,
+			// 	repeat: 0,
+			// 	interval: 5,
+			// 	interrupt: false,
+			// 	sleep: 30,
+			// 	chinese: true,
+			// 	range: "lrc"
+			// }
 
-			let s = window.localStorage["VOA-Reader"];
-			if(typeof s == "string" && s.length > 0) 
-				setting = Object.assign(setting, JSON.parse(s));
+			// let s = window.localStorage["VOA-Reader"];
+			// if(typeof s == "string" && s.length > 0) 
+			// 	setting = Object.assign(setting, JSON.parse(s));
+
+			let setting = this.storage();
 			this.repeat = setting.repeat;
 
 			if(this.login == true) {
@@ -871,7 +922,8 @@ Vue.component('reader', {
 		},
 		onClickSleep(e) {
 			this.audio.setting.sleep = e;
-			window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			// window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
+			this.storage(this.audio.setting)
 			this.finalCount(this.state)
 		},
 		finalCount(state){

@@ -281,7 +281,7 @@ class Player {
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
 		let end = this._setting.repeat > 0 && this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
 		if(value >= start && value <= end) {
-			this.restart(value, 0);
+			this.restart(value, 0, true);
 		}
 	}
 
@@ -308,7 +308,7 @@ class Player {
 			else if(block > end)
 				block = start;
 		}
-		this.restart(block, 0);
+		this.restart(block, 0, true);
 	}
 	gotoLRC(value) {
 		let start = this._setting.repeat > 0 && this.block.length > 0 ? this.block[0] : 0;
@@ -344,11 +344,19 @@ class Player {
 		this.restart(block, lrc);
 	}
 
-	restart(paragraph, lrc) {
+	restart(paragraph, lrc, first) {
 		this.paragraph = paragraph;
 		this.lrc = lrc;
-		this.currentRange =  this.LRCs[paragraph][lrc];
-		this.audio.currentTime = this.LRCs[paragraph][lrc].start;
+		// this.currentRange =  this.LRCs[paragraph][lrc];
+		if(first == true && this._setting.range == "paragraph"){
+			let arr = this.LRCs[paragraph];
+			this.currentRange = Object.assign({}, arr[0]);
+			this.currentRange.end = arr[arr.length - 1].end;
+		} else {
+			this.currentRange = this.LRCs[paragraph][lrc];
+		}
+
+		this.audio.currentTime = this.currentRange.start;
 		if(this.intervalID) clearTimeout(this.intervalID);
 		if(this.state == "pendding") {
 			clearTimeout(this.timeID);
