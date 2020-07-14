@@ -50,7 +50,7 @@ Vue.component('reader', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<dropdown placement="right-start" v-if="state == 'stop' && audio.setting.repeat > 0">
+					<dropdown placement="right-start" v-if="audio.setting.repeat > 0">
 						<dropdown-item>重複範圍<icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list" v-for="(item, index) in options.range" :key="index">
 								<dropdown-item :name="'範圍' + item.value" :selected="audio.setting.range == item.value">
@@ -468,7 +468,19 @@ Vue.component('reader', {
 				this.repeat = this.audio.setting.repeat;
 			} else if(item.indexOf("範圍") == 0){
 				let range = item.replace("範圍", "");
+				// console.log(this.audio.setting.range)
+				let paragraph = 0, state = this.audio.state;
+				if(state != "stop") {
+					paragraph = this.audio.paragraph;
+					this.audio.stop();
+				}
 				this.audio.setting = Object.assign(this.audio.setting, 	{range});
+				if(state != "stop") {
+					setTimeout(() => {
+						this.audio.gotoParagraph(paragraph)
+						this.audio.play();
+					}, 600);
+				}
 			}
 			this.buildMenu();
 			// window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
@@ -522,10 +534,22 @@ Vue.component('reader', {
 				this.displayVocabulary = false;
 
 			if(this.audio.setting.repeat > 0) {
-				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
-				
+				// range: [{label: "字幕", value: "lrc"}, {label: "段落", value: "paragraph"}],
 				children = [];
-	
+				this.options.range.forEach(item =>{
+					children.push({
+						text: item.label, 
+						value: item.value,
+						icon: this.audio.setting.range == item.value ? "ivu-icon-md-checkmark ivu-icon" : ""
+					});
+				}) 
+				arr.push({text: '重複範圍 - ' + (this.audio.setting.range == "lrc" ? "字幕" : "段落"), 
+					children: children
+				});
+				// --------------------------------
+				arr.push({text: '重複中斷', icon: this.audio.setting.interrupt == true ? "ivu-icon-md-checkmark ivu-icon" : ""});
+				// --------------------------------
+				children = [];
 				this.options.interval.forEach(item =>{
 					children.push({
 						text: Math.abs(item) + (item > 0 ? " 秒" : " 倍"), 
@@ -537,6 +561,7 @@ Vue.component('reader', {
 				Math.abs(this.audio.setting.interval) + " " + (this.audio.setting.interval > 0 ? "秒" : "倍"), 
 					children: children
 				});
+				// --------------------------------
 			}
 
 			this.cmList = this.$isSmallScreen() ? [] : arr;
@@ -575,6 +600,21 @@ Vue.component('reader', {
 				this.audio.setting = Object.assign(this.audio.setting, {interrupt: ! this.audio.setting.interrupt});
 			} else if(this.cmList[e[0]].text.indexOf("重複間距") > -1) {
 				this.audio.setting = Object.assign(this.audio.setting, {interval: this.cmList[e[0]].children[e[1]].value});
+			} else if(this.cmList[e[0]].text.indexOf("範圍") > -1) {
+				if(this.audio.setting.range == this.cmList[e[0]].children[e[1]].value) return;
+				let range = this.cmList[e[0]].children[e[1]].value;
+				let paragraph = 0, state = this.audio.state;
+				if(state != "stop") {
+					paragraph = this.audio.paragraph;
+					this.audio.stop();
+				}
+				this.audio.setting = Object.assign(this.audio.setting, {range});
+				if(state != "stop") {
+					setTimeout(() => {
+						this.audio.gotoParagraph(paragraph)
+						this.audio.play();
+					}, 600);
+				}
 			}
 
 			// window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
