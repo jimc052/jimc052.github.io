@@ -127,8 +127,9 @@ class Player {
 						_block++;
 						if(_block >= end + 1){
 							_block = start;
-						}
-						beep = true;
+							beep = true;
+						} else if(this._setting.repeat >= 2) 
+							beep = true;
 					} else {
 						this.repeat = 0;
 						if(_lrc == this.LRCs[_block].length - 1) {
