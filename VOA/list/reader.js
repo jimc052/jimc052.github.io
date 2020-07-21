@@ -29,8 +29,8 @@ Vue.component('reader', {
 					<dropdown placement="right-start" v-if="! $isSmallScreen()" divided>
 						<dropdown-item>字體 <icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list">
-								<dropdown-item name="字1.6" :selected="audio.setting.zoom == 1.6">大</dropdown-item>
-								<dropdown-item name="字1.2" :selected="audio.setting.zoom == 1.2">正常</dropdown-item>
+								<dropdown-item name="字1.6" :selected="zoom == 1.6">大</dropdown-item>
+								<dropdown-item name="字1.2" :selected="zoom == 1.2">正常</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
 					<dropdown placement="right-start" :divide="$isSmallScreen()">
@@ -161,12 +161,12 @@ Vue.component('reader', {
 
 			<Dropdown v-if="state != 'stop'" :trigger="$isSmallScreen() ? 'click' : 'hover'">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
-					{{convertTime((audio.setting.sleep * 60) - passTime)}}
+					{{convertTime((sleep * 60) - passTime)}}
 					<Icon type="ios-arrow-down"></Icon>
 				</a>
 				<dropdown-menu slot="list" placement="left-start">
 					<dropdown-item v-for="(item, index) in options.limits" :key="index"
-						:selected="item == audio.setting.sleep"
+						:selected="item == sleep"
 						@click.native="onClickSleep(item)"
 					>
 					{{item + " 分"}}
@@ -202,6 +202,8 @@ Vue.component('reader', {
 			msg: "",
 			marks: {},
 			repeat: 0, // 主要是作為在 reader 判斷用
+			sleep: 30,
+			zoom: 1.2,
 			repeatTimes: 1,
 			bubbles: [],
 			block: [],
@@ -224,6 +226,11 @@ Vue.component('reader', {
 		this.login = FireStore.login;
 		let context = document.querySelector("#context");
 		if(context != null) context.style.visibility = "hidden";
+
+		if(typeof window.localStorage["VOA-sleep"] != "undefined")
+			this.sleep = window.localStorage["VOA-sleep"];
+		if(typeof window.localStorage["VOA-zoom"] != "undefined")
+			this.zoom = window.localStorage["VOA-zoom"];
 		
 		this.html = this.source.html + "<div style='display: none;'>" + (new Date()) + "</div>";
 		this.title = this.source.title;
@@ -434,8 +441,11 @@ Vue.component('reader', {
 				)
 				return;
 			} else if(item.indexOf("字") == 0){
-				this.audio.setting.zoom = parseFloat(item.replace("字", ""))
-				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+				this.zoom = parseFloat(item.replace("字", ""))
+				document.getElementById("readerFrame").style.zoom = this.zoom;
+				window.localStorage["VOA-zoom"] = this.zoom;
+				this.buildMenu();
+				return;
 			} else if(item.indexOf("速") == 0){
 				let rate = parseFloat(item.replace("速", ""))
 				this.audio.setting = Object.assign(this.audio.setting, 	{rate});
@@ -506,7 +516,7 @@ Vue.component('reader', {
 
 			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
 			children.forEach(item=>{
-				if(this.audio.setting.zoom == item.value)
+				if(this.zoom == item.value)
 					item.icon = "ivu-icon-md-checkmark ivu-icon";
 			})
 			arr.push({text: '字體',children: children});
@@ -573,9 +583,12 @@ Vue.component('reader', {
 			} else if(this.cmList[e[0]].text.indexOf("中文") > -1) {
 					this.audio.setting.chinese = !this.audio.setting.chinese;
 			} else if(this.cmList[e[0]].text == "字體") {
-				this.audio.setting.zoom = this.cmList[e[0]].children[e[1]].value;
-				document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+				this.zoom = this.cmList[e[0]].children[e[1]].value;
+				document.getElementById("readerFrame").style.zoom = this.zoom;
+				window.localStorage["VOA-zoom"] = this.zoom;
 				this.renderBubble();
+				this.buildMenu();
+				return;
 			} else if(this.cmList[e[0]].text.indexOf("速率") > -1) {
 				this.audio.setting = Object.assign(this.audio.setting, {rate: this.cmList[e[0]].children[e[1]].value});
 			} else  if(this.cmList[e[0]].text.indexOf("重複播放") > -1) {
@@ -774,12 +787,10 @@ Vue.component('reader', {
 				let def = {
 					key: this.source.key,
 					autoPlay: false,
-					zoom: 1.2,
-					rate: 1,
-					repeat: 0,
+					rate: 0.9,
+					repeat: 3,
 					interval: 5,
 					interrupt: false,
-					sleep: 30,
 					chinese: true,
 					range: "lrc"
 				}
@@ -792,9 +803,9 @@ Vue.component('reader', {
 							break;
 						}
 					}
-					if(d == null && arr.length > 0) {
-						d = Object.assign(arr[0], {key: this.source.key});
-					}
+					// if(d == null && arr.length > 0) {
+					// 	d = Object.assign(arr[0], {key: this.source.key});
+					// }
 				}
 				return Object.assign(def, d);
 			} else {
@@ -817,22 +828,6 @@ Vue.component('reader', {
 		},
 		async initial(){
 			let self = this;
-			// let setting = {
-			// 	autoPlay: false,
-			// 	zoom: 1.2,
-			// 	rate: 1,
-			// 	repeat: 0,
-			// 	interval: 5,
-			// 	interrupt: false,
-			// 	sleep: 30,
-			// 	chinese: true,
-			// 	range: "lrc"
-			// }
-
-			// let s = window.localStorage["VOA-Reader"];
-			// if(typeof s == "string" && s.length > 0) 
-			// 	setting = Object.assign(setting, JSON.parse(s));
-
 			let setting = this.storage();
 			this.repeat = setting.repeat;
 
@@ -842,10 +837,8 @@ Vue.component('reader', {
 				if(data && typeof data.vocabulary == "string") {
 					this.vocabulary = data.vocabulary;
 				}
-
 				// if(this.vocabulary.length > 0 && setting.autoPlay == false && !this.$isSmallScreen()) 
 				// 	this.displayVocabulary = true;
-
 				if(data && Array.isArray(data.block)) {
 					this.block = data.block;
 				}
@@ -869,7 +862,7 @@ Vue.component('reader', {
 			this.audio.state = "stop";
 			this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
 			this.audio.src = this.url;
-			document.getElementById("readerFrame").style.zoom = this.audio.setting.zoom;
+			document.getElementById("readerFrame").style.zoom = this.zoom;
 			window.addEventListener('keydown', this.onKeydown, false);
 			// window.addEventListener('resize', this.onResize, false);
 			window.addEventListener("popstate", this.onPopState);
@@ -961,9 +954,9 @@ Vue.component('reader', {
 			}
 		},
 		onClickSleep(e) {
-			this.audio.setting.sleep = e;
-			// window.localStorage["VOA-Reader"] = JSON.stringify(this.audio.setting);
-			this.storage(this.audio.setting)
+			this.sleep = e;
+			window.localStorage["VOA-sleep"] = this.sleep;
+			// this.storage(this.audio.setting)
 			this.finalCount(this.state)
 		},
 		finalCount(state){
@@ -978,7 +971,7 @@ Vue.component('reader', {
 					let now = (new Date()).getTime() - start;
 					this.passTime = Math.ceil(now / (1000));
 
-					if((this.audio.setting.sleep * 60) - this.passTime <= 0) {
+					if((this.sleep * 60) - this.passTime <= 0) {
 						this.audio.stop(true);
 					}
 					// console.log("finalCount: " + now)
@@ -1001,7 +994,7 @@ Vue.component('reader', {
 				refresh();
 				this.mode = "";
 				setTimeout(() => {
-					document.getElementById("readerFrame").style.zoom = self.audio.setting.zoom;
+					document.getElementById("readerFrame").style.zoom = self.zoom;
 					self.retrieve(true);
 				}, 600);
 				// this.onPopState();
