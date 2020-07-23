@@ -327,7 +327,7 @@ Vue.component('reader', {
 				console.log(div.innerHTML)
 			}
 		},
-		toTranslate(){ // f1
+		toTranslate(){ // f1，翻譯網站
 			this.$Modal.remove();
 			// let context = document.getElementById("context");
 			// let s = context.innerText.split("\n").join("\n\n");
@@ -986,9 +986,13 @@ Vue.component('reader', {
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
 			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : ""
-			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + ", char: " + char)
+			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + 
+			// 	", char: " + char + " / " + typeof(char))
 			// console.log(o.tagName + ": " + o.contentEditable)
-			if(pk == true && char == "S" && this.mode == "edit"){// 存檔
+			if(pk == true && code >= 48 && code <= 57) {
+				char = parseInt(char, 10) - 1
+ 				this.audio.restart(null, char)
+			} else if(pk == true && char == "S" && this.mode == "edit"){// 存檔
 				refresh();
 			} else if(pk == true && char == "E" && this.mode == "edit"){// 存檔
 				refresh();

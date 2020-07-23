@@ -346,7 +346,13 @@ class Player {
 	}
 
 	restart(paragraph, lrc, first) {
-		this.paragraph = paragraph;
+		if(paragraph == null)
+			paragraph = this.paragraph;
+		else
+			this.paragraph = paragraph;
+		// console.log("paragraph: " + paragraph + ", lrc: " + lrc + "/" + this.LRCs[paragraph].length)
+		if(this.LRCs[paragraph].length <= lrc) return;
+	
 		this.lrc = lrc;
 		// this.currentRange =  this.LRCs[paragraph][lrc];
 		if(first == true && this._setting.range == "paragraph"){
