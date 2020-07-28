@@ -348,22 +348,35 @@ class Player {
 	restart(paragraph, lrc, first) {
 		if(paragraph == null)
 			paragraph = this.paragraph;
-		else
-			this.paragraph = paragraph;
+		else {
+			let start = this.block.length > 0 ? this.block[0] : 0;
+			let end = this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
+			if(paragraph >= start && paragraph <= end)
+				this.paragraph = paragraph;
+			else 
+				return;
+		}
+			
 		// console.log("paragraph: " + paragraph + ", lrc: " + lrc + "/" + this.LRCs[paragraph].length)
 		if(this.LRCs[paragraph].length <= lrc) return;
 	
 		this.lrc = lrc;
 		// this.currentRange =  this.LRCs[paragraph][lrc];
-		if(first == true && this._setting.range == "paragraph"){
-			let arr = this.LRCs[paragraph];
-			this.currentRange = Object.assign({}, arr[0]);
-			this.currentRange.end = arr[arr.length - 1].end;
+		if(this._setting.range == "paragraph"){ // 
+			if(first == true) {
+				let arr = this.LRCs[paragraph];
+				this.currentRange = Object.assign({}, arr[0]);
+				this.currentRange.end = arr[arr.length - 1].end;
+				this.audio.currentTime = this.currentRange.start;		
+			} else {
+				let start = this.LRCs[paragraph][lrc].start;
+				this.audio.currentTime = start;				
+			}
 		} else {
 			this.currentRange = this.LRCs[paragraph][lrc];
+			this.audio.currentTime = this.currentRange.start;
 		}
 
-		this.audio.currentTime = this.currentRange.start;
 		if(this.intervalID) clearTimeout(this.intervalID);
 		if(this.state == "pendding") {
 			clearTimeout(this.timeID);

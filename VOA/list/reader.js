@@ -989,9 +989,17 @@ Vue.component('reader', {
 			// console.log("key: " + code + ", cmd: " + pk + ", shift: " + sk + 
 			// 	", char: " + char + " / " + typeof(char))
 			// console.log(o.tagName + ": " + o.contentEditable)
-			if(pk == true && code >= 48 && code <= 57) {
-				char = parseInt(char, 10) - 1
- 				this.audio.restart(null, char)
+			if(((pk == true && sk == false) || (pk == false && sk == true)) && code >= 48 && code <= 57) {
+				char = parseInt(char, 10) - 1;
+				if(pk == true){
+					this.audio.restart(null, char);					
+				} else {
+					this.audio.restart(char, 0, true);	
+				}
+
+				// let p = sk == true ? char : null;
+				// let l = sk == true ? 0 : char;
+ 				// this.audio.restart(p, l)
 			} else if(pk == true && char == "S" && this.mode == "edit"){// 存檔
 				refresh();
 			} else if(pk == true && char == "E" && this.mode == "edit"){// 存檔
