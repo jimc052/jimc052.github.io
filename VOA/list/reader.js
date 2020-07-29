@@ -788,11 +788,11 @@ Vue.component('reader', {
 					key: this.source.key,
 					autoPlay: false,
 					rate: 0.9,
-					repeat: 3,
+					repeat: this.favorite == true ? 2 : 3,
 					interval: 5,
 					interrupt: false,
 					chinese: true,
-					range: "lrc"
+					range: this.favorite == true ? "paragraph" : "lrc"
 				}
 				let s = window.localStorage[key], d = null;
 				if(typeof s == "string" && s.length > 0) {
@@ -828,9 +828,6 @@ Vue.component('reader', {
 		},
 		async initial(){
 			let self = this;
-			let setting = this.storage();
-			this.repeat = setting.repeat;
-
 			if(this.login == true) {
 				let data = await this.getHistory();
 				this.favorite = typeof data == "object" && data.favorite == true ? true : false;
@@ -855,6 +852,8 @@ Vue.component('reader', {
 				}
 			}
 
+			let setting = this.storage();
+			this.repeat = setting.repeat;
 			// console.log(this.block)
 
 			this.audio = new Player({block: this.repeat == 0 ? [] : this.block});
