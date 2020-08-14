@@ -1,9 +1,7 @@
 Vue.component('list', { 
 	template:  `<div id="list">
-		<div v-if="mode == '' && datas.length > 0" style="flex: 1; padding: 0px;">
-			<vue-table :datas="datas" @onRowClick="onRowClick" @onBtnClick="onBtnClick" />
-		</div>
-		<Tabs v-else-if="mode == 'tabs' && tabs.length > 0" :value="activeTabs" type="card" :animated="false" style="flex: 1; padding: 3px;" @on-click="onTabClick">
+		
+		<Tabs v-if="mode == 'tabs' && tabs.length > 0" :value="activeTabs" type="card" :animated="false" style="flex: 1; padding: 3px;" @on-click="onTabClick">
 			<TabPane class="col" v-for="(item, index) in tabs" :label="item" :name="item" :key="index">
 				<vue-table :id="item" :datas="Array.isArray(json[item]) ? json[item] : [json[item]] "
 					@onRowClick="onRowClick" @onBtnClick="onBtnClick" />
@@ -21,7 +19,9 @@ Vue.component('list', {
 				<vue-table :datas="datas" ref="menu-table" @onRowClick="onRowClick" @onBtnClick="onBtnClick" id="menu" />
 			</div>
 		</Split>
-		<div v-else style="flex: 1;"></div>
+		<div v-else style="flex: 1; padding: 0px;">
+			<vue-table :datas="datas" @onRowClick="onRowClick" @onBtnClick="onBtnClick" />
+		</div>
 		<editor :modal="modalDoc" @onClose="onCloseDoc" />
 		<detail :modal="modalDetail" :row="row" @onClose="onCloseDetail"  />
 	</div>`,

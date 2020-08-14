@@ -244,7 +244,10 @@
 						}
 					}
 					reader.readAsText(files[key]);
-				}		
+				}	else if(typeof files[key] == "object"){
+					alert("檔案格式錯誤");
+					return;
+				}
 			}
 		}, false);
 	}
