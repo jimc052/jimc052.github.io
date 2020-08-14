@@ -3,7 +3,7 @@ Vue.component('list', {
 		
 		<Tabs v-if="mode == 'tabs' && tabs.length > 0" :value="activeTabs" type="card" :animated="false" style="flex: 1; padding: 3px;" @on-click="onTabClick">
 			<TabPane class="col" v-for="(item, index) in tabs" :label="item" :name="item" :key="index">
-				<vue-table :id="item" :datas="Array.isArray(json[item]) ? json[item] : [json[item]] "
+				<vue-table :ref="'tbl-' + item" :id="item" :datas="Array.isArray(json[item]) ? json[item] : [json[item]] "
 					@onRowClick="onRowClick" @onBtnClick="onBtnClick" />
 			</TabPane>
     </Tabs>
@@ -16,14 +16,17 @@ Vue.component('list', {
 				</Menu>
 			</div>
 			<div slot="right" class="split-pane">
-				<vue-table :datas="datas" ref="menu-table" @onRowClick="onRowClick" @onBtnClick="onBtnClick" id="menu" />
+				<vue-table ref="tbl" :datas="datas" :id="activeMenu"
+					@onRowClick="onRowClick" @onBtnClick="onBtnClick" />
 			</div>
 		</Split>
 		<div v-else style="flex: 1; padding: 0px;">
-			<vue-table :datas="datas" @onRowClick="onRowClick" @onBtnClick="onBtnClick" />
+			<vue-table ref="tbl" :datas="datas" 
+				@onRowClick="onRowClick" @onBtnClick="onBtnClick" />
 		</div>
 		<editor :modal="modalDoc" @onClose="onCloseDoc" />
 		<detail :modal="modalDetail" :row="row" @onClose="onCloseDetail"  />
+		<column-list :data="dataCols" :modal="modalCols" @onClose="onCloseCols" />
 	</div>`,
 	props: {
 		txt: {
@@ -36,6 +39,7 @@ Vue.component('list', {
 			mode: "",
 			modalDoc: false,
 			modalDetail: false,
+			modalCols: false,
 			spliteRate: 0.5,
 			width: '200',
 			datas: [],
@@ -44,7 +48,8 @@ Vue.component('list', {
 			tabs: [],
 			activeTabs: "",
 			json: null,
-			row: {}
+			row: {},
+			dataCols: {}
 		};
 	},
 	created(){
@@ -73,26 +78,32 @@ Vue.component('list', {
 		onMenuSelect(e) {
 			if(this.activeMenu != e) {
 				this.activeMenu = e;
+				this.$refs["tbl"].reset();
 				this.datas = [];
-				this.$refs["menu-table"].reset();
-				if(e.length > 0)
-					this.datas = Array.isArray(this.json[e]) ? this.json[e] : [this.json[e]];				
+				setTimeout(() => {
+					if(e.length > 0) {
+						this.datas = Array.isArray(this.json[e]) ? this.json[e] : [this.json[e]];
+					}
+				}, 300);
 			}
 		},
 		onBtnClick(e){
 			if(e == "document")
-			this.modalDoc = true;
-			else {
+				this.modalDoc = true;
+			else if(e == "swap"){
 				this.mode = this.mode == "menu" ? "tabs" : "menu";
 				window.localStorage["JSON-mode"] = this.mode;
 				
 				setTimeout(() => {
 					this.activeMenu = "";
-					if(this.mode == "menu")
+					if(this.mode == "menu") {
 						this.onMenuSelect(this.menu[0])
-					else
+					} else
 						this.onTabClick(this.activeTabs)					
 				}, 600);
+			} else {
+				this.dataCols = e;
+				this.modalCols = true;
 			}
 		},
 		onCloseDoc(result) {
@@ -103,6 +114,23 @@ Vue.component('list', {
 		},
 		onCloseDetail(){
 			this.modalDetail = false;
+		},
+		onCloseCols(result) {
+			let ref;
+			if(typeof result == "object") {
+				if(this.mode == "tabs")
+					ref = this.$refs['tbl-' + result.id]
+				else {
+					ref = this.$refs['tbl'];
+				}
+				if(Array.isArray(ref))
+					ref[0].createColumns(result.columns)
+				else 
+					ref.createColumns(result.columns)
+				// ref[0].createColumns(result.columns);
+				// console.log(ref)
+			}
+			this.modalCols = false;
 		},
 		onRowClick(row) {
 			this.row = row;

@@ -7,6 +7,7 @@ Vue.component('vue-table', {
 			<div style="flex: 1; back">
 				<Button type="primary" icon="md-document" size="small"  @click="onClick('document')" />
 				<Button type="primary" icon="md-swap" size="small"  @click="onClick('swap')" v-if="id != 'unknown'" />
+				<Button type="primary" icon="md-grid" size="small"  @click="onClickGrid" />
 			</div>
 			<Page v-if="datas.length > opts[0]" :total="datas.length" :page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
 				style="" 
@@ -33,6 +34,7 @@ Vue.component('vue-table', {
 			pageSize: 15,
 			datas2: [],
 			row: {},
+			modalCols: false
 		};
 	},
 	created(){
@@ -40,7 +42,7 @@ Vue.component('vue-table', {
 	async mounted () {
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
-		this.createColumn();
+		this.createColumns();
 	},
 	destroyed() {
 		// this.removeEventListener("click", this.onRowClick);
@@ -50,7 +52,8 @@ Vue.component('vue-table', {
 	methods: {
 		onResize(){
 			let viewer = this.$refs["frame"];
-			this.height = viewer.clientHeight;
+			if(typeof viewer == "object")
+				this.height = viewer.clientHeight;
 		},
 		onChange(e) {
 			if(this.datas2.length > 0) this.eventListener(1);
@@ -86,7 +89,9 @@ Vue.component('vue-table', {
 			let index = parseInt(el.innerText, 10) - 1;
 			this.$emit("onRowClick", this.datas2[index]);
 		},
-		createColumn(){
+		createColumns(arg){
+			this.columns = [];
+			
 			if(this.datas.length > 0) {
 				this.columns.push({
 					type: 'index',
@@ -95,36 +100,57 @@ Vue.component('vue-table', {
 					fixed: "left",
 					className: "index"
 				});
-				let div = document.createElement("div");
-				div.style.display = "inline-block";
-				div.style.position = "absolute";
-				div.style.visibility = "hidden";
-	
-				document.body.insertAdjacentElement('beforebegin', div);
-				for(let key in this.datas[0]) {
-					div.innerHTML = key;
-					this.columns.push({ 
-						title: key,
-						key: key,
-						resizable: true,
-						width: div.clientWidth + 20,
-					})
+				let arr = typeof arg == "object" ? arg : [];
+				if(arr.length == 0) {
+					let s = window.localStorage["JSON-Cols-" + this.id];
+					if(typeof s == "string" && s.length > 0) 
+						arr = JSON.parse(s);
 				}
-				let parent = div.parentNode;
-				parent.removeChild(div);
+
+				if(arr.length > 0)  {
+					arr.forEach(el => {
+						if(typeof el.visible == "undefined" || el.visible == true){
+							this.columns.push(el)
+						}
+					});
+				} else {
+					let div = document.createElement("div");
+					div.style.display = "inline-block";
+					div.style.position = "absolute";
+					div.style.visibility = "hidden";
+		
+					document.body.insertAdjacentElement('beforebegin', div);
+					for(let key in this.datas[0]) {
+						div.innerHTML = key;
+						this.columns.push({ 
+							title: key,
+							key: key,
+							resizable: true,
+							width: div.clientWidth + 20,
+						})
+					}
+					let parent = div.parentNode;
+					parent.removeChild(div);					
+				}
 				this.onChange(1);
 			}
 		},
 		reset() {
 			this.columns = [];
+			this.datas2 = [];
 		},
 		onClick(e){
 			this.$emit("onBtnClick", e);
+		},
+		onClickGrid(){
+			this.modalCols = true;
+
+			this.$emit("onBtnClick", {id: this.id, columns: this.columns});
 		}
 	},
 	watch: {
 		datas(value) {
-			if(this.columns.length == 0) this.createColumn();
+			if(this.columns.length == 0) this.createColumns();
 			this.height = 0;
 			setTimeout(() => {
 				this.onResize();

@@ -119,7 +119,9 @@ Vue.component('reader', {
 					padding: repeat == 0 ? '8px' : '8px 4px 8px 2px'}"
 			>
 			</div>
-			<div id="board" v-if="repeat > 1 && state != 'stop'" style="bottom: 0px">{{repeatTimes + "/" + repeat}}</div>
+			<div id="board" v-if="repeat > 1 && state != 'stop'" style="bottom: 0px; min-width: 30px; text-align: center;">
+				{{repeatTimes + (audio.isLoop == true ? "" : "/" + repeat) }}
+			</div>
 		</div>
 		<easy-cm :list="cmList" :tag="1" @ecmcb="onMenuClick" :underline="true" :arrow="true" :itemHeight="34" :itemWidth="180"></easy-cm>
 		
@@ -402,8 +404,8 @@ Vue.component('reader', {
 		},
 		onParagraphOK(block){
 			if(Array.isArray(block)) {
-				this.block = block;
 				this.audio.block = block;	
+				this.assignBlock(block);
 				this.renderActiveBubble();
 				if(block.length == 2 && (this.audio.paragraph < block[0] || this.audio.paragraph > block[1])){
 					this.audio.assignParagraph(this.audio.block[0], true);
@@ -624,7 +626,8 @@ Vue.component('reader', {
 				this.audio.setting = Object.assign(this.audio.setting, {range});
 				if(state != "stop") {
 					setTimeout(() => {
-						this.audio.gotoParagraph(paragraph)
+						this.audio.gotoParagraph(paragraph);
+						
 						this.audio.play();
 					}, 600);
 				}
@@ -707,7 +710,7 @@ Vue.component('reader', {
 					} else {
 						this.audio.block = [];
 					}
-					this.block = this.audio.block;
+					this.assignBlock(this.audio.block);
 				} else if(sk == true && pk == false) {
 					let arr = document.querySelectorAll("#renderMarker .active");
 					for (let i = 0; i < arr.length; ++i) {
@@ -727,7 +730,7 @@ Vue.component('reader', {
 					else if(current > start) 
 						start = current;
 					this.audio.block = [start, end];
-					this.block = [start, end];
+					this.assignBlock(this.audio.block);
 					this.renderActiveBubble();
 				} else {
 					return
@@ -826,6 +829,13 @@ Vue.component('reader', {
 				window.localStorage[key] = JSON.stringify(setting)
 			}
 		},
+		assignBlock(block) {
+			this.block = block;
+			if(typeof this.audio == "object" && this.audio != null){
+				this.audio.checkLoop();
+			}
+				
+		},
 		async initial(){
 			let self = this;
 			if(this.login == true) {
@@ -837,16 +847,16 @@ Vue.component('reader', {
 				// if(this.vocabulary.length > 0 && setting.autoPlay == false && !this.$isSmallScreen()) 
 				// 	this.displayVocabulary = true;
 				if(data && Array.isArray(data.block)) {
-					this.block = data.block;
+					this.assignBlock(data.block);
 				}
 			} else {
 				s = window.localStorage["VOA-Blocks-" + this.source.report];
 				let arr = (typeof s == "string" && s.length > 0) ? JSON.parse(s) : [];
-				this.block = [];
+				this.assignBlock([]);
 				if(Array.isArray(arr)) {
 					arr.forEach(item=>{
 						if(item.key == this.source.key) {
-							this.block = item.block;
+							this.assignBlock(item.block);
 						}
 					});				
 				}
@@ -859,6 +869,7 @@ Vue.component('reader', {
 			this.audio = new Player({block: this.repeat == 0 ? [] : this.block});
 			this.audio.setting = setting;
 			this.audio.state = "stop";
+			
 			this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
 			this.audio.src = this.url;
 			document.getElementById("readerFrame").style.zoom = this.zoom;
@@ -911,6 +922,7 @@ Vue.component('reader', {
 						if(this.passTime == 0) {
 							this.finalCount(e);
 						}
+						this.audio.checkLoop();
 						this.setHistory({listenDate: (new Date()).getTime()});
 					} else if(e == "stop") {
 						this.finalCount(e);
@@ -1001,6 +1013,10 @@ Vue.component('reader', {
  				// this.audio.restart(p, l)
 			} else if(pk == true && char == "S" && this.mode == "edit"){// 存檔
 				refresh();
+			} else if(pk == true && char == "P"){ // 播放
+				this.audio.play();
+			} else if(pk == true && char == "S"){ // stop
+				this.audio.stop();
 			} else if(pk == true && char == "E" && this.mode == "edit"){// 存檔
 				refresh();
 				this.mode = "";
@@ -1093,7 +1109,7 @@ Vue.component('reader', {
 					if(end < start) end = start;
 
 					this.audio.block = [start, end];	
-					this.block = [start, end];
+					this.assignBlock(this.audio.block);
 					this.renderActiveBubble();
 
 					if(this.audio.paragraph < this.audio.block[0] || this.audio.paragraph > this.audio.block[1]){

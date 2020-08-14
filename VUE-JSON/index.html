@@ -12,12 +12,18 @@
 	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
 	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
 	
+	<!--
 	<script src="https://unpkg.com/marked@0.3.6"></script>
 	<script src="https://unpkg.com/lodash@4.16.0"></script>
+	-->
+
+	<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.8.4/Sortable.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Vue.Draggable/2.20.0/vuedraggable.umd.min.js"></script>
 
 	<script src="./table.js"></script>
 	<script src="./editor.js"></script>
 	<script src="./detail.js"></script>
+	<script src="./columnList.js"></script>
 	<script src="./list.js"></script>
 	<style>
 		* {
@@ -87,8 +93,9 @@
 		.ivu-table td:first-child {
 			cursor: pointer;
 			background-color: #f8f8f9;
+
 		}
-		#detail .ivu-modal-body {
+		#detail .ivu-modal-body, .columnlist .ivu-modal-body {
 			overflow: auto !important;
 		}
 
@@ -96,6 +103,27 @@
 			overflow:hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+		}
+		.ghost {
+			opacity: 0.5;
+			background: #c8ebfb;
+		}
+		.list-group-item {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid #eee;
+			/* height: 30px; */
+			padding: 5px 3px;
+  		cursor: move;
+		}
+
+		.list-group-item + .list-group-item {
+			margin-top: 5px;
+		}
+		.list-group-item > div + div {
+			margin-left: 5px;
 		}
 	</style>
 </head>
@@ -211,6 +239,8 @@
 			}
 		});
 		drop(vm.$el);
+
+		// console.log(window["vuedraggable"])
 	}
 
 

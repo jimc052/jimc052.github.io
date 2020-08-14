@@ -3,7 +3,7 @@ class Player {
 		this.props = props;
 		this.timeID = null; this.canPlay = false; this.state = "stop"; this.repeat = 0;
 		this.LRCs = []; this.paragraph = 0; this.lrc = 0; this.block = props.block;
-		this.currentRange = null;
+		this.currentRange = null; this.isLoop = false;
 		let self = this;
 		self.audio = new Audio();
 		this.audio.autoplay = false;
@@ -38,8 +38,6 @@ class Player {
 			self.onStateChange("sectionChange", -1);
 			self.state = "pendding";
 			self.currentRange = null;
-			// self.paragraph =  self.block.length > 0 ? self.block[0] : 0;
-			// self.lrc = 0;
 			self.audio.pause();
 			self.intervalID = setTimeout(()=>{
 				if(self.state == "pendding") {
@@ -74,7 +72,11 @@ class Player {
 			console.log(e)
 		}
 	}
-
+	checkLoop() {
+		this.isLoop = this._setting.range == "paragraph" && 
+					this.block.length == 2 && this.block[0] == this.block[1] ? true : false;
+		console.log("isLoop: " + this.isLoop)
+	}
 	timing(){
 		clearTimeout(this.timeID);
 		let self = this;
@@ -97,6 +99,7 @@ class Player {
 				this.lrc = 0;
 				this.onStateChange("sectionChange", this.paragraph, 0);
 			} else if(time < range.start || time >= range.end){ // 時間到
+				
 				if(this._setting.repeat > 0 && time >= range.end) {
 					let start = this.block.length > 0 ? this.block[0] : 0;
 					let end = this.block.length > 0 ? this.block[1] : this.LRCs.length - 1;
@@ -106,7 +109,7 @@ class Player {
 					// console.log(this.paragraph + "-" + this.lrc + ": " + this.repeat + "/" + this._setting.repeat + ": " + (new Date()).toString("MM:ss.ms"))
 					// console.log(this._setting.interval)
 					let _block = this.paragraph, _lrc = this.lrc, beep = 0;
-					if(this.repeat < this._setting.repeat - 1) {
+					if(this.isLoop == true || this.repeat < this._setting.repeat - 1) {
 						this.audio.currentTime = range.start;
 						this.repeat++;
 						this.onStateChange("repeat", this.repeat);
@@ -122,18 +125,14 @@ class Player {
 						this.onStateChange("repeat", this.repeat);
 						return;
 					} else if(this._setting.range == "paragraph") {
-						this.repeat = 0;
+						if(this.isLoop == false) this.repeat = 0;
 						_lrc = 0;
 						_block++;
 						if(_block >= end + 1){
 							_block = start;
 							beep = 1;
 						} else if(this._setting.repeat > 2) 
-							beep = 1;							
-					
-						if(this.block.length == 2 && this.block[0] == this.block[1]) {
-							beep = 0;
-						}
+							beep = 1;
 					} else {
 						this.repeat = 0;
 						if(_lrc == this.LRCs[_block].length - 1) {
@@ -147,8 +146,9 @@ class Player {
 							_lrc++;
 						}
 					}
-	
-					if(beep > 0 || (this.repeat == 0 && this._setting.repeat >= 5)) {
+					if(this.isLoop == true) {
+						waitToNext();
+					} else if(beep > 0 || (this.repeat == 0 && this._setting.repeat >= 5)) {
 						this.intervalID = setTimeout(()=>{
 							if(this.state == "pendding") {
 								this.beep.play();
@@ -240,7 +240,6 @@ class Player {
 				}
 			}
 		}, 100);
-
 	}
 
 	stop(beep){
@@ -314,6 +313,7 @@ class Player {
 			else if(block > end)
 				block = start;
 		}
+		this.checkLoop();
 		this.restart(block, 0, true);
 	}
 	gotoLRC(value) {
@@ -383,7 +383,7 @@ class Player {
 		}
 
 		if(this.intervalID) clearTimeout(this.intervalID);
-		if(this.state == "pendding") {
+		if(this.state == "pendding" || (this.state == "stop" && this.block.length == 2 && this.block[0] == this.block[1])) {
 			clearTimeout(this.timeID);
 			this.state = "play";
 			this.audio.play();
