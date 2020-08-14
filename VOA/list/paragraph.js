@@ -1,5 +1,5 @@
 Vue.component('dlg-paragraph', { 
-	template:  `<modal title="段落" v-model="v" id="paragraph"
+	template:  `<modal title="段落區塊" v-model="v" id="paragraph"
 			:width="310"
 			@on-visible-change="onVisibleChange"
 		>

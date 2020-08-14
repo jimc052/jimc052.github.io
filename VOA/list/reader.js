@@ -72,8 +72,8 @@ Vue.component('reader', {
 								</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
-					<DropdownItem name="段落" v-if="audio.setting.repeat > 0">
-						段落
+					<DropdownItem name="段落區塊" v-if="audio.setting.repeat > 0">
+						段落區塊
 					</DropdownItem>		
 					<DropdownItem name="生字" divided v-if="login == true && displayVocabulary == false && vocabulary.length > 0">
 						生字清單
@@ -455,7 +455,7 @@ Vue.component('reader', {
 			} else if(item.indexOf("中斷") == 0){ // 
 				let interrupt = ! this.audio.setting.interrupt;
 				this.audio.setting = Object.assign(this.audio.setting, 	{interrupt});
-			} else if(item.indexOf("段落") == 0){ //
+			} else if(item.indexOf("段落區塊") == 0){ //
 				this.displayParagraph = true;
 			} else if(item.indexOf("重複") == 0){
 				let repeat = parseFloat(item.replace("重複", ""))
@@ -1031,7 +1031,7 @@ Vue.component('reader', {
 					this.vocabulary += (this.vocabulary.length > 0 ? "\n" : "") + ss;
 					this.setHistory("vocabulary");
 				}
-			} else if(pk == true && char == "B"){ //b, 開啓段落對話
+			} else if(pk == true && char == "B"){ //b, 開啓段落區塊對話
 				if(this.audio.setting.repeat > 0)
 					this.displayParagraph = !this.displayParagraph;
 			} else if(pk == true && char == "G"){ //g, google

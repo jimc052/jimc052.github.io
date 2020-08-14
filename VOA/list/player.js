@@ -129,7 +129,11 @@ class Player {
 							_block = start;
 							beep = 1;
 						} else if(this._setting.repeat > 2) 
-							beep = 1;
+							beep = 1;							
+					
+						if(this.block.length == 2 && this.block[0] == this.block[1]) {
+							beep = 0;
+						}
 					} else {
 						this.repeat = 0;
 						if(_lrc == this.LRCs[_block].length - 1) {

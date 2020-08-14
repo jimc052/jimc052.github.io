@@ -1,0 +1,257 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>VUE-JSON</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
+	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
+	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
+	
+	<script src="https://unpkg.com/marked@0.3.6"></script>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+
+	<script src="./table.js"></script>
+	<script src="./editor.js"></script>
+	<script src="./detail.js"></script>
+	<script src="./list.js"></script>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			visibility: hidden;
+			color: rgb(0, 0, 0);
+		}
+		html, body, #app {
+			min-height: 100% !important;
+			height: 100%;
+		}
+		.ivu-modal-body {
+			overflow: hidden !important;
+		}
+		#list {
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+		}
+		.split{
+        height: 100%;
+        border: 1px solid #dcdee2;
+    }
+    .split-pane{
+        padding: 0px;
+				height: 100%;
+    }
+		.ivu-tabs-card {
+			height: 100%;
+		}
+		.ivu-tabs-bar {
+			margin-bottom: 0px;
+		}
+		.ivu-tabs, .ivu-tabs-content {
+			height: 100%;
+		}
+		.ivu-tabs-tabpane {
+			height: calc(100% - 36px);
+			background-color: white;
+		}
+		.button {
+			border: 1px solid white;
+			padding: 5px;
+			cursor: pointer;
+			border-radius: 5px;
+		}
+		.ivu-table-cell {
+			padding-left: 5px !important;
+			padding-right: 5px !important;
+		}
+		.ivu-table td, .ivu-table th {
+			height: 35px  !important;
+		}
+		.ivu-table th, .ivu-table th .ivu-table-cell {
+			text-align: center !important;
+		}
+		.ivu-table td:first-child {
+			cursor: pointer;
+			background-color: #f8f8f9;
+		}
+		#detail .ivu-modal-body {
+			overflow: auto !important;
+		}
+
+		.ivu-table-cell {
+			overflow:hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+	</style>
+</head>
+<body style="overflow: hidden;">
+	<div id="app">
+		<list :txt="txt" />
+	</div>
+</body>
+<script>
+	var vm = null;
+	window.onload = async function(){
+
+		Vue.prototype.$storage = function (key, value) {
+			if(typeof key == "string" && typeof value == "undefined"){
+				let s = window.localStorage[key];
+				if(typeof s == "undefined"){
+					return {};
+				}
+				return JSON.parse(s);
+			} 
+			else {
+				if(value == null)
+					delete window.localStorage[key];
+				else
+					window.localStorage[key] = typeof value == "object" ? JSON.stringify(value) : value;
+			}
+		}
+
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					modal: false,
+					txt: undefined,
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				let self = this;
+				document.body.style.visibility = "visible";
+
+				window.onresize = () => {
+					return (() => {
+							// self.screenWidth = document.body.clientWidth;
+							self.broadcast.$emit('onResize');
+					})()
+				}
+				let json = window.localStorage["JSON-data"];
+				if(typeof json == "string" && json.length > 0) {
+					this.txt = json;
+				}
+			},
+			methods: {
+				showMessage(){
+					// vm.loading(false);
+					let args = arguments;
+					this.$Modal.error({
+						title: "VOA",
+						closable: true,
+						render: h => {
+							let fontSize = 20;
+							let arr = [];
+							function createEl(index) {
+								if(index == 1)
+									fontSize = fontSize - 2;
+								arr.push( h('div', {
+									style: {
+										color: index == 0 ? 'red' : "#5e5a6e",
+										fontSize: fontSize + 'px',
+										textAlign: "left"
+									}
+								}, args[index] ));
+								if(index < args.length - 1) createEl(index + 1);
+							}
+							createEl(0)
+
+							return h('span', {style: {maxWidth: "80%"}}, arr)
+						}
+					});
+				},
+				loading(arg) {
+					if(typeof arg == "boolean" && arg == false) {
+						this.spinID = setTimeout(()=>{
+							this.$Spin.hide();
+						}, 1000)
+					} else {
+						let span = document.querySelector(".ivu-spin-main");
+						if(span == null) {
+							clearTimeout(this.spinID)
+							this.$Spin.hide();
+							this.$Spin.show({
+								render: (h) => {
+									return h('div', [
+										h('Icon', {
+											'class': 'spin-icon-load',
+											props: {
+												type: 'ios-loading',
+												size: 30
+											}
+										}),
+										h('div', typeof arg == "string" ? arg : 'Loading')
+									])
+								}
+							});									
+						}
+				
+					}
+				}
+			}
+		});
+		drop(vm.$el);
+	}
+
+
+	function drop(el, callback) {
+		function stopEvent(evt) {
+			evt.stopPropagation();
+			evt.preventDefault();
+		}
+		el.addEventListener('dragover',function(e){
+			stopEvent(e);
+			if(typeof callback == "function") callback('dragover');
+		}, false);
+
+		el.addEventListener('dragleave',function(e){
+			stopEvent(e);
+			if(typeof callback == "function") callback('dragleave');
+		}, false);
+
+		el.addEventListener('drop',function(e){
+			stopEvent(e);
+			if(typeof callback == "function") callback('drop');
+			let files = e.dataTransfer.files;
+			for(let key in files){
+				if(typeof files[key] == "object" && files[key].type == "text/plain") {
+					let reader = new FileReader();
+					reader.onload = function (e) {
+						vm.txt = e.target.result;
+						// vm.name = files[key].name;	
+						if(typeof callback == "function") {
+							callback('drop', {name: files[key].name, txt: e.target.result})
+						}
+					}
+					reader.readAsText(files[key]);
+				}		
+			}
+		}, false);
+	}
+/* 	
+	// https://www.iviewui.com/components/menu
+	// https://www.iviewui.com/components/modal
+	// https://www.iviewui.com/components/icon
+	*/
+</script>
+</html>
