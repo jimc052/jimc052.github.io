@@ -135,7 +135,6 @@
 <script>
 	var vm = null;
 	window.onload = async function(){
-
 		Vue.prototype.$storage = function (key, value) {
 			if(typeof key == "string" && typeof value == "undefined"){
 				let s = window.localStorage[key];
@@ -239,7 +238,6 @@
 			}
 		});
 		drop(vm.$el);
-
 		// console.log(window["vuedraggable"])
 	}
 

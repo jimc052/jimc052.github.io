@@ -7,11 +7,12 @@ Vue.component('vue-table', {
 			<div style="flex: 1; back">
 				<Button type="primary" icon="md-document" size="small"  @click="onClick('document')" />
 				<Button type="primary" icon="md-swap" size="small"  @click="onClick('swap')" v-if="id != 'unknown'" />
-				<Button type="primary" icon="md-grid" size="small"  @click="onClickGrid" />
+				<Button type="primary" icon="md-grid" size="small"  @click="onClickGrid"  v-if="columns.length > 0" />
 			</div>
-			<Page v-if="datas.length > opts[0]" :total="datas.length" :page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
+			<Page v-if="datas.length > opts[0]" :total="datas.length" 
+				:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
 				style="" 
-				@on-change="onChange" @on-page-size-change="onPageSizeChange" />
+				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 		</div>
 	</div>`,
 	props: {
@@ -34,10 +35,15 @@ Vue.component('vue-table', {
 			pageSize: 15,
 			datas2: [],
 			row: {},
-			modalCols: false
+			modalCols: false,
+			currentPage: 0
 		};
 	},
 	created(){
+		let s = window.localStorage["JSON-tbl-pageSize-" + this.id];
+		if(typeof s != "undefined") {
+			this.pageSize = parseInt(s, 10);
+		}		
 	},
 	async mounted () {
 		this.onResize();
@@ -52,10 +58,14 @@ Vue.component('vue-table', {
 	methods: {
 		onResize(){
 			let viewer = this.$refs["frame"];
-			if(typeof viewer == "object")
+			if(typeof viewer == "object") {
 				this.height = viewer.clientHeight;
+				viewer.style.height = this.height + "px";
+			}
 		},
-		onChange(e) {
+		onChangePage(e) {
+			if(this.currentPage == e) return;
+			this.currentPage = e;
 			if(this.datas2.length > 0) this.eventListener(1);
 			this.datas2 = [];
 			let start = (e - 1) * this.pageSize, end = start + this.pageSize;
@@ -69,24 +79,28 @@ Vue.component('vue-table', {
 			}, 600)
 		},
 		eventListener(opt){
-			// console.log("#" + this.id)
-			let arr = document.querySelectorAll("#" + this.id + " table td:first-child")
-			// console.log(this.id + ": " + arr.length)
+			let arr = document.querySelectorAll("#" + this.id + " div.ivu-table-fixed-body table td:first-child")
 			for(let i = 0; i < arr.length; i++) {
-				arr[i].setAttribute("row", i)
-				if(opt == 0) 
+				if(opt == 0) {
+					arr[i].setAttribute("row", i);
 					arr[i].addEventListener("click", this.onRowClick, true);
-				else 
+				} else 
 					arr[i].removeEventListener("click", this.onRowClick, true);
 			}
 		},
 		onPageSizeChange(e) {
+			this.currentPage = 0;
 			this.pageSize = e;
-			this.onChange(1);
+			this.onChangePage(1);
+			window.localStorage["JSON-tbl-pageSize-" + this.id] = e;
 		},
 		onRowClick(e) {
 			let el = e.target;
-			let index = parseInt(el.innerText, 10) - 1;
+			while(el.tagName != "TD"){
+				el = el.parentNode;
+			}
+			let row = el.getAttribute("row")
+			let index = parseInt(row, 10);
 			this.$emit("onRowClick", this.datas2[index]);
 		},
 		createColumns(arg){
@@ -98,7 +112,10 @@ Vue.component('vue-table', {
 					width: 40,
 					align: 'center',
 					fixed: "left",
-					className: "index"
+					className: "index",
+					indexMethod: (row)=>{
+						return row._index + ((this.currentPage-1) * this.pageSize) + 1;
+					}
 				});
 				let arr = typeof arg == "object" ? arg : [];
 				if(arr.length == 0) {
@@ -132,7 +149,7 @@ Vue.component('vue-table', {
 					let parent = div.parentNode;
 					parent.removeChild(div);					
 				}
-				this.onChange(1);
+				this.onChangePage(1);
 			}
 		},
 		reset() {
@@ -150,11 +167,12 @@ Vue.component('vue-table', {
 	},
 	watch: {
 		datas(value) {
+			this.currentPage = 0;
 			if(this.columns.length == 0) this.createColumns();
 			this.height = 0;
 			setTimeout(() => {
 				this.onResize();
-				this.onChange(1);
+				this.onChangePage(1);
 			}, 600);
 		}
 	}
