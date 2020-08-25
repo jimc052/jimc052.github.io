@@ -2,14 +2,15 @@ Vue.component('editor', {
 	template:  `<modal v-model="visible" class-name="vertical-center-modal" 
 		id="editor"  :fullscreen="true" :closable="false" style="overflow: hidden;" @on-ok="ok"
 	>
-		<textarea v-model="source" ref="textarea"
-			id="editorTxt"
-			style="width: 100%; height: 100%; font-size: 18px; padding: 5px;"
-		></textarea>
+		<iframe id="iframe" v-if="visible" style="width: 100%; height: 100%;" 
+			src="code.html"
+			sandbox='allow-scripts allow-top-navigation allow-same-origin allow-modals'
+			scrolling='no' frameborder='0' seamless='seamless'
+		></iframe>
 		<div slot="footer" style="display: flex;">
 			<div style="flex: 1;" />
 			<Button type="default" size="small"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button type="warning" size="large" v-if="source.length > 0" @click="clear" style="width: 100px;">清除</Button>
+			<Button v-if="source.length > 0" type="warning" size="large"  @click="clear" style="width: 100px;">清除</Button>
 			<Button type="primary" size="large"  @click="ok" style="width: 100px;">確定</Button>
 		</div>
 	</modal>`,
@@ -19,11 +20,6 @@ Vue.component('editor', {
 			require: true, 
 			default: false 
 		},
-		// source: {
-		// 	type: String,
-		// 	require: true, 
-		// 	default: false 
-		// }
 	},
 	data() {
 		return {
@@ -35,32 +31,52 @@ Vue.component('editor', {
 		this.visible = this.modal;
 	},
 	mounted () {
-		drop(this.$refs["textarea"], (type, result)=>{
-			if(typeof result == "object") {
-				this.source = vm.txt;
-			}
-		});
-		// let el = document.querySelector("#editorTxt");
-		this.$refs["textarea"].select();
 	},
 	destroyed() {
   },
 	methods: {
+		onMessage(e) {
+			let json = JSON.parse(e.data);
+			if(typeof json.data == "string")
+				this.source = json.data;
+			if(typeof json.action == "string"){
+				if(json.action.indexOf("save") == 0) {
+					if(json.action.indexOf("save-close") == 0)
+						this.$emit("onClose", json.data);
+				} else if(json.action.indexOf("close") == 0){
+					this.$emit("onClose");
+				} else if(json.action == "error") {
+					alert("內容錯誤!!")
+				}
+			}
+		},
+		send(s){
+			let win = document.getElementById('iframe').contentWindow;
+			win.postMessage(s, "*");
+		},
+		save(){
+			this.send("save")
+		},
 		ok(){
-			this.$emit("onClose", this.source);
+			this.send("save-close")
 		},
 		cancel() {
 			this.$emit("onClose");
 		},
 		clear(){
-			this.source = "";
+			this.send("clear")
 		}
 	},
 	watch: {
 		modal(value) {
 			this.visible = value;
-			if(value == true && typeof vm.txt == "string") {
-				this.source = vm.txt;
+			if(value == true) {
+				setTimeout(() => {
+					// this.send("test from jim")
+				}, 600);
+				window.addEventListener("message", this.onMessage, false);
+			} else {
+				window.removeEventListener("message", this.onMessage, false);
 			}
 		}
 	},

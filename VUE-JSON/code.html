@@ -81,21 +81,24 @@
 				matchBrackets: true, // 括号匹配
 				indentUnit: 4, // 缩进单位为4
 				lineWrapping: true, // 自动换行
+				// gutters: ["CodeMirror-linenumbers", "breakpoints", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
 			});
 			
 			// 将json文件格式化显示
 			let s = window.localStorage["JSON-data"];
 			if(typeof s == "string")
-				this.value = s;
-			this.editor.setValue(JSON.stringify(JSON.parse(this.value), null, 2));
+				this.editor.setValue(JSON.stringify(JSON.parse(s), null, 2));
 			// 当输入框内容发生变化 更新value值
 			this.editor.on('change', cm => {
-				this.handleInput(cm);
 				this.$emit('changed', cm.getValue());
 				this.$emit('input', cm.getValue());
+				clearTimeout(this.times);
+				this.times = setTimeout(() => {
+					if(this.checkError() == false || cm.getValue().length == 0)
+						this.postMessage("change")
+				}, 600);
 			});
 
-			// this.editor.setSize("auto", "800px");
 			window.onresize = () => {
 				return (() => {
 						onResize()
@@ -104,35 +107,66 @@
 			function onResize() {
 				let maxHeight = self.$refs["frame"].clientHeight;
 				self.editor.setSize("auto", maxHeight);
-				console.log(maxHeight)
 			}
 			onResize()
 			window.addEventListener('keydown', this.onKeydown, false);
+
+			window.addEventListener("message", (e) =>{
+				if(e.data == "clear") {
+					this.editor.setValue("");
+				} else if(e.data.indexOf("save") == 0) {
+					this.save(e.data)
+				}
+			}, false);
+			
+			setTimeout(() => {
+				this.postMessage("mounted")
+			}, 600);
 		},
 		destroyed() {
+			clearTimeout(this.times);
 			window.removeEventListener('keydown', this.onKeydown, false);
 		},
 		methods: {
+			checkError(){
+				let arr = document.querySelectorAll(".CodeMirror-lint-marker-error");
+				return arr.length > 0 ? true : false;
+			},
 			getValue() {
 				return this.editor.getValue()
 			},
-			onKeydown(event){ // 還沒寫
+			postMessage(action){
+				window.parent.postMessage(JSON.stringify({
+					action, 
+					data: action == "error" ? undefined : this.editor.getValue()
+				}), "*")
+			},
+			onKeydown(event){
 				let self = this;
 				let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 				let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 				let sk = event.shiftKey, code = event.keyCode;
 				let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 				if(pk == true && char == "S") {
-					// console.log(this.editor.getValue())
+					this.save("save")
+				} else if(code == 27) {
+					this.postMessage("close")
+				} else {
+					return;
 				}
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				event.stopPropagation();
 			},
-			handleInput(e) {
-				if (this.changeFn) {
-					this.changeFn(e.getValue())
-				}
-			},
-			refresh() {
-				this.editor && this.editor.refresh();
+			save(action) {
+				clearTimeout(this.times);
+					this.times = setTimeout(() => {
+						if(this.checkError() == false || this.editor.getValue().length == 0){
+							this.postMessage(action)
+						}	else {
+							this.postMessage("error")
+						}
+					}, 600);
 			}
 		}
 	});
@@ -140,20 +174,9 @@
 	var app = new Vue({
 		el: '#app',
 		data: {
-			jsonData: '{"key":"value"}',
+			jsonData: '{}',
 		},
 		methods: {
-			hanldeSave() {
-				alert(this.jsonData);
-			},
-			// 当切换视图为显示json编辑器时 手动刷新
-			handleVisibleChange() {
-				if (this.show = !this.show) {
-					this.$nextTick(() => {
-						this.$refs.editor.refresh(); // 手动触发刷新
-					});
-				}
-			}
 		}
 	});
 </script>

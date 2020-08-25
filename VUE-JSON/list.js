@@ -110,7 +110,7 @@ Vue.component('list', {
 		onCloseEditor(result) {
 			this.modalEditor = false;
 			if(typeof result == "string") { //  && result.length > 0
-				vm.txt = result;
+					vm.txt = result;
 			}
 		},
 		onCloseDetail(){
@@ -152,7 +152,7 @@ Vue.component('list', {
 				if(this.modalCols == true)
 					this.modalCols = false;
 			} else if(this.modalEditor == true && char == "S"){
-				this.$refs["editor"].ok();
+				this.$refs["editor"].save();
 			} else if(this.modalEditor == true || this.modalDetail == true || this.modalCols == true){
 				return;
 			} else if(pk == true && char == "E"){
