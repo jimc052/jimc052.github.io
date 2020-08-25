@@ -23,7 +23,7 @@ Vue.component('list', {
 			<vue-table ref="tbl" :datas="datas" 
 				@onRowClick="onRowClick" @onBtnClick="onBtnClick" />
 		</div>
-		<editor :modal="modalEditor" @onClose="onCloseEditor" />
+		<editor ref="editor" :modal="modalEditor" @onClose="onCloseEditor" />
 		<detail :modal="modalDetail" :row="row" @onClose="onCloseDetail"  />
 		<column-list :data="dataCols" :modal="modalCols" @onClose="onCloseCols" />
 	</div>`,
@@ -151,6 +151,8 @@ Vue.component('list', {
 					this.modalDetail = false;
 				if(this.modalCols == true)
 					this.modalCols = false;
+			} else if(this.modalEditor == true && char == "S"){
+				this.$refs["editor"].ok();
 			} else if(this.modalEditor == true || this.modalDetail == true || this.modalCols == true){
 				return;
 			} else if(pk == true && char == "E"){

@@ -9,7 +9,7 @@ Vue.component('editor', {
 		<div slot="footer" style="display: flex;">
 			<div style="flex: 1;" />
 			<Button type="default" size="small"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button type="warning" size="large"  @click="clear" style="width: 100px;">清除</Button>
+			<Button type="warning" size="large" v-if="source.length > 0" @click="clear" style="width: 100px;">清除</Button>
 			<Button type="primary" size="large"  @click="ok" style="width: 100px;">確定</Button>
 		</div>
 	</modal>`,

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VUE-JSON Editor</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/json-lint.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/display/autorefresh.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/darcula.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/lint.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			/* font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif; */
+			font-size: 16px;
+		}
+		body {
+		margin: 0px;
+		/* background-color: #ebecf0; */
+		padding: 0px 0px;
+		/* visibility: hidden; */
+		/* color: rgb(0, 0, 0); */
+		}
+		html, body, #app {
+		min-height: 100% !important;
+		height: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="app">
+    <json-editor ref="editor" v-model="jsonData"></json-editor>      
+  </div>
+</div>
+
+<script>
+    // 注册编辑器组件
+	Vue.component('json-editor', {
+		template: `<div ref="frame" class="json-editor" style="height: 100%;">
+			<textarea ref="textarea" style="height: 100%;""></textarea>
+		</div>`,
+		data() {
+			return {
+				editor: null
+			}
+		},
+		props: {
+			value: String,
+			input: Function
+		},
+		watch: {
+			value(value) {
+				const editorValue = this.editor.getValue();
+				if (value !== editorValue) {
+					this.editor.setValue(JSON.stringify(JSON.parse(value), null, 2));
+				}
+			}
+		},
+		mounted() {
+			let self = this;
+			this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
+				lineNumbers: true,
+				mode: 'application/json',
+				gutters: ['CodeMirror-lint-markers'],
+				theme: 'darcula',
+				lint: true,
+				autoRefresh: true, // 自动触发刷新
+				indentWithTabs: true,
+				smartIndent: true,
+				styleActiveLine: true, // 当前行背景高亮
+				matchBrackets: true, // 括号匹配
+				indentUnit: 4, // 缩进单位为4
+				lineWrapping: true, // 自动换行
+			});
+			
+			// 将json文件格式化显示
+			let s = window.localStorage["JSON-data"];
+			if(typeof s == "string")
+				this.value = s;
+			this.editor.setValue(JSON.stringify(JSON.parse(this.value), null, 2));
+			// 当输入框内容发生变化 更新value值
+			this.editor.on('change', cm => {
+				this.handleInput(cm);
+				this.$emit('changed', cm.getValue());
+				this.$emit('input', cm.getValue());
+			});
+
+			// this.editor.setSize("auto", "800px");
+			window.onresize = () => {
+				return (() => {
+						onResize()
+				})()
+			}
+			function onResize() {
+				let maxHeight = self.$refs["frame"].clientHeight;
+				self.editor.setSize("auto", maxHeight);
+				console.log(maxHeight)
+			}
+			onResize()
+			window.addEventListener('keydown', this.onKeydown, false);
+		},
+		destroyed() {
+			window.removeEventListener('keydown', this.onKeydown, false);
+		},
+		methods: {
+			getValue() {
+				return this.editor.getValue()
+			},
+			onKeydown(event){ // 還沒寫
+				let self = this;
+				let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+				let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+				let sk = event.shiftKey, code = event.keyCode;
+				let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
+				if(pk == true && char == "S") {
+					// console.log(this.editor.getValue())
+				}
+			},
+			handleInput(e) {
+				if (this.changeFn) {
+					this.changeFn(e.getValue())
+				}
+			},
+			refresh() {
+				this.editor && this.editor.refresh();
+			}
+		}
+	});
+
+	var app = new Vue({
+		el: '#app',
+		data: {
+			jsonData: '{"key":"value"}',
+		},
+		methods: {
+			hanldeSave() {
+				alert(this.jsonData);
+			},
+			// 当切换视图为显示json编辑器时 手动刷新
+			handleVisibleChange() {
+				if (this.show = !this.show) {
+					this.$nextTick(() => {
+						this.$refs.editor.refresh(); // 手动触发刷新
+					});
+				}
+			}
+		}
+	});
+</script>
+</body>
+</html>
