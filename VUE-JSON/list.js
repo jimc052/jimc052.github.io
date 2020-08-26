@@ -2,7 +2,8 @@ Vue.component('list', {
 	template:  `<div id="list">
 		<Tabs v-if="mode == 'tabs' && tabs.length > 0" :value="activeTabs" type="card" :animated="false" style="flex: 1; padding: 3px;" @on-click="onTabClick">
 			<TabPane class="col" v-for="(item, index) in tabs" :label="item" :name="item" :key="index">
-				<vue-table :ref="'tbl-' + item" :id="item" :datas="Array.isArray(json[item]) ? json[item] : [json[item]] "
+				<vue-table :ref="'tbl-' + item" :id="item"
+					:datas="Array.isArray(json[item]) ? json[item] : [json[item]] "
 					@onRowClick="onRowClick" @onBtnClick="onBtnClick" />
 			</TabPane>
     </Tabs>
@@ -110,7 +111,7 @@ Vue.component('list', {
 		onCloseEditor(result) {
 			this.modalEditor = false;
 			if(typeof result == "string") { //  && result.length > 0
-					vm.txt = result;
+				vm.txt = result;
 			}
 		},
 		onCloseDetail(){
@@ -178,48 +179,52 @@ Vue.component('list', {
 	},
 	watch: {
 		txt(value) {
+			vm.loading();
 			this.datas = [];
 			this.menu = [];
 			this.activeMenu = "";
 			this.tabs = [];
 			this.activeTabs = "";
 			this.json = null;
-			try {
-				if(value.length > 0 && (value.indexOf("DATAFILE") > -1 || value.indexOf("SQLTMMF") > -1 ||value.indexOf("DASQLTMMFTAFILE") > -1)) {
-					logFile();
-				} else if(value.length > 0) {
-					let json = JSON.parse(value);
-					if(Array.isArray(json)){
-						this.mode = "";
-						this.datas = json;
-					} else if(typeof json == "object") {
-						this.json = json;
-						let s  = window.localStorage["JSON-mode"];
-						let activeMenu = "";
-						for(let key in json) {
-							if(activeMenu == "") activeMenu = key;
-							if(this.activeTabs == "") this.activeTabs = key;
-							if(!Array.isArray(json[key])) {
-								json[key] = [json[key]]
+			setTimeout(() => {
+				try {
+					if(value.length > 0 && (value.indexOf("DATAFILE") > -1 || value.indexOf("SQLTMMF") > -1 ||value.indexOf("DASQLTMMFTAFILE") > -1)) {
+						logFile();
+					} else if(value.length > 0) {
+						let json = JSON.parse(value);
+						if(Array.isArray(json)){
+							this.mode = "";
+							this.datas = json;
+						} else if(typeof json == "object") {
+							this.json = json;
+							let s  = window.localStorage["JSON-mode"];
+							let activeMenu = "";
+							for(let key in json) {
+								if(activeMenu == "") activeMenu = key;
+								if(this.activeTabs == "") this.activeTabs = key;
+								if(!Array.isArray(json[key])) {
+									json[key] = [json[key]]
+								}
+								this.menu.push(key);
+								this.tabs.push(key);
 							}
-							this.menu.push(key);
-							this.tabs.push(key);
-						}
-						this.mode = typeof s == "string" && s == "tabs" ? s : "menu";
-						setTimeout(() => {
-							if(this.mode == "menu")
-								this.onMenuSelect(activeMenu)
-							else {
-								this.onTabClick(this.activeTabs)
-							}
-						}, 300);
-					}					
-				}
-				window.localStorage["JSON-data"] = value;
-			} catch(e) {
-				console.log(e)
-			}
-
+							this.mode = typeof s == "string" && s == "tabs" ? s : "menu";
+							setTimeout(() => {
+								if(this.mode == "menu")
+									this.onMenuSelect(activeMenu)
+								else {
+									this.onTabClick(this.activeTabs)
+								}
+								vm.loading(false);
+							}, 300);
+						}					
+					}
+					window.localStorage["JSON-data"] = value;
+				} catch(e) {
+					console.log(e)
+					vm.loading(false);
+				}				
+			}, 600);
 			function logFile() { // 還沒寫..................
 				let result = {};
 				let cols = ["DATAFILE", "SQLTMMF", "SQLARRAY"];

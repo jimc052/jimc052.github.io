@@ -1,7 +1,10 @@
 Vue.component('vue-table', { 
 	template:  `<div style="height: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<div ref="frame" style="flex: 1;">
-			<Table :id="id" highlight-row :height="height" border :columns="columns" :data="datas2"></Table>
+			<Table :id="id" highlight-row :height="height" border :columns="columns" :data="datas2"
+				@on-column-width-resize="onColumnResize"
+
+			></Table>
 		</div>
 		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
 			<div style="flex: 1; back">
@@ -35,7 +38,6 @@ Vue.component('vue-table', {
 			pageSize: 15,
 			datas2: [],
 			row: {},
-			modalCols: false,
 			currentPage: 0
 		};
 	},
@@ -56,6 +58,9 @@ Vue.component('vue-table', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		onColumnResize(width, start, col) {
+			console.log(col)
+		},
 		onResize(){
 			let viewer = this.$refs["frame"];
 			if(typeof viewer == "object") {
@@ -160,8 +165,6 @@ Vue.component('vue-table', {
 			this.$emit("onBtnClick", e);
 		},
 		onClickGrid(){
-			this.modalCols = true;
-
 			this.$emit("onBtnClick", {id: this.id, columns: this.columns});
 		}
 	},

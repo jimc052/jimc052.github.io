@@ -4,17 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>VUE-JSON Editor</title>
+		<title>VUE-JSON Editor</title>
+		<!-- 
+			官網：https://cdnjs.com/libraries/codemirror/4.10.0
+		-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/lint.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/json-lint.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/fold/foldcode.min.js" integrity="sha512-N01nSvIt/Jd4cc85iuja1F8QurX8t9fDhURNlwENnUxiSeI6yn7dJkJ9AaUFoLklA3zGvTnN0Vx3baITDc1K/Q==" crossorigin="anonymous"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/fold/foldgutter.min.css" integrity="sha512-YwkMTlTHn8dBnwa47IF+cKsS00HPiiVhQ4DpwT1KF2gUftfFR7aefepabSPLAs6zrMyD89M3w0Ow6mQ5XJEUCw==" crossorigin="anonymous" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/fold/foldgutter.min.js" integrity="sha512-Khk3sOdmC42G/z4TVyorX3rUCxWLMHPDUxNHOTN9gHczN6KPFMqmN3Nrnv4X8MN4UBQzaIKnhbI4aL9C8UYRkw==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/fold/brace-fold.min.js" integrity="sha512-itz+9yHVWMSZXMPCWLJNMLKOZZxUA7yJ6RczgK2WUwF91QnMzAncaopu1+AKdki0uXi/ea0jQd6+l6K3KbUpdg==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/fold/comment-fold.min.js" integrity="sha512-+fZ1hbx5lmZOfa5pAps1WNsAcH/FMtMdIwE2WjeGYor3vo03nbvCHP3xD9rYh8gZ4mpMhzIWVM6dZIVsXfe6Gg==" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/lint.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/json-lint.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/mode/javascript/javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/display/autorefresh.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/darcula.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/theme/monokai.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/addon/lint/lint.min.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css" />
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -71,8 +80,8 @@
 			this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
 				lineNumbers: true,
 				mode: 'application/json',
-				gutters: ['CodeMirror-lint-markers'],
-				theme: 'darcula',
+				// gutters: ['CodeMirror-lint-markers'],
+				theme: 'monokai',
 				lint: true,
 				autoRefresh: true, // 自动触发刷新
 				indentWithTabs: true,
@@ -81,8 +90,16 @@
 				matchBrackets: true, // 括号匹配
 				indentUnit: 4, // 缩进单位为4
 				lineWrapping: true, // 自动换行
-				// gutters: ["CodeMirror-linenumbers", "breakpoints", "CodeMirror-foldgutter", "CodeMirror-lint-markers"],
+				foldGutter: true,
+				extraKeys: {
+					"Ctrl-Y": cm => CodeMirror.commands.foldAll(cm),
+  				"Ctrl-I": cm => CodeMirror.commands.unfoldAll(cm),
+				},
+				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 
+					"CodeMirror-lint-markers", "breakpoints"
+				],
 			});
+			// https://codemirror.net/demo/folding.html , 待研究 2020-08-26
 			
 			// 将json文件格式化显示
 			let s = window.localStorage["JSON-data"];

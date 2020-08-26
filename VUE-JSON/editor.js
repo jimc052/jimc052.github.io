@@ -10,8 +10,8 @@ Vue.component('editor', {
 		<div slot="footer" style="display: flex;">
 			<div style="flex: 1;" />
 			<Button type="default" size="small"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button v-if="source.length > 0" type="warning" size="large"  @click="clear" style="width: 100px;">清除</Button>
-			<Button type="primary" size="large"  @click="ok" style="width: 100px;">確定</Button>
+			<Button v-if="source.length > 0" type="warning" size="small"  @click="clear" style="width: 100px;">清除</Button>
+			<Button type="primary" size="small"  @click="ok" style="width: 100px;">確定</Button>
 		</div>
 	</modal>`,
 	props: {
@@ -41,9 +41,9 @@ Vue.component('editor', {
 				this.source = json.data;
 			if(typeof json.action == "string"){
 				if(json.action.indexOf("save") == 0) {
-					if(json.action.indexOf("save-close") == 0)
+					if(json.action == "save-close")
 						this.$emit("onClose", json.data);
-				} else if(json.action.indexOf("close") == 0){
+				} else if(json.action == "close"){
 					this.$emit("onClose");
 				} else if(json.action == "error") {
 					alert("內容錯誤!!")
