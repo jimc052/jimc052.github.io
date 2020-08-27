@@ -9,7 +9,7 @@
 			官網：https://cdnjs.com/libraries/codemirror/4.10.0
 		-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonlint/1.6.0/jsonlint.min.js"></script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/4.10.0/addon/fold/foldcode.min.js" integrity="sha512-N01nSvIt/Jd4cc85iuja1F8QurX8t9fDhURNlwENnUxiSeI6yn7dJkJ9AaUFoLklA3zGvTnN0Vx3baITDc1K/Q==" crossorigin="anonymous"></script>
@@ -53,7 +53,7 @@
 </div>
 
 <script>
-    // 注册编辑器组件
+  // https://www.twblogs.net/a/5ccb30ffbd9eee1ac2edc643
 	Vue.component('json-editor', {
 		template: `<div ref="frame" class="json-editor" style="height: 100%;">
 			<textarea ref="textarea" style="height: 100%;""></textarea>
@@ -76,6 +76,7 @@
 			}
 		},
 		mounted() {
+			
 			let self = this;
 			this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
 				lineNumbers: true,
@@ -92,18 +93,20 @@
 				lineWrapping: true, // 自动换行
 				foldGutter: true,
 				extraKeys: {
+					"Ctrl-Q": cm => cm.foldCode(cm.getCursor()),
 					"Ctrl-Y": cm => CodeMirror.commands.foldAll(cm),
   				"Ctrl-I": cm => CodeMirror.commands.unfoldAll(cm),
 				},
-				gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter", 
-					"CodeMirror-lint-markers", "breakpoints"
+				gutters: ["CodeMirror-linenumbers", 
+					"breakpoints",
+					"bookmarker",
+					"CodeMirror-foldgutter", 
+					"CodeMirror-lint-markers", 
 				],
 			});
-			// https://codemirror.net/demo/folding.html , 待研究 2020-08-26
 			
-			// 将json文件格式化显示
 			let s = window.localStorage["JSON-data"];
-			if(typeof s == "string")
+			if(typeof s == "string" && s.length > 0)
 				this.editor.setValue(JSON.stringify(JSON.parse(s), null, 2));
 			// 当输入框内容发生变化 更新value值
 			this.editor.on('change', cm => {
@@ -115,6 +118,89 @@
 						this.postMessage("change")
 				}, 600);
 			});
+
+			this.editor.on('paste', (cm, event) => {
+				if (cm.getValue().length == 0) {
+					setTimeout(() => {
+						if (cm.getValue().length > 0) {
+							try {
+								let json = JSON.parse(cm.getValue());
+								if(typeof json == "object") {
+									let s = JSON.stringify(json, null, 2)
+									cm.setValue(s);
+									window.localStorage["JSON-data"] = s;
+									load(cm);
+								}
+							} catch(err) {
+								console.log(err)
+							}
+						}
+					}, 600);
+				}
+			});
+
+			// this.editor.foldCode(CodeMirror.Pos(1, 0));
+
+			this.editor.on("gutterClick", function(cm, line, gutter, event) {
+				let info = cm.lineInfo(line);
+				cm.setGutterMarker(line, "breakpoints", info.gutterMarkers ? null : makeMarker("breakpoints"));
+			});
+
+			setTimeout(()=>{
+				load(this.editor);
+				//可以用，但跟我認知的 Bookmark 不一樣
+				// 	var info = this.editor.lineInfo(10);
+				// 	var span = document.createElement("span");
+				// 	span.innerHTML = "this is some content";
+				// 	this.editor.setBookmark({line:18}, span);
+				// 	// this.editor.setBookmark(info)
+			}, 600)
+			
+			this.editor.on("keydown", (cm, event) => {
+				let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+				let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+				let sk = event.shiftKey, code = event.keyCode;
+				let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : ""
+				
+				// if(pk == true) {
+				// 	console.log(cm.getCursor().line)
+				// 	let line = CodeMirror.Pos(cm.getCursor().line, 0);
+				// 	// console.log(this.editor.findMarks(line));
+				// 	var info = cm.lineInfo(cm.getCursor().line);
+				// 	console.log(info) //
+				// }
+			})
+			this.editor.on("mousedown", function(cm, event) {
+				// var info = cm.lineInfo(cm.getCursor().line);
+				// console.log(info) //
+
+				// cm.setGutterMarker(cm.getCursor().line, "bookmarker", 
+				// 	info.gutterMarkers ? null : makeMarker());
+			});
+
+			function load(cm) {
+				let b = false;
+				for(let i = 0; i < cm.lineCount(); i++) { // 第二階以後都收起來
+					var info = cm.lineInfo(i);
+					if(info.gutterMarkers != null) {
+						if(b == true)
+							cm.foldCode(CodeMirror.Pos(i, 0));
+						b = true;
+					}
+				}
+			}
+
+			function makeMarker(kind) {
+				let marker = document.createElement("div");
+				if(kind == "breakpoints") {
+					marker.style.color = "#822";
+					marker.innerHTML = "●";					
+				} else {
+					marker.style.color = "blue";
+					marker.innerHTML = "■";					
+				}
+				return marker;
+			}
 
 			window.onresize = () => {
 				return (() => {
@@ -177,13 +263,16 @@
 			},
 			save(action) {
 				clearTimeout(this.times);
-					this.times = setTimeout(() => {
-						if(this.checkError() == false || this.editor.getValue().length == 0){
+				this.times = setTimeout(() => {
+					if(this.checkError() == false || this.editor.getValue().length == 0){
+						if(window ==  window.parent) {
+							window.localStorage["JSON-data"] = this.editor.getValue();
+						} else
 							this.postMessage(action)
-						}	else {
-							this.postMessage("error")
-						}
-					}, 600);
+					}	else {
+						this.postMessage("error")
+					}
+				}, 600);
 			}
 		}
 	});
