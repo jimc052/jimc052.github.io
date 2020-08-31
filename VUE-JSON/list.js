@@ -195,6 +195,7 @@ Vue.component('list', {
 						if(Array.isArray(json)){
 							this.mode = "";
 							this.datas = json;
+							vm.loading(false);
 						} else if(typeof json == "object") {
 							this.json = json;
 							let s  = window.localStorage["JSON-mode"];

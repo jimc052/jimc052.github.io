@@ -3,7 +3,6 @@ Vue.component('vue-table', {
 		<div ref="frame" style="flex: 1;">
 			<Table :id="id" highlight-row :height="height" border :columns="columns" :data="datas2"
 				@on-column-width-resize="onColumnResize"
-
 			></Table>
 		</div>
 		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
@@ -58,7 +57,7 @@ Vue.component('vue-table', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
-		onColumnResize(width, start, col) {
+		onColumnResize(width, start, col) { // 還沒寫...............
 			console.log(col)
 		},
 		onResize(){

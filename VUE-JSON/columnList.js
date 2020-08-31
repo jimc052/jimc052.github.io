@@ -1,31 +1,30 @@
 Vue.component('column-list', { 
 	template:  `<modal v-model="visible" class-name="vertical-center-modal columnlist" title="欄位資料"
-		 :fullscreen="false" :closable="true" 
-		@on-visible-change="onVisibleChange"
-		style="overflow: hidden;"
+		 :fullscreen="false" :closable="true" id="colList"
+			@on-visible-change="onVisibleChange" style="overflow: hidden;"
+			:width="800"
 	>
-		<draggable :list="list" :disabled="!enabled" class="list-group" ghost-class="ghost"
-			:move="checkMove" @start="onStart" @end="dragging = false"
+		<Table v-if="visible" highlight-row :height="height"  border :columns="columns" :data="list"
+			@on-column-width-resize="onColumnResize" 
+			@on-row-dblclick="onRowDblclick"
+			@on-cell-click="onCellClick"
+			:draggable="true" @on-drag-drop="onDragDrop"
+			:row-class-name="rowClassName"
 		>
-			<div class="list-group-item" v-for="(el, index) in list" :key="el.key">
-				<div style="width: 20px; text-align: right; color: #515a6e; font-size: 12px;">{{ index  + 1 }}</div>
-				<div style="width: 120px;">{{ el.key }}</div>
-				<Input :value="el.title" @on-change="onChangeTitle($event, index)" style="flex: 1;"  />
-				<Input :value="el.width"  @on-change="onChangeWidth($event, index)"
-					style="width: 60px; text-align: right" type="number" />
-				<Icon type="md-checkmark" size="20" @click.native="onClickIcon(index)" 
+			<template slot-scope="{row, index}" slot="visible">
+				<Icon type="md-checkmark" size="16" @click.native="onClickIcon(row, index)" 
 					:style="{
 						padding: '2px',
-						margin: '0 5px',
-						borderRadius: '5px',
-						border: '1px solid ' + (typeof el.visible == 'undefined' || el.visible == true ? '#2d8cf0' : '#eee'),
-						color: typeof el.visible == 'undefined' || el.visible == true ? '#2d8cf0' : '#eee', cursor: 'pointer'
-					}"/>
-			</div>
-		</draggable>
+						margin: '0 3px',
+						borderRadius: '3px',
+						border: '1px solid ' + (typeof row.visible == 'undefined' || row.visible == true ? '#2d8cf0' : '#eee'),
+						color: typeof row.visible == 'undefined' || row.visible == true ? '#2d8cf0' : '#eee', cursor: 'pointer'
+					}"
+				/>
+			</template>
+		</Table>
 	</modal>`,
   components: {
-    draggable: window["vuedraggable"]
   },
 	props: {
 		modal: {
@@ -41,22 +40,113 @@ Vue.component('column-list', {
 	},
 	data() {
 		return {
+			currendIndex: -1,
 			id: "",
 			visible: false,
 			enabled: true,
       list: [],
-			dragging: false,
-			dirty: false
+			dirty: false,
+			columns: [{
+				type: 'index',
+				width: 40,
+				align: 'center',
+				fixed: "left",
+				className: "index",
+			}, { 
+				title: "欄位",
+				key: "key",
+				resizable: true,
+				width: 150,
+			},{ 
+				title: "標題",
+				key: "title",
+				resizable: true,
+				className: "editable",
+				render: this.render
+			},{ 
+				title: "欄寬",
+				key: "width",
+				width: 90,
+				align: 'right',
+				className: "editable",
+				textAlign: 'right',
+				maxlength: 3,
+				type: "number",
+				render: this.render, 
+			},{ 
+				title: "顯示",
+				key: "visible",
+				width: 90,
+				slot: "visible",
+        align: 'center'
+			}],
+			height: 300
 		};
 	},
 	created(){
 		this.visible = this.modal;
 	},
 	mounted () {
+		this.height = document.body.clientHeight - 250;
 	},
 	destroyed() {
   },
 	methods: {
+		render(h, p){
+			let key = p.column.key;
+			if(this.currendIndex === p.index) {
+				if(this.cell == key) {
+					setTimeout(() => {
+						let obj = document.querySelector("#column_list_inp_" + this.cell + "_" + this.currendIndex);
+						if(obj) {
+							obj.focus();
+						}
+					}, 400);					
+				}
+				return h('input', {
+					style: {
+						width: '100%',
+						padding: '2px 2px',
+						borderRadius: '4px',
+						border: '1px solid #e9eaec',
+						textAlign: typeof p.column.textAlign == "string" ? p.column.textAlign : "left", // 'right'
+					},
+					attrs: {
+						id: "column_list_inp_" + key + "_" + this.currendIndex,
+						maxlength: p.column.maxlength, 
+						type: typeof p.column.type == "string" ? p.column.type : "text", //  "number"
+					},
+					domProps: {
+						value: p.row[key]
+					},
+					on: {
+						input: (event) => {
+							let obj = {};
+							obj[key] = event.target.value;
+							this.$set(this.list, p.index, Object.assign(p.row, obj));
+							this.dirty = true;
+						}
+					}
+				});
+			} else
+				return h('span', p.row[key]);
+		},
+		rowClassName(row,index){
+			return (index=== this.currendIndex) ? "editable-row" : '';
+		},
+		onCellClick(row, column, data, event){
+			this.cell = column.key;
+			
+		},
+		onRowDblclick(row, index){
+			this.currendIndex = index;
+		},
+		onDragDrop(a,b){
+      this.list.splice(b,1,...this.list.splice(a, 1 , this.list[b]));
+		},
+		onColumnResize(){
+
+		},
 		onVisibleChange(e) {
 			if(e == false) {
 				let data;
@@ -101,25 +191,17 @@ Vue.component('column-list', {
 			this.list[index].width = e.target.value;
 			this.dirty = true;
 		},
-		onClickIcon(index) {
-			let visible = typeof this.list[index].visible == "boolean" 
-				? !this.list[index].visible : false;
-			this.$set(this.list, index, 
-				{
-					key: this.list[index].key, 
-					title: this.list[index].title, 
-					width: this.list[index].width,
-					visible
-				});
+		onClickIcon(row, index) {
+			let visible = typeof row.visible == "boolean" 
+				? !row.visible : false;
+			this.$set(this.list, index, Object.assign(row, {visible}));
 			this.dirty = true;
-		},
-		onStart(e) {
-			this.dragging = true;
 		}
 	},
 	watch: {
 		modal(value) {
 			this.visible = value;
+			this.currendIndex = -1;
 		},
 		data(value){
 			this.list = [];
@@ -147,10 +229,5 @@ Vue.component('column-list', {
 		},
 	},
 	computed: {
-    draggingInfo() {
-      return this.dragging ? "under drag" : "";
-    }
   },
 });
-
-// https://github.com/SortableJS/Vue.Draggable
