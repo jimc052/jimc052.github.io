@@ -160,6 +160,7 @@
 			},
 			created() {
 				iview.lang('zh-TW');
+				
 			},
 			async mounted(){
 				let self = this;
@@ -187,7 +188,12 @@
 							self.broadcast.$emit('onResize');
 					})()
 				}
-								
+				
+				// let app = document.getElementById("app"); 
+				// app.requestFullscreen().catch(err => {
+				// 	alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+				// });
+
 				function checkConnect(callback) {
 					if(self.$isFlutter()) {
 						Flutter.postMessage(JSON.stringify({state: "app.mounted"}));

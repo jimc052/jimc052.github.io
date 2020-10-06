@@ -78,7 +78,34 @@ Vue.component('column-list', {
 				key: "visible",
 				width: 90,
 				slot: "visible",
-        align: 'center'
+				align: 'center',
+				renderHeader: (h, parm) =>{
+					// return h('span', "test");
+					return h('a', {
+						style: {
+						},
+						attrs: {
+						},
+						domProps: {
+							innerHTML: parm.column.title
+						},
+						on: {
+							click: (event) => {
+								let visible = !this.list[0].visible;
+								this.list.forEach((item, index)=>{
+									this.$set(this.list, index, Object.assign(item, {visible}))
+								})
+								// console.log(event)
+							}
+							// input: (event) => {
+							// 	let obj = {};
+							// 	obj[key] = event.target.value;
+							// 	this.$set(this.list, p.index, Object.assign(p.row, obj));
+							// 	this.dirty = true;
+							// }
+						}
+					});
+				}
 			}],
 			height: 300
 		};
@@ -136,7 +163,6 @@ Vue.component('column-list', {
 		},
 		onCellClick(row, column, data, event){
 			this.cell = column.key;
-			
 		},
 		onRowDblclick(row, index){
 			this.currendIndex = index;

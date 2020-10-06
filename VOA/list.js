@@ -86,7 +86,7 @@ Vue.component('list', {
 			this.rate = parseFloat(window.localStorage["VOA-PlayList-rate"]);
 		if(typeof window.localStorage["VOA-PlayList-repeat"] != "undefined")
 			this.repeat = parseInt(window.localStorage["VOA-PlayList-repeat"], 10);
-	},
+	},	
 	destroyed() {
   },
 	methods: {

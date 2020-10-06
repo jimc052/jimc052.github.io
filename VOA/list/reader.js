@@ -1073,7 +1073,7 @@ Vue.component('reader', {
 						self.$refs["textarea"].focus();
 					}, 300);
 				}				
-			} else if(code == 27){ //
+			} else if(code == 27){ // esc
 				this.displayVocabulary = false;
 			// } else if(this.displayVocabulary == true) {
 			// 	return;

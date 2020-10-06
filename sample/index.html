@@ -6,12 +6,192 @@
     <meta name="viewport" content="minimal-ui, width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
     <style type="text/css">
       /**/
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      table, th, td {
+        border: 1px solid #eeeeee;
+      }
+      h3 {
+        margin-bottom: 0px;
+        color:rgb(45, 140, 240);
+      }
+      td:first-child {
+        color: rgb(45, 140, 240);
+      }
+      td {
+        height: 28px;
+        padding: 3px;
+      }
+      .error {
+        background-color: #c01921;
+      }
+      .error td {
+        color: white;
+      }
     </style>
     <script>
       /**/
     </script>
   </head>  
   <body>
-    
+    <h3 id="tmmf" style="margin-top: 0px;">TMMF</h3>
+    <table id="TMMF" border="1"></table>
+    <h3 id="mguielec">MGUIELEC</h3>
+    <table id="MGUIELEC" border="1"></table>
+    <h3 id="pos_h">POS_H</h3>
+    <table id="POS_H" border="1"></table>
   </body>
+  <script>
+    var pos_h = {};
+    function parseData(client, server) {
+      pos_h = {};
+      for(var key in server.TMMF){
+        var row = document.createElement("TR");
+        document.getElementById("TMMF").appendChild(row); 
+        var td = document.createElement("TD");
+        td.innerHTML = "" + key;
+        row.appendChild(td); 
+
+        td = document.createElement("TD");
+        td.innerHTML = server.TMMF[key];
+        row.appendChild(td);
+
+        td = document.createElement("TD");
+        td.innerHTML = client.TMMF[key];
+        row.appendChild(td);
+        if(client.TMMF[key] !== server.TMMF[key]){
+          row.className = "error";
+        }
+      }
+
+      if(typeof server.MGUIELEC == "object") {
+        for(var key in server.MGUIELEC){
+          var row = document.createElement("TR");
+          document.getElementById("MGUIELEC").appendChild(row); 
+          var td = document.createElement("TD");
+          td.innerHTML = "" + key;
+          row.appendChild(td); 
+
+          td = document.createElement("TD");
+          td.innerHTML = server.MGUIELEC[key];
+          row.appendChild(td);
+
+          td = document.createElement("TD");
+          td.innerHTML = client.MGUIELEC[key];
+          row.appendChild(td); 
+
+          if(client.MGUIELEC[key] != server.MGUIELEC[key]){
+            row.className = "error";
+          }
+        }        
+      } else {
+        document.getElementById("MGUIELEC").style.display = "none";
+        document.getElementById("mguielec").style.display = "none";
+      }
+
+      var x = 0;
+      while(client.POS_H.length > 0 || server.POS_H.length > 0){
+        var T_SER_NO1 = server.POS_H.length > 0 ? server.POS_H[0].T_SER_NO : undefined;
+        var T_SER_NO2 = client.POS_H.length > 0 ? client.POS_H[0].T_SER_NO : undefined;
+
+        var row = document.createElement("TR");
+        document.getElementById("POS_H").appendChild(row); 
+
+        if(typeof T_SER_NO1 == "string" && T_SER_NO1 == T_SER_NO2) {
+          var td = document.createElement("TD");
+          td.innerHTML = T_SER_NO1;
+          row.appendChild(td); 
+
+          var x = server.POS_H.splice(0, 1)[0];
+          var y = client.POS_H.splice(0, 1)[0];
+
+          td = document.createElement("TD");
+          td.innerHTML = x.AMOUNT;
+          row.appendChild(td);
+
+          td = document.createElement("TD");
+          td.innerHTML = x.T_TK_H + x.T_TK_NO ;
+          row.appendChild(td);
+          for(var key in x){
+            if(x[key] != y[key]) {
+              row.className = "error";
+            }
+          }
+          continue;
+        } 
+        else if(typeof T_SER_NO1 == "string" && typeof T_SER_NO2 == "undefined") {
+          server.POS_H.splice(0, 1);
+          var td = document.createElement("TD");
+          td.innerHTML = T_SER_NO1;
+          row.appendChild(td);
+
+          td = document.createElement("TD");
+          td.setAttribute("colspan", 2)
+          td.innerHTML = "cleint 沒資料";
+          row.appendChild(td);
+          row.className = "error";
+        } 
+        else if(typeof T_SER_NO2 == "string" && typeof T_SER_NO1 == "undefined") {
+          client.POS_H.splice(0, 1);
+          var td = document.createElement("TD");
+          td.innerHTML = T_SER_NO2;
+          row.appendChild(td);
+
+          td = document.createElement("TD");
+          td.setAttribute("colspan", 2)
+          td.innerHTML = "server 沒資料";
+          row.appendChild(td);
+          row.className = "error";
+        }
+        else if(T_SER_NO1 > T_SER_NO2) {
+          server.POS_H.splice(0, 1);
+
+          var td = document.createElement("TD");
+          td.innerHTML = T_SER_NO1;
+          row.appendChild(td); 
+
+          td = document.createElement("TD");
+          td.setAttribute("colspan", 2)
+          td.innerHTML = "cleint 沒資料";
+          row.appendChild(td);
+          row.className = "error";
+        } 
+        else if(T_SER_NO2 > T_SER_NO1) {
+          client.POS_H.splice(0, 1);
+
+          var td = document.createElement("TD");
+          td.innerHTML = T_SER_NO2;
+          row.appendChild(td);
+
+          td = document.createElement("TD");
+          td.setAttribute("colspan", 2)
+          td.innerHTML = "server 沒資料";
+          row.appendChild(td);
+          row.className = "error";
+        }
+        x++;
+        if(x > 100) {
+          break;
+        }
+      }
+    }
+
+    var client = {"POS_H": [
+        {"RAND_CODE":"9343","T_FLAG1":"1","FLG_CLOSE":"N","AMOUNT":200,"T_TK_H":"AA","T_SER_NO":"000002","T_TK_NO":"00000001","T_TIME":"1514","TOTAL":100},
+        {"RAND_CODE":"7153","T_FLAG1":"1","FLG_CLOSE":"N","AMOUNT":200,"T_TK_H":"AA","T_SER_NO":"000001","T_TK_NO":"00000002","T_TIME":"1514","TOTAL":200}
+      ],
+      "MGUIELEC":
+        {"END_FLAG":"0","N_NO":"00000002","E_NO":"00000003","S_NO":"00000001","T_TK_H":"AA"},
+        "TMMF":{"TM_NO":"001","W_TODAY":"20201005","SER_NO":3,"STATUS":"1","TK_H":"AA","TK_NO":"3","CLEAR_NO":1,"CLASSNO":"1","CASH_CODE":"001","TM_NAME":"TM001","MONEY":5000,"PRN_CNT":1,"IP_ADDRESS":"","IP_ADDRESS1":"192.168.0.123","FLAG12":"0","FLAG9":"C","FLAG7":"0","FLAG17":"1","FLAG4":"G","FLAG6":"B","FLAG8":"0","R_CUS":"0","FLAG5":"0","FLAG14":"3","FLAG13":"1","TK_QTY":10,"PRNTYPE_NO":"","IP_ADDRESS2":"192.168.0.74","FLAG19":"0","REV_NO":"2020-09-22T17:30","LOGFLAG":"F","CASH_FLAG":"11111","CASH_NAME":"收銀員","LEVEL_1":"5"}}
+    var server = {"POS_H":[
+        {"FLG_CLOSE":"N","T_TK_H":"AA","T_TIME":"1514","T_SER_NO":"000002","T_FLAG1":"1","T_TK_NO":"00000001","AMOUNT":101,"RAND_CODE":"9343","TOTAL":100},
+        {"FLG_CLOSE":"N","T_TK_H":"AA","T_TIME":"1514","T_SER_NO":"000001","T_FLAG1":"1","T_TK_NO":"00000002","AMOUNT":200,"RAND_CODE":"7153","TOTAL":200}
+      ],
+      "TMMF":{"SER_NO":2,"TK_NO":3,"TK_H":"AA"},
+      "MGUIELEC":{"T_TK_H":"AA","END_FLAG":"0","S_NO":"00000001","N_NO":"00000003","E_NO":"00000003"}}
+    parseData(client, server);
+  </script>
 </html>

@@ -58,7 +58,7 @@ Vue.component('vue-table', {
   },
 	methods: {
 		onColumnResize(width, start, col) { // 還沒寫...............
-			console.log(col)
+			// console.log(col)
 		},
 		onResize(){
 			let viewer = this.$refs["frame"];
