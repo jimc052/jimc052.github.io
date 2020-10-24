@@ -9,8 +9,16 @@ Vue.component('reader', {
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"
 		>
 			<div slot="right" v-if="$isLogin()">
+				<Icon v-if="$isAdmin" type="md-refresh" size="22" @click.native="onRefresh" 
+					:style="{cursor: 'pointer', color: 'white', 'margin-right': '0px'} "
+			 	/>
+
 				<Icon type="md-heart" size="22" @click.native="onFavorite" 
 					:style="{cursor: 'pointer', color: favorite ? '#c01921' : '#e8eaec', 'margin-right': '0px'} " />
+				
+				<Icon type="md-download" size="22" 
+					:style="{cursor: 'pointer', color: download ? '#c01921' : '#e8eaec', 'margin-right': '0px'} "
+				/>
 			</div>
 
 			<Dropdown slot="right" @on-click="onClickMore($event)" style="margin-right: 10px"
@@ -29,7 +37,8 @@ Vue.component('reader', {
 					<dropdown placement="right-start" v-if="! $isSmallScreen()" divided>
 						<dropdown-item>字體 <icon type="ios-arrow-forward"></icon></dropdown-item>
 						<dropdown-menu slot="list">
-								<dropdown-item name="字1.6" :selected="zoom == 1.6">大</dropdown-item>
+								<dropdown-item name="字1.7" :selected="zoom == 1.7">大</dropdown-item>
+								<dropdown-item name="字1.5" :selected="zoom == 1.5">中</dropdown-item>
 								<dropdown-item name="字1.2" :selected="zoom == 1.2">正常</dropdown-item>
 						</dropdown-menu>
 					</dropdown>
@@ -211,6 +220,7 @@ Vue.component('reader', {
 			block: [],
 			vocabulary: "",
 			favorite: false,
+			download: false,
 			displayVocabulary: false,
 			displayParagraph: false,
 			mode: "",
@@ -244,6 +254,17 @@ Vue.component('reader', {
 		this.broadcast.$on('onResize', this.onResize);
 		if(this.$isFlutter()) {
 			this.broadcast.$on('onFlutter', this.onFlutter);
+			try{
+				// let checkMP3 = await this.$checkMP3(this.source.report, this.source.key);
+				// console.log("checkMP3: " + checkMP3 + ".............................")
+				await this.$delMP3(this.source.report, this.source.key);
+				console.log("$delMP3: " + ".............................")
+
+				// let url = await this.$MP3(this.source.report, this.source.key);
+				// console.log("$MP3: " + url + ".............................")
+			} catch (e){
+				console.log(e)
+			}
 		}
 	},
 	destroyed() {
@@ -265,6 +286,9 @@ Vue.component('reader', {
 		this.$Modal.remove();
   },
 	methods: {
+		onRefresh(){
+			location.reload();
+		},
 		onFavorite(){
 			this.favorite = !this.favorite;
 			this.setHistory({favorite: this.favorite})
@@ -446,6 +470,7 @@ Vue.component('reader', {
 				this.zoom = parseFloat(item.replace("字", ""))
 				document.getElementById("readerFrame").style.zoom = this.zoom;
 				window.localStorage["VOA-zoom"] = this.zoom;
+				this.renderBubble();
 				this.buildMenu();
 				return;
 			} else if(item.indexOf("速") == 0){
@@ -516,7 +541,7 @@ Vue.component('reader', {
 				}, 300);
 			}
 
-			children = [{text: "大", value: 1.6}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
+			children = [{text: "大", value: 1.7}, {text: "中", value: 1.5}, {text: "正常", value: 1.2}]; //, {text: "小", value: 1}
 			children.forEach(item=>{
 				if(this.zoom == item.value)
 					item.icon = "ivu-icon-md-checkmark ivu-icon";

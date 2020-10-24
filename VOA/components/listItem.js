@@ -29,6 +29,8 @@ Vue.component('list-item', {
 								  type="md-heart" size="20" style="margin-right: 10px;"				
 									:color="changeFavorite(item.extend)" 
 								/>
+								<Icon v-if="$isLogin()" type="md-download" size="20" 
+									style="color: #e8eaec; margin-right: 10px;" />
 								<div style="">{{item.date}}</div>
 							</div>
 						</div>

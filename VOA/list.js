@@ -212,10 +212,9 @@ Vue.component('list', {
 						.get();
 					snapshot1.forEach(doc => {
 						let vocabulary = (typeof doc.data().vocabulary == "string" && doc.data().vocabulary.length > 0) ? doc.data().vocabulary : "";
-
+						
 						if(vocabulary.length > 0 || typeof doc.data().listenDate == "number" || typeof doc.data().favorite == "boolean") {
 							for(let i = x; i < arr.length; i++) {
-								x = i;
 								if(arr[i].key == doc.id) {
 									arr[i].extend = {
 										vocabulary: vocabulary.length > 0 ? vocabulary : undefined,
@@ -235,6 +234,7 @@ Vue.component('list', {
 						return typeof item.extend == "object" && item.extend.favorite == true
 					})
 				}
+				
 				if(this.playList == false)
 					self.datas = arr;
 				else

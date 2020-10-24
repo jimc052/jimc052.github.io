@@ -143,49 +143,81 @@ Vue.prototype.$isFlutter = function () {
 	return navigator.userAgent.indexOf("Flutter") > -1 ? true : false;
 }
 
-Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resource, 所以沒用了
-	let self = this;
-	function checkFile(){
-		// console.log("checkFile: start...............")
-		return new Promise( async (success, error) => {
-			self.broadcast.$on('onFlutter', onFlutter)
-			let obj = {func: "checkFile", report, key}
-			Flutter.postMessage(JSON.stringify(obj));
+Vue.prototype.$checkMP3 = function (report, key) { // webview 無法讀 local resource, 所以沒用了
+	return new Promise( async (success, error) => {
+		this.broadcast.$on('onFlutter', onFlutter)
+		function onFlutter(arg, result, token){
+			console.log(arg + ": " + token)
+			if(arg != "checkMP3" || token != report + ":" + key) return;
 
-			function onFlutter(arg, result){
+			if(result.length > 0 && result.indexOf("not exist..") == -1) {
+				result = "file://" + result;
 				success(result)
-				self.broadcast.$off('onFlutter', onFlutter)
+			} else {
+				error(result)
 			}
-		});
-	}
-	function downloadFile(url){ // 
-		// console.log("downloadFile: start...............")
-		return new Promise( async (success, error) => {
-			// self.broadcast.$on('onFlutter', onFlutter)
-			let obj = {func: "downloadFile", report, key, url}
-			Flutter.postMessage(JSON.stringify(obj));
-		});
-	}
+			this.broadcast.$off('onFlutter', onFlutter)
+		}
 
+		let obj = {func: "checkMP3", report, key, tokey: (new Date()).getTime()}
+		Flutter.postMessage(JSON.stringify(obj));
+	});
+};
+
+Vue.prototype.$downloadMP3 = function (report, key, url){ // 
+	return new Promise( async (success, error) => {
+		this.broadcast.$on('onFlutter', onFlutter)
+		function onFlutter(arg, result, token){
+			if(arg != "downloadMP3" || token != report + ":" + key) return;
+			success("file://" + result)
+			this.broadcast.$off('onFlutter', onFlutter)
+		}
+		let obj = {func: "downloadMP3", report, key, url}
+		Flutter.postMessage(JSON.stringify(obj));
+	});
+}
+
+Vue.prototype.$delMP3 = function (report, key){ // 
+	return new Promise( async (success, error) => {
+		this.broadcast.$on('onFlutter', onFlutter)
+		function onFlutter(arg, token){
+			if(arg != "delMP3" || token != report + ":" + key) return;
+			success()
+			this.broadcast.$off('onFlutter', onFlutter)
+		}
+		let obj = {func: "delMP3", report, key, url}
+		Flutter.postMessage(JSON.stringify(obj));
+	});
+}
+
+Vue.prototype.$MP3 = function (report, key) { // webview 無法讀 local resource, 所以沒用了
 	return new Promise( async (success, error) => {
 		let url = "", urlFlutter = "";
-		if(this.$isFlutter()) {
-			urlFlutter = await checkFile();
-			// console.log("checkFile: " + url + " ...................")
-		}
-
-		if(urlFlutter.length > 0 && urlFlutter.indexOf("not exist..") == -1) {
-			url = "file://" + urlFlutter;
-			// url =  "/storage/emulated/0/VOA/04-06-08=17161.mp3";
-		} else {
-			url = await FireStore.downloadFileURL("VOA/" + report + 
-					"/" + key + ".mp3");
+		try {
 			if(this.$isFlutter()) {
-				downloadFile(url);
-				let obj = {func: "downloadFile", report, key, url}
-				Flutter.postMessage(JSON.stringify(obj));
-			}			
+				try{
+					urlFlutter = await this.$checkMP3(report, key);
+				} catch(e){
+					console.log("checkMP3: " + e + "....................")
+				}
+			}
+			if(urlFlutter.length == 0) {
+				url = await FireStore.downloadFileURL("VOA/" + report + 
+						"/" + key + ".mp3");
+				if(this.$isFlutter()) {
+					try{
+						url = await this.$downloadMP3(report, key, url);
+					} catch (e) {
+						console.log(e)
+						error(e)
+					}
+				}			
+			} else
+				url = urlFlutter;
+			console.log(url)
+			success(url)
+		} catch(err) {
+			error(err)
 		}
-		success(url)
 	});
 }
