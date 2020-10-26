@@ -136,9 +136,12 @@
 	// https://www.iviewui.com/components/modal
 	// https://www.iviewui.com/components/icon
 	/*
-	file:///storage/emulated/0/VOA/農業報導/04-05-11=17113.mp3
-	file:///storage/emulated/0/VOA/%E8%BE%B2%E6%A5%AD%E5%A0%B1%E5%B0%8E/04-05-11=17113.mp3
-	Not allowed to load local resource
+	webview 無法從 SD 卡讀檔案
+		file:///storage/emulated/0/VOA/農業報導/04-05-11=17113.mp3
+		file:///storage/emulated/0/VOA/%E8%BE%B2%E6%A5%AD%E5%A0%B1%E5%B0%8E/04-05-11=17113.mp3
+		Not allowed to load local resource
+	webview 從 java 的 base64 給 js 會 error
+	
 	*/
 	var vm = null;
 	window.onload = async function(){

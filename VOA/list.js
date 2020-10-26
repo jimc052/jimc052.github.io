@@ -207,12 +207,13 @@ Vue.component('list', {
 					.get();
 				snapshot1.forEach(async doc => {
 					let json = Object.assign({key: doc.id}, doc.data());
-					try{
-						if(this.$isFlutter())
-							json.mp3Path = await self.$checkMP3(json.report, json.key);
-					} catch(e){
-						// console.log(e)
-					}
+					// try{
+					// 	if(this.$isFlutter()){
+					// 		json.mp3Path = await self.$checkMP3(json.report, json.key);
+					// 	}
+					// } catch(e){
+					// 	// console.log(e)
+					// }
 					arr.push(json);
 				});
 
