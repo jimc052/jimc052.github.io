@@ -147,11 +147,10 @@ Vue.prototype.$checkMP3 = function (report, key) { // webview 無法讀 local re
 	return new Promise( async (success, error) => {
 		this.broadcast.$on('onFlutter', onFlutter)
 		function onFlutter(arg, result, token){
-			console.log(arg + ": " + token)
 			if(arg != "checkMP3" || token != report + ":" + key) return;
 
 			if(result.length > 0 && result.indexOf("not exist..") == -1) {
-				result = "file://" + result;
+				// result = "file://" + result;
 				success(result)
 			} else {
 				error(result)
@@ -159,7 +158,28 @@ Vue.prototype.$checkMP3 = function (report, key) { // webview 無法讀 local re
 			this.broadcast.$off('onFlutter', onFlutter)
 		}
 
-		let obj = {func: "checkMP3", report, key, tokey: (new Date()).getTime()}
+		let obj = {func: "checkMP3", report, key, token: (new Date()).getTime()}
+		Flutter.postMessage(JSON.stringify(obj));
+	});
+};
+
+Vue.prototype.$toBase64 = function (path) { // webview 無法讀 local resource, 
+	return new Promise( async (success, error) => {
+		let _token = (new Date()).getTime();
+		this.broadcast.$on('onFlutter', onFlutter);
+
+		function onFlutter(arg, result, token){
+			if(arg != "toBase64" || token != _token) return;
+			if(result.length > 0) {
+				result = "data:audio/mpeg;base64," + result;
+				success(result)
+			} else {
+				error(result)
+			}
+			this.broadcast.$off('onFlutter', onFlutter)
+		}
+
+		let obj = {func: "toBase64", path, token: _token};
 		Flutter.postMessage(JSON.stringify(obj));
 	});
 };
@@ -169,7 +189,7 @@ Vue.prototype.$downloadMP3 = function (report, key, url){ //
 		this.broadcast.$on('onFlutter', onFlutter)
 		function onFlutter(arg, result, token){
 			if(arg != "downloadMP3" || token != report + ":" + key) return;
-			success("file://" + result)
+			success(result); // "file://" + 
 			this.broadcast.$off('onFlutter', onFlutter)
 		}
 		let obj = {func: "downloadMP3", report, key, url}
@@ -185,7 +205,7 @@ Vue.prototype.$delMP3 = function (report, key){ //
 			success()
 			this.broadcast.$off('onFlutter', onFlutter)
 		}
-		let obj = {func: "delMP3", report, key, url}
+		let obj = {func: "delMP3", report, key}
 		Flutter.postMessage(JSON.stringify(obj));
 	});
 }

@@ -4,6 +4,9 @@ Vue.component('list', {
 	template:  `<div id="list" style="display: flex; flex-direction: column; position: relative; overflow: hidden;">
 		<header-bar :title="title">
 			<div slot="right" v-if="$isLogin()">
+				<Icon v-if="$isAdmin" type="md-refresh" size="22" @click.native="onRefresh" 
+					:style="{cursor: 'pointer', color: 'white', 'margin-right': '10px'} "
+				/>
 				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
 					size="22" @click.native="onChangeList" 
 					:style="{cursor: 'pointer', 'margin-right': '0px', 
@@ -90,6 +93,9 @@ Vue.component('list', {
 	destroyed() {
   },
 	methods: {
+		onRefresh(){
+			location.reload();
+		},
 		onChangePlayList(key){
 			this.dataKey = key;
 			this.$refs["listItem"].scrollTo();
@@ -199,9 +205,15 @@ Vue.component('list', {
 					.where("report", "==", this.title)
 					// .orderBy("date", "desc")
 					.get();
-				snapshot1.forEach(doc => {
-					arr.push(Object.assign({key: doc.id}, doc.data()));
-					// if(this.$isLocal()) this.checkHTML(self.datas[self.datas.length - 1], self.datas.length - 1)
+				snapshot1.forEach(async doc => {
+					let json = Object.assign({key: doc.id}, doc.data());
+					try{
+						if(this.$isFlutter())
+							json.mp3Path = await self.$checkMP3(json.report, json.key);
+					} catch(e){
+						// console.log(e)
+					}
+					arr.push(json);
 				});
 
 				if(this.$isLogin()) {
@@ -331,7 +343,8 @@ Vue.component('list', {
 			if(type == "html") {
 				this.source.html = data;
 				let obj = Object.assign({}, this.source)
-				delete obj.extend; 
+				delete obj.extend;
+				delete obj.mp3Path;
 				try {
 					await FireStore.update(obj)
 					this.$Notice.success({
@@ -340,9 +353,11 @@ Vue.component('list', {
 				} catch(e) {
 					console.log(e)
 				}				
-			} else if(type == "vocabulary" || type == "json") {
+			} else if(type == "vocabulary" || type == "json" || type == "mp3Path") {
 				if(typeof this.source.extend == "undefined") this.source.extend = {};
-				if(type == "vocabulary")
+				if(type == "mp3Path")
+					this.source.mp3Path = data;
+				else if(type == "vocabulary")
 					this.source.extend.vocabulary = data; 
 				else 
 					this.source.extend = Object.assign(this.source.extend, data)

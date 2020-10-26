@@ -10,14 +10,14 @@ Vue.component('reader', {
 		>
 			<div slot="right" v-if="$isLogin()">
 				<Icon v-if="$isAdmin" type="md-refresh" size="22" @click.native="onRefresh" 
-					:style="{cursor: 'pointer', color: 'white', 'margin-right': '0px'} "
+					:style="{cursor: 'pointer', color: 'white', 'margin-right': '5px'} "
 			 	/>
 
 				<Icon type="md-heart" size="22" @click.native="onFavorite" 
-					:style="{cursor: 'pointer', color: favorite ? '#c01921' : '#e8eaec', 'margin-right': '0px'} " />
+					:style="{cursor: 'pointer', color: favorite ? '#c01921' : '#e8eaec', 'margin-right': '5px'} " />
 				
-				<Icon type="md-download" size="22" 
-					:style="{cursor: 'pointer', color: download ? '#c01921' : '#e8eaec', 'margin-right': '0px'} "
+				<Icon v-if="$isFlutter()" type="md-download" size="22" @click.native="onDownload"
+					:style="{cursor: 'pointer', color: isDownload ? '#c01921' : '#e8eaec', 'margin-right': '0px'} "
 				/>
 			</div>
 
@@ -229,7 +229,8 @@ Vue.component('reader', {
 				repeat: [0, 1, 2, 3, 5, 10, 50],
 				range: [{label: "字幕", value: "lrc"}, {label: "段落", value: "paragraph"}],
 				interval: [3, 5, 10, 20, -0.75, -1, -1.5, -2] // 重複間距
-			}
+			},
+			isDownload: false
 		};
 	},
 	created(){
@@ -254,11 +255,12 @@ Vue.component('reader', {
 		this.broadcast.$on('onResize', this.onResize);
 		if(this.$isFlutter()) {
 			this.broadcast.$on('onFlutter', this.onFlutter);
+			this.isDownload = typeof this.source.mp3Path == 'string' ? true : false
 			try{
 				// let checkMP3 = await this.$checkMP3(this.source.report, this.source.key);
 				// console.log("checkMP3: " + checkMP3 + ".............................")
-				await this.$delMP3(this.source.report, this.source.key);
-				console.log("$delMP3: " + ".............................")
+				// await this.$delMP3(this.source.report, this.source.key);
+				// console.log("$delMP3: " + ".............................")
 
 				// let url = await this.$MP3(this.source.report, this.source.key);
 				// console.log("$MP3: " + url + ".............................")
@@ -288,6 +290,22 @@ Vue.component('reader', {
 	methods: {
 		onRefresh(){
 			location.reload();
+		},
+		async onDownload(){
+			try{
+				let url = undefined
+				if(this.isDownload == true)
+					await this.$delMP3(this.source.report, this.source.key);
+				else {
+					url = await FireStore.downloadFileURL("VOA/" + this.source.report + 
+						"/" + this.source.key + ".mp3");
+					await this.$downloadMP3(this.source.report, this.source.key, url);
+				}
+				this.isDownload = !this.isDownload;
+				this.$emit("onUpdate", "mp3Path", url);
+			} catch(e){
+
+			}
 		},
 		onFavorite(){
 			this.favorite = !this.favorite;
@@ -894,9 +912,16 @@ Vue.component('reader', {
 			this.audio = new Player({block: this.repeat == 0 ? [] : this.block});
 			this.audio.setting = setting;
 			this.audio.state = "stop";
-			
-			this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
+
+			// if(this.$isFlutter() && typeof this.source.mp3Path == 'string') {
+			// 	console.log(this.source.mp3Path)
+			// 	this.url = await this.$toBase64(this.source.mp3Path);
+			// 	// data:audio/mpeg;base64,
+			// } else
+				this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
 			this.audio.src = this.url;
+			// console.log(this.url)
+
 			document.getElementById("readerFrame").style.zoom = this.zoom;
 			window.addEventListener('keydown', this.onKeydown, false);
 			// window.addEventListener('resize', this.onResize, false);
