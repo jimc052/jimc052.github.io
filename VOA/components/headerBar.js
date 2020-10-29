@@ -2,7 +2,7 @@ Vue.component('header-bar', {
 	template: `<div :style="{background: '#2d8cf0', 
 				'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
 				'align-items': 'center',
-				height: '50px',
+				height: '50px', 'padding-right': '5px'
 				}">
 			<Icon :type="icon" size="28" color="white" @click.native="onClickIcon" 
 				style="cursor: pointer; margin-left: 10px;"></Icon>

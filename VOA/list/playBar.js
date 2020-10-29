@@ -219,20 +219,11 @@ Vue.component('play-bar', {
 			this.currentTime = 0;
 			console.log("play.index: " + this.index + ", time: " + (new Date()).toString("hh:MM:ss.ms"))
 			try{
-				// // 還沒想好，notifiction 如何溝通 2020-06-05
-				/*
-				let url = !this.$isFlutter() ? ""
-					: await this.$MP3(this.datas[this.index].report, this.datas[this.index].key);
-
-				// console.log("this.$MP3: " + url + " ................")
-				if(url.length == 0) {
-					url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
-						"/" + this.datas[this.index].key + ".mp3");
-				}
-				*/
-				// console.log("FireStore: " + url )
-				let url = await FireStore.downloadFileURL("VOA/" + this.datas[this.index].report + 
-						"/" + this.datas[this.index].key + ".mp3");
+				let url = "", row = this.datas[this.index];
+				if(this.$isFlutter() && typeof row.mp3Path == 'string') {
+					url = await this.$toBase64(row.mp3Path);
+				} else
+					url = await FireStore.downloadFileURL("VOA/" + row.report + "/" + row.key + ".mp3");
 				this.audio.src = url;
 				this.audio.playbackRate = this.rate;
 			} catch(error) {

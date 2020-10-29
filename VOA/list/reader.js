@@ -257,6 +257,8 @@ Vue.component('reader', {
 			this.broadcast.$on('onFlutter', this.onFlutter);
 			this.isDownload = typeof this.source.mp3Path == 'string' ? true : false
 			try{
+				// let url = await this.$toBase64(this.source.mp3Path);
+				// console.log(url)
 				// let checkMP3 = await this.$checkMP3(this.source.report, this.source.key);
 				// console.log("checkMP3: " + checkMP3 + ".............................")
 				// await this.$delMP3(this.source.report, this.source.key);
@@ -432,7 +434,7 @@ Vue.component('reader', {
 			this.onParagraphOK([this.block[0] + index, this.block[1] + index])
 		},
 		onFlutter(arg){
-			console.log("onFlutter: " + arg)
+			// console.log("onFlutter: " + arg)
 			if(arg == "unplugged") { // 耳機，已拔
 				this.audio.pause();
 			} else if(arg == "action.TOGGLE") { //
@@ -913,14 +915,11 @@ Vue.component('reader', {
 			this.audio.setting = setting;
 			this.audio.state = "stop";
 
-			// if(this.$isFlutter() && typeof this.source.mp3Path == 'string') {
-			// 	console.log(this.source.mp3Path)
-			// 	this.url = await this.$toBase64(this.source.mp3Path);
-			// 	// data:audio/mpeg;base64,
-			// } else
+			if(this.$isFlutter() && typeof this.source.mp3Path == 'string') {
+				this.url = await this.$toBase64(this.source.mp3Path);
+			} else
 				this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
 			this.audio.src = this.url;
-			// console.log(this.url)
 
 			document.getElementById("readerFrame").style.zoom = this.zoom;
 			window.addEventListener('keydown', this.onKeydown, false);

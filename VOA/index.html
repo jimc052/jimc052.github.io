@@ -4,7 +4,7 @@
 	<title>VOA</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
-	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src * blob: data:; img-src * filesystem: data:">
 	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
 
 	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
@@ -33,7 +33,7 @@
 	<script src="list/vocabulary.js"></script>
 	<script src="list/vocList.js"></script>
 	<script src="list/paragraph.js"></script>
-	<script src="list/medialPlayer.js"></script>
+	<!--  <script src="list/medialPlayer.js"></script> -->
 	<script src="list.js"></script>
 	<script src="login.js"></script>
 	<style>
@@ -103,6 +103,9 @@
 		}
 		#paragraph .ivu-modal-footer button+button {
 				margin-left: 4px !important;
+		}
+		.ivu-dropdown-rel a {
+			padding: 3px !important;
 		}
 	</style>
 </head>

@@ -74,8 +74,7 @@ class Player {
 	}
 	checkLoop() {
 		this.isLoop = this._setting.range == "paragraph" && 
-					this.block.length == 2 && this.block[0] == this.block[1] ? true : false;
-		console.log("isLoop: " + this.isLoop)
+			this.block.length == 2 && this.block[0] == this.block[1] ? true : false;
 	}
 	timing(){
 		clearTimeout(this.timeID);
@@ -408,6 +407,10 @@ class Player {
 
 	set src(value) {
 		this.audio.src = value;
+		console.log("src: " + this.audio.src)
+	}
+	get src() {
+		return this.audio.src;
 	}
 
 	set setting(value) {

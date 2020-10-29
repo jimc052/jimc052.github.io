@@ -9,12 +9,12 @@ Vue.component('list-item', {
 							@click.stop='onClickItem(index)'>
 							<div style="font-size: 20px;" class="text-overflow">{{item.title}}</div>
 							<div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-								<div style="width: 35px;">{{index + 1}}</div>
+								<div style="width: 32px;">{{index + 1}}</div>
 								<div v-if="item.html.indexOf(\`<div class='chinese'>\`) > -1" style="font-size: 8px; color: #c01921;">
 								譯
 								</div>
 								<div style="flex: 1;"></div>
-								<div style="width: 130px; text-align: right; margin-right: 10px;"
+								<div style="width: 80px; text-align: right; margin-right: 10px;"
 									v-if="typeof item.extend == 'object' && typeof item.extend.listenDate == 'number'"
 									:style="{color: today.between(new Date(item.extend.listenDate)) <= 7 ? '#c01921' : '#C0C0C0'}"
 								>
