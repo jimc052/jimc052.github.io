@@ -96,6 +96,10 @@ Vue.prototype.$isLogin = function () {
 	return FireStore.login;
 }
 
+Vue.prototype.$isDebug = function() {
+	return location.href.indexOf("file:///") > -1 ? true : false;
+}
+
 Vue.prototype.$yahoo = function (word) {
 	if(word.indexOf("(") > -1) {
 		word = word.substr(0, word.indexOf("("))

@@ -4,7 +4,7 @@ Vue.component('list', {
 	template:  `<div id="list" style="display: flex; flex-direction: column; position: relative; overflow: hidden;">
 		<header-bar :title="title">
 			<div slot="right" v-if="$isLogin()">
-				<Icon v-if="$isAdmin" type="md-refresh" size="22" @click.native="onRefresh" 
+				<Icon v-if="$isAdmin() && $isDebug() && $isFlutter()" type="md-refresh" size="22" @click.native="onRefresh" 
 					:style="{cursor: 'pointer', color: 'white', 'margin-right': '10px'} "
 				/>
 				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
@@ -379,6 +379,10 @@ Vue.component('list', {
 			if(typeof value == "string" && value.length > 0) {		
 				this.retrieve();
 			}
+			// if(this.$isFlutter()) {
+			// 	let obj = {func: "playReport", report: value}
+			// 	Flutter.postMessage(JSON.stringify(obj));				
+			// }
 		}
 	}
 });

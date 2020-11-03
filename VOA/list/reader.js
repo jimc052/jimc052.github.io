@@ -9,7 +9,7 @@ Vue.component('reader', {
 		<header-bar :title="title" slot="header" icon="md-arrow-back" @goBack="onPopState"
 		>
 			<div slot="right" v-if="$isLogin()">
-				<Icon v-if="$isAdmin" type="md-refresh" size="22" @click.native="onRefresh" 
+				<Icon v-if="$isAdmin() && $isDebug() && $isFlutter()" type="md-refresh" size="22" @click.native="onRefresh" 
 					:style="{cursor: 'pointer', color: 'white', 'margin-right': '5px'} "
 			 	/>
 

@@ -127,7 +127,7 @@
 				>
 
 				</div>
-				Jim Chen 2020-10-27 08:00(VOA)
+				Jim Chen 2020-11-03 12:00(VOA)
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -138,14 +138,6 @@
 	// https://www.iviewui.com/components/menu
 	// https://www.iviewui.com/components/modal
 	// https://www.iviewui.com/components/icon
-	/*
-	webview 無法從 SD 卡讀檔案
-		file:///storage/emulated/0/VOA/農業報導/04-05-11=17113.mp3
-		file:///storage/emulated/0/VOA/%E8%BE%B2%E6%A5%AD%E5%A0%B1%E5%B0%8E/04-05-11=17113.mp3
-		Not allowed to load local resource
-	webview 從 java 的 base64 給 js 會 error
-
-	*/
 	var vm = null;
 	window.onload = async function(){
 		FireStore.initial();
@@ -199,12 +191,6 @@
 							self.broadcast.$emit('onResize');
 					})()
 				}
-				
-				// let app = document.getElementById("app"); 
-				// app.requestFullscreen().catch(err => {
-				// 	alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-				// });
-
 				function checkConnect(callback) {
 					if(self.$isFlutter()) {
 						Flutter.postMessage(JSON.stringify({state: "app.mounted"}));
@@ -310,7 +296,6 @@
 								}
 							});									
 						}
-				
 					}
 				}
 			}
@@ -321,10 +306,5 @@
 		console.log("callJS: " + arg + " ...................." + navigator.userAgent)
 		return  "navigator.userAgent: " + navigator.userAgent;
 	}
-/* 	
-	if(this.$isFlutter()) // js call flutter
-		Flutter.postMessage('js call flutter success!! 陳進明')
-	
-	*/
 </script>
 </html>
