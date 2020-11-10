@@ -4,7 +4,13 @@ Vue.component('list', {
 	template:  `<div id="list" style="display: flex; flex-direction: column; position: relative; overflow: hidden;">
 		<header-bar :title="title">
 			<div slot="right" v-if="$isLogin()">
-				<Icon v-if="$isAdmin() && $isDebug() && $isFlutter()" type="md-refresh" size="22" @click.native="onRefresh" 
+				
+				<Icon v-if="$isDebug() && $isFlutter()" type="md-refresh" size="22" 
+					@click.native="onRefresh"
+					:style="{cursor: 'pointer', color: 'white', 'margin-right': '10px'} "
+				/>
+				<Icon v-if="! $isSmallScreen() && $isFlutter()" type="md-tablet-portrait" 
+					@click.native="onRotation" 
 					:style="{cursor: 'pointer', color: 'white', 'margin-right': '10px'} "
 				/>
 				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
@@ -93,6 +99,10 @@ Vue.component('list', {
 	destroyed() {
   },
 	methods: {
+		onRotation(){
+			let obj = {func: "SCREEN.ORIENTATION"}
+			Flutter.postMessage(JSON.stringify(obj));
+		},
 		onRefresh(){
 			location.reload();
 		},

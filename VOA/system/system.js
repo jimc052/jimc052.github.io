@@ -97,7 +97,7 @@ Vue.prototype.$isLogin = function () {
 }
 
 Vue.prototype.$isDebug = function() {
-	return location.href.indexOf("file:///") > -1 ? true : false;
+	return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
 }
 
 Vue.prototype.$yahoo = function (word) {
