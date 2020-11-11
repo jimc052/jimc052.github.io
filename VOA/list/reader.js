@@ -156,6 +156,7 @@ Vue.component('reader', {
 					:color="block[1] == audio.LRCs.length - 1 ? 'grey' : 'white'"
 					class="button" :class="{disable: block[1] == audio.LRCs.length - 1}"
 					@click.native="moveBlock(block[1] == audio.LRCs.length - 1 ? null : 1)" />
+				
 			</div>
 
 			<div v-if="repeat == 0" style="margin: 0px 10px 0px 5px; font-size: 20px;">
@@ -169,7 +170,15 @@ Vue.component('reader', {
 				:marks="marks" />
 
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
-
+			<div v-if="state != 'stop'"> <!-- 還沒寫 -->
+				<Icon v-if="state == 'interrupt'" 
+					type="md-repeat" size="20" class="button" 
+					@click.native="onInterrupt()" />
+				<Icon type="md-rewind" size="20" class="button" 
+					@click.native="onRewind" />
+				<Icon type="md-fastforward" size="20" class="button" 
+				@click.native="onFastforward"/>
+			</div>
 			<Dropdown v-if="state != 'stop'" :trigger="$isSmallScreen() ? 'click' : 'hover'">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
 					{{convertTime((sleep * 60) - passTime)}}
@@ -290,6 +299,16 @@ Vue.component('reader', {
 		this.$Modal.remove();
   },
 	methods: {
+		onInterrupt(){
+			if(this.state == "interrupt" || this.audio.state == "pendding") 
+				this.audio.continue();
+		},
+		onRewind(){
+			this.audio.gotoLRC(-1)
+		},
+		onFastforward(){
+			this.audio.gotoLRC(1)
+		},
 		onRefresh(){
 			location.reload();
 		},
@@ -1129,8 +1148,7 @@ Vue.component('reader', {
 			} else if(sk && pk && char == "V" && this.login == true && this.mode != "edit"){ // Cmd ＋ shift + V, 單字清單
 				this.displayVocabulary = !this.displayVocabulary;
 			} else if(code == 32){ //空格鍵，interrupt
-				if(this.state == "interrupt" || this.audio.state == "pendding") 
-					this.audio.continue();
+				this.onInterrupt();
 			} else if(this.block.length == 2 && ((this.block[0] == this.block[1]) || (pk == true && sk == true)) && (code == 38 || code == 40)) { // up, down； 移動 blocks
 				let arr = document.querySelectorAll("#renderMarker .active");
 				if(arr.length > 0){

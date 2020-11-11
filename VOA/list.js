@@ -13,10 +13,17 @@ Vue.component('list', {
 					@click.native="onRotation" 
 					:style="{cursor: 'pointer', color: 'white', 'margin-right': '10px'} "
 				/>
-				<Icon :type="playList == true ? 'md-heart' : 'md-heart-outline'"
+				<Icon v-if="$isFlutter()" 
+					type="md-download"
+					size="22" 
+					@click.native="onChangeList"
+					:style="{cursor: 'pointer', color: playList == true ? '#c01921' : '#e5e5e5'} "
+				/>
+				<Icon v-else :type="playList == true ? 'md-heart' : 'md-heart-outline'"
 					size="22" @click.native="onChangeList" 
-					:style="{cursor: 'pointer', 'margin-right': '0px', 
+					:style="{cursor: 'pointer', 
 					color: playList == true ? '#c01921' : '#e5e5e5'}" />
+				
 			</div>
 			<Dropdown slot="right" 
 				@on-click="onClickMore($event)" 
@@ -256,7 +263,10 @@ Vue.component('list', {
 
 				if(this.playList == true) {
 					arr = arr.filter(item=>{
-						return typeof item.extend == "object" && item.extend.favorite == true
+						if(this.$isFlutter()) { // android 只能連續播放，只能用 local 
+							return typeof item.mp3Path == "string" && item.mp3Path.length > 0;
+						} else
+							return typeof item.extend == "object" && item.extend.favorite == true
 					})
 				}
 				
@@ -269,29 +279,8 @@ Vue.component('list', {
 				vm.showMessage(typeof e == "object" ? JSON.stringify(e) : e);
 			}
 
-			if(this.playList == true && this.$isFlutter() && this.datasPlayList.length > 0){
-				// 還沒想好，notifiction 如何溝通 2020-06-05
-				/*
-				arr = [];
-				let index = 0;
-				this.datasPlayList.forEach((item) =>{
-					if(item.key == this.dataKey) index = arr.length;
-					// console.log(index + " = " + item.key + " = " + this.dataKey + " => " + index)
-
-					arr.push({key: item.key, title: item.title})
-				})
-				let obj = {
-					playList: arr,
-					index: index,
-					report: this.datasPlayList[0].report, 
-					repeat: this.repeat, 
-					// sleep: this.sleep,
-					rate: this.rate
-				}
-				Flutter.postMessage(JSON.stringify(obj));
-				// console.log(JSON.stringify(obj))
-				*/
-			}
+			// if(this.playList == true && this.$isFlutter() && this.datasPlayList.length > 0){
+			// }
 			setTimeout(()=>{
 				vm.loading(false);
 			}, self.datas.length * 5);
