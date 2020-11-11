@@ -170,7 +170,7 @@ Vue.component('reader', {
 				:marks="marks" />
 
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
-			<div v-if="state != 'stop'"> <!-- 還沒寫 -->
+			<div v-if="repeat > 0 && state != 'stop'">
 				<Icon v-if="state == 'interrupt'" 
 					type="md-repeat" size="20" class="button" 
 					@click.native="onInterrupt()" />
