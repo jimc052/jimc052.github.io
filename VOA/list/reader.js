@@ -170,16 +170,17 @@ Vue.component('reader', {
 				:marks="marks" />
 
 			<div v-else style="flex: 1; text-align: center;">{{msg}}</div>
-			<div v-if="repeat > 0 && state != 'stop'">
+			<div v-if="repeat > 0 && state != 'stop' && width > 600">
 				<Icon v-if="state == 'interrupt'" 
 					type="md-repeat" size="20" class="button" 
 					@click.native="onInterrupt()" />
+
 				<Icon type="md-rewind" size="20" class="button" 
 					@click.native="onRewind" />
 				<Icon type="md-fastforward" size="20" class="button" 
 				@click.native="onFastforward"/>
 			</div>
-			<Dropdown v-if="state != 'stop'" :trigger="$isSmallScreen() ? 'click' : 'hover'">
+			<Dropdown v-if="state != 'stop'" :trigger="$isSmallScreen() ? 'click' : 'hover'" style="min-width: 80px">
 				<a href="javascript:void(0)"  style="padding: 10px 10px; display: inline-block;">
 					{{convertTime((sleep * 60) - passTime)}}
 					<Icon type="ios-arrow-down"></Icon>
@@ -209,6 +210,7 @@ Vue.component('reader', {
 	},
 	data() {
 		return {
+			width: 320,
 			modal: true,
 			login: false,
 			title: "",
@@ -845,6 +847,7 @@ Vue.component('reader', {
 		onResize(){
 			clearTimeout(this.resizeId);
 			this.resizeId = setTimeout(()=>{
+				this.width = document.body.clientWidth;
 				this.renderBubble();
 			}, 100);
 		},
