@@ -76,7 +76,6 @@
 			}
 		},
 		mounted() {
-			
 			let self = this;
 			this.editor = CodeMirror.fromTextArea(this.$refs.textarea, {
 				lineNumbers: true,
@@ -124,7 +123,8 @@
 					setTimeout(() => {
 						if (cm.getValue().length > 0) {
 							try {
-								let json = JSON.parse(cm.getValue());
+								let s = cm.getValue();
+								let json = s.trim().toUpperCase().indexOf("INSERT ") == 0 ? sqlTranslate(s) : JSON.parse(s);
 								if(typeof json == "object") {
 									let s = JSON.stringify(json, null, 2)
 									cm.setValue(s);
@@ -138,6 +138,75 @@
 					}, 600);
 				}
 			});
+
+			function sqlTranslate(sql) {
+				let json = {};
+				let arr = sql.split("\n");
+				arr.forEach(item=>{
+					let j = parseRow(item);
+					if(typeof j == "object"){
+						if(typeof json[j.tbl] == "undefined") json[j.tbl] = [];
+						json[j.tbl].push(j.data)						
+					}
+				});
+				return json;
+			}
+
+			function parseRow(row){
+				let i = row.indexOf("(");
+				if(i == -1){
+					return "";
+				}
+				let j = row.indexOf(")");
+				let tbl = row.substr(0, i).toUpperCase().replace("INSERT INTO ", "").replace("INSERT ", "").trim();
+				let s1 = row.substring(i + 1, j);
+				let arr1 = s1.split(",");
+				row = row.substring(j + 1).replace("Values", "").replace("values", "").trim();
+				console.log(s1)
+
+				i = row.indexOf("(", j + 1);
+				j = row.lastIndexOf(")");
+				// console.log(i + " - " + j)
+				let s2 = row.substring(1, j);
+				let arr2 = s2.split(",");
+				for(let i = arr2.length - 1; i > 0; i--) {
+					if(arr2[i].indexOf(")") > -1 && arr2[i].indexOf("(") == -1) {
+						arr2[i -1] += ", " + arr2[i];
+						// console.log(arr2[i -1])
+						arr2.splice(i, 1);
+					}
+				}
+
+				// console.log(s2)
+				let s3 = "", max = arr1.length >= arr2.length ? arr1.length : arr2.length;
+				let data = {};
+				for(let i = 0; i < arr1.length; i++){
+					let colName = i < arr1.length ? arr1[i].trim() :undefined;
+					let value = i < arr2.length ? arr2[i].trim() :undefined;
+					console.log(i + ": " + colName + " = " + value)
+					if(colName == undefined) {
+						alert("第 " + (i + 1) + " 個欄位名稱有問題")
+						return;
+					} else if(value == undefined) {
+						alert("第 " + (i + 1) + " 個值有問題")
+						return;
+					} else {
+						if(colName == "MODIFYDATE" || colName == "SITE" || colName == "T_STORE"  
+							// || colName == "TM_NO" 
+							// || arr1[i] == "T_DAY" || arr1[i] == "T_SER_NO"
+						) {
+							continue;
+						} else if(arr2[i].toUpperCase() == "NULL")
+							continue;
+						// s3 += "\t" + colName + ": " + value + (i == arr1.length -1 ? "" : ",\n")
+						if(value.indexOf("'") == 0) {
+							value = value.substr(1).substr(0, value.length - 2)
+						}
+						data[colName] = value;
+					}
+				}
+				return {tbl, data};
+			}
 
 			// this.editor.foldCode(CodeMirror.Pos(1, 0));
 

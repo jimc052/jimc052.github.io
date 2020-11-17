@@ -46,7 +46,7 @@ Vue.component('editor', {
 				} else if(json.action == "close"){
 					this.$emit("onClose");
 				} else if(json.action == "error") {
-					alert("內容錯誤!!")
+					alert("內容錯誤!!");
 				}
 			}
 		},
