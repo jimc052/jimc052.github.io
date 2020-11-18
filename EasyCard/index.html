@@ -1,0 +1,242 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>悠遊卡 - Log</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+
+	<link href="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/styles/iview.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/iview.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/locale/zh-TW.min.js"></script>
+  <script src="./item.js"></script>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			/* user-select: none; */
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			visibility: hidden;
+			color: rgb(0, 0, 0);
+		}
+		html, body, #app, #empty {
+			min-height: 100% !important;
+			height: 100%;
+		}
+		.ivu-modal-body {
+			overflow: hidden !important;
+		}
+		#app {
+			overflow-y: auto;
+		}
+    #empty {
+      display: flex; 
+      justify-content: center; 
+      align-items:  center;
+      font-size: 30px;
+      /* color: #eee; */
+    }
+    .dataview {
+      margin: 10px;
+    }
+
+    .dataview + .dataview {
+      margin-top: 0px;
+    }
+		.rows {
+			display: flex; 
+			flex-direction: column; 
+			border: 1px solid #007dc5;
+			padding: 5px 5px;
+		}
+		.req {
+			border-color: #9dcae4;
+		}
+	</style>
+</head>
+<body style="overflow: hidden;">
+	<div id="app">
+    <div v-if="result.length == 0 " id="empty">
+      請修改副檔名為 txt；<br/>
+      並拖曳檔案到這裡
+    </div>
+    <div class="dataview" v-else v-for="(item, index) in result" :key="index">
+      <vue-item :item="item" />
+    </div>
+	</div>
+</body>
+<script>
+	var vm = null;
+	window.onload = async function(){
+		Vue.prototype.$storage = function (key, value) {
+			if(typeof key == "string" && typeof value == "undefined"){
+				let s = window.localStorage[key];
+				if(typeof s == "undefined"){
+					return {};
+				}
+				return JSON.parse(s);
+			} 
+			else {
+				if(value == null)
+					delete window.localStorage[key];
+				else
+					window.localStorage[key] = typeof value == "object" ? JSON.stringify(value) : value;
+			}
+		}
+
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					modal: false,
+					result: [],
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				let self = this;
+				document.body.style.visibility = "visible";
+
+				window.onresize = () => {
+					return (() => {
+							// self.screenWidth = document.body.clientWidth;
+							self.broadcast.$emit('onResize');
+					})()
+				}
+				let s = this.$storage("EasyCardLog");
+				if(Array.isArray(s)) {
+					this.result = s;
+				}
+				console.log(s)
+				// 
+			},
+			methods: {
+				showMessage(){
+					// vm.loading(false);
+					let args = arguments;
+					this.$Modal.error({
+						title: "VOA",
+						closable: true,
+						render: h => {
+							let fontSize = 20;
+							let arr = [];
+							function createEl(index) {
+								if(index == 1)
+									fontSize = fontSize - 2;
+								arr.push( h('div', {
+									style: {
+										color: index == 0 ? 'red' : "#5e5a6e",
+										fontSize: fontSize + 'px',
+										textAlign: "left"
+									}
+								}, args[index] ));
+								if(index < args.length - 1) createEl(index + 1);
+							}
+							createEl(0)
+
+							return h('span', {style: {maxWidth: "80%"}}, arr)
+						}
+					});
+				},
+				loading(arg) {
+					if(typeof arg == "boolean" && arg == false) {
+						this.spinID = setTimeout(()=>{
+							this.$Spin.hide();
+						}, 1000)
+					} else {
+						let span = document.querySelector(".ivu-spin-main");
+						if(span == null) {
+							clearTimeout(this.spinID)
+							this.$Spin.hide();
+							this.$Spin.show({
+								render: (h) => {
+									return h('div', [
+										h('Icon', {
+											'class': 'spin-icon-load',
+											props: {
+												type: 'ios-loading',
+												size: 30
+											}
+										}),
+										h('div', typeof arg == "string" ? arg : 'Loading')
+									])
+								}
+							});									
+						}
+				
+					}
+				}
+			}
+		});
+		drop(vm.$el);
+	}
+
+	function drop(el, callback) {
+		function stopEvent(evt) {
+			evt.stopPropagation();
+			evt.preventDefault();
+		}
+		el.addEventListener('dragover',function(e){
+			stopEvent(e);
+			if(typeof callback == "function") callback('dragover');
+		}, false);
+
+		el.addEventListener('dragleave',function(e){
+			stopEvent(e);
+			if(typeof callback == "function") callback('dragleave');
+		}, false);
+
+		el.addEventListener('drop',function(e){
+			stopEvent(e);
+			if(typeof callback == "function") callback('drop');
+      let files = e.dataTransfer.files;
+      // console.log(files)
+			for(let key in files){
+				if(typeof files[key] == "object" && (files[key].name.indexOf(".txt") > -1)) {
+					let reader = new FileReader();
+					reader.onload = function (e) {
+						vm.result = translate(e.target.result);
+						vm.$storage("EasyCardLog", vm.result);
+						if(typeof callback == "function") {
+							callback('drop', {name: files[key].name, txt: e.target.result})
+						}
+					}
+					reader.readAsText(files[key]);
+				}	else if(typeof files[key] == "object"){
+					alert("檔案格式錯誤");
+					return;
+				}
+			}
+		}, false);
+  }
+  
+  function translate(params) {
+    let s = [];
+    let arr = params.split("\n");
+    arr.forEach((el, index) => {
+      // console.log(el)
+      if(el.indexOf("TM REQ :") == 0 || el.indexOf("TM RES :") == 0) {
+        // s += (s.length == 0 ? "" : "<br>") + arr[index - 1] + "<br>" + el;
+        s.push({
+          time: arr[index - 1],
+          data: el
+        })
+      }
+    });
+    return s;
+  }
+</script>
+</html>
