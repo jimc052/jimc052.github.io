@@ -281,6 +281,7 @@ Vue.component('reader', {
 				console.log(e)
 			}
 		}
+		this.onResize();
 	},
 	destroyed() {
 		this.audio.src = "";
