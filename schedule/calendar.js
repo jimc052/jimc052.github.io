@@ -123,7 +123,8 @@ Vue.component('calendar', {
 			if(this.isToday() == false) {
 				alert("日期逾時，請更新網頁")
 			} else {
-				let url = 'https://jd.jabezpos.com/?designer=BCC_EIP&database=ERPS&solution=SOLUTION1';
+				let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
+				// 'https://jd.jabezpos.com/?designer=BCC_EIP&database=ERPS&solution=SOLUTION1';
 				// let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
 				window.open(url, "",
 					"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
