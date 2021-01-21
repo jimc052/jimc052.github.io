@@ -1,5 +1,5 @@
 Vue.component('vue-item', { 
-  template:  `<div class="rows" :class="{req: type == 'REQ'}">
+  template:  `<div class="rows" :class="{req: type == 'REQ'}" @click="onClick">
     <div v-if="type == 'REQ'">
       {{item.time.substr(11, 12) + " " + type +
         "：" + getT0300 +
@@ -12,7 +12,7 @@ Vue.component('vue-item', {
       <div :style="{color: json.result == 'OK' ? 'black' : 'red'}">
         {{"結果：" + json.result}}
       </div>
-      <div v-if="typeof json.T0409 == 'string' && json.T0409.length > 0" style="color: red;">
+      <div v-if="typeof json.T0409 == 'string' && json.T0409.length > 0" style="color: green; font-weight: 700;">
         {{"儲值金：" + json.T0409 }}
       </div>
     </div>
@@ -31,6 +31,7 @@ Vue.component('vue-item', {
 		
 	},
 	async mounted () {
+    // console.log()
     this.type = this.item.data.indexOf('TM REQ') > -1 ? "REQ" : "RES";
     let T3900 = retrieve(this.item.data, "T3900"), 
       T3901 = retrieve(this.item.data, "T3901"), 
@@ -274,7 +275,41 @@ Vue.component('vue-item', {
 	destroyed() {
   },
 	methods: {
-		
+		onClick(){
+      // alert(this.item.data)
+      this.$Modal.confirm({
+        title: "電文",
+        width: document.body.clientWidth - 100,
+        render: (h) => {
+          return h(
+            "textarea",
+            {
+              attrs: {
+                id: "clipboard",
+                style:
+                  "height: " +
+                  (document.body.clientHeight - 300) +
+                  "px; width: 100%; padding: 5px; font-size: 16px; font-weight: 700;",
+                readonly: true,
+              },
+              props: {
+                // read
+              },
+              on: {
+                blur: (event) => {
+                  this.value = event.target.value;
+                },
+                paste: (event) => {
+                  // console.log(event)
+                },
+              },
+            },
+            this.item.data
+          );
+        },
+        onOk: () => {},
+      });
+    }
   },
   computed: {
     getT0300(){

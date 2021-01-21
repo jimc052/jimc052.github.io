@@ -57,6 +57,7 @@
 			flex-direction: column; 
 			border: 1px solid #007dc5;
 			padding: 5px 5px;
+			cursor: pointer;
 		}
 		.req {
 			border-color: #9dcae4;
@@ -65,13 +66,23 @@
 </head>
 <body style="overflow: hidden;">
 	<div id="app">
-    <div v-if="result.length == 0 " id="empty">
+    <div v-if="title.length == 0 && result.length == 0" id="empty">
       請修改副檔名為 txt；<br/>
       並拖曳檔案到這裡
-    </div>
-    <div class="dataview" v-else v-for="(item, index) in result" :key="index">
-      <vue-item :item="item" />
-    </div>
+		</div>
+		<div v-else>
+			<div style="padding: 5px 10px 0px 10px; display: flex; flex-direction: row;">
+				<Button type="success" size="large"  @click="onClick" style="width: 100px;">清除</Button>
+				<div style="font-size: 20px; font-weight: 700; margin-left: 10px;">{{title}}</div>
+			</div>
+			
+			<div class="dataview"  v-for="(item, index) in result" :key="index">
+				<vue-item :item="item" />
+			</div>
+		</div>
+		<div v-if="spin" class="demo-spin-container">
+			<Spin fix></Spin>
+	</div>
 	</div>
 </body>
 <script>
@@ -83,13 +94,17 @@
 				if(typeof s == "undefined"){
 					return {};
 				}
-				return JSON.parse(s);
+				if(s.indexOf("[") == 0 || s.indexOf("{") == 0)
+					return JSON.parse(s);
+				else 
+					return s;
 			} 
 			else {
 				if(value == null)
 					delete window.localStorage[key];
-				else
+				else {
 					window.localStorage[key] = typeof value == "object" ? JSON.stringify(value) : value;
+				}
 			}
 		}
 
@@ -101,6 +116,8 @@
 				return {
 					modal: false,
 					result: [],
+					title: "",
+					spin: false
 				};
 			},
 			created() {
@@ -112,18 +129,24 @@
 
 				window.onresize = () => {
 					return (() => {
-							// self.screenWidth = document.body.clientWidth;
-							self.broadcast.$emit('onResize');
+						self.broadcast.$emit('onResize');
 					})()
 				}
 				let s = this.$storage("EasyCardLog");
 				if(Array.isArray(s)) {
 					this.result = s;
+					let s2 = this.$storage("EasyCardLog-title");
+					if(typeof s2 == "string")
+						this.title = s2;
 				}
-				console.log(s)
-				// 
 			},
 			methods: {
+				onClick(){
+					this.result = [];
+					this.title = "";
+					this.$storage("EasyCardLog", null)
+					this.$storage("EasyCardLog-title", null)
+				},
 				showMessage(){
 					// vm.loading(false);
 					let args = arguments;
@@ -176,12 +199,21 @@
 								}
 							});									
 						}
-				
 					}
 				}
 			}
 		});
-		drop(vm.$el);
+		drop(vm.$el, (evt, result)=>{
+			vm.spin = true;
+			vm.title = result.name;
+			vm.result = [];
+			setTimeout(()=>{
+				vm.result = translate(result.txt);
+				vm.$storage("EasyCardLog-title", vm.title);
+				vm.$storage("EasyCardLog", vm.result);	
+				vm.spin = false;			
+			}, 1000);
+		});
 	}
 
 	function drop(el, callback) {
@@ -191,28 +223,31 @@
 		}
 		el.addEventListener('dragover',function(e){
 			stopEvent(e);
-			if(typeof callback == "function") callback('dragover');
+			// if(typeof callback == "function") callback('dragover');
 		}, false);
 
 		el.addEventListener('dragleave',function(e){
 			stopEvent(e);
-			if(typeof callback == "function") callback('dragleave');
+			// if(typeof callback == "function") callback('dragleave');
 		}, false);
 
 		el.addEventListener('drop',function(e){
 			stopEvent(e);
-			if(typeof callback == "function") callback('drop');
+			// if(typeof callback == "function") callback('drop');
       let files = e.dataTransfer.files;
       // console.log(files)
 			for(let key in files){
 				if(typeof files[key] == "object" && (files[key].name.indexOf(".txt") > -1)) {
 					let reader = new FileReader();
 					reader.onload = function (e) {
-						vm.result = translate(e.target.result);
-						vm.$storage("EasyCardLog", vm.result);
-						if(typeof callback == "function") {
-							callback('drop', {name: files[key].name, txt: e.target.result})
-						}
+						callback('drop', {name: files[key].name, txt: e.target.result})
+						// vm.result = translate(e.target.result);
+						// vm.title = files[key].name;
+						// vm.$storage("EasyCardLog-title", files[key].name);
+						// vm.$storage("EasyCardLog", vm.result);
+						// if(typeof callback == "function") {
+						// 	callback('drop', {name: files[key].name, txt: e.target.result})
+						// }
 					}
 					reader.readAsText(files[key]);
 				}	else if(typeof files[key] == "object"){
