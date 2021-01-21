@@ -186,7 +186,7 @@ Vue.component('vue-item', {
           msg +=  errMsg.Fixed["03"];
       } else if(parseInt(T3901, 10) <= -1 && parseInt(T3901, 10) >= -11){
         if(errorTimes == 0){
-          setTimeout(execQP1000, 500);
+          // setTimeout(execQP1000, 500);
           errorTimes++;
           return;
         } else 
