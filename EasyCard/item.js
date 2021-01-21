@@ -31,6 +31,8 @@ Vue.component('vue-item', {
 		
 	},
 	async mounted () {
+    let errorTimes = 0;
+
     // console.log()
     this.type = this.item.data.indexOf('TM REQ') > -1 ? "REQ" : "RES";
     let T3900 = retrieve(this.item.data, "T3900"), 
