@@ -175,12 +175,6 @@ Vue.component('calendar', {
 					this.btn = (this.btn == "上班") ? "下班" : "";
 				}
 			}
-			// window.postMessage({cmd: 'clearAlarms'}, "*");
-			// window.postMessage({cmd: 'getAlarms'}, "*");
-			// window.postMessage({cmd: 'setAlarm', name: "測試 alarm", 
-			// 	when: Date.now() + (1000 * 60) ,
-			// 	periodInMinutes: 3
-			// }, "*");
 		},
 		setAlarm(date){
 			// if(date.length < 10) return;
