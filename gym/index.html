@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Youtube-健身</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
+	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
+	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
+	
+	<script src="https://unpkg.com/marked@0.3.6"></script>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+	<script src="./menu.js"></script>
+	<script src="./player.js"></script>
+	
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			/* visibility: hidden; */
+			color: rgb(0, 0, 0);
+		}
+		html, body, #app {
+			min-height: 100% !important;
+			height: 100%;
+		}
+		.ivu-menu-item-group-title {
+			display: none !important;
+		}
+	
+	</style>
+</head>
+<body style="overflow: hidden;">
+  <div id="app" style="display: flex; flex-direction: row;">
+		<div>
+			<gym-menu @on-select="onSelect" />
+		</div>
+		<div style="flex: 1;">
+			<div id="playerParent">
+				<div id="player"></div>
+			</div>
+			<gym-player ref="player" @on-click="onClick" />
+		</div>
+	</div>
+</body>
+<script src="https://www.youtube.com/iframe_api"></script>
+<script>
+	var vm = null, player, index, videoId;
+	window.onload = async function(){
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					index: -1,
+					// menu: menuItem, 
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				window.onresize = () => {
+					return (() => {
+							// self.screenWidth = document.body.clientWidth;
+							// self.broadcast.$emit('onResize');
+					})()
+				}
+			},
+			methods: {
+        async onSelect(menuIndex, item){
+					let node = document.getElementById("player");
+					if (node != null && node.parentNode) {
+						node.parentNode.removeChild(node);
+					}
+					var newDiv = document.createElement('DIV');
+					newDiv.id = "player";
+					var myList = document.getElementById('playerParent');
+					myList.appendChild(newDiv);
+					videoId = item.id;
+					this.$refs["player"].play(item);
+					player = new YT.Player('player', {
+						videoId: item.id,
+						events: {
+							'onReady': onPlayerReady,
+							'onStateChange': onPlayerStateChange
+						}
+					});
+        },
+				onClick(item) {
+					console.log(item)
+					player.loadVideoById({
+						videoId: videoId,
+						startSeconds: item.start,
+						endSeconds: item.end 
+					})
+				}
+			}
+		})
+	}
+
+	function onYouTubeIframeAPIReady() {
+		console.log("onYouTubeIframeAPIReady................")
+		// player = new YT.Player('player', {
+		// 	videoId: "66gO0V2M-7w",
+		// 	startSeconds: 30,
+		// 	endSeconds: 50,
+		// 	events: {
+		// 		'onReady': onPlayerReady,
+		// 		'onStateChange': onPlayerStateChange
+		// 	}
+		// });
+	}
+	function onPlayerStateChange(e) {
+		console.log("onPlayerStateChange: " + e.data + " ..................")
+		/*
+		-1：unstarted 未啟動，初次載入
+		0：ended 結束
+		1：playing 播放中
+		2：paused 暫停
+		3：buffering 緩衝中
+		5：video cued 準備好可以播放了
+		*/
+	}
+	
+	function onPlayerReady(e) {
+		console.log(e.target.getDuration())
+		console.log("onPlayerReady....................")
+		// player.loadVideoById({
+		// 	videoId: menuItem[index].id,
+		// 	startSeconds: 30,
+		// 	endSeconds: 50 
+		// })
+	}
+/* 	
+	// https://www.iviewui.com/components/menu
+	// https://www.iviewui.com/components/modal
+	// https://www.iviewui.com/components/icon
+	*/
+	
+</script>
+</html>
