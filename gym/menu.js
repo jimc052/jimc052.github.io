@@ -1,9 +1,9 @@
 Vue.component('gym-menu', { 
 	template:  `
     <div style="width: 240px; height: 100%; display: flex; flex-direction: column;">
-      <i-menu theme="light" @on-select="onSelect" style="flex: 1">
+      <i-menu theme="light" ref="menu" @on-select="onSelect" style="flex: 1"  :active-name="active">
         <menu-group title="">
-          <menu-item v-for="(item, index) in menu" :name="index" :key="index">
+          <menu-item v-for="(item, index) in menu" :name="index + ''" :key="index">
               {{item.title}}
           </menu-item>
         </menu-group>
@@ -17,6 +17,7 @@ Vue.component('gym-menu', {
 	},
 	data() {
 		return {
+      active: -1,
       menu: [{
         title: "上半身美背", id: "BM-BYDhuYRg", 
         children: [
@@ -73,6 +74,17 @@ Vue.component('gym-menu', {
     */
 	},
 	async mounted () {
+    let x = window.localStorage["youtube-menu"];
+    if(typeof x == "undefined")
+      this.active = 0;
+    else 
+      this.active = x;
+
+    this.$nextTick(()=>{
+      this.$refs.menu.updateOpened();
+      this.$refs.menu.updateActiveName();
+    });
+    this.onSelect(x)
 	},
 	destroyed() {		
   },
@@ -80,6 +92,7 @@ Vue.component('gym-menu', {
     async onSelect(index){
       console.log("onSelect: " + index)
       this.$emit('on-select', index, this.menu[index]);
+      window.localStorage["youtube-menu"] = index;
     }
 	},
 	computed: {
