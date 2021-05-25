@@ -79,11 +79,13 @@ Vue.component('gym-menu', {
       this.active = x;
     else 
       this.active = 0;
-
-    this.$nextTick(()=>{
-      this.$refs.menu.updateOpened();
-      this.$refs.menu.updateActiveName();
-    });
+    setTimeout(() => {
+      this.$nextTick(()=>{
+        this.$refs.menu.updateOpened();
+        this.$refs.menu.updateActiveName();
+      });
+       
+    }, 600);
     this.onSelect(this.active)
 	},
 	destroyed() {		
