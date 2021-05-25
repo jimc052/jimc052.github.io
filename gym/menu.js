@@ -75,22 +75,21 @@ Vue.component('gym-menu', {
 	},
 	async mounted () {
     let x = window.localStorage["youtube-menu"];
-    if(typeof x == "undefined")
-      this.active = 0;
-    else 
+    if(typeof x == "string" || typeof x == "number")
       this.active = x;
+    else 
+      this.active = 0;
 
     this.$nextTick(()=>{
       this.$refs.menu.updateOpened();
       this.$refs.menu.updateActiveName();
     });
-    this.onSelect(x)
+    this.onSelect(this.active)
 	},
 	destroyed() {		
   },
 	methods: {
     async onSelect(index){
-      console.log("onSelect: " + index)
       this.$emit('on-select', index, this.menu[index]);
       window.localStorage["youtube-menu"] = index;
     }
