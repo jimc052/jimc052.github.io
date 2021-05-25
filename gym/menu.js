@@ -8,7 +8,8 @@ Vue.component('gym-menu', {
           </menu-item>
         </menu-group>
       </i-menu>
-      <div style="padding: 0px;">
+      <div style="padding: 10px; background: #fff;">
+        2021-05-25 14:30
       </div>
     </div>
   `,
