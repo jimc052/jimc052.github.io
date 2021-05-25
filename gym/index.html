@@ -52,7 +52,7 @@
 			<div id="playerParent">
 				<div id="player"></div>
 			</div>
-			<gym-player ref="player" @on-click="onClick" />
+			<gym-player ref="player" @on-click="onClick"  />
 		</div>
 	</div>
 </body>
@@ -73,32 +73,44 @@
 				iview.lang('zh-TW');
 			},
 			async mounted(){
-				window.onresize = () => {
-					return (() => {
-							// self.screenWidth = document.body.clientWidth;
-							// self.broadcast.$emit('onResize');
-					})()
-				}
+				// this.screenWidth = document.body.clientWidth;
+				// window.onresize = () => {
+				// 	return (() => {
+				// 			// self.screenWidth = document.body.clientWidth;
+				// 			// console.log(self.screenWidth)
+				// 			// self.broadcast.$emit('onResize');
+				// 	})()
+				// }
 			},
 			methods: {
         async onSelect(menuIndex, item){
+					this.$refs["player"].play(item);
+
 					let node = document.getElementById("player");
 					if (node != null && node.parentNode) {
 						node.parentNode.removeChild(node);
 					}
 					var newDiv = document.createElement('DIV');
 					newDiv.id = "player";
-					var myList = document.getElementById('playerParent');
-					myList.appendChild(newDiv);
-					videoId = item.id;
-					this.$refs["player"].play(item);
-					player = new YT.Player('player', {
-						videoId: item.id,
-						events: {
-							'onReady': onPlayerReady,
-							'onStateChange': onPlayerStateChange
-						}
-					});
+					var myParent = document.getElementById('playerParent');
+					myParent.appendChild(newDiv);
+					setTimeout(() => {
+						var btnPlays = document.getElementById('btnPlays');
+						var clientHeight = document.body.clientHeight - btnPlays.clientHeight;
+
+						videoId = item.id;
+						
+						player = new YT.Player('player', {
+							videoId: item.id,
+							height: clientHeight,
+							width: myParent.clientWidth, // '640',
+							events: {
+								'onReady': onPlayerReady,
+								'onStateChange': onPlayerStateChange
+							}
+						});						
+					}, 600);
+
         },
 				onClick(item) {
 					console.log(item)
@@ -137,13 +149,7 @@
 	}
 	
 	function onPlayerReady(e) {
-		console.log(e.target.getDuration())
-		console.log("onPlayerReady....................")
-		// player.loadVideoById({
-		// 	videoId: menuItem[index].id,
-		// 	startSeconds: 30,
-		// 	endSeconds: 50 
-		// })
+		
 	}
 /* 	
 	// https://www.iviewui.com/components/menu

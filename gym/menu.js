@@ -73,7 +73,6 @@ Vue.component('gym-menu', {
     */
 	},
 	async mounted () {
-	
 	},
 	destroyed() {		
   },
