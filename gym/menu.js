@@ -9,7 +9,7 @@ Vue.component('gym-menu', {
         </menu-group>
       </i-menu>
       <div style="padding: 10px; background: #fff;">
-        2021-05-25 14:30
+        2021-05-25 18:00
       </div>
     </div>
   `,
@@ -61,12 +61,31 @@ Vue.component('gym-menu', {
           {title: "跪姿後抬腿", start: 228.5, end: 271},
           {title: "腿外展", start: 274.5, end: 303},
         ]
-        // 
+      // }, {
+      //   title: "彈力帶-Judy", id: "qdwH7TE6_jI", 
+      //   children: [
+      //     // {title: "", start: , end: },
+      //   ]        
+      }, {
+        title: "腹肌訓練", id: "4CPNOjRJ4aU", 
+        children: [
+          {title: "卷腹", start: 16, end: 68.5},
+          {title: "交換碰跟卷腹", start: 69, end: 122},
+          {title: "交換抬腿", start: 138, end: 190},
+          {title: "仰臥抬腿", start: 191, end: 243.5},
+          {title: "剪刀式踢腳", start: 258.5, end: 311},
+          {title: "俄羅斯轉體", start: 311.2, end: 363},
+          {title: "仰臥起坐", start: 379, end: 431},
+          {title: "左右碰膝", start: 432.5, end: 484.5},
+          {title: "登山者", start:  500.5, end: 552.5},
+          {title: "左右膝碰肘", start:  553, end: 605.5},
+        ]
+
       }]
 		};
 	},
 	created(){
-    /*
+    /* 
       }, {
         title: "", id: "", 
         children: [
@@ -93,8 +112,10 @@ Vue.component('gym-menu', {
   },
 	methods: {
     async onSelect(index){
-      this.$emit('on-select', index, this.menu[index]);
-      window.localStorage["youtube-menu"] = index;
+      if(index < this.menu.length) {
+        this.$emit('on-select', index, this.menu[index]);
+        window.localStorage["youtube-menu"] = index;
+      }
     }
 	},
 	computed: {

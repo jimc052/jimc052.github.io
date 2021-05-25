@@ -45,14 +45,9 @@
 </head>
 <body style="overflow: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div>
-			<gym-menu @on-select="onSelect" />
-			
-		</div>
+		<div><gym-menu @on-select="onSelect" /></div>
 		<div style="flex: 1;">
-			<div id="playerParent">
-				<div id="player"></div>
-			</div>
+			<div id="playerParent"><div id="player"></div></div>
 			<gym-player ref="player" @on-click="onClick"  />
 		</div>
 	</div>
