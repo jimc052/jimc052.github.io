@@ -40,7 +40,9 @@
 		.ivu-menu-item-group-title {
 			display: none !important;
 		}
-	
+		#btnPlays > button + button {
+			margin-left: 3px;
+		}
 	</style>
 </head>
 <body style="overflow: hidden;">
@@ -105,8 +107,7 @@
 								'onStateChange': onPlayerStateChange
 							}
 						});						
-					}, 600);
-
+					}, 300);
         },
 				onClick(item) {
 					console.log(item)
@@ -133,7 +134,7 @@
 		// });
 	}
 	function onPlayerStateChange(e) {
-		console.log("onPlayerStateChange: " + e.data + " ..................")
+		// console.log("onPlayerStateChange: " + e.data + " ..................")
 		/*
 		-1：unstarted 未啟動，初次載入
 		0：ended 結束
@@ -145,7 +146,6 @@
 	}
 	
 	function onPlayerReady(e) {
-		
 	}
 /* 	
 	// https://www.iviewui.com/components/menu

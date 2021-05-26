@@ -9,7 +9,7 @@ Vue.component('gym-menu', {
         </menu-group>
       </i-menu>
       <div style="padding: 10px; background: #fff;">
-        2021-05-25 18:00
+        2021-05-26 08:00
       </div>
     </div>
   `,
@@ -18,7 +18,7 @@ Vue.component('gym-menu', {
 	},
 	data() {
 		return {
-      active: -1,
+      active: "0",
       menu: [{
         title: "上半身美背", id: "BM-BYDhuYRg", 
         children: [
@@ -61,11 +61,14 @@ Vue.component('gym-menu', {
           {title: "跪姿後抬腿", start: 228.5, end: 271},
           {title: "腿外展", start: 274.5, end: 303},
         ]
-      // }, {
-      //   title: "彈力帶-Judy", id: "qdwH7TE6_jI", 
-      //   children: [
-      //     // {title: "", start: , end: },
-      //   ]        
+      }, {
+        title: "彈力帶-Judy", id: "qdwH7TE6_jI", 
+        children: [
+          {title: "肱二頭肌彎舉", start: 24.5, end: 67.5},
+          {title: "前三角肌平舉", start: 69, end: 95},
+          {title: "深蹲", start: 96, end: 133},
+          {title: "三頭肌伸展", start: 138, end: 184},
+        ]        
       }, {
         title: "腹肌訓練", id: "4CPNOjRJ4aU", 
         children: [
@@ -80,7 +83,6 @@ Vue.component('gym-menu', {
           {title: "登山者", start:  500.5, end: 552.5},
           {title: "左右膝碰肘", start:  553, end: 605.5},
         ]
-
       }]
 		};
 	},
@@ -94,17 +96,22 @@ Vue.component('gym-menu', {
     */
 	},
 	async mounted () {
-    let x = window.localStorage["youtube-menu"];
-    if(typeof x == "string" || typeof x == "number")
-      this.active = x;
-    else 
-      this.active = 0;
+    let m = window.localStorage["youtube-menu"];
+    if(typeof m == "string" || typeof x == "number") {
+      this.active = m;
+      for(let i = 0; i < this.menu.length; i++ ) {
+        if(this.menu[i].id == m) {
+          this.active = i.toString();
+          break;
+        }
+      }
+    } else 
+      this.active = '0';
     setTimeout(() => {
       this.$nextTick(()=>{
         this.$refs.menu.updateOpened();
         this.$refs.menu.updateActiveName();
       });
-       
     }, 600);
     this.onSelect(this.active)
 	},
@@ -114,7 +121,7 @@ Vue.component('gym-menu', {
     async onSelect(index){
       if(index < this.menu.length) {
         this.$emit('on-select', index, this.menu[index]);
-        window.localStorage["youtube-menu"] = index;
+        window.localStorage["youtube-menu"] = this.menu[index].id;
       }
     }
 	},
