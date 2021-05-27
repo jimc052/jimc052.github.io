@@ -41,15 +41,25 @@
 			display: none !important;
 		}
 		#btnPlays > button + button {
-			margin-left: 3px;
+			margin-left: 1px;
 		}
 	</style>
 </head>
 <body style="overflow: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div><gym-menu @on-select="onSelect" /></div>
+		<div><gym-menu @on-select="onSelect" :smallScreen="smallScreen" /></div>
 		<div style="flex: 1;">
-			<div id="playerParent"><div id="player"></div></div>
+			<div id="playerParent">
+				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
+					'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
+					'align-items': 'center',
+					height: '50px', 'padding-right': '5px'
+					}">
+					<Icon type="md-menu" size="28" color="white" @click.native="onClickIcon" 
+					style="cursor: pointer; margin-left: 10px;"></Icon>
+				</div>
+				<div id="player"></div>
+			</div>
 			<gym-player ref="player" @on-click="onClick"  />
 		</div>
 	</div>
@@ -64,6 +74,7 @@
 			data() {
 				return {
 					index: -1,
+					smallScreen: false
 					// menu: menuItem, 
 				};
 			},
@@ -81,6 +92,9 @@
 				// }
 			},
 			methods: {
+				onClickIcon(){
+
+				},
         async onSelect(menuIndex, item){
 					this.$refs["player"].play(item);
 
@@ -94,7 +108,11 @@
 					myParent.appendChild(newDiv);
 					setTimeout(() => {
 						var btnPlays = document.getElementById('btnPlays');
-						var clientHeight = document.body.clientHeight - btnPlays.clientHeight;
+						var clientHeight = document.body.clientHeight - btnPlays.clientHeight ;
+						var header = document.getElementById('header');
+						if(header != null){
+							clientHeight -= header.clientHeight;
+						}
 
 						videoId = item.id;
 						

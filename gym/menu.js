@@ -1,6 +1,14 @@
 Vue.component('gym-menu', { 
 	template:  `
     <div style="width: 240px; height: 100%; display: flex; flex-direction: column;">
+      <div v-if="smallScreen" id="headerMenu" :style="{background: '#2d8cf0', 
+        'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
+        'align-items': 'center',
+        height: '50px', 'padding-right': '5px'
+        }">
+        <Icon type="md-arrow-back" size="28" color="white" @click.native="onClickIcon" 
+        style="cursor: pointer; margin-left: 10px;"></Icon>
+      </div>
       <i-menu theme="light" ref="menu" @on-select="onSelect" style="flex: 1"  :active-name="active">
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :name="index + ''" :key="index">
@@ -9,15 +17,17 @@ Vue.component('gym-menu', {
         </menu-group>
       </i-menu>
       <div style="padding: 10px; background: #fff;">
-        2021-05-26 08:00
+        2021-05-27 08:30
       </div>
     </div>
   `,
 	props: {
 		// title: String
+    
 	},
 	data() {
 		return {
+      smallScreen: false,
       active: "0",
       menu: [{
         title: "上半身美背", id: "BM-BYDhuYRg", 
@@ -28,6 +38,26 @@ Vue.component('gym-menu', {
           {title: "站姿划船", start: 55, end: 74},
           {title: "臥姿划船", start: 75, end: 94},
           {title: "上臂屈曲", start: 95, end: 103},
+        ]
+      }, {
+        title: "腹肌10分鐘運動-May", id: "4pOjPjN7AqI", 
+        children: [
+          {title: "抬腿", start: 17.8, end: 47},
+          {title: "捲腹伸腿", start: 47.2, end: 77.5},
+          {title: "仰臥踢腿", start: 78, end: 107},
+          {title: "剪刀腳踢腿", start: 107.5, end: 136},
+          {title: "捲腹伸腿", start: 137.5, end: 166},
+          {title: "對邊捲腹", start: 167.5, end: 198},
+          {title: "仰臥捲腹", start: 198, end: 229},
+          {title: "單邊抬腳", start: 230, end: 258},
+          {title: "腳踏車捲腹", start: 258, end: 287},
+          {title: "俄羅斯轉體", start: 288, end: 318},
+          {title: "側平板支撐", start: 346, end: 378},
+          {title: "側平板抬臀", start: 378.2, end: 407},
+          {title: "側平板轉體", start: 407.5, end: 438},
+          {title: "登山式", start: 528.5, end: 558},
+          {title: "平板支撐", start: 558.2, end: 588},
+          {title: "平板前後移", start: 588.5, end: 619.5},
         ]
       }, {
         title: "棒式運動-黑面蔡媽媽", id: "66gO0V2M-7w", 
@@ -70,7 +100,7 @@ Vue.component('gym-menu', {
           {title: "三頭肌伸展", start: 138, end: 184},
         ]        
       }, {
-        title: "腹肌訓練", id: "4CPNOjRJ4aU", 
+        title: "地獄腹肌訓練", id: "4CPNOjRJ4aU", 
         children: [
           {title: "卷腹", start: 16, end: 68.5},
           {title: "交換碰跟卷腹", start: 69, end: 122},
@@ -84,7 +114,7 @@ Vue.component('gym-menu', {
           {title: "左右膝碰肘", start:  553, end: 605.5},
         ]
       }]
-		};
+		}; // 
 	},
 	created(){
     /* 
@@ -96,6 +126,7 @@ Vue.component('gym-menu', {
     */
 	},
 	async mounted () {
+    console.log(this.smallScreen + "; " + (typeof this.smallScreen))
     let m = window.localStorage["youtube-menu"];
     if(typeof m == "string" || typeof x == "number") {
       this.active = m;
@@ -123,10 +154,16 @@ Vue.component('gym-menu', {
         this.$emit('on-select', index, this.menu[index]);
         window.localStorage["youtube-menu"] = this.menu[index].id;
       }
+    },
+    onClickIcon(){
+
     }
 	},
 	computed: {
 	},
 	watch: {
+    smallScreen(value) {
+      console.log("smallScreen: " + value)
+    }
 	}
 });

@@ -1,6 +1,6 @@
 Vue.component('gym-player', { 
 	template:  `
-    <div style="padding: 0px 10px 15px 10px;" id="btnPlays">
+    <div style="padding: 0px 2px 15px 2px;" id="btnPlays">
       <i-button v-for="(item, index) in rows" :key="index"
 				:type="active == index || prev == index ? 'warning' : 'default'"
 				:ghost="prev == index"
