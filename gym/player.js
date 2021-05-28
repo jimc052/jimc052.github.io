@@ -22,8 +22,12 @@ Vue.component('gym-player', {
 	},
 	created(){
 	},
-	async mounted () {
+	mounted () {
+    this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 	},
+	destroyed() {
+    this.broadcast.$off('onPlayerReady', this.onPlayerReady);
+  },
 	destroyed() {		
   },
 	methods: {
@@ -37,9 +41,16 @@ Vue.component('gym-player', {
 					return item.title == m;
 				});
 				if(x > -1) this.prev = x;
-				console.log("prev: " + this.prev)
 			}
+			let el = document.getElementById("btnPlays");
+			el.style.visibility = "hidden";
     },
+		onPlayerReady(){
+			setTimeout(() => {
+				let el = document.getElementById("btnPlays");
+				el.style.visibility = "visible";				
+			}, 1000);
+		},
     onClick(index) {
       this.$emit('on-click', this.rows[index]);
 			this.active = index;

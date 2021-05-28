@@ -1,6 +1,8 @@
+// :style="{width: width + 'px'}" 
 Vue.component('gym-menu', { 
 	template:  `
-    <div style="width: 240px; height: 100%; display: flex; flex-direction: column;">
+    <div id='frameMenu' style="height: 100%; display: flex; flex-direction: column;"
+        :style="{width: width + 'px'}">
       <div v-if="smallScreen" id="headerMenu" :style="{background: '#2d8cf0', 
         'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
         'align-items': 'center',
@@ -8,26 +10,27 @@ Vue.component('gym-menu', {
         }">
         <Icon type="md-arrow-back" size="28" color="white" @click.native="onClickIcon" 
         style="cursor: pointer; margin-left: 10px;"></Icon>
+        
       </div>
-      <i-menu theme="light" ref="menu" @on-select="onSelect" style="flex: 1"  :active-name="active">
+      <i-menu theme="light" :width="width" ref="menu" @on-select="onSelect" style="flex: 1" 
+        :active-name="active">
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :name="index + ''" :key="index">
               {{item.title}}
           </menu-item>
         </menu-group>
       </i-menu>
-      <div style="padding: 10px; background: #fff;">
-        2021-05-27 08:30
+      <div style="" id="version">
+        2021-05-28 08:30
       </div>
     </div>
   `,
 	props: {
-		// title: String
-    
 	},
 	data() {
 		return {
-      smallScreen: false,
+      smallScreen: true, 
+      width: "240",
       active: "0",
       menu: [{
         title: "上半身美背", id: "BM-BYDhuYRg", 
@@ -125,8 +128,7 @@ Vue.component('gym-menu', {
         ]
     */
 	},
-	async mounted () {
-    console.log(this.smallScreen + "; " + (typeof this.smallScreen))
+	mounted () {
     let m = window.localStorage["youtube-menu"];
     if(typeof m == "string" || typeof x == "number") {
       this.active = m;
@@ -144,26 +146,44 @@ Vue.component('gym-menu', {
         this.$refs.menu.updateActiveName();
       });
     }, 600);
-    this.onSelect(this.active)
+    this.onSelect(this.active);
+    this.broadcast.$on('onResize', this.onResize);
 	},
-	destroyed() {		
+	destroyed() {
+    this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
     async onSelect(index){
       if(index < this.menu.length) {
-        this.$emit('on-select', index, this.menu[index]);
+        this.$emit('on-select', this.menu[index]);
         window.localStorage["youtube-menu"] = this.menu[index].id;
+        if(this.smallScreen == true) {
+          this.onClickIcon();
+        }
+        this.active = index + '';
       }
     },
     onClickIcon(){
-
+      let el = document.getElementById("frameMenu");
+      el.style.visibility = "hidden";
+    },
+    onResize(small){
+      this.smallScreen = small;
+      let el = document.getElementById("frameMenu");
+      if(small == true) {
+        el.classList.add("smallScreen");
+        this.width = document.body.clientWidth + "";
+        el.style.visibility = "hidden";
+      } else {
+        el.classList.remove("smallScreen");
+        this.width = "240";
+        el.style.visibility = "visible";
+      }
     }
 	},
 	computed: {
 	},
 	watch: {
-    smallScreen(value) {
-      console.log("smallScreen: " + value)
-    }
+    
 	}
 });

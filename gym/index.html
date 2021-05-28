@@ -43,20 +43,46 @@
 		#btnPlays > button + button {
 			margin-left: 1px;
 		}
+		#version{
+			padding: 10px 0 10px 0px; 
+			text-align: center; 
+			background: #fff;
+			position: relative;
+    	z-index: 900;
+			border-top: 1px solid #dcdee2;
+		}
+		#version::before{
+			content: '';
+			display: block;
+			width: 1px;
+			height: 100%;
+			background: #dcdee2;
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			z-index: 1;
+		}
+		.smallScreen {
+			position: absolute;
+			z-index: 1000;
+		}
+
 	</style>
 </head>
 <body style="overflow: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div><gym-menu @on-select="onSelect" :smallScreen="smallScreen" /></div>
+		<div><gym-menu @on-select="onSelect"  /></div>
 		<div style="flex: 1;">
 			<div id="playerParent">
 				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
 					'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
 					'align-items': 'center',
-					height: '50px', 'padding-right': '5px'
+					height: '50px', 'padding-right': '5px', color: 'white'
 					}">
 					<Icon type="md-menu" size="28" color="white" @click.native="onClickIcon" 
-					style="cursor: pointer; margin-left: 10px;"></Icon>
+					style="cursor: pointer; margin-left: 10px; margin-right: 10px;"></Icon>
+					{{title}}
 				</div>
 				<div id="player"></div>
 			</div>
@@ -69,33 +95,36 @@
 	var vm = null, player, index, videoId;
 	window.onload = async function(){
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+
 		vm = new Vue({
 			el: '#app',
 			data() {
 				return {
 					index: -1,
-					smallScreen: false
-					// menu: menuItem, 
+					smallScreen: false, 
+					title: ""
 				};
 			},
 			created() {
 				iview.lang('zh-TW');
 			},
 			async mounted(){
-				// this.screenWidth = document.body.clientWidth;
-				// window.onresize = () => {
-				// 	return (() => {
-				// 			// self.screenWidth = document.body.clientWidth;
-				// 			// console.log(self.screenWidth)
-				// 			// self.broadcast.$emit('onResize');
-				// 	})()
-				// }
+				window.onresize = resize;
+
+				let self = this;
+				function resize() {
+					self.smallScreen = document.body.clientWidth > 600 ? false : true;
+					self.broadcast.$emit('onResize', self.smallScreen);
+				}
+				resize();
 			},
 			methods: {
 				onClickIcon(){
-
+					let el = document.getElementById("frameMenu");
+      		el.style.visibility = "visible";
 				},
-        async onSelect(menuIndex, item){
+        async onSelect(item){
+					this.title = item.title;
 					this.$refs["player"].play(item);
 
 					let node = document.getElementById("player");
@@ -115,13 +144,15 @@
 						}
 
 						videoId = item.id;
-						
 						player = new YT.Player('player', {
 							videoId: item.id,
 							height: clientHeight,
 							width: myParent.clientWidth, // '640',
 							events: {
-								'onReady': onPlayerReady,
+								'onReady': ()=>{
+									console.log("onPlayerReady.........")
+									this.broadcast.$emit('onPlayerReady');
+								},
 								'onStateChange': onPlayerStateChange
 							}
 						});						
@@ -141,15 +172,7 @@
 
 	function onYouTubeIframeAPIReady() {
 		console.log("onYouTubeIframeAPIReady................")
-		// player = new YT.Player('player', {
-		// 	videoId: "66gO0V2M-7w",
-		// 	startSeconds: 30,
-		// 	endSeconds: 50,
-		// 	events: {
-		// 		'onReady': onPlayerReady,
-		// 		'onStateChange': onPlayerStateChange
-		// 	}
-		// });
+		
 	}
 	function onPlayerStateChange(e) {
 		// console.log("onPlayerStateChange: " + e.data + " ..................")
@@ -163,8 +186,6 @@
 		*/
 	}
 	
-	function onPlayerReady(e) {
-	}
 /* 	
 	// https://www.iviewui.com/components/menu
 	// https://www.iviewui.com/components/modal
