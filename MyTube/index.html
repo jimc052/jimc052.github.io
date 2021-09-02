@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Youtube-健身</title>
+	<title>MyTube</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
@@ -67,12 +67,32 @@
 			position: absolute;
 			z-index: 1000;
 		}
+		#frameMenu {
+			height: 100%; 
+			display: flex; 
+			flex-direction: column;
+		}
+		#frameMenu > ul {
+			flex: 1;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+		.ivu-menu-submenu-title {
+			padding: 10px 5px !important;
+			/* border-bottom: 1px #aaaaaa solid; */
+		}
+		.ivu-menu-submenu{
+			/* border-bottom: 1px #aaaaaa solid; */
+		}
+		.ivu-menu-item {
+			padding: 10px 10px 10px 20px !important;
+		}
 
 	</style>
 </head>
 <body style="overflow: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div><gym-menu @on-select="onSelect"  /></div>
+		<div><my-menu @on-select="onSelect"  /></div>
 		<div style="flex: 1;">
 			<div id="playerParent">
 				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
@@ -86,17 +106,22 @@
 				</div>
 				<div id="player"></div>
 			</div>
-			<gym-player ref="player" @on-click="onClick"  />
+			<my-player ref="player" />
 		</div>
 	</div>
 </body>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-	var vm = null, player, index, videoId;
+	var vm = null, player, index, videoId, recorders = {};
 	window.onload = async function(){
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		Vue.prototype.$isDebug = function() {
 			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
+		}
+
+		let s = window.localStorage["mytube"];
+		if(typeof s == "string" && s.length > 0) {
+			recorders = JSON.parse(s);
 		}
 
 		vm = new Vue({
@@ -147,29 +172,32 @@
 							clientHeight -= header.clientHeight;
 						}
 
-						videoId = item.id;
+						videoId = item.key;
 						player = new YT.Player('player', {
-							videoId: item.id,
+							videoId: item.key,
 							height: clientHeight,
 							width: myParent.clientWidth, // '640',
 							events: {
 								'onReady': ()=>{
 									console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
+									setTimeout(() => {
+										if(typeof recorders[item.key] == "number") {
+											// player.seekTo(recorders[item.key]);
+											player.loadVideoById({
+												videoId: item.key,
+												startSeconds: recorders[item.key],
+												// endSeconds: item.end 
+											})
+										}
+									}, 300);
+									
 								},
 								'onStateChange': onPlayerStateChange
 							}
 						});						
 					}, 300);
         },
-				onClick(item) {
-					console.log(item)
-					player.loadVideoById({
-						videoId: videoId,
-						startSeconds: item.start,
-						endSeconds: item.end 
-					})
-				}
 			}
 		})
 	}
@@ -177,8 +205,18 @@
 	function onYouTubeIframeAPIReady() {
 		console.log("onYouTubeIframeAPIReady................")
 	}
+	let intervalID;
 	function onPlayerStateChange(e) {
-		// console.log("onPlayerStateChange: " + e.data + " ..................")
+		console.log("onPlayerStateChange: " + e.data + " ..................")
+		if(e.data == 1) {
+			intervalID = setInterval(() => {
+				recorders[videoId] = player.getCurrentTime();
+				window.localStorage["mytube"] = JSON.stringify(recorders);
+				// console.log(player.getCurrentTime())
+			}, 1000 * 3);
+		} else {
+			clearInterval(intervalID);
+		}
 		/*
 		-1：unstarted 未啟動，初次載入
 		0：ended 結束
@@ -186,6 +224,9 @@
 		2：paused 暫停
 		3：buffering 緩衝中
 		5：video cued 準備好可以播放了
+		player.playVideo()
+		player.stopVideo();
+		player.pauseVideo()
 		*/
 	}
 	

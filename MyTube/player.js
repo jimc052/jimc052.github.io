@@ -1,4 +1,4 @@
-Vue.component('gym-player', { 
+Vue.component('my-player', { 
 	template:  `
     <div style="padding: 0px 2px 15px 2px;" id="btnPlays">
       <i-button v-for="(item, index) in rows" :key="index"
@@ -53,10 +53,11 @@ Vue.component('gym-player', {
 			}, 1000);
 		},
     onClick(index) {
-      this.$emit('on-click', this.rows[index]);
-			this.active = index;
-			this.prev = -1;
-			window.localStorage["youtube-" + this.videoId] = this.rows[index].title;
+      // this.$emit('on-click', this.rows[index]);
+			// this.active = index;
+			// this.prev = -1;
+			// window.localStorage["youtube-" + this.videoId] = this.rows[index].title;
+			console.log(index)
     }
 	},
 	computed: {
