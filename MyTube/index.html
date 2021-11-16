@@ -174,7 +174,7 @@
 						if(header != null){
 							clientHeight -= header.clientHeight;
 						}
-
+						document.title = 'MyTube [' + item.author + "]";
 						videoId = item.key;
 						player = new YT.Player('player', {
 							videoId: item.key,
