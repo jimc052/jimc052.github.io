@@ -593,13 +593,13 @@ Vue.component('my-menu', {
         "雪薇英文": [
           {
             "key": "QfUhYDHrGtg",
-            "title": "公職考試 | 高頻出題單字 EP1！ ",
+            "title": "公職考試 | 高頻出題單字 EP1！",
             "author": "雪薇英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "wFe27C9aptU",
-            "title": "公職考試 | 高頻出題單字 EP2！ ",
+            "title": "公職考試 | 高頻出題單字 EP2！",
             "author": "雪薇英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -612,12 +612,6 @@ Vue.component('my-menu', {
           {
             "key": "C3n5lyOo6H8",
             "title": "國營英文必考！英文文法(2) | 分詞構句",
-            "author": "雪薇英文",
-            "date": "2021/11/16 11:30:00"
-          },
-          {
-            "key": "8olP4TGYN64",
-            "title": "零程度適用！英文口說練習 | 放感情講英文(不爽篇) | 怪我嘍！英文怎麼說？ | 不但能練聽力，還能練對話！ ",
             "author": "雪薇英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -643,6 +637,5042 @@ Vue.component('my-menu', {
             "key": "6n0rjYDvsxU",
             "title": "放感情講英文(喜悅篇)",
             "author": "雪薇英文",
+            "date": "2021/11/16 11:30:00"
+          }
+        ], 
+        "Ozma英文": [
+          {
+            "key": "9yBhW55kn24",
+            "title": "(中文字幕)考試和旅遊的生存之道::立刻學好英文地圖、方向、地點、位置怎麼說和聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "et00WOUB0PM",
+            "title": "1 hr of English Listening Practice (Longer expressions):: Practice&nbsp;with&nbsp;Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sqmdsyn0lEo",
+            "title": "1 hr of English Listening Practice:: HD audio:: Practice with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gzHfvJlu_W4",
+            "title": "1 hr. Easy and useful expressions :: daily short expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0XPq1BVYCxg",
+            "title": "1 hr.English listening comprehension(short expressions)",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "100L5GU8wdA",
+            "title": "1 or 2 words express what you want to say:: Learn from native English teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "G8VO7ECNZtw",
+            "title": "1 小時外師助你練英文聽力(簡/繁):: 外教高清發音",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Y59nOCRSXLo",
+            "title": "1 小時英文口說練習::簡/繁:: 外師高清發音帶你說的一口流俐英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "kLIQzSkRl-8",
+            "title": "100  Improve Your Listening Comprehension Skills:: Useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GYFj2DBbuIk",
+            "title": "100 Best for beginners:: Useful English short phrases :: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IlTFfX74VDk",
+            "title": "100 Easy and Useful English expressions ::listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "85_sBaNLXJ8",
+            "title": "100 English Listening:: Useful longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LNexkZUGaEE",
+            "title": "100 English Longer expressions listening comprehension exercises",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xZnxSYjYLo8",
+            "title": "100 English Speaking Practice:: Longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "atADon3Hn28",
+            "title": "100 English conversation speaking practice:: useful long dialogue",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EzyAnyWQesU",
+            "title": "100 English listening practice:: Important everyday phrases",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "K03ReIIOrvI",
+            "title": "100 English listening practice:: improve your English understanding",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cxIplenSp9M",
+            "title": "100 English listening practice:: longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_3qnRTrJ8RI",
+            "title": "100 English listening practice::Useful daily expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "QCbCyYU5HKc",
+            "title": "100 English practice:: Guide You to Understand Native English Speakers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "q1tgh7FcX0o",
+            "title": "100 English speaking practice ::longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-d3JqhEU9Uk",
+            "title": "100 Guide you to speak English fluently and confidently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mqKsjEAJ5tY",
+            "title": "100 Guide you to speak English fluently and confidently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2FcuqK6Y-gc",
+            "title": "100 Guide you to speak English fluently and confidently:: useful English practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OV8kEF8DO4w",
+            "title": "100 Guide you to speak English fluently and confidently:: useful English practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "l4aliYCsKiY",
+            "title": "100 High quality audio listening practice:: useful longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "r3pDSagc7UA",
+            "title": "100 Important longer expressions:: Quickly&nbsp;improve&nbsp;your&nbsp;English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "kBd6ayEBQYI",
+            "title": "100 Improve the fluency of your spoken English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4Xa_Jng1eXs",
+            "title": "100 Improve your English listening comprehension skills:: useful daily expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_IvKN_NPRCI",
+            "title": "100 Improve your English listening comprehension skills:: useful longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "87mYY9igM5s",
+            "title": "100 Improve your English so easy::Learn English effectively:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2EEUYHAmrH4",
+            "title": "100 Learn how to use phrases in sentences ::100 English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Z3P7W-yQwFU",
+            "title": "100 Longer expressions:: Learn English Effectively:: Speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fugz-oYpy_M",
+            "title": "100 Longer useful English expressions::listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Annjk5LXLB0",
+            "title": "100 Most Useful English Daily Expressions:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_s4jc9u1CPw",
+            "title": "100 Most Useful English Daily Expressions:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "NlOarp__w1c",
+            "title": "100 Must-Learn English listening skills:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DeOrnKOid28",
+            "title": "100 Nützliche englische Ausdrücke:: Die besten Möglichkeiten, fließend Englisch zu sprechen",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4jhtA3N52LE",
+            "title": "100 Nützliche englische Ausdrücke:: Englisch Hörübungen",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vqKizW6OqVY",
+            "title": "100 Nützliche englische Ausdrücke:: Übung im Sprechen:: längere Ausdrücke",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ryFHDA-JqHY",
+            "title": "100 Practical English for everyday life:: English speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5_swQBMqaFE",
+            "title": "100 Praktische englische Ausdrücke:: Effektive Art zu lernen Englisch",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Kki0K3DTHH0",
+            "title": "100 Praktische englische Ausdrücke:: Effektive Art zu lernen English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GX2woAtMhsk",
+            "title": "100 Quickly&nbsp;Improve&nbsp;Your&nbsp;English Listening Skills:: easy and useful",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "230TOfn2ygw",
+            "title": "100 Speaking English Easily ::You will benefit a lot:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1UY9g7JQ1j4",
+            "title": "100 Speaking English fluently and confidently:: useful English practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "qkHI5xHBfIw",
+            "title": "100 Super Useful English Longer Expressions:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XT9x3X5YUZM",
+            "title": "100 Useful English Conversations for Daily Life:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "AJPIi6OFUlE",
+            "title": "100 Useful English Dialogue:: speaking practice:: Long conversation",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "D2f-Qhfs2Ck",
+            "title": "100 Useful English Phrases:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cWzo3feRddo",
+            "title": "100 Useful English Short Phrases:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rDzA8TGUI40",
+            "title": "100 Useful English conversation:: long dialogue:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EIRJOwXIRDA",
+            "title": "100 Useful English expressions (with examples):: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2viWoE3C2F0",
+            "title": "100 Useful English expressions (with examples)::speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "oBO5EkyITfc",
+            "title": "100 Useful English expressions (with examples)::speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ZvbypFBGvhU",
+            "title": "100 Useful English expressions (with long examples):: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gMRK5QsquE4",
+            "title": "100 Useful English expressions :: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iCWIRwA8Op0",
+            "title": "100 Useful English expressions :: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OwK9s6c0xBk",
+            "title": "100 Useful English expressions :: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7wM7Z-mJ_P8",
+            "title": "100 Useful English expressions:: With examples:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VdCv1tWYKbs",
+            "title": "100 Useful English listening practice:: longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HUsIZD10Sts",
+            "title": "100 Useful English listening practice::Easy and Useful",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5yqslh6TqNA",
+            "title": "100 Useful English listening practice::Improve your English listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RN9UI99l6AE",
+            "title": "100 Useful English listening practice::Improve your English skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "enOimQ1QV8Q",
+            "title": "100 Useful English listening practice::Improve your English skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "eWIzN4Hpudo",
+            "title": "100 Useful English listening practice::Longer sentences::Useful expression",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "B-fTeA-fwG8",
+            "title": "100 Useful English listening practice::Short phrases::Improve your English skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "p76-_Akbmnw",
+            "title": "100 Useful English practice:: Speak English Fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "U4SHyOMT7Yk",
+            "title": "100 Useful English short phrases listening practice::Improve your English skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "K7tJVmD0FV4",
+            "title": "100 Useful English short phrases listening practice::Improve your English skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rHSoPm_gFIU",
+            "title": "100 Useful English short phrases:: fluent your English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8a87PCMzboQ",
+            "title": "100 Useful English short phrases:: listening practice::Easy and Useful",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "079o3L0MT18",
+            "title": "100 Useful expressions :: Effective way to learn English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fD4k9BJUnCc",
+            "title": "100 Useful expressions:: Guide you to speak English fluently and confidently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iysq2qSD0SU",
+            "title": "100 Useful long English expressions ::English speaking  practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xbinLICH2Ag",
+            "title": "100 Useful long dialogue ::English conversation:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "66hQQCCSKi8",
+            "title": "100 Useful longer English expressions:: speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cXkmxgzs17Q",
+            "title": "100 Useful longer English sentences speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8oJ0zm0PzCs",
+            "title": "100 VERY useful expressions:: Quickly improve your English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "A170YPpvdUE",
+            "title": "100 längere englische Ausdrücke:: Praktische englische Ausdrücke",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HgWXqKcvmuU",
+            "title": "100 導讀帶你強化長句的口語表達力:: 生活中搞不懂的英文句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rfSGQEjOylY",
+            "title": "100 應對英文生活妙招 :: 導讀帶你說好生活表達:: 有效的英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "e8e_FN095pA",
+            "title": "100 打造完美英文口語:: 教會你表達不懂說的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vDYgoRWR4CI",
+            "title": "100 打造完美英文口語:: 教會你表達不懂說的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ima4CkOelYw",
+            "title": "100 打開你學英文的腦袋:: 原來這些英文這樣說:: 英文聽力:: 生活超實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gOlYzhSlDfo",
+            "title": "100 教會你聽懂「完美表達生活」的句子:: 有效的英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cw-RmLXBHeU",
+            "title": "100 聽懂英文簡單達成:: 一次聽懂那些以前沒搞懂的生活用句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "u7D8ywtU_EU",
+            "title": "100 英文中長句::助你「說出想說的完整長句」::高效口語學習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "j-QVHtpMVHk",
+            "title": "100 英文中長句導讀:: 導讀教你想說不懂講的生活表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1fPVK9oZNrA",
+            "title": "100 英文口語生活篇:: 這些中長句你會希望早點學會的表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0J6v-ncp09Q",
+            "title": "100 英文學習:: 高清導讀教會你以前搞不懂的表達說法:: 口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TJYazHZpulU",
+            "title": "100 英文生活短句口語練習:: 讓你學會表達想說的話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "qwtOr7-uLS4",
+            "title": "100 英文生活短語篇:: 讓你流俐口語能力簡單達成！",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "aGQ11H1f0uU",
+            "title": "100 英文短語運用生活篇::萬用句型::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uTz2eShbiZU",
+            "title": "100 英文聽力練習:: 那些課本沒教你的生活英文:: 輕鬆教你聽懂",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "tGZFowEA9pQ",
+            "title": "100 英美最常用形容詞運用::文法&amp;聽力一起練::事半功停學英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "E3i73jdEwXg",
+            "title": "100 英美最常說的短句運用::萬用短句(含例句教學)::英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "C-wyKgS4YF8",
+            "title": "100 英語の勉強:: リスニングスキルの向上:: 役に立つ表現",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vpaCXNEb8jM",
+            "title": "100 英語の耳を作る::クイズ感覚でリスニング力を鍛えよう::Let's start!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DmgQMbtJ_ls",
+            "title": "100 輕鬆教會你抓到英文重點字:: 短語生活篇聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Gz9e1sjIQQI",
+            "title": "100 輕鬆讓你練的一口流俐英文口語:: 簡單上手生活短語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gV-CUsvfCGc",
+            "title": "1000 Best English speaking practice for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KzSoaiIkAk0",
+            "title": "1000 Frases en inglés más usadas y comunes ::Aprender frases cortas en inglés",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8HHp7tpM79c",
+            "title": "1000 MOST useful English expressions ::Daily English short phrases",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LZOJEc6xGiA",
+            "title": "1000 Vocabulary for beginners:: Most used by native English speakers in everyday",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "nwLp-LYKBZo",
+            "title": "1000必學英美最常用單詞::出現在英美生活中最高頻關鍵字::英文單字口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "yChTZQhJqII",
+            "title": "100อบรมภาษาอังกฤษอย่างมีประสิทธิภาพ:: หนังสือเรียนไม่ได้สอนการแสดงออก",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "AozcWKSvrck",
+            "title": "100一次弄懂這些想說不會說的生活英文::導讀念給聽::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "u_AYXtRfYOo",
+            "title": "100中高級英文會話:: 英文聽力練習::Q&amp;A",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "03mFsc3tmmw",
+            "title": "100初學也能輕鬆提升聽力:: 想說不會話的生活短句::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mhtzVP_cEG4",
+            "title": "100助你「聽英文暢通無阻」::課本沒教的生活表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4BjCgo0jFCw",
+            "title": "100助你突破英文聽力::聽懂地道的英文表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BMoNkUnGnUw",
+            "title": "100原來這些英文這樣說:: 生活篇:: 英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hLRMMuUa3RM",
+            "title": "100原來這些英文這樣說:: 英文聽力訓練:: 生活中超實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VCPu7S7JIcQ",
+            "title": "100句破除你對英文的迷思::原來這句話這樣說::聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0b9q4dv5dSY",
+            "title": "100句破除你對英文的迷思::教會你聽懂生活慣語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CsUcJoSn3Ls",
+            "title": "100句英文生活短語::每天都會用::快速學好英文偷吃步::高效的聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TOgD7XfvsGo",
+            "title": "100句英文聽力練習::你以為很難原來就這樣表達::學好英文Super easy",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sz6rQfP1eUI",
+            "title": "100地道英文:: 生活篇::把生活中該學的一次學會",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IhrApZ39PKk",
+            "title": "100地道英文會話篇::高清發音::教會你聽懂英美人士對話Q&amp;A",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6C1_0oMyS40",
+            "title": "100教你聽懂生活中不知怎麼說的英文::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-ZnFuoVDwWA",
+            "title": "100教會你流俐說英文長句::短語造句(英文口語)練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gsAu4f64UEs",
+            "title": "100生活中好用的英文描述::這句口語怎麼說？口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "w-9ELl8SXXg",
+            "title": "100英文口語練習::讓口語更流俐並能完整表達句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GM7rvN-fXGE",
+            "title": "100英文會話篇::情境生活問與答口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "17H01bVgM9U",
+            "title": "100英文短句運用::從短句開始聽懂長句::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KK_PKpx-3jg",
+            "title": "100英文練習生活篇:: 高效率跟讀練好口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8PEZKsN9qqA",
+            "title": "100英文聽力教會你每天想說的英文表達:: 一次解開你多年的英文迷惑",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "azHGte5ZJDs",
+            "title": "100英文聽力練習生活篇::生活中的這些句子這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "t9cTqy_cQbU",
+            "title": "100英文聽力訓練::初級進階最佳教材::生活中很實用的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YgZvI1zbFyo",
+            "title": "100英文聽力訓練::告別菜鳥的日子::原來這些英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TbxQ92XigCE",
+            "title": "100英文聽力訓練::聽懂生活用句超容易::生活中很實用的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gRgSp1sZbaY",
+            "title": "100英文聽力訓練::這些看似簡單卻不簡單的英文說法::原來這樣表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mJZUHgAuxW0",
+            "title": "100英文萬用句型(含例句)::生活中慣用句俚語聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GWr4mEdoPww",
+            "title": "100英文萬用句型::情境英文生活天天用的到::口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lBoVq8RlnHo",
+            "title": "100英文訓練::原來這些英文這樣說::明明很簡單卻不一定懂表達::聽力訓練::生活中很實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KwNSSCBLyFg",
+            "title": "100英文訓練::原來這些英文這樣說::明明很簡單卻不容易弄懂的英文::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0LEjqzXIe5M",
+            "title": "100英文訓練::原來這些英文這樣說::明明很簡單卻不容易弄懂的英文::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "eG7znv-6yM4",
+            "title": "100英文訓練::原來這些英文這樣說::明明很簡單卻不容易弄懂的英文::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Qi-63q5cLcw",
+            "title": "100英文訓練::原來這些英文這樣說::秒懂生活用語::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1x_01hQu3CM",
+            "title": "100英文高效率聽力練習::中高級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "blqtW4ncyKk",
+            "title": "100英美劇常聽到的生活短句::快速學好英文聽力的練習::原來這些生活英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "71bMk7KpfUU",
+            "title": "100英美劇最常聽到句型::英文聽力訓練::輕鬆聽懂慣用語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XsnbYc4mc1Q",
+            "title": "100英美劇最常聽到短句::輕鬆聽懂生活慣語::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "b-Q_cWfd5mU",
+            "title": "100英美劇最常聽到英文短句::輕鬆聽懂生活表達::英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YpSHLvMopfs",
+            "title": "100英美最常用重點名詞運用::外師助你學造句::英文聽力文法一起練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RnozGK2MaDk",
+            "title": "100英美高頻詞運用:: 高效學單詞運用:: 英文文法 &amp; 口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "qpkV1J-JleU",
+            "title": "100超短句英美劇常聽生活短句::初學者也能快速學好英文聽力的訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ZnSytIrbYM8",
+            "title": "100進階口語英文長句練習::讓英文口說更上一層樓",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zgyqCq2x3Sg",
+            "title": "105 Must know airport English vocabulary for beginners:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GXwxEKvwQfU",
+            "title": "105句句精華::重要的英文動詞例句全集::把文法和聽力一起練了",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-HVS8OzT4qw",
+            "title": "105機場&amp;飛機上重要關鍵重要單詞::英文菜鳥出國也簡單::瞬間搞定",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8ku0CGvLTBo",
+            "title": "105機場飛機上重要必會用到英文單詞::聽懂重點字輕鬆就成\"行\"",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "o2aLm_nXRBQ",
+            "title": "105英文學習有捷徑!!! 百搭開頭語::文法聽力一起練好",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7srz8d6l9c0",
+            "title": "105英美最常用開頭語::倍速學好英語造句::英文文法&amp;口說一起提升！",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zgeUBctzF5A",
+            "title": "10分鐘生活實用英文::高效學習::生活用語/問意見/提建議::每日十分鐘累積成塔的英文實力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "kJcD5LTgJV0",
+            "title": "10分鐘英文口語::表達問候/情感狀態/閒聊::每日十分鐘累積成塔的英文實力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "NRyAMFMfrFI",
+            "title": "10分鐘英文聽力訓練p1::高效學習::生活用語/俚語/道地口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Gb8cmow6D_A",
+            "title": "10分鐘英文聽力訓練p2::高效學習::生活用語/俚語/道地口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "paOZZXeK-_A",
+            "title": "150 Most used vocabulary expressions for daily life:: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iKWAXcAH0Xg",
+            "title": "150助你聽懂英美人士都在說什麼！最常用到慣用語俚諺語全集::英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "yFN0QC43JcU",
+            "title": "17 句生活英文:: 教你聽懂一整天生活描述「早中晚」",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TbwDF1EvFSc",
+            "title": "199 Useful daily English expressions:: English Speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "pbyy9kSeKdM",
+            "title": "199 Useful daily English expressions:: English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SOJHUBIwYXY",
+            "title": "199生活英文聽力:: 這些句子生活中很必要",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PhWfbGgOBk4",
+            "title": "1hr English Listening Practice with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "e1lH2ohaae4",
+            "title": "1hr. English Dialogue:: Practice listening with native English teachers  (HD audio )",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CW_b7OwRRDI",
+            "title": "1hr英文會話聽力練習:: 不管哪個等級都好用:: 一問一答",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BfQLdHfcF4w",
+            "title": "1小時學好這些你必懂的英文:: 生活中實境「對話應用」::帶音標高清英文聽力::简/繁",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "p-CrCc7hYBk",
+            "title": "1小時英語聽力練習 (簡/繁):: 高清發音:: 生活實用句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Oe6YipdJ-R8",
+            "title": "200 Daily English:: Very useful expressions for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-ysU14CUtfY",
+            "title": "200 English Speaking Practice for beginners:: Useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4SJoCORYWB4",
+            "title": "200 English Speaking Practice:: Useful Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "51rRHLBTiLM",
+            "title": "200 English Speaking Practice:: Useful Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zaqwt7RM0zM",
+            "title": "200 Express yourself fluently in English:: Speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "X2WwEkHgPc8",
+            "title": "200 High quality audio speaking practice:: useful long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xVbinqusLPA",
+            "title": "200 Super useful English expression:: speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0AUuFzTHcsg",
+            "title": "200 Useful English Expressions:: Improve your English speaking skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "P3YIl11AqSE",
+            "title": "200 Useful English Phrases:: Improve your English speaking skill ::easy and useful",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "W6UFcVCkC5k",
+            "title": "200 Useful English expressions ::Improve your English speaking:: speaking fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RlEmlBJ6KtY",
+            "title": "200 Useful English practice ::Improve your English speaking:: speaking fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vb_Zy86UFaQ",
+            "title": "200 Useful English practice:: speaking fluently ::Improve your English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4M5QIjt-DO0",
+            "title": "200 Useful English practice:: speaking fluently:: Improve your English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OWI6VkNU8Pc",
+            "title": "200 Useful Expressions:: English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XXYNhyJ8lTY",
+            "title": "200原來這些生活英文這樣說:: 英美劇常聽生活短句::英文口語訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "83Nb6kkIL54",
+            "title": "200句讓你朗朗上口::生活中開口說英文::跟著外師讀就OK",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3QiCpWkRHdE",
+            "title": "200地道英文短句口語練習::破除英文記不住迷思",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8eqz5W6MoEQ",
+            "title": "200生活中不可不會的好用表達::英文菜鳥從零到流俐開口說超容易",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jRJjf5PEIHI",
+            "title": "200英文口語練習::導讀教學說出完整長句::生活篇",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Y6naS2pciG4",
+            "title": "200英文生活句::學好生活表達超簡單::口語訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5n_MyiOb8HA",
+            "title": "200英文生活短句:: 那些簡單以前卻不知的表達:: 生活習習相關「原來這些英文這樣說」",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DBmniEPem88",
+            "title": "200英文短句口語練習::看似不簡單其實很容易",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ljT_0T-NKt4",
+            "title": "200超實用生活英文短語:: 想說不知怎麼開口的英文練習:: 流俐你的英文口語表達::",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wrtPl9hFd7I",
+            "title": "200超實用生活英文短語::流俐你的英文口語表達::想說不知怎麼說的英文練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "aVSSVnH46Jw",
+            "title": "200超實用生活英文短語::流俐你的英文口語表達::想說不知怎麼說的英文練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "q50OcdTQ1Ak",
+            "title": "202 Phrases often used by native English speakers:: Useful daily expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-lK1vOi16zg",
+            "title": "202 Useful airport /airline English expressions:: you would say and heard",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "m2Bw-LIl460",
+            "title": "202 Useful daily expressions for beginners: Speaking English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "FlgXooEvc3Q",
+            "title": "202句機場口語練習::海關、廣播、 地勤、飛機上、緊急處理(全集)",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uWMo3eZ1X-A",
+            "title": "202英文極短語::英語母語者常用的短句表達::英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Gqt-el-TgSg",
+            "title": "202英美人士都在說什麼？?必備的生活英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6JIEaNrLMt8",
+            "title": "202這些好用的生活表達::肯定用的到!! 英文口語跟讀練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OEpXzO1OyXU",
+            "title": "204句重要的英文動詞表達::高效提升捷徑:: 文法和聽力一起練好",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9dSd3gL8wzA",
+            "title": "20個萬用短句::含例句::讓你的英文表達更流俐::高效練聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KZVpW5A-_IQ",
+            "title": "22 Minutes of English Speaking :: Practice with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wEi0eWxyhZw",
+            "title": "28 Minutes of English Speaking Practice with&nbsp;Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HnF5NqnNzkE",
+            "title": "3 hrs.English listening comprehension:: Useful expressions:: Practice with  native English teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EjpufW20I1E",
+            "title": "30 Minutes of English Speaking Practice with&nbsp;Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mZpKPV62osI",
+            "title": "300 Improve your English speaking:: English dialogue for everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TYJZO9WppN4",
+            "title": "300 Useful English expressions :: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "B0FXKQRECAI",
+            "title": "300 Useful English:: Learn English Speaking with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "eqMTqVptd34",
+            "title": "300 Useful daily English:: Help you speaking English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uZfuN7e3sGM",
+            "title": "300英文短句::跟著外師讀::助你零基礎輕鬆開口說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7O09ClCrsM4",
+            "title": "300英文短句聽力::高師高清發音::秒速聽懂英文生活聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "nvroGFQOoVY",
+            "title": "300英文訓練::原來這些英文這樣說::明明很簡單卻不容易弄懂的英文::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "w6IrSmbFqik",
+            "title": "30句英文居家生活片語含例句::學了天天可以用！！::高效練好你的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hH76gEjKgx4",
+            "title": "30句英文生活日常需求表達::各式尋求協助萬用句型::菜鳥必學::聽力敏感度訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7qpBvkuEidE",
+            "title": "31 Minutes of English Speaking Practice :: Useful Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2BXME_BMfOQ",
+            "title": "36 Useful English phrases with examples:: English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PWsd153BH-w",
+            "title": "36萬用英文句型！快速提升有捷徑！附長註解::英文文法和聽力一起練好",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vJUKTNMsd4Q",
+            "title": "3小時英文短句聽力:: 精選高頻生活用句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Qx5CpeQbuXk",
+            "title": "40句必學旅行英文::旅館::飯店::青年旅舍都適用::你想問的你會聽到一次掌握",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MlT6dsy1AQk",
+            "title": "45分鐘英文長句聽力訓練::外師助你聽懂生活長句表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BeZK-M9Gar8",
+            "title": "46 Minutes of English Listening Practice for Intermediate:: Listening Comprehension",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uP1I_wjKtUc",
+            "title": "48個道地英文諺語及例句::英語母語者最常用的諺語::高效的聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TnxskcgxH8Y",
+            "title": "49句英文餐廳口語::自助旅行超上手::簡單易學",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "A08UJrlcVCw",
+            "title": "50 Guide you to speak English fluently:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "bHb5u-pQxqo",
+            "title": "50 High quality audio listening practice:: useful long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wwCQ9EjzZpM",
+            "title": "50 Improve your English speaking skills:: useful expression practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gRIKTNqtbRU",
+            "title": "50 Long expressions:: Improve the fluency of your spoken English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2ttiaa9Rf6Y",
+            "title": "50 Minutes of English Listening Practice for Beginners:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GAFQJ1NoUc4",
+            "title": "50 Useful English listening practice::Longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "yAvofW89IRw",
+            "title": "50 Useful daily English:: long expressions:: improve your English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "pYGyc9HtpoI",
+            "title": "50 Useful long English expressions listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "r7k_G1gWLV4",
+            "title": "50 Useful long expressions:: improve your English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CG-O0rDx8Ok",
+            "title": "50 Useful longer English sentences speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "dKTzycJqyQE",
+            "title": "50 導讀英文長句::教會你說好流俐生活中實用的英文句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "oFAuh1xRQNw",
+            "title": "50 英文長句::流俐你的口語越說越長",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "11VAHOOtDVA",
+            "title": "50 英文長句聽力::提升你聽力記憶的技能",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "oWJkHFd4wLc",
+            "title": "50 英文長句聽力::教會你一直以來聽不懂的生活英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "dKGzfXPjOvQ",
+            "title": "500 Englisch sprechen üben:: Täglich nützliche kurze Ausdrücke",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ynEW2YZ5-Tw",
+            "title": "500 Most used by native English speakers:: Key words dictation practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zByMcP_q-xY",
+            "title": "500 Must know English vocabulary for beginners:: listening practice:: dictation practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ez3uKOciAeI",
+            "title": "500 Useful Adverbs Prepositions Expressions:: English Grammar and Speaking Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ABx43C5z1gM",
+            "title": "500 Useful English expressions ::Improve your English speaking:: fluently practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "QRqPPrApt6U",
+            "title": "500個單詞力助你快速告別菜鳥等級:: 英文聽寫練習:: 就算聽不懂能也準確抓到關鍵字",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xdniuDyV-iU",
+            "title": "500個英美最重要的關鍵詞::英文聽寫練習::助你快速抓到句中關鍵單字",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jwBiL6PBZUw",
+            "title": "500英美高頻詞運用::動詞名詞形容詞副詞等:: 跟著讀學會英文造句超容易",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "eYwtSD7WKM0",
+            "title": "500超實用生活短語::輕鬆聽懂英文誰都「行!」::高效練好英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lsIbHVF6rvg",
+            "title": "500超實用生活英文短語::流俐你的英文口語表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Br_LLjUxlzU",
+            "title": "50原來這些生活英文這樣說:: 生活英文長句聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-8Ziq6KEIk4",
+            "title": "50英文中長句聽力練習::原來這些英文這樣說::生活篇",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "bL4PXv05yrE",
+            "title": "50英文生活長句篇::超實用生活英文長句::進階最好的練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "t8AmQAqjPGw",
+            "title": "50英文聽力練習::中長句::生活篇::原來這些英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mmcRhFryEX0",
+            "title": "50英文長句導讀口說練習::讓你說的一口流俐英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9ypIOXhI0eE",
+            "title": "50英文長句聽力練習::原來這些生活英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OY2oS2_9lAM",
+            "title": "50長句英文口說練習:: 讓英語母語者帶你說好長句口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9FB0LzLD8_0",
+            "title": "55 English expression of long sentences:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0GXaDxxNJEw",
+            "title": "55 English expressions (Longer to long):: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "U0uFpvc80Bs",
+            "title": "55 Guide you to speak English fluently::  long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ZAkYIS01kDk",
+            "title": "55 Guide you to speak English fluently:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_NCNiyr8bbA",
+            "title": "55 Guide you to speak English well:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "FwKOxYd0hU4",
+            "title": "55 High quality audio listening practice:: useful long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "AjRRyk4HF2s",
+            "title": "55 英文口語秒速進步練習::高清導讀::由中長句到長句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sXqAGMyOADE",
+            "title": "55 英文由簡入深聽力練力練習::生活篇",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "N0_u01AYR8k",
+            "title": "55句英文生活中最常使用的短句::每天都會用::必學必會的句子::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "E5K46JOWwj8",
+            "title": "55英文長句口說練習::讓你說的一口流俐英語導讀",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6Xx1FOkjQ_s",
+            "title": "55英文長句聽力練習:: 高效學習提升你的聽力技能到中高級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "k2_t3hVdhXw",
+            "title": "55高清版教會你聽懂英文長句::聽力練習::中高級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hqXOT8hmwEs",
+            "title": "57 Minutes English Listening Comprehension :: longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OefB2gMZ-FU",
+            "title": "58 Minutes English Listening Comprehension Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "c27xZphmOAM",
+            "title": "58 Minutes of English Listening Practice::  Useful daily English expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hbGUYpHX8EM",
+            "title": "5個學習英文超高效方法::外加1個技巧彩蛋::總有一個對你有幫助",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YU1NCrN8hBo",
+            "title": "60 Best way to learn English listening:: Useful long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TNGony_dZAw",
+            "title": "60 Effective way to learn English:: useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IlyCLO1YG3o",
+            "title": "60 Improve Your English-Speaking Skills:: Expand your vocabulary",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4d9hszanQbo",
+            "title": "60 Useful Long Expressions:: English Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3iA86h-bjcU",
+            "title": "60 ประโยคยาวภาษาอังกฤษที่มีประโยชน์:: ฝึกการฟังภาษาอังกฤษ",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9lUkALPWXcI",
+            "title": "60句全美的日常短語::外國人每天都說::高效練聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VScCQ5xxQf0",
+            "title": "60地道的英文表達:: 助你「完整表達」說長句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6JTVn-thYhI",
+            "title": "60英文長句即生活化又實用::助你把句子越說越長完整表達想說的",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "tq1wONzVEpE",
+            "title": "60英文長句聽力:: 助你「突破瓶頸」聽懂長句::Effective way to learn English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fIQ1X4BQurg",
+            "title": "60英文長句聽力練習:: 助你「提升記憶力」聽懂長句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CRpDY-a8h3o",
+            "title": "60英文長句聽力練習:: 幫你助攻「突破瓶頸」聽懂長句誰都做的到",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4KFKnCbrxLY",
+            "title": "60英文長句聽力練習::助你「聽懂搞不定的長句」",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3hKXmetqAAo",
+            "title": "60英語リスニング練習:: 長い式:: 生活の中でよく耳にする言葉",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GnHSGk9tbV4",
+            "title": "61高頻的萬用百搭句型::英文聽力和文法一起練好!!! 附註解!!! 學好英文很容易",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6LTxSpceOOA",
+            "title": "66 Common Idiomatic Expressions:: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "s0Nd3u22LMk",
+            "title": "66個道地英文諺語例句::英語母語者最常用的諺語::高效的聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OSzwCj1vF9M",
+            "title": "66英文聽力練習::助你聽懂生活常用句::與生活習習相關「高頻率萬用句型」運用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "WXPsF3ohhNA",
+            "title": "69 Useful short expressions with examples:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_OzVfdAsPik",
+            "title": "69必備英文片語::句句精選::::英美生活最常用到",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2hD0Wsw1aF0",
+            "title": "Actual Airline Announcements:: Flight Attendant Announcement:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "etjY9x_vVJQ",
+            "title": "Airplane English:: Travel English:: Speaking practice ::English you'll need on the plane",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vGkVPA4QMSQ",
+            "title": "Airport /On board the aircraft expressions:: English listening comprehension",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "r1-je_2oo-A",
+            "title": "Airport announcements / Customs questions and answers conversation practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xVXhMb8v1TE",
+            "title": "BEST way to learn english speaking:: Talk about household appliances",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "v54SPjlLb5k",
+            "title": "Basic short phrases with examples:: Best for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "j5iL4cB06fE",
+            "title": "Become Fluent in English 100:: Useful expressions ::Effective way to learn English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "c2NknLIwRZ8",
+            "title": "Best English conversation for beginners | good questions to ask and learn how to respond",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9w-eAUu55PU",
+            "title": "Best Ways Describe Daily Routine:: how to speak English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "o5LicvQqKR0",
+            "title": "Best Ways To Encourage Someone:: how to speak English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ZUmnYpN0IKI",
+            "title": "Best Ways To Practice Long expressions:: speaking English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "UPaUiahhk-g",
+            "title": "Best way to learn English Speaking:: 60 Useful Expressions (Long)",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "n8RmAZulw_8",
+            "title": "Better ways to say in English ::You will benefit for a lifetime",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "QvnJNSyHDk8",
+            "title": "Better ways to say in English:: useful expressions ::everyone should know!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DHd3EvqAHR8",
+            "title": "Daily English for intermediates:: English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "p70b-NY2-Cc",
+            "title": "Daily English listening practice:: Useful longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fOYGCV6-YuI",
+            "title": "Daily English phrases with useful example:: Grammar teaching guidance",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KmCZyQYLyN0",
+            "title": "Daily English:: Speaking practice:: Convenience Store Theme",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "j1ijqKwCYEk",
+            "title": "Easy everyday expressions:: English listening comprehension",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "M1XUL7MXBs8",
+            "title": "English Conversations for Daily Life:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fwqrP7nM_V4",
+            "title": "English Dialogue ::Ways to say \"You Are Welcome\":: English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "tJD8Uc02Skc",
+            "title": "English Dialogue:: Listening Practice:: 1hr. high quality audio",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IIIw0xbT-aQ",
+            "title": "English Listening Practice ::Ways to say \"Take it easy\"",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RcqyNOAwdyU",
+            "title": "English Listening Practice for Intermediate everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uFGQhpTSJaM",
+            "title": "English Listening Practice:: Daily English expressions for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Sr8ok7ya91g",
+            "title": "English Listening Practice:: Useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MzwDh7uhtcM",
+            "title": "English Listening Practice:: useful long expression for intermediates",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iz-pbmriO20",
+            "title": "English Listening:: Very useful expressions in daily life",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Qd9h-thXdoA",
+            "title": "English Sentence Starters For Everyday Speaking:: with examples",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SvxIsB2qzZo",
+            "title": "English Speaking Practice for Beginners:: speaking fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YgcVPt7r9VE",
+            "title": "English Speaking Practice for beginners to intermediates:: Useful Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Vl4F4sMI2rI",
+            "title": "English Speaking Practice with Native English Teachers :: for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uQgJJUasYvQ",
+            "title": "English Speaking Practice:: Daily Conversations",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cwL7jJMALZg",
+            "title": "English Speaking Practice:: Learn with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6B2kNmI-Q4E",
+            "title": "English Speaking Practice:: Most used verb expressions for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0WQeShd7-mM",
+            "title": "English Speaking Practice:: Most used vocabulary expressions for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "W-q2BsAlNZA",
+            "title": "English Speaking Practice:: Useful Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "UKesd7W_lVA",
+            "title": "English Speaking Practice:: Useful Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "O8ivGeogCGM",
+            "title": "English Speaking Practice:: ways to say \"Take it easy\"",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CKmiiNhx6MA",
+            "title": "English Story Comprehension:: Picnic plan Theme",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "oJdcjRczMFs",
+            "title": "English at airports and on planes ::Must know vocabulary for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ksRYCtufMik",
+            "title": "English conversations for your daily life:: Speaking Practice with English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jLGtqg2ernc",
+            "title": "English dialogue:: 50 minutes listening practice:: Ways to say \"Sorry\" and \"Reply\"",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DB8pJ80EiwA",
+            "title": "English grammar and speaking practice:: With example sentences",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6TTYgIAgWiM",
+            "title": "English high frequency short expressions dictation:: Strengthen key words listening:: for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "oxVc-MJCzY8",
+            "title": "English listening comprehension ::Practice with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "j2q6IPMXba4",
+            "title": "English listening comprehension for beginners::1 hr. (short expressions)",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6op_u79_m18",
+            "title": "English listening comprehension:: Short expression for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mqNPKMiNYUs",
+            "title": "English listening for beginners:: 200 Quickly improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MHekCaOxM2E",
+            "title": "English listening for beginners:: Quickly improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uIaUVhEnyhQ",
+            "title": "English listening for beginners:: Quickly improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lkz291VBWMI",
+            "title": "English listening practice for beginners everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mMTSnn0yI5M",
+            "title": "English listening practice for beginners:: Improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "T0CEOabqzQU",
+            "title": "English listening practice for beginners:: Improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fNIC7WiVYr4",
+            "title": "English listening practice for beginners:: Short English expressions for everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ioXStOblvJY",
+            "title": "English listening practice for everyday use:: Improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6jxx5RzQun0",
+            "title": "English listening practice:: Most used vocabulary expressions for daily life",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Y46EtBpsJbs",
+            "title": "English listening practice:: Useful Daily  English for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Nh7-imh3KNE",
+            "title": "English long dialogues:: Native English speaker conversations",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0iIXAiKNoRE",
+            "title": "English long expressions ::Speaking practice with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "q1pEfAwK_Vo",
+            "title": "English most used phrases and idioms expressions:: English speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PLqLa5VAsXE",
+            "title": "English sentences starters for everyday life:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1LXX9q6ZM1k",
+            "title": "English short phrases (with cue card):: speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6plWLTBvu9Y",
+            "title": "English short phrases with examples:: speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "pz5nVg37fws",
+            "title": "English speaking practice :: Greeting Dialogues",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "F3PgBDZvics",
+            "title": "English speaking practice for beginners everyday use:: Short English Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OE2ny3U5WI8",
+            "title": "English speaking practice for beginners:: Improve English speaking skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KFKuRJ4nm1o",
+            "title": "English speaking practice for intermediate learners:: Long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "12S9zaQ-ilA",
+            "title": "English speaking practice:: Useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CFyXtfvrAIU",
+            "title": "English speaking practice:: Ways of English drama expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lkfMB3k5suk",
+            "title": "English speaking:: Speaking English fluently ::longer sentences practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3ru8ugv_1jE",
+            "title": "English story comprehension:: Morning Routine Theme",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "e33jGCDM8co",
+            "title": "English story comprehension:: What's in the fruit shop theme",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0ytnhq_heno",
+            "title": "English useful  longer expressions 100:: speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "s43w52IWRGk",
+            "title": "Great ways to learn English Listening :: 100 Useful expressions:: You'll wish to know earlier",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xuPuY_qKlQw",
+            "title": "Guide you to speak English fluently:: Daily routine expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YACyXMU4JX4",
+            "title": "Guide you to speak English fluently:: Talking about houseworks",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4pe94gbvbgA",
+            "title": "High frequency sentences in American TV series:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "u2VRWF2cK5g",
+            "title": "How to talk about daily routine:: Speak English Fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ygbWXpgQ5C8",
+            "title": "Improve English Speaking:: Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ooz0W94nkvg",
+            "title": "Improve your English so easy::Learn English effectively:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KkucmIAb5Ww",
+            "title": "Improve your English speaking:: Daily English dialogue",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "pffL9Ssi4ms",
+            "title": "Improve your English speaking:: English dialogue for everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2pndGhS5Jxk",
+            "title": "Learn English Speaking Effectively:: Talking about various ways of cooking dishes",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "qbYUPwGbVfQ",
+            "title": "Learn English speaking  with native English teachers:: 21 minutes practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "n16Pix28xdk",
+            "title": "Learn to speak English with a native English teacher",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "E2HYMfuiG8o",
+            "title": "Let's Learn English:: Useful English expressions ::  listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5TQvNlf_CDk",
+            "title": "Long English expressions :: Good way to speak English extraordinary fluency",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ssm3ufZMhio",
+            "title": "MOST used telephone English phrases| Improve your listening and speaking skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "k8-hqlWOcEs",
+            "title": "MUST KNOW daily English:: Shopping At Supermarket:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Dggmp8RHHfs",
+            "title": "Most Used Phrases in English (with examples):: English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EomGhRT2Mv0",
+            "title": "Most used English expressions:: Very Useful!! English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vewWGc1UMY4",
+            "title": "Most used verb expressions:: English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "UnLq21yE93A",
+            "title": "Must Know Useful Expressions in Supermarket:: English Speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "a0WajA7baNw",
+            "title": "Must know daily English:: useful phrases and expressions in supermarket, grocery store, shopping",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "swDWhEbXBuA",
+            "title": "Must know the English expression on the plane:: Airplane cabin English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sjARwuCAhLo",
+            "title": "Must-Learn speaking skills:: English long dialogue",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "FoiLf6LJigQ",
+            "title": "Must-know English for Telephone Calls:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KKFitmqmZtU",
+            "title": "Native English speakers' expressions:: Improve your English listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3nHCfHDSLig",
+            "title": "Practice English Speaking with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lJg8ADJqAlY",
+            "title": "Practice English Speaking with Native English Teachers - Improve Speaking Skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rGH14WoE6Nc",
+            "title": "Practice English listening with&nbsp;Native English Teachers:: for intermediates",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rFWl6xnxjw4",
+            "title": "Practice&nbsp;English Listening with&nbsp;Native English Teachers:: Useful longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5_KUKjKAkAo",
+            "title": "Practice&nbsp;English Speaking with&nbsp;Native English Teachers:: Useful daily expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SpDgF1pg2Hc",
+            "title": "Questions and replies:: Useful English dialogue:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Io9Bq9F3eMg",
+            "title": "Really helpful for speaking long sentences:: Long sentence speaking skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wvZr_RoGSPI",
+            "title": "Sentences you will hear in English dramas:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "y-4wIeAN50g",
+            "title": "Shopping at the Grocery Store:: English listening :: Must know important daily English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BrfKESivbeE",
+            "title": "Short English Expression for Beginners ::English For Everyday Use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7OnhHjvvqj8",
+            "title": "Short English Expressions for Beginners ::English improved quickly",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HWrGwNI_YpE",
+            "title": "Short English Expressions for Beginners ::Speaking Fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "yg8wqbUUX5A",
+            "title": "Short English Expressions for Beginners ::quickly improve",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ryzr9HJ-zMc",
+            "title": "Short English Expressions for Beginners:: for everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fwOfJ4rS-1o",
+            "title": "Short English Expressions for Beginners::English listening::Improve your English quickly",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lNGkssnIUkU",
+            "title": "Short English Expressions:: Listening practice for beginners everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LWz-9ozL-00",
+            "title": "Short English conversations| good questions to ask and how to reply | Daily English dialogues",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YTBmXdaFCO0",
+            "title": "Short English story comprehension:: Amazing Zoo Theme",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iqMvQZ1KWo8",
+            "title": "Short English story comprehension:: Shaving Theme",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TdE7A99xLKE",
+            "title": "Short expressions that can be used every day ::with examples:: English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CGHmTqkvZPU",
+            "title": "Slow speed ::Help you improve your long sentence listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hiWfUHfkSsM",
+            "title": "Speaking English fluently Quickly :: 200 Easy and useful expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7frKDSnQlXo",
+            "title": "Speaking English fluently:: Effectively improve communication skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-yfodxIR4hY",
+            "title": "Spoken English: Supermarket ::Shopping at the Grocery Store",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XRTIFeeS7f8",
+            "title": "Spoken English:: At the convenience store:: English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Hnd-unOStY8",
+            "title": "TOP 100 英美最常說的萬用短句::英文聽力練習::外國人掛嘴邊的那些話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "faFN0vimyoE",
+            "title": "TOP 400 You can use it every day:: useful English expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "szu5OtZlsUQ",
+            "title": "Talking About Relaxation:: how to speak English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6c8-ikxsu0o",
+            "title": "Talking about all kinds of toilets ::Speak English Fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "edYXjw0o8jw",
+            "title": "Talking about shopping in the supermarket:: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GofXS63py_M",
+            "title": "Talking about the way to cook MEALS:: English listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "W6nW6D4amEQ",
+            "title": "Telephone English:: How To Sound Professional On the phone",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ohIaZD7xCak",
+            "title": "Telephone English:: Phrases for beginning a phone call",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OYY8HIs4SIU",
+            "title": "Telephone English:: Speaking like a pro:: Speaking English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "yUrtfDv6ou4",
+            "title": "The Hottest Trending Topics:: talk about virus ::English Speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "WEBEKSrsaQo",
+            "title": "These English phrases are really useful:: How to use phrases in sentences:: listening exercise",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4eduMEburyw",
+            "title": "These expressions you'll wish to know earlier:: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "W2tpAkfBsHY",
+            "title": "Top 100 MUST know useful expressions:: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Afwxpoe9Vw4",
+            "title": "Top 100 The most useful English adjective expressions:: English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DBCuZgcPJV4",
+            "title": "Top 100 Useful Nouns Expressions:: English grammar and listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Q806_6HACqU",
+            "title": "Top 100 short English expressions :: Must-Learn speaking skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CYuM65k2V9M",
+            "title": "Top 100 英文必學必會短句片語:: 英美劇中最常說的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Kt1eHujdBYs",
+            "title": "Top 100 英美劇最常聽到短句::學好英文的捷徑:: 聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LasXV_jpyM4",
+            "title": "Top 200 English listening for beginners:: Quickly improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GEHJfKvytac",
+            "title": "Top 200 MUST know expressions:: easy and useful :: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zoVt9nwg8K0",
+            "title": "Top 200 英文必學必會短句片語:: 你也可以輕鬆開口說英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "r_CHqEgg50M",
+            "title": "Top 200 英美劇最常聽到短句::學好一生受用:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6WDinBRK9To",
+            "title": "Top 300 Useful English expressions for beginners:: English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "E6E-jmW_mFc",
+            "title": "Top 300生活中常用短句::輕鬆學好英語聽懂老外就靠這教材::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "is--rx_qNPI",
+            "title": "Top 400 Useful expressions :: Learn the best ways to speak fluent English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "40nH-4O7Ba8",
+            "title": "Top 400一生受用的生活短句:: 養成良好英文聽力的耳朵",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LRaE_AskZOY",
+            "title": "Top 500 Easy and useful English :: You can use it every day",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6CUvC0uf1kw",
+            "title": "Top 500 Effektive Art zu lernen Englisch:: Sie können es jeden Tag benutzen",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "pb5EjcViqgQ",
+            "title": "Top 500 英語の聞き取り練習:: 簡単に英語で表現できるようになる",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EPtEkEN1jWQ",
+            "title": "Top 500英語の基礎フレーズ:: 気軽に学べる:: 日常的に使える英語表現",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "M9DBeOm7AVM",
+            "title": "Top100 Useful Adverbs Prepositions Expressions:: EnglishListening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ZbAk2CAd4Ws",
+            "title": "Top100 useful English expressions::lIstening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4N119mtOu6I",
+            "title": "Top100英美劇最常聽短句::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "L7rPxM8PEHU",
+            "title": "Top200 MOST useful expressions:: speak English fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TxU1-36wxh0",
+            "title": "Top200英美劇最常聽短句::英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "L5Pxrv9zg68",
+            "title": "Top400句英文是你會希望早點學到的表達:: 你每天都可以用的到",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "NJmcpvRrvyw",
+            "title": "Travel English At the airport /On board:: Useful  English expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wchgtdZ3vlk",
+            "title": "Travel English:: Airport and on the airplane:: You'll need it on your trip!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "L6_sB4F_IEA",
+            "title": "Travel English:: Must-know before travel!!!:: English speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "odkSe0YhUlY",
+            "title": "Travel English:: You'll need it on your trip:: English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1JLoFHzS7Mw",
+            "title": "Travel English::Airport Transportation Hotel::listening practice::The English expression you need",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "FZnWs6DCs60",
+            "title": "Trending topic: Talking about COVID-19::English Listening::  The textbook didn't teach you",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CTlQEDUe9nk",
+            "title": "Useful Adjectives expressions ::English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iCq3eKPM37Y",
+            "title": "Useful Can and Can't Expressions:: English speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "NmnvEm4Uoh4",
+            "title": "Useful Daily English Listening Practice:: Longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ea3VU9AjTNk",
+            "title": "Useful Daily English:: Encourage others:: long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "UJZQMabL5Jk",
+            "title": "Useful Daily English:: Home Appliances:: long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "A_ZP-jjON6o",
+            "title": "Useful Daily English:: Talk About Releasing Tension:: long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BsKDbx-se1g",
+            "title": "Useful Daily English:: Talking About Daily Routine:: long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "m6vw_u7H8YA",
+            "title": "Useful Daily English:: Talking About Houseworks:: long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5DFlQBjb_hI",
+            "title": "Useful Daily English:: Types of toilets:: long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sFV87alFF_I",
+            "title": "Useful Daily English::Talking About Daily Routine ::long expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "D6UzoHf1Q_E",
+            "title": "Useful English Expression (with cue card)::speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cUJxCWvmR5s",
+            "title": "Useful English Expressions Listening Practice:: Daily English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2xtWhi41p1o",
+            "title": "Useful English Expressions for Beginners ::listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "i5Xzk2WckgQ",
+            "title": "Useful English Expressions for Beginners:: with cue card ::listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rfbQHfrbyBA",
+            "title": "Useful English Expressions:: Short Phrases for everyday use:: English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wu7LCeqLmeQ",
+            "title": "Useful English Expressions:: with cue card :: Ways to learn English easily :: listening exercise",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rt2sCDrJ5g0",
+            "title": "Useful English Expressions:: with cue card ::listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "inEEMLU_1os",
+            "title": "Useful English Listening Practice for beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_KRDhq8zRTs",
+            "title": "Useful English Listening Practice:: Longer Expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "y3_B00Xor2k",
+            "title": "Useful English Speaking Practice for Beginners",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YXQMQpVX6rE",
+            "title": "Useful English dialogue:: Questions and replies:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "QKVUWuq8fTs",
+            "title": "Useful English expressions ::1hr. English Listening practice with native English teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LCGfJ258LaU",
+            "title": "Useful English expressions for daily life:: listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ehb7U2UXLRo",
+            "title": "Useful English expressions!!! for your daily life:: longer expressions",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Mg3dDQy-6aM",
+            "title": "Useful English listening practice::100 Short phrases::Improve your English skill",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EM6CTDSrlSk",
+            "title": "Useful English phrases with examples :: English listening and grammar practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5TsD15RonhQ",
+            "title": "Useful English phrases with examples::English Listening Comprehension",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9KT4HBpUJzI",
+            "title": "Useful English short phrases (with cue card):: learn how to make sentences",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RnYdyIlRQ8w",
+            "title": "Useful English short phrases with examples :: Listening and Grammar practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Q97GI0kBxsc",
+            "title": "Useful English short phrases with examples ::EnglishListening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_khmpaiPQrk",
+            "title": "Useful Long Expressions:: Best way to learn English listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-TxvSRMrnug",
+            "title": "Useful Phrases:: Longer Sentences:: 1 hr English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "w-O1PwOkl2s",
+            "title": "Useful Short English Expressions for Beginners:: Everyday use",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Y1v1vSx94HE",
+            "title": "Useful Travel English:: Emergency handling during travel!!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gUmQ7t1ZlEo",
+            "title": "Useful Travel English:: Emergency handling during travel::English Listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7urCf5PaKq8",
+            "title": "Useful daily English :: long expression listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "AHPbXGFra70",
+            "title": "Useful daily English expressions:: Learn to talk like a native English speaker",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iweP7de6BfU",
+            "title": "Useful everyday English expressions ::English Speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fTxt8IxhWoQ",
+            "title": "Useful everyday expressions ::Effectively improve your oral English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "leXaYmmaq_0",
+            "title": "Useful idioms expressions(long):: Speaking English Fluently",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "z9Qa_5hYij8",
+            "title": "Useful short expressions with examples:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RY71QTC_Yz4",
+            "title": "Useful short expressions:: with cue card:: 1 hr English Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VwEuIM6xCfE",
+            "title": "Useful short phrases with examples:: English speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "T1qMJrWow18",
+            "title": "Useful short phrases with examples::You can use it every day:: English speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "dMOgS2bwE44",
+            "title": "Various road conditions and situations:: English listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EiHQ5P9mF-k",
+            "title": "Various road conditions and situations:: English speaking skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6fBquXuf458",
+            "title": "Ways To Say \"Good\" and \"Bad\" Luck :: 12 minutes of English speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3NGIEl1NVy0",
+            "title": "Ways To Say \"How are you\" and \"Reply\" ::15 minutes of English listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "03ffUtDIeLw",
+            "title": "Ways of English drama expressions:: Improve English listening skills",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8lXEqMoDpSM",
+            "title": "Ways to Say Hurry Up :: Practice&nbsp;English Speaking with&nbsp;Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mpZWAbQUIzQ",
+            "title": "Ways to say \"Sorry\" ::Practice with Native English Teachers",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "JPHiDbpjQOA",
+            "title": "Ways to say Good Bye:: Practice Daily English with Native English Teachers:: English Speaking",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GtDhtYapI5E",
+            "title": "Ways to say Hurry Up::\"Long\" English Expressions:: Listening practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Qkw5LtDw-44",
+            "title": "Ways to say You Are Welcome:: English dialogue:: Speaking practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "V1BfmP8kF-M",
+            "title": "Ways to say 「Good Bye」::English Dialogue:: Listening Practice",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IuU6U-qbkGA",
+            "title": "[中文字幕] 學好西班牙語聽力和口說表達技能| 超高效學習法| 初級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HT6_f2I5J6g",
+            "title": "แบบฝึกหัดการพูดภาษาอังกฤษ:: เพื่อให้คุณสามารถพูดภาษาอังกฤษได้อย่างคล่องแคล่ว",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "foV7i2Y0C1w",
+            "title": "【睡眠學習】美劇生活實用口語句( 1 )附音標 |睡著把英文學了 |舒眠學習版",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ZuWclCVJT9k",
+            "title": "【睡眠學習】美劇生活實用口語句( 2 )附音標 |睡著把英文學了 |舒眠學習版",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_AFI2lA4qz0",
+            "title": "【邊睡邊學】 美劇生活實用口語句| 附音標| 讓您說的一口流俐英文 |強效學習雙音版",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "u4hbjg8YGPs",
+            "title": "よくある空港・飛行機のアナウンスと税関の問題と回答の練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "stZHr8Sfyxs",
+            "title": "一定會用到的超市英語怎麼說::英文聽力:: 手推車 冷凍食品 熟食區",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gwlh4WNjsuc",
+            "title": "一生必用到的英文「高頻率片語04」:: 不管你在哪個等級都好用::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "suS5icxeJAE",
+            "title": "一生必用機場飛機上::實境用句英文表達方式::你想說的都在這",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9jaMO_Twnl0",
+            "title": "一石二鳥學習捷徑「英文短片語」及「運用」::英文高清聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "A6M1vvYKSRA",
+            "title": "不可不會的生活必要技能!!!:: 超市英文聽力::生活息息相關",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "C9VConU-lYA",
+            "title": "不知如何表達的話聽聽外國怎麼說:: 英美生活常用的短表達:: 英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ID_Myc6YRH8",
+            "title": "不管你英文在哪個等級，這些「片語句子」很好用:: 英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7kZhcNMFwTo",
+            "title": "不要再只會說Byebye了::別人用別種方式說再見，你能聽懂嗎::英文再見各種口語說法",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fi1zLfLRcuI",
+            "title": "來自英文部編輯彙整::英美劇學習筆記::六人行::絕望主婦等",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0y14nPhhPXs",
+            "title": "倍速提升你的聽力:: 生活英文聽力中高級練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XVIJFj5n61U",
+            "title": "倍速進步的關鍵::英文一問一答聽力練習::生活必備會話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "q18Kaglbv-c",
+            "title": "全美生活70句實用短語::英文入門聽力寶典::親子教育系統",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "e-xpnR2WT08",
+            "title": "冰雪奇緣精選筆記500句::慢速常速::看電影學英文::直接學精華",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5-Q8kGE4HbU",
+            "title": "出國旅遊應急英文::句句重要!!! 從機場到旅程::從簡易處理到解決麻煩::聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wQhwvdMVKko",
+            "title": "初學英文造句:: 必學必會!!!::聽力文法一起練習:: 英美最常使用片語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0PY6FHqg2Zw",
+            "title": "初心者のための英会話フレーズ100選::リスニング練習::生活編",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "T1dVNnCrgIo",
+            "title": "初步突破英文長句::流俐表達口語:: 外師高清發音助你快速學好",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HiW29XRYZuI",
+            "title": "助你學會造句 :: 英美最常使用片語:: 舉一反三好輕鬆:: 高效提升英文實力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zgLftJNGrfQ",
+            "title": "助你快速開口說好英語:: 地道的英語短句表達練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Sld-YtmMPHQ",
+            "title": "助你聽懂地道英語:: 英美劇台詞精選最地道的英語生活用語:: 老友記六人行::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ibPVtciJTcM",
+            "title": "助你開口說完整句:: 英美掛嘴邊的生活英文!!! 完整長句表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0RfX6vL91Iw",
+            "title": "助你開啟英文語感:: 生活英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zuvDQTxpl5k",
+            "title": "原來這些生活英文這樣說100短句聽力練習:: 學好英文so easy",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gqPcegehiyE",
+            "title": "原來這些生活英文這樣說！！聽懂英文真容易",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IE3E8p5jWD4",
+            "title": "原來這些生活英語這樣說:: 外師帶你念英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "gqGZkbvH9I0",
+            "title": "原來這些英文這樣說(附音標)::英美人士口中的::短語慣用語:: 常速、慢速",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CGRf0iLVlHg",
+            "title": "原來這些英文這樣說::片語生活篇:: 簡簡單單就能表達自己想說的話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8MBj2TyP1JM",
+            "title": "原來這些英文這樣說::英文口語練習::讓你說的一口流俐英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Tmy-3ClI-Lg",
+            "title": "原來這些英文這樣說::英文聽力練習::這些話英美人士這樣表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5xyLyByIWWI",
+            "title": "原來這些英語這樣說(超實用):: 英語聽力Effective way to learn English listening",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TUDwRzSaLkc",
+            "title": "句句精華::必學必會的電話英文::必聽到和想說的表達聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3FOr-t9VxxQ",
+            "title": "句句重要::必備聽答技能::飛機上廣播&amp;空服在說什麼？::坐飛機必備英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "kXhLCabAjpM",
+            "title": "句句重要！坐飛機必懂的英文句::一次搞懂空服員&amp;廣播在說些什麼",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3VX9ILj70J4",
+            "title": "各種路況和交通情況表達::直路、山路、被開罰單車、被拖吊:: 英文口說練習(導讀)",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "S2QWIkihOqc",
+            "title": "和外國人交朋友嗎聊天 | 與老外交友最好的英文聽力::口說教材",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6znM7O4dITg",
+            "title": "和外國人聊電影、影集、TV秀::他們怎麼回答???| 如何提問Q和回答A所有聊天的句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hW_k7flvxLU",
+            "title": "和老外交能的成朋友嗎？ ？ | 立馬了解他們都說些什麼| 與老外交友最好的英文聽力和口說教材",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Qu-Sb4Er_MY",
+            "title": "地道的英文生活會話:: Q&amp;A::外師高清發音教會你提問和回答",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "JWdN_Su2rqQ",
+            "title": "地道的英文表達:: 各種「你好嗎」的「對話運用」::英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2nVZclvK_Ak",
+            "title": "基本の英会話フレーズ1000::最高の初心者英会話トレーニング",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4oG0L5zcxWk",
+            "title": "外師一對一教會你英文口語:: 跟著讀輕鬆就學會生活會話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9NdG_bOvqgY",
+            "title": "外師助你「聽懂英美劇」表達:::高清外師發音::英文聽力練習::中級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EOHj3IrMyfw",
+            "title": "外師導讀助你開口溜英文:: 這些生活表達很必要",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SHDoYo9_9oQ",
+            "title": "外師帶著你開口說英文::高清發音(簡/繁)::英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "GZSIUsHuxxc",
+            "title": "外師教你英文中各種「不客氣」怎麼說:: 外教陪你說好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "l3qRs7aJyUk",
+            "title": "外師教你這些生活英文這樣說:: 各種「快點！」的表達方式::英文口說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7Tuj7q9tf_M",
+            "title": "外師教會你「生活中很受用高頻率片語02」:: 不管你在哪個等級::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SaLFSiRVEGM",
+            "title": "外師教會你「生活中很受用高頻率片語03」:: 不管你在哪個等級都好用::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BLxHSH5FtkU",
+            "title": "外師教會你「生活中很受用高頻率片語」:: 不管你在哪個等級::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IYIUOseGgHA",
+            "title": "外師用實用英文中長句教你聽力(簡/繁):: 英文高清發音聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sj6nmb8blLw",
+            "title": "外師用實用英文中長句教你聽力(簡/繁):: 讓你聽懂生活中用語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OgqkfhICCw4",
+            "title": "外師用實用英文生活句教你聽力(簡/繁):: 聽懂生活用句超簡單",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PJprk1BEBbg",
+            "title": "外師用實用英文長句教你聽力(簡/繁):: 英文高清發音聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "puP9Gyf1k38",
+            "title": "外師高清導讀帶你說好英文長句表達:: 徹底提升英語口語技能",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zXDb3jVXExs",
+            "title": "外師高清發音助你快速搞定中長句:: 跟讀英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TT-MPqrlrQ8",
+            "title": "外師高清發音助你快速搞定中長句::英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "B2zuQyPkd7M",
+            "title": "外師高清發音助你聽懂英文::簡/繁::英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "43xf9YMxHJM",
+            "title": "外師高清發音助你開口說的一口好英文(簡/繁):: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "u8mshPMCwQ8",
+            "title": "外師高清發音帶你練好英文聽力(簡/繁)::50分鐘練好生活聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2QRVvxyuzXQ",
+            "title": "外師高清發音帶你練好英文長句(簡/繁):: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jx7Q3NzJxt0",
+            "title": "外師高清發音教你聽懂生活英文(簡/繁):: 英語聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ggoa8jLxmLc",
+            "title": "外教助你「英文聽力技能提高一級」::突破學習瓶頸",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mcuU4O63wg0",
+            "title": "好招助你學英文！這些英文沒你想的難:: 一日生活用語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OicquIOgZlE",
+            "title": "字字重要::用1到2個英文單字就完成表達意思:: 聽懂英美人士高頻用詞",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LVcvoIgnHZs",
+            "title": "學好英文必懂的片語全收錄|  附文法引導及實用例句運用 |雙聲版一併教你學好怎麼發音",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6d0K_JXrDL4",
+            "title": "學好英文有秘技:: 必懂的形容詞運用:: 快速累積英文實力!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hW0G4bIIvW0",
+            "title": "學好英文高效聽力口說【生活篇】|實用句全收錄讓您easy學好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2v_lsPMHGD0",
+            "title": "學會英文造句就這麼簡單 :: 英美最常使用片語:: 舉一反三好輕鬆:: 高效提升英文實力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VzTJfARXg4E",
+            "title": "學會造句就這麼簡單 :: 英美最常使用片語::英文聽力文法一起練好!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0iowDFJrvLw",
+            "title": "完全掌握住英文!!!外師助你說出想說的話:: 超好用的生活英語表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "v0vyTkwtoRE",
+            "title": "實用英文交流美食::餐飲句型::怎麼問怎麼介紹::聽力口說訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "w8HNDZwbafM",
+            "title": "導讀帶你說的一口流俐英文::包羅萬象「不同廁所型式」表達:: 超齊必學！！",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VhmHjwslw5A",
+            "title": "導讀帶你說的一口流俐長句的英文口說:: 高清發音助你快速搞定長句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "bWjM3zPmX5Y",
+            "title": "導讀教會你表達生活英文「家務事」::英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "a4xh5qy5SNY",
+            "title": "廚房餐廳「各種作菜方式」::英文聽力練習::每天會用的英文表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xtL-purElPU",
+            "title": "強化英文口語表達力100句::那些學過卻不懂如何運用的英語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ru1wBwjXP38",
+            "title": "役に立つ英語の表現:: 毎日使うことができます",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_-MDXQHF8ng",
+            "title": "從模糊到聽懂::原來這些英文這樣說:: 1小時就學好生活英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OgQx9vV5J94",
+            "title": "從英文初階升級中長句::生活篇::英語聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IvDJYxwqBUw",
+            "title": "徹底搞懂!!!那些英美人士說什麼?英文中長句聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7EOfekSwlUQ",
+            "title": "必備英文短語技能::簡簡單單學句句都實用！202句英美常掛嘴邊的短用語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4vrTm4edKSI",
+            "title": "必學必會的超市英文用法:: 美食街、熟食區、超市推車...等:: 這些英文怎麼說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PbgEunemIXg",
+            "title": "必懂的趨勢英文:: 帶口罩防病毒的大小事::英語口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ohsewJ_6gZ8",
+            "title": "必背必會!!!英美高頻詞的重要表達::提升英文實力的關鍵",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "C8lpGP_SiMM",
+            "title": "快樂唱歌學英文::常速::慢速::歡快::三段變速教會你::You Are My Sunshine",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cH3iPQC77HU",
+            "title": "快速搞定英文中長句::跟讀就學好英文口說::外師高清發音帶著你念",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "55AJqWSLnjo",
+            "title": "怎麼說好英文？這些更好的英文表達方式:: 學好讓你一生受用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sqi3uuvgDzk",
+            "title": "抓住關鍵::用1到3個英文單字就完整表達意思:: 聽懂英美人士高頻用字",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "B__1f4TnGfs",
+            "title": "提升英文力必要養成！放著聽跟著讀就OK！外師助你從初級提升到中級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "HDR5wFUTfbM",
+            "title": "提升英語聽力進階技能::中級 :: 用好方法學好英文::增進您的英文力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "h7PabelrmM8",
+            "title": "提升英語聽力進階技能::中高級::s2 :: 用好方法學好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lYGNm3t7bc8",
+            "title": "提高英文聽力技能:: 生活溝通技能篇::短句精選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XtTdpAVMlO8",
+            "title": "提高英文聽力技能:: 生活篇::中長句100選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Cs5MNLX6qko",
+            "title": "提高英文聽力技能:: 生活篇::中長句50選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ixHGFS-a300",
+            "title": "提高英文聽力技能:: 生活篇::廚房飲食::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XndaFkURxIA",
+            "title": "提高英文聽力技能:: 生活篇::廚房飲食::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1pNUlM3BXLQ",
+            "title": "提高英文聽力技能:: 生活篇::短句100選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "UaFFrJVg6oE",
+            "title": "提高英文聽力技能:: 生活篇::短句50選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MUs422M7Lpg",
+            "title": "提高英文聽力技能:: 生活篇::短句精選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rbaGrpft0Yo",
+            "title": "提高英文聽力技能:: 生活篇::較長句100選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mScRl4JpePA",
+            "title": "提高英文聽力技能:: 生活篇::長句100選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4jd1qL_wNIc",
+            "title": "提高英文聽力技能:: 生活篇短句::常用句100選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "W70XPZdKmmY",
+            "title": "提高英文聽力訓練:: 生活篇問與答::升學國外生活實用::學了馬上用的上",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SgKEGcyIFx0",
+            "title": "換個腦袋思考英文「地道表達」::讓你不知說的流俐更說的地道",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sTmUXbH2Rek",
+            "title": "旅行必要的英文表達::句句重要::反覆聽跟著讀就學會！",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "1j4fugae2Cw",
+            "title": "旅行緊急用語英文口語練習::不可不會！出國必備!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rm_lnI189MA",
+            "title": "旅行英文:: 旅行前「必須必備」的英語能力::背熟這部萬事OK::聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-FOLysoZg24",
+            "title": "更勵害多元的英文表達課程:: 不要只會說「I am sorry」教會你怎麼表達不同程度的抱歉",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hlqAAK_LJC0",
+            "title": "更好的英文表達方式:: 換個腦袋說「好」英語::英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mVNSMZJ3MMM",
+            "title": "最好的初學者英文口說訓練教材:: 1000超實用英文短語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "9HQ3HQE65RE",
+            "title": "機場和飛機上英文表達運用:: 英文口說練習:: 一定會聽到說到的句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EZcivZ4rYXI",
+            "title": "機場大小事英文:: 常聽到的/想問會問的/緊急狀況處理::| 英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "eujv6WYyU1g",
+            "title": "機場英語101句重點::超全超詳細::一定會聽到必懂的表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0ipr92c3Bzg",
+            "title": "機場英語必備:: 通關重點/緊急狀況處理及溝通:: 英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "n4vM__R_mdE",
+            "title": "每天用到各類「道路及狀況」怎麼說:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "AbTA2H3xruY",
+            "title": "每日生活短句型100英文聽力訓練:: 破除你對英語困難的迷思",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TxCiUzy4K5s",
+            "title": "流俐你的英文口語表達:: 「鼓勵別人的各種表達」方式",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jMd9_SAZEP8",
+            "title": "流俐你的英文口語表達::200超實用生活英文短語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "n3LHrFnQYtU",
+            "title": "海關機場篇| 手把手教您海關問與回答 |及聽懂機場飛機上所有重要資訊| 英文聽力口說訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RByWJdBWGHQ",
+            "title": "無往不利300句生活英文會話集::一問一答練習::讓你聽懂問話也能回答",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MH7ky5smABw",
+            "title": "片語運用英文聽力練習:: 事半功倍 學習不累",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MdQWl1vCgS0",
+            "title": "玩具總動員精選筆記100句::慢速常速::看電影學英文::直接學精華",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "U1-aVehkr7k",
+            "title": "生活「高頻英文用句」原來這些話這樣說:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "aLCWjXAarE4",
+            "title": "生活常用英文100 ::教你學會想表達的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "B7T4oY5WZ_o",
+            "title": "生活必用到的英文「高頻率片語05」:: 不管你在哪個等級都好用::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "RwDN26IFPbs",
+            "title": "生活的那些小事::英文口語練習:: 外師高清慢速助你用長句表達生活",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OHmaWGP7R_I",
+            "title": "生活習習相關「原來這些英文這樣說」:: 外師高清發音:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hud_osxwCqM",
+            "title": "生活英文:: 導讀教會你流俐口語「起床習慣描述Good morning」各種描述",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "nX05Lho5k7w",
+            "title": "生活英文:: 教你聽懂每日生活「放鬆情緒take it easy」各種描述",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-bjHCMDiq58",
+            "title": "生活英文:: 教會你聽懂「起床習慣描述Goodmorning」各種描述",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "R7DX9a-BywM",
+            "title": "生活英文:: 教會你聽懂各種「加油打氣」的英文描述",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PLp4cSL5Bic",
+            "title": "生活英文「放鬆Let it go」各種「對話運用」::教你懂的與別人談話:: 英文聽力會話練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Q8dZhXXvlbY",
+            "title": "生活英文「短句」各種場合「暢所欲言」::快速聽懂並開口說英文::聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "blVI4fvA2T0",
+            "title": "生活英文實用500短句:: 反反覆覆練輕鬆就學會::初學也能暢所欲言",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "5HFEiLQQiKE",
+            "title": "生活英文教你聽懂「各類廁所、內急」用法::必學必會的英文描述",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3cVCjyKX7Wk",
+            "title": "生活英文教你聽懂「家務事」::每日會用的英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MmpU6D4DKUs",
+            "title": "生活英文教你聽懂「這些那些家用品」::必學必會的英文描述",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "83ooxVdoErk",
+            "title": "生活英文聽力::瞬間提升技能::你常聽到的話其實很簡單:: 英文高清發音聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "dF6pM0CZEB8",
+            "title": "生活英文，教你開口流俐說「3C生活家電句」:: 生活長篇口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0zDdMJpwqIo",
+            "title": "生活英語::老外說的take your time啥意思::讓你輕鬆說的一口流俐英語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LegA0BGbnwA",
+            "title": "生活英語「再見」各種「對話運用」::教你如何與別人的談話:: 英文聽力會話練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Mij0DE0FAzo",
+            "title": "用英文搭上話！這些英語問與答:: 跟讀就學好如何提問和答話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "dFI6ErrbPhQ",
+            "title": "用英文蝦拼有招::招招必學::英文口語跟讀購物篇::超級市場::特惠搶購中",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Tvq2PVWToXc",
+            "title": "百搭萬用句型雙倍效率學好英文:: 告別挫折快速學好英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "myIqokWVkNE",
+            "title": "省時省力倍速學好::英文聽力&amp;造句一起學好::英美高頻形容詞名詞等的常用句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ei46JfxirB4",
+            "title": "看懂英美劇必要的慣語俚語能力養成:: 學好道地英文的關鍵::英語跟讀",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8fhOWVnMI_w",
+            "title": "看懂英美劇表達::中級::地道英文聽力訓練::高清外師發音",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SK7Xv_0yqrU",
+            "title": "看懂英美劇表達::地道英文聽力訓練::高清外師發音",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "X_9J7dO1XHs",
+            "title": "看電影學英語::560全精選::美女與野獸:: 用英文故事聽出好聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "PcmrCn7ZrfU",
+            "title": "看電影學英語::冰雪奇緣2台詞精選(全)::聽懂看懂英美電影說的是什麼意思",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "XRAWZH7phtg",
+            "title": "短文故事理解力提升(簡/繁)::圖解英文聽力練習:: 聽著短故事技能就提升",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OoSIBIMn9ng",
+            "title": "秒懂機場旅行大小事英文問與答:: 出國所有重要資訊:: 英文聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "d6gZnXwxeAM",
+            "title": "秒懂英美劇中說的地道常用語俚語::和外國人一起說口語::Useful Daily English",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7ouDe6eQV-4",
+            "title": "秒懂英美劇英文聽力訓練:: 英美劇中道地的俚諺語慣用說法:: 學會這些輕鬆看懂英美劇::輕鬆教會你聽懂",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Uo9ZnCL8DpY",
+            "title": "秒懂英美劇英文聽力訓練:: 英美劇中道地的俚諺語慣用說法:: 這些英文你想的不一樣::輕鬆教會你聽懂",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "w4_8hVzM_m8",
+            "title": "秒懂英美劇英文聽力訓練:: 輕鬆學會英美劇慣語俚語:: 輕鬆教會你聽懂",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3ZLAr0izsiM",
+            "title": "秒懂英美劇訓練::聽力訓練::英美人士掛嘴邊的口語句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uVW4KlYeS-k",
+            "title": "秒懂英聽美劇聽力訓練:: 原來這些話用英文這樣說::輕鬆教會你聽懂",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jS12szENYZo",
+            "title": "秒懂英聽美劇聽力訓練:: 英美人士常說慣用語、俚語::輕鬆教會你聽懂",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cdB3-C1nhAQ",
+            "title": "秒懂英聽美劇聽力訓練:: 英美人士掛嘴邊::短句句型::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "a-5PlonPbWo",
+            "title": "秒懂英聽美劇聽力訓練:: 英美人士掛嘴邊::長句句型::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Gff7Udhf1Tk",
+            "title": "秒記英文聽力訓練:: 中高級生活篇::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YVYiBWlv_80",
+            "title": "秒記英文聽力訓練:: 生活篇::短句精選::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DbeSY2xSW9o",
+            "title": "秒記英文訓練::生活問句與回答Q&amp;A::中長句聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3gUbymrbHIc",
+            "title": "秒記英文訓練::生活問句與回答Q&amp;A::長句聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DJUhqS8KJsE",
+            "title": "秒記英文訓練::英美劇俚諺語慣用語::生活問句與回答Q&amp;A::聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "4krAnWAAVO0",
+            "title": "秒記英文訓練::英美劇俚諺語慣用語::生活問句與回答Q&amp;A::長句聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "heDxhj0HEps",
+            "title": "秒記英文訓練::英美劇俚諺語慣用語::生活問句與回答Q&amp;A::長句聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CXBzLA8aiwg",
+            "title": "秒記英文訓練::英美劇俚諺語慣用語::生活問句與回答Q&amp;A::長句聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "c4YwnGvk_Tk",
+            "title": "秒記英聽美劇聽力訓練:: 英美人士慣用語俚語::短句::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "L-FZ4mHzWVg",
+            "title": "秒記英聽美劇聽力訓練:: 英美人士慣用語俚語::長句::升學國外生活實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "f90fZKT556s",
+            "title": "秒速提升您的英文長句聽力:: 這些生活英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8DmL9g4EjT8",
+            "title": "突破口語:: 英文一問一答練習::讓你聽懂別人問話也知道怎麼回答",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "F7ZpyefCZtE",
+            "title": "突破英文口語「流俐說出長句」::用好句子練好你的英文口說力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3DWgFHB86zA",
+            "title": "突破英文聽力瓶頸:: 外教高清發音助你成功聽懂長句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ui_GWsZsXo4",
+            "title": "突破英美劇聽力:: 生活高頻極短句:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CUiENBm1n9M",
+            "title": "突飛猛進的關鍵!!生活必備的英文會話::聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_lGy8CopQDM",
+            "title": "簡單卻不易聽懂的英文表達::聽力訓練::英美劇俚諺語慣用語::英語磨耳訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-yN4SSJW1_U",
+            "title": "簡單從零開口說英文短句200:: 跟讀:: 外師高清發音帶你念",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "M6LQJ-0IaEc",
+            "title": "簡簡單單就能學好英文應付生活::英文會話問與答聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "liq_eVnDXsI",
+            "title": "練出一口地道英語(附音標)::英美人士口中的::短語慣用語:: 常速、慢速",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "a4yAO7biyYo",
+            "title": "練出一口地道英語::英文口語練習::讓你說的一口流俐英文::常速、慢速",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "WtJ-4qg8lNk",
+            "title": "練出一口地道英語::英文口語練習::讓你說的一口流俐英文::常速、慢速",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-5Hjgdujk-A",
+            "title": "練出一口地道英語::英美劇俚諺語慣用語::生活問句與回答Q&amp;A::長句口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "g7_UWxEmiTs",
+            "title": "美劇中最經典100句台詞《六人行》| 電視節目影集常用句- 學完馬上開口用英文聊天",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fseFvWcx7Jg",
+            "title": "肯定用到！出國必備英文::從機場、交通、到飯店精華全集",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SweKjkfC-OA",
+            "title": "背好這些句型:: 讓你學英文事半功倍:: 零基礎到能造句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "g8gWp4zJZJk",
+            "title": "背好這些句子:: 成功在生活中開口說英文:: 外師高清發音跟讀練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LmCv_J3nEjs",
+            "title": "英会話短文｜リスニング・スピーキングの練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "pcyy_X-rYRc",
+            "title": "英文1-3字簡簡單單學::輕輕鬆鬆會::英美人士生活中最常聊的短口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "0q0rbMh96pM",
+            "title": "英文1-4字短句::1000英美最高頻用詞::用簡單的方式就能表達意思",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "rQFReDoZkAM",
+            "title": "英文「不客氣」各種「對話運用」(簡/繁)::教你如何回覆別人的話::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SI5NkX1YqmQ",
+            "title": "英文「你好嗎」各種「對話運用」::教你如何回覆別人的話:: 英文聽力會話練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "al119skUm6w",
+            "title": "英文「好壞運」各種「對話運用」:: 教會你生活中的對話表達::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "b2XQ_suammU",
+            "title": "英文「對不起」各種「對話運用」::教你如何回覆別人的話:: 英文聽力會話練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2B7xvXWilGs",
+            "title": "英文「快點！」各種「狀況運用」(簡/繁)::教你在各種場合如何表達急迫::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hPZfN9o6Stw",
+            "title": "英文「高頻率片語06」::不管你在哪個等級都好用::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "91LKmoDiNlQ",
+            "title": "英文「高頻率片語07」什麼等級都好用::外師助你一次學好片語及聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "spd7JzWw9ks",
+            "title": "英文一問一答聽力練習::聽懂英文搭上話::提問和答話",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "8mP37Mw08rw",
+            "title": "英文不好學這部::從機場到飛機上會聽會說的重要短句表達::輕鬆告別煩惱",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7KD4HaScq94",
+            "title": "英文中各種片語、慣用語「放鬆點 別緊張」都怎麼說?:: 教你流俐表達口說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Vlp5szv4YKY",
+            "title": "英文中級聽力寶典::由淺入深手把手教會你::必會常用的文法句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "R2U249TTFaQ",
+            "title": "英文初級提升到中級:: 重要的can和can't長句句型::口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YA-1Mlyg3kw",
+            "title": "英文初級聽力寶典::由淺入深手把手教會你::必會的5W1H及最常使用動詞句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "S0jQoUtVvec",
+            "title": "英文口語技能::購物用語::從頭到結帳買東西流程(含抱怨/退貨/維護您的權益)::手把手教會你讓表達更靈活",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YHv5nRrwISI",
+            "title": "英文口語短語:: 初學也能說的像外國人:: 電視節目影集高頻率句:: 給英文初學者最好的教材",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "B8QXeLHtIIE",
+            "title": "英文口語跟讀::生活篇::從零跟著讀就能開口說英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "97kbreqWmpw",
+            "title": "英文口說:: 餐廳點餐廚房用語「各種作菜方式」::生活實用表達:: 調味料、烤、蒸、油炸",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cvvJpOAGhqo",
+            "title": "英文基礎聽力寶典::由淺入深句子::超好上手快速學好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MfYK6b5NwV8",
+            "title": "英文導讀助你「早日流俐說長句」::有效的口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "y3oxKkvzNX8",
+            "title": "英文故事短文有聲書::強效提升理解力::刮鬍子出鎚篇",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "_2YcNP7bGDo",
+            "title": "英文故事短文有聲書::理解力提升::英文聽力:: 雨中野餐篇",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "x-TjObj4_Bg",
+            "title": "英文故事短文有聲書::高效提升理解力::奇妙動物園篇",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "40Sl8oCJYRA",
+            "title": "英文故事短文有聲書::高效提升理解力::步行水果店篇::英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "SobsvlMhjT8",
+            "title": "英文最基礎常用百搭萬用句讓你開口能造句::英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sM3phUIV8nI",
+            "title": "英文會話 Q&amp;A長句表達:: 聽力練習:: 「對話篇」助你聽懂也能回答",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ajm5FMmQP7A",
+            "title": "英文會話100生活篇:: 讓你聽懂別人問話也能流俐回答",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "g9OA9sLQSts",
+            "title": "英文片語句::生活篇::用生活句學好片語:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "d7g3Q7mTlrY",
+            "title": "英文生活句口語練習::句句實用:: 外師助你初級跳中級",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "64_dtZJeVAI",
+            "title": "英文生活常用短句100 ::換個語言腦袋想英文:: 原來這些英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "mXrdFf3FDP4",
+            "title": "英文生活最常聽到「可以」「不可以」表達運用(简/繁):: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "QL_H3hxXibc",
+            "title": "英文百搭片語助你開口能造句:: 學習捷徑倍速掌握好英文:: 片語搭配例句引導",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3yO2x7QHEcA",
+            "title": "英文百搭萬用句讓你開口能造句::快速掌握好英文的學習捷徑::口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DKW_f28rMiQ",
+            "title": "英文短句200聽力:: 這些英語生活中很必要 !!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "boFCWhwtfKY",
+            "title": "英文短句會話對答:: 生活實用篇:: 輕鬆學快速開口說英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ICOB3I-E6JY",
+            "title": "英文短句聽力練習::生活篇::英文菜鳥救星",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "TrHaHngdFpI",
+            "title": "英文短句聽力練習::生活篇::英文菜鳥救星",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Nptb-ZV0fqY",
+            "title": "英文練習提升聽力口說技能【中級篇】|實用句全收錄讓您easy學好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iWGGIT6z274",
+            "title": "英文練習提升聽力口說技能【中高級篇】|實用句全收錄讓您easy學好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "F_VYl2I-k-Q",
+            "title": "英文練習提升聽力口說技能【初級篇】|實用句全收錄讓您easy學好英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "aWtjQhOuioc",
+            "title": "英文聽力練習::老外都在聊什麼?? 聽懂閒話家常::成功打入英美圈",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "YXwuAEOsPps",
+            "title": "英文聽力訓練:: 100句初級生活篇::學了馬上用的上 ::高效提升英文力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "qkhBZGFD_jw",
+            "title": "英文聽力訓練:: 慢速及常速讀音 ::中級生活篇::學了馬上用的上 ::高效提升英文力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "bD4wujpzBz8",
+            "title": "英文聽力訓練:: 慢速及常速讀音 ::初級生活篇::學了馬上用的上 ::高效提升英文力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uZCsGv64kyk",
+            "title": "英文聽力訓練::360度對生活中各種場面合適的讚美句::好人脈是誇出來的",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "wk4Cu0Jz46o",
+            "title": "英文訓練::原來這些英文這樣說::明明很簡單卻不一定懂表達::聽力訓練::生活中很實用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "453_2NmS2vs",
+            "title": "英文訓練::原來這些英文這樣說::明明很簡單卻不容易弄懂的英文::聽力訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "h0EUs-UkHfA",
+            "title": "英文課本中最常聽到的句型::文法提示及例句示範::高效練好聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "xOGP6ZOlK64",
+            "title": "英文課本初級句型超好用的As和like句型::一次搞懂怎麼用::高效練好聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "STciHV--nNU",
+            "title": "英文超市各種「實境用句運用」::外師教你必懂的生活中的英文表達",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "28AR2COxf6Y",
+            "title": "英文輕鬆開口說::流俐你的英文口語表達::200超實用生活英文短語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "S--UCydKQwM",
+            "title": "英文長句聽力訓練::不知怎麼說的生活句::生活中很實用的英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "3lAPjdPwM8k",
+            "title": "英美人士最常說的220句話:: 短語::俚語::口頭禪- 給英文初學者最好的教材",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cQdJ0ScadDE",
+            "title": "英美人士說話最高頻詞:: 搭配運用短句:: 學完開口說英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "H85KW0MCBOo",
+            "title": "英美劇中最常見的短句子:: 教會你聽懂地道英文意思:: 老外都在說什麼???",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2GnRPE6DM6Y",
+            "title": "英美劇學習筆記::來自英文部編輯彙整200句::六人行::絕望主婦等",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "jplaD0Zti8w",
+            "title": "英美劇常出現用語::最適合初學者::快速掌握英美劇用語意思::英文短句聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "LHNYOh0uHa8",
+            "title": "英美劇掛嘴邊的200句話:: 極短句:: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "peCV0JqijjY",
+            "title": "英美劇最常聽到100短句::英文聽力訓練::輕鬆聽懂慣用語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "nHPq1Rjy7Ac",
+            "title": "英美劇最常聽到200極短句::英文菜鳥救星快速學好英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "2itSGJvhD6Y",
+            "title": "英美劇最常聽到200生活短句::英文菜鳥救星::快速學好英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "aBVD1IhVAxk",
+            "title": "英美劇最常聽到的200句型::輕鬆練好流俐英文口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-yEW6AzLAtA",
+            "title": "英美劇最常聽到的200句話| 電視節目影集高頻率句- 給英文初學者最好的教材",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "lZavHKozCAE",
+            "title": "英美劇最高頻常聽到200句話:: 極短句:: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6XVFPmV-HW4",
+            "title": "英美劇都在說什麼? 原來這句話是這意思!!!英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "7clklq4VWQc",
+            "title": "英美劇高頻生活200極短句::就這麼簡單::英文聽力放就聽輕鬆學會",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "76OACoBaI90",
+            "title": "英美劇高頻生活常用200句話:: 極短句:: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "s0zXV4xkJeI",
+            "title": "英美常用的片語運用 :: 開口流俐造英文句其實很容易::把文法口語一起練了",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "geA1lw9y3uU",
+            "title": "英美影集最高頻用語::地道必會:: 極短句:: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "QtUlcaUZJnc",
+            "title": "英美最常用副&amp;介詞運用100::英文聽力文法一起練::事半功倍學好造句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "AnnwlgPTIZo",
+            "title": "英美最常用句型帶例句教學:: 一生肯定用的到:: 英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BDwJz7vSeP8",
+            "title": "英美最高頻率句型:: 聽懂英文母語者表達結構句型:: 好搭好配",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EbhsyKLCoQk",
+            "title": "英美生活常用的短表達:: 聽聽地道英美人士怎麼說 ::英文聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "cAoHwhUFC28",
+            "title": "英美生活常用短語75句| 電視節目影集高頻率句- 給英文初學者最好的教材",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iXK1L-l6BIA",
+            "title": "英美高頻片語運用:: 英文聽力文法一起練:: 事半功倍學英語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "OENBpLXRb-g",
+            "title": "英美高頻用詞::英文短句聽力聽寫:: 邊聽邊寫高效加深記憶力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EXdwmmdIXMg",
+            "title": "英語の聞き取り55::初级 ::Easy!!::Quick!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "NOwuNgWLl-c",
+            "title": "英語慣俚語長句助你說出「地道英文表達」::英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "UPgCovrz358",
+            "title": "英語母語者日常對話:: 生活長句問與答::英文口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "09zFYwop4z8",
+            "title": "萬用的25個句型(含例句)::學好英文偷吃步::高效聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "H_Ef7Z0obgY",
+            "title": "解你學習的苦:: 放著聽就有效果:: 英文生活口語練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-olkfiwO3n8",
+            "title": "訓練您的英文回答反應力及聽力【生活常聽問句P2】|學好英文高效聽力口說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ncRuNkEwKEs",
+            "title": "訓練您的英文回答反應力及聽力【生活常聽問句】|學好英文高效聽力口說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "V_BuVjIsY-k",
+            "title": "讓你快速開口說好英文短句::可以運用在各種生活上::跟著讀反覆聽快速進步",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "faVhAWVLQHM",
+            "title": "讓你自信積極英語句:: 不止聽更要記進心裡!!You're the best!!你是最好的",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iMM_8S4nXaY",
+            "title": "超實用一定要會說的超市英語:: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "c4K9H6X0GvU",
+            "title": "超實用的生活英文表達:: 導讀帶你高效學好英文口語",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Yf3ffDr-j0I",
+            "title": "超市一定會聽到的英語(超重要)::英文聽力練習:: 買一送一、折價券使用、自助結帳",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-In3AIZceeM",
+            "title": "超簡單就學會生活英文:: 輕輕鬆鬆就學好聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Np4jB-KZCns",
+            "title": "趨勢英文課本沒教你的:: 帶好口罩 保持社交距離 自我隔離::英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "VEtk8q4f9jU",
+            "title": "跟著外師讀就說出一口流俐長句::英文口語瞬間提升",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "IDNNprPtB0A",
+            "title": "跟讀英文口語練習:: 外師教會你「這些生活表達這樣說」",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "n7pIgncoq4I",
+            "title": "輕鬆學好英文初級聽力寶典(生活/考式)::聽力文法一次補齊::由淺入深例句教學",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "iuJzYSVqKt0",
+            "title": "輕鬆學好英文如何聽懂開口說(中文字幕)★ #2 國外生活、旅行、商務和社交生活、升學考試的日常英語句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "n8ofFQcI144",
+            "title": "輕鬆學好英文如何聽懂開口說(中文字幕)★ #3 國外生活、旅行、商務和社交生活、升學考試的日常英語句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "CXaaP99BvGg",
+            "title": "輕鬆學好英文如何聽懂開口說(中文字幕)★ #4 國外生活、旅行、商務和社交生活、升學考試的日常英語句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vGJmADmBHd4",
+            "title": "輕鬆學好英文如何聽懂開口說★ #1 升學考試、國外生活、旅行、商務和社交生活的日常英語句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "ej7iWyxSK0Y",
+            "title": "輕鬆學好英文會話:: 生活問句與回答Q&amp;A ::初級英文高效聽力口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "F4PieS35efk",
+            "title": "輕鬆學好英文會話★ #2【迴音法學英文】| 教您活用課本教學開口說英語| 社交會話英文常用問句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "tZkhPUl3y1M",
+            "title": "輕鬆學好英文會話★ #3【迴音法學英文】| 教您活用課本教學開口說英語| 社交會話英文常用問句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "hfMdsvOGMEY",
+            "title": "輕鬆學好英文會話★ #4 升學考試、國外生活、旅行、商務和社交生活的日常英語句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "NwHhi1Lw8V4",
+            "title": "輕鬆學好英文聽力寶典::居家生活必學短句::做飯、三餐、廚房",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "KATDcFvyHzU",
+            "title": "輕鬆學好英文聽力寶典::道地又簡單::由淺入深例句教學",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "-j78G07u2uw",
+            "title": "輕鬆就能練好聽力100英文短句::不知道怎麼說的英文這樣說",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "EihhgXI8x0c",
+            "title": "輕鬆跟著外師讀:: 助你說的一口流俐英文表達:: 英文口說練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Y-Y4DUsSMfk",
+            "title": "迅速提高英文口語能力::初學者也辦的到::生活極短句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "BQsU4-eM7l4",
+            "title": "这些英语短语百搭句很好用:: 带例句运用:: 文法口语一次学好",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "qexW6KTqvwA",
+            "title": "迴音法學英文【中級單字篇】| 背單字同時了解如何運用| 聽力口說也一併訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "MKZsLbre61c",
+            "title": "迴音法學英文【初級單字篇】| 背單字同時了解如何運用| 聽力口說也一併訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "T6o7JNj9OII",
+            "title": "迴音法學英文【高級單字篇】| 背單字同時了解如何運用| 聽力口說也一併訓練",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Ek8WjNUSgAA",
+            "title": "這些百搭短句很好用短語口語一次學好:: 100句輕鬆開口說英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Z7TBghEuBv4",
+            "title": "這些英文「百搭萬用句型」很好用:: 學會馬上造出句:: 英文聽力練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "Eu-rW7PsoVY",
+            "title": "這些英文「高頻率片語02」很好用:: 片語、文法、口語一起練:: 事半功倍學英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "uvD-tjJYXrk",
+            "title": "這些英文片語很好用:: 片語口語一次學好:: 帶例句片語運用",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "u7B7JFMdA-s",
+            "title": "這些英文表達在生活很重要::學會生活無往不利:: 聽力",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "DZhwfbep2Cs",
+            "title": "這些表達助你英文口語提升一階:: 生活中常需要說的句子",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "sqFZRgWbdyk",
+            "title": "這些高頻率「英文片語」很好用:: 片語、文法、口語一起練:: 事半功倍學英文",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "oEZB2oGeV6U",
+            "title": "這些高頻英文單字原來這樣運用400::口語文法一起練:: 助你開口能造句",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "yCmxMDVO7oE",
+            "title": "速通英美劇::讓你聽懂英美劇意思::英文聽力練習::這些生活英語很好用!!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "zzl4n3HOOWs",
+            "title": "進級你的英文聽力:: 外師高清發音:: 生活篇(簡/繁)",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vc0COt2UkEs",
+            "title": "重要的英文高頻動詞運用:: 助你高效學好開口能造句:: 文法 &amp; 口說一起學",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "JaoZp6cRhXY",
+            "title": "開口溜英文就這麼簡單:: 用地道英語表達想說的:: 跟讀練習",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "dHN3k1oTJnY",
+            "title": "開口說真容易:: 輕輕鬆鬆就學會::生活化的英文表達300:: 简/繁",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "v6fgQZ-ivxw",
+            "title": "開口說英文真容易!!! 英美劇中最常見的短句子::原來這句話是這意思!!!",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "18z9TLz4Pmg",
+            "title": "電話英文:: 外師教會你專業的英文電話表達(全集)::必學必會",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "J2rKVgZud5U",
+            "title": "電話英文用語聽力全集::必備的拼字能力、數字及email等的訓練::必備並包含！",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "6_0U_nILSb8",
+            "title": "電話英文高頻用句:: 外師助你說好電話英文::跟著讀就變流俐",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "omKmNElFTE4",
+            "title": "飛機上廣播英文::聽力訓練::一定會聽到的機上廣播的流程順序",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "fjOfrZX5rT0",
+            "title": "高效英語學習自助零煩惱::從機場、交通到飯店::跟著讀就萬事ok",
+            "author": "Ozma英文",
+            "date": "2021/11/16 11:30:00"
+          },
+          {
+            "key": "vF4w6jR2ca4",
+            "title": "高頻率使用的「英文片語」超好用:: 片語、口語一起練:: 事半功倍學英文",
+            "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           }
         ]
