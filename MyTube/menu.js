@@ -8,24 +8,22 @@ Vue.component('my-menu', {
         'align-items': 'center',
         height: '50px', 'padding-right': '5px'
         }">
-        <Icon type="md-arrow-back" size="28" color="white" @click.native="onClickIcon" 
-        style="cursor: pointer; margin-left: 10px;"></Icon>
+        <Icon type="md-arrow-back" size="28" color="white" @click.native="onClickIcon" style="cursor: pointer; margin-left: 10px;"></Icon>
         
       </div>
       <i-menu theme="light" :width="width" ref="menu" @on-select="onSelect" @on-open-change="onOpenChange" style="flex: 1" 
         :active-name="active" :open-names="[submenu]">
         <Submenu v-for="(list, key) in menu" :name="key" :key="key">
-            <template slot="title">
-                <Icon type="md-folder" />
-                {{key}}
-            </template>
+          <template slot="title">
+            <div :id="key" class="submenu"><Icon type="md-folder" /> {{key}}</div>
+          </template>
           <menu-item v-for="(item, index) in list" :name="key + '-' + index" :key="index">
               {{item.title}}
           </menu-item>
         </Submenu>
       </i-menu>
       <div style="" id="version">
-        2021-11-16 08:30
+        2021-11-17 09:30
       </div>
     </div>
   `,
@@ -643,19 +641,19 @@ Vue.component('my-menu', {
         "Ozma英文": [
           {
             "key": "9yBhW55kn24",
-            "title": "(中文字幕)考試和旅遊的生存之道::立刻學好英文地圖、方向、地點、位置怎麼說和聽力練習",
+            "title": "地圖、方向、地點、位置 - 聽力練習",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "et00WOUB0PM",
-            "title": "1 hr of English Listening Practice (Longer expressions):: Practice&nbsp;with&nbsp;Native English Teachers",
+            "title": "1 hr of English Listening Practice (Longer expressions) ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "sqmdsyn0lEo",
-            "title": "1 hr of English Listening Practice:: HD audio:: Practice with Native English Teachers",
+            "title": "1 hr of English Listening Practice:: HD audio ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -673,13 +671,13 @@ Vue.component('my-menu', {
           },
           {
             "key": "100L5GU8wdA",
-            "title": "1 or 2 words express what you want to say:: Learn from native English teachers",
+            "title": "1 or 2 words express what you want to say ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "G8VO7ECNZtw",
-            "title": "1 小時外師助你練英文聽力(簡/繁):: 外教高清發音",
+            "title": "1 小時外師助你練英文聽力(簡/繁) ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -691,19 +689,19 @@ Vue.component('my-menu', {
           },
           {
             "key": "kLIQzSkRl-8",
-            "title": "100  Improve Your Listening Comprehension Skills:: Useful expressions",
+            "title": "100  Improve Your Listening Comprehension Skills ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "GYFj2DBbuIk",
-            "title": "100 Best for beginners:: Useful English short phrases :: listening practice",
+            "title": "100 Best for beginners:: Useful English short phrases ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "IlTFfX74VDk",
-            "title": "100 Easy and Useful English expressions ::listening practice",
+            "title": "100 Easy and Useful English expressions ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -727,43 +725,43 @@ Vue.component('my-menu', {
           },
           {
             "key": "atADon3Hn28",
-            "title": "100 English conversation speaking practice:: useful long dialogue",
+            "title": "100 English conversation speaking practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "EzyAnyWQesU",
-            "title": "100 English listening practice:: Important everyday phrases",
+            "title": "100 English listening practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "K03ReIIOrvI",
-            "title": "100 English listening practice:: improve your English understanding",
+            "title": "100 English listening practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "cxIplenSp9M",
-            "title": "100 English listening practice:: longer expressions",
+            "title": "100 English listening practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "_3qnRTrJ8RI",
-            "title": "100 English listening practice::Useful daily expressions",
+            "title": "100 English listening practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "QCbCyYU5HKc",
-            "title": "100 English practice:: Guide You to Understand Native English Speakers",
+            "title": "100 English practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "q1tgh7FcX0o",
-            "title": "100 English speaking practice ::longer expressions",
+            "title": "100 English speaking practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -781,25 +779,25 @@ Vue.component('my-menu', {
           },
           {
             "key": "2FcuqK6Y-gc",
-            "title": "100 Guide you to speak English fluently and confidently:: useful English practice",
+            "title": "100 Guide you to speak English fluently and confidently",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "OV8kEF8DO4w",
-            "title": "100 Guide you to speak English fluently and confidently:: useful English practice",
+            "title": "100 Guide you to speak English fluently and confidently",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "l4aliYCsKiY",
-            "title": "100 High quality audio listening practice:: useful longer expressions",
+            "title": "100 High quality audio listening practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "r3pDSagc7UA",
-            "title": "100 Important longer expressions:: Quickly&nbsp;improve&nbsp;your&nbsp;English listening skills",
+            "title": "100 Important longer expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -811,61 +809,61 @@ Vue.component('my-menu', {
           },
           {
             "key": "4Xa_Jng1eXs",
-            "title": "100 Improve your English listening comprehension skills:: useful daily expressions",
+            "title": "100 Improve your English listening comprehension skills",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "_IvKN_NPRCI",
-            "title": "100 Improve your English listening comprehension skills:: useful longer expressions",
+            "title": "100 Improve your English listening comprehension skills",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "87mYY9igM5s",
-            "title": "100 Improve your English so easy::Learn English effectively:: listening practice",
+            "title": "100 Improve your English so easy::Learn English effectively",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "2EEUYHAmrH4",
-            "title": "100 Learn how to use phrases in sentences ::100 English speaking",
+            "title": "100 Learn how to use phrases in sentences",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "Z3P7W-yQwFU",
-            "title": "100 Longer expressions:: Learn English Effectively:: Speaking practice",
+            "title": "100 Longer expressions:: Learn English Effectively",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "fugz-oYpy_M",
-            "title": "100 Longer useful English expressions::listening practice",
+            "title": "100 Longer useful English expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "Annjk5LXLB0",
-            "title": "100 Most Useful English Daily Expressions:: listening practice",
+            "title": "100 Most Useful English Daily Expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "_s4jc9u1CPw",
-            "title": "100 Most Useful English Daily Expressions:: listening practice",
+            "title": "100 Most Useful English Daily Expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "NlOarp__w1c",
-            "title": "100 Must-Learn English listening skills:: useful expressions",
+            "title": "100 Must-Learn English listening skills",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "DeOrnKOid28",
-            "title": "100 Nützliche englische Ausdrücke:: Die besten Möglichkeiten, fließend Englisch zu sprechen",
+            "title": "100 Nützliche englische Ausdrücke",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -877,85 +875,85 @@ Vue.component('my-menu', {
           },
           {
             "key": "vqKizW6OqVY",
-            "title": "100 Nützliche englische Ausdrücke:: Übung im Sprechen:: längere Ausdrücke",
+            "title": "100 Nützliche englische Ausdrücke",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "ryFHDA-JqHY",
-            "title": "100 Practical English for everyday life:: English speaking practice",
+            "title": "100 Practical English for everyday life",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "5_swQBMqaFE",
-            "title": "100 Praktische englische Ausdrücke:: Effektive Art zu lernen Englisch",
+            "title": "100 Praktische englische Ausdrücke",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "Kki0K3DTHH0",
-            "title": "100 Praktische englische Ausdrücke:: Effektive Art zu lernen English",
+            "title": "100 Praktische englische Ausdrücke",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "GX2woAtMhsk",
-            "title": "100 Quickly&nbsp;Improve&nbsp;Your&nbsp;English Listening Skills:: easy and useful",
+            "title": "100 Quickly Improve Your English Listening Skills",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "230TOfn2ygw",
-            "title": "100 Speaking English Easily ::You will benefit a lot:: useful expressions",
+            "title": "100 Speaking English Easily ::You will benefit a lot",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "1UY9g7JQ1j4",
-            "title": "100 Speaking English fluently and confidently:: useful English practice",
+            "title": "100 Speaking English fluently and confidently",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "qkHI5xHBfIw",
-            "title": "100 Super Useful English Longer Expressions:: listening practice",
+            "title": "100 Super Useful English Longer Expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "XT9x3X5YUZM",
-            "title": "100 Useful English Conversations for Daily Life:: listening practice",
+            "title": "100 Useful English Conversations for Daily Life",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "AJPIi6OFUlE",
-            "title": "100 Useful English Dialogue:: speaking practice:: Long conversation",
+            "title": "100 Useful English Dialogue:: speaking practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "D2f-Qhfs2Ck",
-            "title": "100 Useful English Phrases:: listening practice",
+            "title": "100 Useful English Phrases",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "cWzo3feRddo",
-            "title": "100 Useful English Short Phrases:: listening practice",
+            "title": "100 Useful English Short Phrases",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "rDzA8TGUI40",
-            "title": "100 Useful English conversation:: long dialogue:: listening practice",
+            "title": "100 Useful English conversation:: long dialogue",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "EIRJOwXIRDA",
-            "title": "100 Useful English expressions (with examples):: listening practice",
+            "title": "100 Useful English expressions (with examples)",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -973,37 +971,37 @@ Vue.component('my-menu', {
           },
           {
             "key": "ZvbypFBGvhU",
-            "title": "100 Useful English expressions (with long examples):: listening practice",
+            "title": "100 Useful English expressions (with long examples)",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "gMRK5QsquE4",
-            "title": "100 Useful English expressions :: listening practice",
+            "title": "100 Useful English expressions ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "iCWIRwA8Op0",
-            "title": "100 Useful English expressions :: listening practice",
+            "title": "100 Useful English expressions ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "OwK9s6c0xBk",
-            "title": "100 Useful English expressions :: listening practice",
+            "title": "100 Useful English expressions ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "7wM7Z-mJ_P8",
-            "title": "100 Useful English expressions:: With examples:: listening practice",
+            "title": "100 Useful English expressions:: With examples",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "VdCv1tWYKbs",
-            "title": "100 Useful English listening practice:: longer expressions",
+            "title": "100 Useful English listening practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1069,7 +1067,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "8a87PCMzboQ",
-            "title": "100 Useful English short phrases:: listening practice::Easy and Useful",
+            "title": "100 Useful English short phrases::Easy and Useful",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1093,7 +1091,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "xbinLICH2Ag",
-            "title": "100 Useful long dialogue ::English conversation:: listening practice",
+            "title": "100 Useful long dialogue ::English conversation",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1111,7 +1109,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "8oJ0zm0PzCs",
-            "title": "100 VERY useful expressions:: Quickly improve your English listening skills",
+            "title": "100 VERY useful expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1669,7 +1667,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "-ysU14CUtfY",
-            "title": "200 English Speaking Practice for beginners:: Useful expressions",
+            "title": "200 English Speaking Practice for beginners ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1687,7 +1685,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "zaqwt7RM0zM",
-            "title": "200 Express yourself fluently in English:: Speaking practice",
+            "title": "200 Express yourself fluently in English",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1867,25 +1865,25 @@ Vue.component('my-menu', {
           },
           {
             "key": "KZVpW5A-_IQ",
-            "title": "22 Minutes of English Speaking :: Practice with Native English Teachers",
+            "title": "22 Minutes of English Speaking  ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "wEi0eWxyhZw",
-            "title": "28 Minutes of English Speaking Practice with&nbsp;Native English Teachers",
+            "title": "28 Minutes of English Speaking Practice with Native English Teachers",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "HnF5NqnNzkE",
-            "title": "3 hrs.English listening comprehension:: Useful expressions:: Practice with  native English teachers",
+            "title": "3 hrs.English listening comprehension :: Practice with  native English teachers",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "EjpufW20I1E",
-            "title": "30 Minutes of English Speaking Practice with&nbsp;Native English Teachers",
+            "title": "30 Minutes of English Speaking Practice with Native English Teachers",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1897,7 +1895,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "TYJZO9WppN4",
-            "title": "300 Useful English expressions :: listening practice",
+            "title": "300 Useful English expressions ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -1999,7 +1997,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "A08UJrlcVCw",
-            "title": "50 Guide you to speak English fluently:: useful expressions",
+            "title": "50 Guide you to speak English fluently",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2023,7 +2021,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "2ttiaa9Rf6Y",
-            "title": "50 Minutes of English Listening Practice for Beginners:: useful expressions",
+            "title": "50 Minutes of English Listening Practice for Beginners",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2095,7 +2093,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "zByMcP_q-xY",
-            "title": "500 Must know English vocabulary for beginners:: listening practice:: dictation practice",
+            "title": "500 Must know English vocabulary for beginners:: dictation practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2191,7 +2189,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "0GXaDxxNJEw",
-            "title": "55 English expressions (Longer to long):: listening practice",
+            "title": "55 English expressions (Longer to long)",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2203,13 +2201,13 @@ Vue.component('my-menu', {
           },
           {
             "key": "ZAkYIS01kDk",
-            "title": "55 Guide you to speak English fluently:: useful expressions",
+            "title": "55 Guide you to speak English fluently",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "_NCNiyr8bbA",
-            "title": "55 Guide you to speak English well:: useful expressions",
+            "title": "55 Guide you to speak English well",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2257,7 +2255,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "hqXOT8hmwEs",
-            "title": "57 Minutes English Listening Comprehension :: longer expressions",
+            "title": "57 Minutes English Listening Comprehension  ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2287,7 +2285,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "TNGony_dZAw",
-            "title": "60 Effective way to learn English:: useful expressions",
+            "title": "60 Effective way to learn English",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2383,7 +2381,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "WXPsF3ohhNA",
-            "title": "69 Useful short expressions with examples:: listening practice",
+            "title": "69 Useful short expressions with examples",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2395,13 +2393,13 @@ Vue.component('my-menu', {
           },
           {
             "key": "2hD0Wsw1aF0",
-            "title": "Actual Airline Announcements:: Flight Attendant Announcement:: listening practice",
+            "title": "Actual Airline Announcements:: Flight Attendant Announcement",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "etjY9x_vVJQ",
-            "title": "Airplane English:: Travel English:: Speaking practice ::English you'll need on the plane",
+            "title": "Airplane English:: Travel English ::English you'll need on the plane",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2431,7 +2429,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "j5iL4cB06fE",
-            "title": "Become Fluent in English 100:: Useful expressions ::Effective way to learn English",
+            "title": "Become Fluent in English 100  ::Effective way to learn English",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2473,7 +2471,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "QvnJNSyHDk8",
-            "title": "Better ways to say in English:: useful expressions ::everyone should know!!",
+            "title": "Better ways to say in English ::everyone should know!!",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2497,7 +2495,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "KmCZyQYLyN0",
-            "title": "Daily English:: Speaking practice:: Convenience Store Theme",
+            "title": "Daily English:: Convenience Store Theme",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2509,7 +2507,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "M1XUL7MXBs8",
-            "title": "English Conversations for Daily Life:: listening practice",
+            "title": "English Conversations for Daily Life",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2545,7 +2543,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "Sr8ok7ya91g",
-            "title": "English Listening Practice:: Useful expressions",
+            "title": "English Listening Practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2761,7 +2759,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "PLqLa5VAsXE",
-            "title": "English sentences starters for everyday life:: listening practice",
+            "title": "English sentences starters for everyday life",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2803,7 +2801,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "12S9zaQ-ilA",
-            "title": "English speaking practice:: Useful expressions",
+            "title": "English speaking practice ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2857,7 +2855,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "4pe94gbvbgA",
-            "title": "High frequency sentences in American TV series:: listening practice",
+            "title": "High frequency sentences in American TV series",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2875,7 +2873,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "Ooz0W94nkvg",
-            "title": "Improve your English so easy::Learn English effectively:: listening practice",
+            "title": "Improve your English so easy::Learn English effectively",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2977,7 +2975,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "FoiLf6LJigQ",
-            "title": "Must-know English for Telephone Calls:: listening practice",
+            "title": "Must-know English for Telephone Calls",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3001,19 +2999,19 @@ Vue.component('my-menu', {
           },
           {
             "key": "rGH14WoE6Nc",
-            "title": "Practice English listening with&nbsp;Native English Teachers:: for intermediates",
+            "title": "Practice English listening with Native English Teachers:: for intermediates",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "rFWl6xnxjw4",
-            "title": "Practice&nbsp;English Listening with&nbsp;Native English Teachers:: Useful longer expressions",
+            "title": "Practice English Listening with Native English Teachers:: Useful longer expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "5_KUKjKAkAo",
-            "title": "Practice&nbsp;English Speaking with&nbsp;Native English Teachers:: Useful daily expressions",
+            "title": "Practice English Speaking with Native English Teachers:: Useful daily expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3031,7 +3029,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "wvZr_RoGSPI",
-            "title": "Sentences you will hear in English dramas:: listening practice",
+            "title": "Sentences you will hear in English dramas",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3253,7 +3251,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "GEHJfKvytac",
-            "title": "Top 200 MUST know expressions:: easy and useful :: English listening practice",
+            "title": "Top 200 MUST know expressions :: English listening practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3367,7 +3365,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "L6_sB4F_IEA",
-            "title": "Travel English:: Must-know before travel!!!:: English speaking practice",
+            "title": "Travel English:: Must-know before travel!!!",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3379,7 +3377,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "1JLoFHzS7Mw",
-            "title": "Travel English::Airport Transportation Hotel::listening practice::The English expression you need",
+            "title": "Travel English::Airport Transportation Hotel::The English expression you need",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3397,7 +3395,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "iCq3eKPM37Y",
-            "title": "Useful Can and Can't Expressions:: English speaking practice",
+            "title": "Useful Can and Can't Expressions",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3463,13 +3461,13 @@ Vue.component('my-menu', {
           },
           {
             "key": "2xtWhi41p1o",
-            "title": "Useful English Expressions for Beginners ::listening practice",
+            "title": "Useful English Expressions for Beginners ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "i5Xzk2WckgQ",
-            "title": "Useful English Expressions for Beginners:: with cue card ::listening practice",
+            "title": "Useful English Expressions for Beginners:: with cue card ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3487,7 +3485,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "rt2sCDrJ5g0",
-            "title": "Useful English Expressions:: with cue card ::listening practice",
+            "title": "Useful English Expressions:: with cue card ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3523,13 +3521,13 @@ Vue.component('my-menu', {
           },
           {
             "key": "LCGfJ258LaU",
-            "title": "Useful English expressions for daily life:: listening practice",
+            "title": "Useful English expressions for daily life",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "ehb7U2UXLRo",
-            "title": "Useful English expressions!!! for your daily life:: longer expressions",
+            "title": "Useful English expressions!!! for your daily life ",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3643,13 +3641,13 @@ Vue.component('my-menu', {
           },
           {
             "key": "VwEuIM6xCfE",
-            "title": "Useful short phrases with examples:: English speaking practice",
+            "title": "Useful short phrases with examples",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
           {
             "key": "T1qMJrWow18",
-            "title": "Useful short phrases with examples::You can use it every day:: English speaking practice",
+            "title": "Useful short phrases with examples::You can use it every day",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3685,7 +3683,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "8lXEqMoDpSM",
-            "title": "Ways to Say Hurry Up :: Practice&nbsp;English Speaking with&nbsp;Native English Teachers",
+            "title": "Ways to Say Hurry Up :: Practice English Speaking with Native English Teachers",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3709,7 +3707,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "Qkw5LtDw-44",
-            "title": "Ways to say You Are Welcome:: English dialogue:: Speaking practice",
+            "title": "Ways to say You Are Welcome:: English dialogue",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -4801,7 +4799,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "3DWgFHB86zA",
-            "title": "突破英文聽力瓶頸:: 外教高清發音助你成功聽懂長句",
+            "title": "突破英文聽力瓶頸 助你成功聽懂長句",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -5675,6 +5673,362 @@ Vue.component('my-menu', {
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           }
+        ], 
+        "向上英文" : [
+          {
+            "key": "Re_YXSnkxjo",
+            "title": " Look的常用英文片語（高頻片語篇）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "hZOzgL2OZxM",
+            "title": "英語聽力（初級150句）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "-u2AHYXnVDs",
+            "title": "實用基礎英文訓練",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "hUbyvM2oaxY",
+            "title": "逐漸聽清楚外國老師的英文發音！",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "LSuKLWVlOWc",
+            "title": "英文超短句600個",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "haI3t4wn-tU",
+            "title": "生活英語口語200句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "xL1MZyrSpsI",
+            "title": "生活英語短句200",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "K-ndC94NrG0",
+            "title": "常用英文訓練100句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "d-T9Xj9BmX4",
+            "title": "英美人士常用英文表達",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "g-RtiLokEFs",
+            "title": "初級英語聽力",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "quGhc4eIMYc",
+            "title": "聽力兼口說訓練300句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "7sdSYxQEmKs",
+            "title": "实用英语听力100句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "zr6BfLOYRNU",
+            "title": "英美劇常用表達聽力訓練（第二集）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "GqWH2fofnII",
+            "title": "英語初級聽力",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "zZjY_eNguIs",
+            "title": "英語聽力提高特訓",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "FRAPD9WDhyU",
+            "title": "最有效地提高您的聽力水平（第二集）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "AfEHiVau8dI",
+            "title": "牛津英文核心3000詞 - 第1集（帶音標/例句/繁體/簡體）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "sP9qZI_KalY",
+            "title": "牛津英語核心3000詞 - 第2集",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "wvvI589TtJQ",
+            "title": "基礎英文54句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "VjR-hnP4IV4",
+            "title": "必學「英語片語」",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "9KOawJHzxBA",
+            "title": "美國人說常用英語100句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "NGchVWnGXsU",
+            "title": "100個重要英文句子訓練（初級篇，強烈推薦）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "tFm_EmpVc_M",
+            "title": "最實用最浪漫的48句英語情話/表白",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "h2y6kZsroC8",
+            "title": "英語簡短會話/聽力特訓",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "BDpK3KmqOVQ",
+            "title": "加強提升英文敏銳力47句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "XgICB3YgcyI",
+            "title": "英語聽力訓練48句日常表達",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "NkMJDGgybTw",
+            "title": "實用英文句子115個（初級篇）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "Un39QRFWmxk",
+            "title": "英文聽力練習69句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "riJUZMww1Hg",
+            "title": "52個常用句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "GL8NPRrsRWw",
+            "title": "漸進式提高英文句子難度（從基礎到進階）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "87GMrfXz5v8",
+            "title": "美國人生活表達100句！",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "IHAtHikIYGI",
+            "title": "生活英語95句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "G8eg12KfKNs",
+            "title": "簡短超實用英文",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "Tu4HkGx0npA",
+            "title": "輕鬆英語課堂",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "Eh352C2db7w",
+            "title": "提高英語耳朵敏銳力118句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "Qm5x_9tDQi0",
+            "title": "初學者英文短句130句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "h83io0QKh_M",
+            "title": "美國人常用英文50句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "4_Q0iaI8A4Q",
+            "title": "美國人說生活實用英文",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "In_xh3ijxks",
+            "title": "生活中高頻率片語",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "pNqbCE8dKqs",
+            "title": "精選英文97句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "1BCIyCGfDKY",
+            "title": "老外基礎英語學習 顯著提高英語聽力訓練",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "Axv78P57nVg",
+            "title": "生活常用英語90句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "30VtYIZV9_U",
+            "title": "聽懂美國人生活英語 - 快速提高您的英語聽力水平！",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "mn9oSw5G9Lo",
+            "title": "基礎提升篇",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "JZFsrAPIbWM",
+            "title": "英文學習100句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "ijKV8EcaX6E",
+            "title": "英文聽力從入門到提高",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "LuEbz4LrCAo",
+            "title": "學習英文基礎42句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "91oFJwnS73Y",
+            "title": "常用英語表達句型49個",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "TwX_RWrQEIY",
+            "title": "日常52句很實用英文",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "LCuOgVAMIhg",
+            "title": "美國生活用句100句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "y5bAgbpeHSk",
+            "title": "500個英文短句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "RpcLOtr31JE",
+            "title": "聽力訓練300句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "Qv9wlianYyU",
+            "title": "聽力訓練200句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "oUcOxgBp9YU",
+            "title": "生活英語口說108句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "k8bL3Fbewqw",
+            "title": "英文基礎句子",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "BeS2XeVMG_8",
+            "title": "高效提升英語聽覺 日常英文聽力練習",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "J4xctPq4r-8",
+            "title": "英語聽力102",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "uzdCGUIZXUo",
+            "title": "英語聽力200句（初中級篇）",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          },
+          {
+            "key": "H8opjYkXRvM",
+            "title": "英語聽力必練100句",
+            "author": "向上英文",
+            "date": "2021/11/17 08:00:00"
+          }
         ]
       }
 		}; // 
@@ -5699,6 +6053,7 @@ Vue.component('my-menu', {
         break;
       }
     }
+    
     let m = window.localStorage["mytube-menu-" + this.submenu];
     let index = "0";
     if(typeof m == "string" && m.length > 0) {
@@ -5714,6 +6069,7 @@ Vue.component('my-menu', {
     }
 
     this.active = this.submenu + "-" + index;
+    this.onSubmenuChange();
     setTimeout(() => {
       this.$nextTick(()=>{
         this.$refs.menu.updateOpened();
@@ -5727,35 +6083,45 @@ Vue.component('my-menu', {
     this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
-    onOpenChange(index, item){
-      if(index.length == 0) {
-        this.submenu = "";
-      } else {
+    onOpenChange(index){
+      let old = this.submenu;
+      if(index.length > 1) {
+        let arr = index.filter(itm =>{
+          return itm != this.submenu;
+        });
+        if(arr.length > 0) {
+          this.submenu = arr[0];
+        }
+      } else if(index.length == 1 && this.submenu != index[0]) {
         this.submenu = index[0];
       }
-      window.localStorage["mytube-submenu"] = this.submenu;
-      if(this.submenu.length > 0) {
-        let m = window.localStorage["mytube-menu-" + this.submenu];
-        let index = "0";
-        if(typeof m == "string" && m.length > 0) {
-          for(let i = 0; i < this.menu[this.submenu].length; i++ ) {
-            if(this.menu[this.submenu][i].key == m) {
-              index = i.toString();
-              setTimeout(() => {
-                this.onSelect(this.submenu + "-" + i)
-              }, 300);
-              break;
+      
+      if(this.submenu != old) {
+        window.localStorage["mytube-submenu"] = this.submenu;
+        if(this.submenu.length > 0) {
+          let m = window.localStorage["mytube-menu-" + this.submenu];
+          let index = "0";
+          if(typeof m == "string" && m.length > 0) {
+            for(let i = 0; i < this.menu[this.submenu].length; i++ ) {
+              if(this.menu[this.submenu][i].key == m) {
+                index = i.toString();
+                setTimeout(() => {
+                  this.onSelect(this.submenu + "-" + i)
+                }, 300);
+                break;
+              }
             }
           }
+          this.active = this.submenu + "-" + index;
         }
-        this.active = this.submenu + "-" + index;
-      }      
-      setTimeout(() => {
-        this.$nextTick(()=>{
-          this.$refs.menu.updateOpened();
-          // this.$refs.menu.updateActiveName();
-        });
-      }, 600);
+        this.onSubmenuChange(); 
+        setTimeout(() => {
+          this.$nextTick(()=>{
+            this.$refs.menu.updateOpened();
+            this.$refs.menu.updateActiveName();
+          });
+        }, 600);
+      }
     },
     async onSelect(index){
       let arr = index.split("-")
@@ -5780,6 +6146,16 @@ Vue.component('my-menu', {
         el.classList.remove("smallScreen");
         this.width = "310";
         el.style.visibility = "visible";
+      }
+    },
+    onSubmenuChange(){
+      let arr = document.querySelectorAll(".submenu");
+      for(let i = 0; i < arr.length; i++) {
+        console.log(arr[i].id)
+        console.log(arr[i].parentElement)
+        arr[i].parentElement.classList.remove("activeMenu");
+        if(arr[i].id == this.submenu)
+          arr[i].parentElement.classList.add("activeMenu");
       }
     }
 	},
