@@ -17,13 +17,13 @@ Vue.component('my-menu', {
           <template slot="title">
             <div :id="key" class="submenu"><Icon type="md-folder" /> {{key}}</div>
           </template>
-          <menu-item v-for="(item, index) in list" :name="key + '-' + index" :key="index">
+          <menu-item v-for="(item, index) in list" :name="key + '-' + index" :id="key + '-' + index" :key="index">
               {{item.title}}
           </menu-item>
         </Submenu>
       </i-menu>
       <div style="" id="version">
-        2021-11-19 09:30
+        2021-11-25 09:00
       </div>
     </div>
   `,
@@ -37,441 +37,441 @@ Vue.component('my-menu', {
       submenu: "",
       menu: {
         "ALCPT": [
-          {
-            "key": "XefQhSI-8Qw",
-            "title": "ALCPT Form 1 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "G8FrZraw13o",
-            "title": "ALCPT Form 2 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "dKR22Hxizrs",
-            "title": "ALCPT Form 3 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "UgoQyR3mDJg",
-            "title": "ALCPT Form 4 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "BXX1G1tyZro",
-            "title": "ALCPT Form 6 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "gt0Xqzlsu_0",
-            "title": "ALCPT Form 7 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "5GKw0ZJvKug",
-            "title": "ALCPT Form 8 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "SoP8Z4shX8A",
-            "title": "ALCPT Form 9 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "e1_2a0AD9OU",
-            "title": "ALCPT Form 10 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "E-UK_QeKN7A",
-            "title": "ALCPT Form 11 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "M1epp0iTEIc",
-            "title": "ALCPT Form 13 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "40h5szKdF1U",
-            "title": "ALCPT Form 14 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "zeSAsWOOKaU",
-            "title": "ALCPT Form 15 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "9S1yw4pdSJE",
-            "title": "ALCPT Form 16 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "tFVnL3aPBuI",
-            "title": "ALCPT Form 17 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "emohFo5DaCA",
-            "title": "ALCPT Form 18 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "2CUSsVkjxhw",
-            "title": "ALCPT Form 19 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "yW3X2AUZ_Sk",
-            "title": "ALCPT Form 20 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "FtgjzK5pHS0",
-            "title": "ALCPT Form 21 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "H7I9lKZ2Ee0",
-            "title": "ALCPT Form 22 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "jxRhow2UgNM",
-            "title": "ALCPT Form 23 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "DXtcEvG6rWs",
-            "title": "ALCPT Form 24 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "uq0_lGVsLlM",
-            "title": "ALCPT Form 25 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "8fIq0u-SKSk",
-            "title": "ALCPT Form 26 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "6TD_TmBgaTk",
-            "title": "ALCPT Form 27 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "WQPcaZDldFI",
-            "title": "ALCPT Form 28 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "Xq_RJA-FooY",
-            "title": "ALCPT Form 29 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "xi2pdIj-uPw",
-            "title": "ALCPT Form 30 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "5vv5mWMppUE",
-            "title": "ALCPT Form 31 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "UF_gW7MCp30",
-            "title": "ALCPT Form 32 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "R8Qws_ZWdf8",
-            "title": "ALCPT Form 33 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "Z_oRVspFCoY",
-            "title": "ALCPT Form 34 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "FEtJ5fVMRUY",
-            "title": "ALCPT Form 35 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "tiCrmsxjkBo",
-            "title": "ALCPT Form 36 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "m0C2oCFw_D0",
-            "title": "ALCPT Form 37 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "R8loKRHDZTo",
-            "title": "ALCPT Form 38 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "c6pAhApCdVQ",
-            "title": "ALCPT Form 39 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
-          {
-            "key": "g4b8KEskdjM",
-            "title": "ALCPT Form 40 with ANSWERS Listening and Reading",
-            "author": "ALCPT",
-            "date": "2021/11/19 08:00:00"
-          },
+          // {
+          //   "key": "XefQhSI-8Qw",
+          //   "title": "ALCPT Form 1",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "G8FrZraw13o",
+          //   "title": "ALCPT Form 2",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "dKR22Hxizrs",
+          //   "title": "ALCPT Form 3",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "UgoQyR3mDJg",
+          //   "title": "ALCPT Form 4",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "BXX1G1tyZro",
+          //   "title": "ALCPT Form 6",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "gt0Xqzlsu_0",
+          //   "title": "ALCPT Form 7",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "5GKw0ZJvKug",
+          //   "title": "ALCPT Form 8",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "SoP8Z4shX8A",
+          //   "title": "ALCPT Form 9",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "e1_2a0AD9OU",
+          //   "title": "ALCPT Form 10",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "E-UK_QeKN7A",
+          //   "title": "ALCPT Form 11",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "M1epp0iTEIc",
+          //   "title": "ALCPT Form 13",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "40h5szKdF1U",
+          //   "title": "ALCPT Form 14",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "zeSAsWOOKaU",
+          //   "title": "ALCPT Form 15",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "9S1yw4pdSJE",
+          //   "title": "ALCPT Form 16",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "tFVnL3aPBuI",
+          //   "title": "ALCPT Form 17",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "emohFo5DaCA",
+          //   "title": "ALCPT Form 18",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "2CUSsVkjxhw",
+          //   "title": "ALCPT Form 19",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "yW3X2AUZ_Sk",
+          //   "title": "ALCPT Form 20",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "FtgjzK5pHS0",
+          //   "title": "ALCPT Form 21",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "H7I9lKZ2Ee0",
+          //   "title": "ALCPT Form 22",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "jxRhow2UgNM",
+          //   "title": "ALCPT Form 23",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "DXtcEvG6rWs",
+          //   "title": "ALCPT Form 24",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "uq0_lGVsLlM",
+          //   "title": "ALCPT Form 25",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "8fIq0u-SKSk",
+          //   "title": "ALCPT Form 26",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "6TD_TmBgaTk",
+          //   "title": "ALCPT Form 27",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "WQPcaZDldFI",
+          //   "title": "ALCPT Form 28",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "Xq_RJA-FooY",
+          //   "title": "ALCPT Form 29",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "xi2pdIj-uPw",
+          //   "title": "ALCPT Form 30",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "5vv5mWMppUE",
+          //   "title": "ALCPT Form 31",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "UF_gW7MCp30",
+          //   "title": "ALCPT Form 32",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "R8Qws_ZWdf8",
+          //   "title": "ALCPT Form 33",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "Z_oRVspFCoY",
+          //   "title": "ALCPT Form 34",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "FEtJ5fVMRUY",
+          //   "title": "ALCPT Form 35",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "tiCrmsxjkBo",
+          //   "title": "ALCPT Form 36",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "m0C2oCFw_D0",
+          //   "title": "ALCPT Form 37",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "R8loKRHDZTo",
+          //   "title": "ALCPT Form 38",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "c6pAhApCdVQ",
+          //   "title": "ALCPT Form 39",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
+          // {
+          //   "key": "g4b8KEskdjM",
+          //   "title": "ALCPT Form 40",
+          //   "author": "ALCPT",
+          //   "date": "2021/11/19 08:00:00"
+          // },
           {
             "key": "cjIAZ3XP3Is",
-            "title": "ALCPT Form 41 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 41",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "22yOv3IRqvw",
-            "title": "ALCPT Form 42 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 42",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "-pWQl496Gh8",
-            "title": "ALCPT Form 43 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 43",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "nUtU5Klvg-I",
-            "title": "ALCPT Form 44 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 44",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "6z2Ca1nXWV4",
-            "title": "ALCPT Form 45 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 45",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "wlCxzGWIYaY",
-            "title": "ALCPT Form 46 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 46",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "uxW4t5QwkSI",
-            "title": "ALCPT Form 47 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 47",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "SHZXdsF4Mk8",
-            "title": "ALCPT Form 48 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 48",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "FZyFjEGT5ys",
-            "title": "ALCPT Form 49 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 49",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "7ZhfDBkD2vU",
-            "title": "ALCPT Form 50 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 50",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "LMbJCAAQETI",
-            "title": "ALCPT Form 51 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 51",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "wwyvPRSmrq0",
-            "title": "ALCPT Form 52 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 52",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "-9rDFY2i7po",
-            "title": "ALCPT Form 53 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 53",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "arjftnJcZaE",
-            "title": "ALCPT Form 54 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 54",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "s2M2dqAbTLA",
-            "title": "ALCPT Form 55 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 55",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "J3X-GZsHPSc",
-            "title": "ALCPT Form 56 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 56",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "ZH1gbTnvwqY",
-            "title": "ALCPT Form 57 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 57",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "4Ua-lgPV7mo",
-            "title": "ALCPT Form 58 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 58",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "k4dTgK9uA9k",
-            "title": "ALCPT Form 59 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 59",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "urwiq6QScK4",
-            "title": "ALCPT Form 60 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 60",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "Vgg_PGEQxv0",
-            "title": "ALCPT Form 64 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 64",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "fTq5t1LTLf0",
-            "title": "ALCPT Form 65 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 65",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "L7yeIeWymq8",
-            "title": "ALCPT Form 67 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 67",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "PyxOjTKPl00",
-            "title": "ALCPT Form 68 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 68",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "QOX6wQnQp8I",
-            "title": "ALCPT Form 69 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 69",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "bjYsK06i_vg",
-            "title": "ALCPT Form 70 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 70",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "CTjNWpsv4a4",
-            "title": "ALCPT Form 71 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 71",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "MJ1d67-F3y8",
-            "title": "ALCPT Form 72 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 72",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "zL9WH6YT4Pc",
-            "title": "ALCPT Form 73 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 73",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "jkf3h0tlSj4",
-            "title": "ALCPT Form 74 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 74",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "Um19MO19LWE",
-            "title": "ALCPT Form 75 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 75",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "xORUPkA7EPs",
-            "title": "ALCPT Form 76 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 76",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "qofqP6vX8Mw",
-            "title": "ALCPT Form 77 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 77",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "chKZKqZUT-I",
-            "title": "ALCPT Form 78 with ANSWERS Listening",
+            "title": "ALCPT Form 78",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "tPVnR3vkN5g",
-            "title": "ALCPT Form 79 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 79",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
@@ -483,169 +483,169 @@ Vue.component('my-menu', {
           },
           {
             "key": "9XTQITphs4I",
-            "title": "ALCPT Form 81 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 81",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "hVjHW5dogjM",
-            "title": "ALCPT Form 82 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 82",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "QrcUFYTNcZg",
-            "title": "ALCPT Form 83 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 83",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "FZWXVGqWJqk",
-            "title": "ALCPT Form 84 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 84",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "9LDi6YXqRWA",
-            "title": "ALCPT Form 85 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 85",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "KxhdxRPZkjQ",
-            "title": "ALCPT Form 86 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 86",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "mtkV7gHT1fc",
-            "title": "ALCPT Form 87 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 87",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "gkXM1ucGAM8",
-            "title": "ALCPT Form 88 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 88",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "66OW2aHr2EE",
-            "title": "ALCPT Form 89 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 89",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "JIlz0YxgBXs",
-            "title": "ALCPT Form 90 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 90",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "n0hzvB_hCK4",
-            "title": "ALCPT Form 91 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 91",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "ZUSa03dSKMk",
-            "title": "ALCPT Form 92 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 92",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "bR1rJJBHCKk",
-            "title": "ALCPT Form 93 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 93",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "8zJTvR3jtYI",
-            "title": "ALCPT Form 94 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 94",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "FVBSQInuP6s",
-            "title": "ALCPT Form 95 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 95",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "HwFpbUZS4Ew",
-            "title": "ALCPT Form 96 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 96",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "UXWr_JEw4Cc",
-            "title": "ALCPT Form 97 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 97",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "pW2YgF3fH4k",
-            "title": "ALCPT Form 98 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 98",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "Xy4-2O0Yqog",
-            "title": "ALCPT Form 99 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 99",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "3Hscb0tARAk",
-            "title": "ALCPT Form 100 with ANSWERS Listening and Reading",
+            "title": "ALCPT Form 100",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "d5XBy87fWKA",
-            "title": "Book 5 Quiz A - Listening and Reading ALCPT",
+            "title": "Book 5 Quiz A ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "6WUAaAMDfLs",
-            "title": "Book 7 Quiz C - Listening and Reading ALCPT",
+            "title": "Book 7 Quiz C ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "0r1QEJYvR_Q",
-            "title": "Book 8 Quiz C with ANSWERS - Listening and Reading ALCPT",
+            "title": "Book 8 Quiz C with ANSWERS ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "--31skLWrhQ",
-            "title": "Book 9 Quiz B with ANSWERS Listening and Reading ALCPT",
+            "title": "Book 9 Quiz B ALCPT",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "0FhZu-uP0sw",
-            "title": "Book 13 Quiz B - Listening and Reading ALCPT",
+            "title": "Book 13 Quiz B ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "WLl1aVka-t4",
-            "title": "Book 14 Quiz C - Listening and Reading ALCPT",
+            "title": "Book 14 Quiz C ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "tNpt0GHkGik",
-            "title": "Book 15 Quiz B - Listening and Reading ALCPT",
+            "title": "Book 15 Quiz B ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "5j5-EsOvh7E",
-            "title": "Book 15 Quiz C - Listening and Reading ALCPT",
+            "title": "Book 15 Quiz C ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
@@ -657,47 +657,46 @@ Vue.component('my-menu', {
           },
           {
             "key": "iMfCuMtjbsI",
-            "title": "Book 18 Quiz C - Listening and Reading ALCPT",
+            "title": "Book 18 Quiz C ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "hNYgdIsW2gE",
-            "title": "Book 19 Quiz C - Listening and Reading ALCPT",
+            "title": "Book 19 Quiz C ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "UAu5-fE_IsA",
-            "title": "Book 21 Quiz B - Listening and Reading ALCPT",
+            "title": "Book 21 Quiz B ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "3FI8MRrfHJc",
-            "title": "Book 22 Quiz C - Listening and Reading ALCPT",
+            "title": "Book 22 Quiz C ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "FDcxOIs074Q",
-            "title": "Book 24 Quiz B with ANSWERS in the End - Listening and Reading ALCPT",
+            "title": "Book 24 Quiz B with ANSWERS in the End ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "-TmA02PWWrs",
-            "title": "Book 27 Quiz B - Listening and Reading ALCPT",
+            "title": "Book 27 Quiz B ",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
           },
           {
             "key": "vnLFpKn4vsc",
-            "title": "Book 28 Quiz C with ANSWERS Listening and Reading ALCPT",
+            "title": "Book 28 Quiz C ALCPT",
             "author": "ALCPT",
             "date": "2021/11/19 08:00:00"
-          },
-          
+          }
         ],
         "知心英文": [
           {
@@ -6784,7 +6783,6 @@ Vue.component('my-menu', {
     } else {
       for(let key in this.menu) {
         this.submenu = key;
-        console.log(key)
         break;
       }
     }
@@ -6804,11 +6802,12 @@ Vue.component('my-menu', {
     }
 
     this.active = this.submenu + "-" + index;
-    this.onSubmenuChange();
+    
     setTimeout(() => {
       this.$nextTick(()=>{
         this.$refs.menu.updateOpened();
         this.$refs.menu.updateActiveName();
+        this.onSubmenuChange();
       });
     }, 600);
     // this.onSelect(this.active);
@@ -6849,11 +6848,12 @@ Vue.component('my-menu', {
           }
           this.active = this.submenu + "-" + index;
         }
-        this.onSubmenuChange(); 
+        
         setTimeout(() => {
           this.$nextTick(()=>{
             this.$refs.menu.updateOpened();
             this.$refs.menu.updateActiveName();
+            this.onSubmenuChange(); 
           });
         }, 600);
       }
@@ -6884,9 +6884,8 @@ Vue.component('my-menu', {
       }
     },
     onSubmenuChange(){
-      let frameMenu = document.getElementById("frameMenu");
+      let slef = this;
       let h1 = document.getElementById("frameMenu").clientHeight - document.getElementById("version").clientHeight;
-      console.log(h1)
       let arr = document.querySelectorAll(".submenu");
       let h2 = h1 - (arr.length * 45)
       for(let i = 0; i < arr.length; i++) {
@@ -6899,12 +6898,13 @@ Vue.component('my-menu', {
       }
       function delay(ul){
         setTimeout(()=>{
-          console.log(ul)
           ul.style.height = h2 + "px";
           ul.style.overflowX = "hidden";
           ul.style.overflowY = "auto";
-          console.log(ul)
-        }, 1000)
+          setTimeout(()=>{
+          document.getElementById(slef.active).scrollIntoView({block: "center",});
+          }, 1000); 
+        }, 300)
       }
     }
 	},

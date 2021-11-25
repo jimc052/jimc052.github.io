@@ -11,6 +11,9 @@
 	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
 	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
 	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
+	<!-- 
+		https://unpkg.com/vue-histogram-slider
+	 -->
 	
 	<script src="https://unpkg.com/marked@0.3.6"></script>
 	<script src="https://unpkg.com/lodash@4.16.0"></script>
@@ -74,15 +77,17 @@
 		}
 		#frameMenu > ul {
 			flex: 1;
-			overflow-y: auto;
-			overflow-x: hidden;
+			overflow: hidden;
 		}
-		.ivu-menu-submenu-title {
-			padding: 10px 5px !important;
-			/* border-bottom: 1px #aaaaaa solid; */
+		
+		.ivu-menu-opened > ul > li + li{
+			border-top: 1px #cccccc solid;
 		}
-		.ivu-menu-submenu{
-			/* border-bottom: 1px #aaaaaa solid; */
+		.ivu-menu-opened > ul > li:first-child{
+			border-top: 1px #cccccc solid;
+		}
+		.ivu-menu-opened > ul > li:last-child{
+			border-bottom: 1px #cccccc solid;
 		}
 		.ivu-menu-item {
 			padding: 10px 10px 10px 20px !important;
@@ -92,9 +97,23 @@
 		}
 		.activeMenu {
 			background-color: #F0F0F0;
-			border: 1 solid blue;
 		}
-		
+		.ivu-menu-submenu-title {
+			padding: 10px 5px !important;
+		}
+		#link {
+			/* display: inline-block; */
+			/* padding: 10px; */
+			/* font: bold 11px Arial; */
+			text-decoration: none;
+			background-color: #EEEEEE;
+			color: #2d8cf0;
+			padding: 5px 8px;
+			border-top: 1px solid #CCCCCC;
+			border-right: 1px solid #333333;
+			border-bottom: 1px solid #333333;
+			border-left: 1px solid #CCCCCC;
+		}
 	</style>
 </head>
 <body style="overflow: hidden;">
@@ -111,9 +130,8 @@
 					style="cursor: pointer; margin-left: 10px; margin-right: 10px;"></Icon>
 					{{title}}
 				</div>
-				<div id="player"></div>
 			</div>
-			<my-player ref="player" />
+			<my-player ref="footer" @on-click="onClick" />
 		</div>
 	</div>
 </body>
@@ -161,7 +179,7 @@
 				},
         async onSelect(item){
 					this.title = item.title;
-					this.$refs["player"].play(item);
+					this.$refs["footer"].play(item);
 
 					let node = document.getElementById("player");
 					if (node != null && node.parentNode) {
@@ -178,8 +196,10 @@
 						if(header != null){
 							clientHeight -= header.clientHeight;
 						}
+						console.log(`${item.key}`);
 						document.title = 'MyTube [' + item.author + "]";
 						videoId = item.key;
+						// https://developers.google.com/youtube/player_parameters?hl=zh-cn
 						player = new YT.Player('player', {
 							videoId: item.key,
 							height: clientHeight,
@@ -197,14 +217,33 @@
 												// endSeconds: item.end 
 											})
 										}
-									}, 300);
-									
+									}, 600);
 								},
 								'onStateChange': onPlayerStateChange
+							},
+							playerVars: {
+								autoplay: 1, // Auto-play the video on load, 默认值为 0
+								// controls: 0, // Show pause/play buttons in player, 0 - 播放器控件不会在播放器中显示。
+								// showinfo: 1, // Hide the video title, 2018 年 9 月 25 日后，此参数已被弃用，并会被忽略
+								modestbranding: 1, // Hide the Youtube Logo, 此参数可让您使用不显示 YouTube 徽标的 YouTube 播放器。将参数值设置为 1 可以阻止 YouTube 徽标显示在控制栏中。
+								fs: 0, // 0 可以阻止全屏按钮显示在播放器中。默认值为 1
+								// cc_load_policy: 0, // Hide closed captions
+								iv_load_policy: 3, // Hide the Video Annotations, 将参数值设置为 1 会在默认情况下显示视频注释，而将其设置为 3 则默认不显示。默认值为 1。
+								// start: 5,
+								// end: 10,
+								loop: 1,
+								autohide: 0 // Hide video controls when playing
 							}
 						});						
 					}, 300);
         },
+				onClick(item) {
+					player.loadVideoById({
+						videoId: videoId,
+						startSeconds: item.start,
+						endSeconds: item.end,
+					})
+				}
 			}
 		})
 	}
@@ -221,7 +260,11 @@
 				window.localStorage["mytube"] = JSON.stringify(recorders);
 				// console.log(player.getCurrentTime())
 			}, 1000 * 3);
-		} else {
+		}  else {
+			if(e.data == 0 || e.data == 2) {
+				recorders[videoId] = e.data == 0 ? 0 : player.getCurrentTime();
+				window.localStorage["mytube"] = JSON.stringify(recorders);
+			}
 			clearInterval(intervalID);
 		}
 		/*
