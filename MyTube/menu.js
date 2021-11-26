@@ -1385,7 +1385,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "Z3P7W-yQwFU",
-            "title": "100 Longer expressions:: Learn English Effectively",
+            "title": "100 Longer expressions:: Effectively",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -2453,7 +2453,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "B0FXKQRECAI",
-            "title": "300 Useful English:: Learn English Speaking with Native English Teachers",
+            "title": "300 Useful English:: Speaking with Native English Teachers",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -3461,7 +3461,7 @@ Vue.component('my-menu', {
           },
           {
             "key": "E2HYMfuiG8o",
-            "title": "Let's Learn English:: Useful English expressions ::  listening practice",
+            "title": "Let's:: Useful English expressions ::  listening practice",
             "author": "Ozma英文",
             "date": "2021/11/16 11:30:00"
           },
@@ -6762,6 +6762,530 @@ Vue.component('my-menu', {
             "title": "英語中最常用的 65 個動作動詞",
             "author": "Club James Studios",
             "date": "2021/11/18 08:00:00"
+          }
+        ], 
+        "跟洋妞学英语": [
+          {
+            "key": "Z42uYDoJRn4",
+            "title": "洗手间用品英语单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "QQDISDf4HQ8",
+            "title": "不要再说 I DON'T KNOW!",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "KsP9VKQLLhg",
+            "title": "15个高频英语万用句型",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "5gJY7g8z0dI",
+            "title": "【我很忙】用英文怎么说?",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "E2mXJ334fFA",
+            "title": "怎么用英语说【节哀顺变】? ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "HWuFTFZd8I4",
+            "title": "提高英语口语和写作的最好方式",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "n-wgOhUgyiI",
+            "title": "不要再用 VERY+形容詞  第二集",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "SRHeJU_XhbM",
+            "title": "怎么用地道英语说【中文成语】",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "DOGZIl0HrV4",
+            "title": "怎么用地道英语说 【我不喜欢】",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "vqD8EhjPySA",
+            "title": "不要再用 VERY+形容詞",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "a9eO-cgYPyI",
+            "title": "用流利的英语讲电话",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "wk0jki4lCTE",
+            "title": "【职场版】 怎么说一口流利的美式英语? 3",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "7xU4ODxO8jc",
+            "title": "厨房用品英语单词 2",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "CtLUtv8-wNc",
+            "title": "怎么说一口流利的美式英语? 2",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "lO_BMxNZWH8",
+            "title": "厨房用品英语单词 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "fxpoQY8waGI",
+            "title": "房子房间实用英文词汇",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "p0rdzXm1_Q0",
+            "title": "常用英语短语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "RE1ol1O5_j4",
+            "title": "英文日常对话 | 英语对话",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "nKDmtY-lflo",
+            "title": "40个与卧室有关的单字",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "5JHijc13_Ew",
+            "title": "怎么用英语表达面部表情 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "U1djLB8abh4",
+            "title": "种菜学英语 | 简单生活常用英语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "4YrO9FaF850",
+            "title": "【零基础英语口语】100句简单生活常用英语口语 3",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "f0E2JpmsaX4",
+            "title": "25个最常用的短语动词 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "uRAA5f9fdVs",
+            "title": "50个常用英语动词 3 洋妞表演【零基础英语】",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "SOlgN5WUoOA",
+            "title": "50个常用英语动词 2 洋妞表演【零基础英语】】",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "mS262AnSuME",
+            "title": "50个常用英语动词 1 洋妞表演【零基础英语】",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "dY9st7OcafM",
+            "title": "【零基础英语口语】100句简单生活常用英语口语 2",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "4D7Nm3SE16I",
+            "title": "【零基础英语口语】100句简单生活常用英语口语 1",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "IksIzMqdyRg",
+            "title": "【从零开始学英语】 情人节",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "oVv8wXt4S-0",
+            "title": "美国总统 美国历届总统 2",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "44lQcNrY7HY",
+            "title": "美国总统 美国历届总统 1",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "cJd5i-dODZA",
+            "title": "衣服 - 下装 中英文词汇 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "Ag3N7ft_two",
+            "title": "衣服 - 上衣 中英文词汇 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "vbWgyKvQ2IE",
+            "title": "学美国节日 中英文名称和简称  [058]",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "r5E5vkUd5VI",
+            "title": "057 五个学英语的窍门 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "zk83eOaou4o",
+            "title": "15个著名美国国家公园中英文名称和简称 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "7VubnBGePAg",
+            "title": "20个美国有名的城市中英文名称和简称 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "cgrpZu4UG0o",
+            "title": "美国50州中英文名称和简称 第2集 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "T2Ag-dVtqhs",
+            "title": "美国50州中英文名称和简称 第1集 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "iMts2N6JoKU",
+            "title": "COVID-19 新型冠状病毒疾病英语词汇 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "P2Y1fEPdxY4",
+            "title": "20个常见烹饪英语动词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "Q_Uj4_5mZ54",
+            "title": "050 20个常见水果单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "OWwqDSYwL0w",
+            "title": "美国大选 选举英文单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "WPjSbmIm15o",
+            "title": "20个常见水果单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "Wqk8KUoB-FQ",
+            "title": "047 常用英语句子 | 怪怪的美国俗语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "vfNPU4112Q0",
+            "title": "下午和傍晚习惯英语单词和短语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "ZuYmPDwhsUg",
+            "title": "早晨习惯英语单词和短语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "culLQNR7R_M",
+            "title": "041 日期单词2 - 月份和季节",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "hIiKnPLiIiE",
+            "title": "040 日期单词1 - 天和周",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "puKirmCXAqQ",
+            "title": "【从零开始学英语】20个煮饭调料单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "L1TxKMI5JlQ",
+            "title": "【从零开始学英语】日常英语短语 | 开车旅行",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "tj0X9pkyiUQ",
+            "title": "【从零开始学英语】20个开车旅行单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "5qidZjMOeCs",
+            "title": "实用快餐英文单词发音教学",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "dx1CT0-wmAI",
+            "title": "星巴克点咖啡必备英文单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "g_GKSdKJazk",
+            "title": "日常英文单字 | 实用咖啡店饮料英文单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "yMqAqR-SG8s",
+            "title": "实用快餐英文单词发音教学",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "9onfeQ8cfnM",
+            "title": "【从零开始学英语】20个常见蔬菜单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "a_zJOQLpDbY",
+            "title": "30种日常电器用品名称",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "bPDoSwz6kAw",
+            "title": "【从零开始学英语】20个常见蔬菜单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "275Q5seIaq0",
+            "title": "十句必学英语口语 | 饭店的常用句子",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "YK5aZJBK5Qk",
+            "title": "028 10个最常发错音的英语单词 【英文发音】",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "j4cqn7gYw4w",
+            "title": "027 100个最常用英语动词 第二集",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "KrRvpswPWJ4",
+            "title": "150个初学者英语单词 | 从零学英语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "9kIoYWp6bdk",
+            "title": "从零学英语 | 100个最常用英语动词 第一集",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "nw9IJCSx9iY",
+            "title": "从零学英语 | 100个最常用英语单词",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "thwZf66Hoz0",
+            "title": "从零学英语 | 关于生病的动词短语 学英语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "KTv-SXIjy9Y",
+            "title": "从零学英语数字 | 一到一万亿",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "-YMQfv5FAGA",
+            "title": "25句对你爱人说的浪漫情话",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "XfkCfqsNyuc",
+            "title": "通过生病学英语 | 新冠病毒",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "Yh6DObbzBnk",
+            "title": "鼠年快樂",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "r4zsPK9_N3I",
+            "title": "英文日常对话第一集 | 英语对话",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "ba2LfVea0Jo",
+            "title": "最常用英语口语会话 第5集 | 征求意见时的回应",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "HQBMAUTXF1A",
+            "title": "最常用英语动词 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "3DliURH1--0",
+            "title": "圣诞节学英语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "0nw9D4oSF9w",
+            "title": "最常用英语口语会话 第4集 请求帮忙和回应",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "Mk8hf7Sj3RE",
+            "title": "睡眠时学英语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "_KnbRS8JjDg",
+            "title": "最常用英语口语会话 第3集 | 道歉方式和回应",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "l7RYgc9i2_k",
+            "title": "最常用英语动词 Most Common English Verbs A学英语",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "_k8YoNaNTo0",
+            "title": "最常用英语口语会话 第2集 | 介绍,面对消息的回应 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "3C0sO4_98YQ",
+            "title": "最常用英语口语会话 第1集  | 问候和告别",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "q9EQ9es3iQU",
+            "title": "60多個英語顏色詞彙",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "YnBB0h9pK70",
+            "title": "35句餐廳訂位會話",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "BBWnLgtigLY",
+            "title": "50句問候語和告別句 學習英語口語",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "A_kzxc6-aG4",
+            "title": "004 50句对你爱人說最浪漫的话",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "UOwzmLSTmPQ",
+            "title": "003 50句超市会话 50 Supermarket Conversations ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "37M5122jk2k",
+            "title": "002 50句让别人微笑的赞美",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
+          },
+          {
+            "key": "yqCusTDkTHc",
+            "title": "001 30句日常个人问题和答案 ",
+            "author": "跟洋妞学英语",
+            "date": "2021/11/26 12:00:00"
           }
         ]
       }
