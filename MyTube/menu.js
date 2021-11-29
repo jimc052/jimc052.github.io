@@ -1,7 +1,7 @@
 // https://www.iviewui.com/components/menu  
 Vue.component('my-menu', { 
 	template:  `
-    <div id='frameMenu' style="height: 100%; display: flex; flex-direction: column;"
+    <div id='frameMenu' style="height: 100%; display: flex; flex-direction: column; "
         :style="{width: width + 'px'}">
       <div v-if="smallScreen" id="headerMenu" :style="{background: '#2d8cf0', 
         'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
@@ -9,7 +9,6 @@ Vue.component('my-menu', {
         height: '50px', 'padding-right': '5px'
         }">
         <Icon type="md-arrow-back" size="28" color="white" @click.native="onClickIcon" style="cursor: pointer; margin-left: 10px;"></Icon>
-        
       </div>
       <i-menu id="xMenu" theme="light" :width="width" ref="menu" @on-select="onSelect" @on-open-change="onOpenChange" style="flex: 1" 
         :active-name="active" :open-names="[submenu]">
@@ -7401,6 +7400,7 @@ Vue.component('my-menu', {
         el.classList.add("smallScreen");
         this.width = document.body.clientWidth + "";
         el.style.visibility = "hidden";
+
       } else {
         el.classList.remove("smallScreen");
         this.width = "310";
