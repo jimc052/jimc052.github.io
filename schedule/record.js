@@ -10,6 +10,9 @@ Vue.component('record', {
 				style="margin-right: 5px; color: red;"/>
 			{{alarm.substr(11)}}
 		</div>
+		<div v-for="item in preloads" style="color: orange">
+			{{item[0] + "：" + item[1]}}
+		</div>
 	</div>`,
 	props: {
 		datas: {
@@ -25,16 +28,25 @@ Vue.component('record', {
 			require: false, 
 			default: ''
 		},
+		preload: {
+			type: Object,
+			require: false
+		},
 	},
 	data() {
 		return {
-			rows: []
+			rows: [],
+			preloads: []
 		};
 	},
 	created(){	
 	},
 	async mounted () {
 		this.retrieve()
+		// console.log(this.date) // 2021-12-01
+		// if(typeof this.preload == "object") console.log(this.preload)
+		// if(this.date == this.alarm.substr(0, 10)) console.log("alarm: " + this.alarm) // 2021-12-09T08:50
+		// console.log(this.datas)
 	},
 	destroyed() {
   },
@@ -48,13 +60,41 @@ Vue.component('record', {
 				let json = this.datas[this.date.substr(8)];
 				for(let key in json){
 					this.rows.push([key, json[key]])
-				}			
-			};			
+				}	
+			};
+			this.preloads = [];
+			if(typeof this.preload == "object" && this.rows.length == 0) {
+				let alarm = this.date == this.alarm.substr(0, 10) 
+					? this.alarm.substr(this.alarm.length - 5) 
+					: undefined;
+				for(let key in this.preload){
+					if(typeof alarm == "string" && this.preload[key] <= alarm)
+						continue;
+					this.preloads.push([key, this.preload[key]])
+				}	
+			}
 		}
 	},
 	watch: {
 		datas(value) {
 			this.retrieve()
+		},
+		preload(value) {
+
+		},
+		alarm(value) {
+			this.retrieve()
 		}
 	}
 });
+/*
+<div v-else-if="day.workday == 3 && typeof preload[day.date] == 'object'" style="height: 100%;  display: flex; flex-direction: column;">
+						<div style="text-align: center;">{{day.day}}</div>
+						<div v-if="typeof preload[day.date]['上班']== 'string'" style="font-size: 12px; color: purple;">
+							{{'上班：' + preload[day.date]['上班']}}
+						</div>
+						<div v-if="typeof preload[day.date]['下班']== 'string'" style="font-size: 12px; color: purple;">
+							{{'下班：' + preload[day.date]['下班']}}
+						</div>
+					</div>
+*/

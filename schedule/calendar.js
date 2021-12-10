@@ -49,7 +49,13 @@ Vue.component('calendar', {
 					<!-- 工作日 workday： 1 今天以前，2 今天，3 今天以後 -->
 					<div v-else-if="day.workday > 0" style="height: 100%;  display: flex; flex-direction: column;">
 						<div style="text-align: center;">{{day.day}}</div>
-						<record :workday="day.workday" :datas="recorder" :date="day.date" :alarm="alarm" @onAlarmSet="onAlarmSet"></record>
+						<record :workday="day.workday" 
+							:preload="preload[day.date]" 
+							:datas="recorder" 
+							:date="day.date" 
+							:alarm="alarm" 
+							@onAlarmSet="onAlarmSet"
+						></record>
 					</div>
 					<!-- 周末，周日 -->
 					<div v-else :style="{height: '100%'}">
@@ -65,13 +71,14 @@ Vue.component('calendar', {
 		</i-button>
 		
 		<datePick ref="datePick" :date="alarm" @onChangeAlarm="onChangeAlarm" />
-		<setting ref="setting" :date="alarm" @onChangeSetting="onChangeSetting" />
+		<setting ref="setting" :date="alarm" @onChangeSetting="onChangeSetting" @onChangePreload="onChangePreload" />
 	</div>`,
 	props: {
 	},
 	data() {
 		return {
 			schedule: [],
+			preload: {},
 			recorder: null,
 			weekday: ["一", "二", "三", "四", "五", "六", "日"],
 			today: new Date(),
@@ -91,9 +98,36 @@ Vue.component('calendar', {
 		};
 	},
 	async mounted () {
-		// delete window.localStorage["schedule=2020-02"]
+		// delete window.localStorage["schedule=2020-02"] 
 		// delete window.localStorage["alarm"];
+
 		window.postMessage({cmd: 'getAlarms'}, "*");
+		let s = window.localStorage["schedule=proload"];
+		if(typeof s == "string" && s.length > 0) {
+			this.preload = JSON.parse(s);
+		}
+		if(this.$isDebug()){
+			this.today = new Date(2021, 11, 9, 12)
+			this.preload = {
+				"2021-12-09":{"上班":"10:00","下班":"19:00"},
+				"2021-12-21":{"上班":"11:00","下班":"19:00"}, 
+			};
+		}
+	
+		let arr = [];
+		let today = this.today.toString("yyyy-mm-dd");
+		for(let key in this.preload) {
+			if(key < today) {
+				arr.push(key)
+			}
+		}
+		if(arr.length > 0) {
+			arr.forEach(item =>{
+				delete this.preload[item]
+			})
+			window.localStorage["schedule=proload"] = JSON.stringify(this.preload);
+		}
+		// console.log(JSON.stringify(this.preload))
 
 		this.alarm = this.$storage("alarm");
 		this.retrieve();
@@ -108,6 +142,10 @@ Vue.component('calendar', {
 			console.log("onChangeSetting: " + value)
 			this.setAlarm(this.alarm)
 		},
+		onChangePreload(value){
+			this.preload = value;
+			this.retrieve();
+		},
 		onAlarmSet(){
 			this.$refs["datePick"].visible = true;
 		},
@@ -116,6 +154,7 @@ Vue.component('calendar', {
 			this.setAlarm(d)
 		},
 		isToday(today){
+			if(this.$isDebug()) return true;
 			if(typeof today == "undefined") today = this.today;
 			return today.toString("yyyy-mm-dd") == (new Date()).toString("yyyy-mm-dd");
 		},
@@ -126,9 +165,11 @@ Vue.component('calendar', {
 				let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
 				// 'https://jd.jabezpos.com/?designer=BCC_EIP&database=ERPS&solution=SOLUTION1';
 				// let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
-				window.open(url, "",
-					"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
-				);
+				if(this.$isDebug() == false){
+					window.open(url, "",
+						"resizable=yes,toolbar=no,status=no,location=no,menubar=no,scrollbars=yes"
+					);
+				}
 				
 				let month = this.today.toString("yyyy-mm");
 				let dd = this.today.toString("dd");
@@ -181,9 +222,6 @@ Vue.component('calendar', {
 			this.alarm = date;
 			this.$storage("alarm", date);
 			let periodInMinutes = this.$storage("periodInMinutes");
-
-			console.log("alarm: " + this.alarm + ", periodInMinutes: " + periodInMinutes)
-
 			let d = new Date(date);
 			window.postMessage({cmd: 'setAlarm', name: date, 
 				when: d.getTime(),
@@ -213,7 +251,7 @@ Vue.component('calendar', {
 			this.schedule = schedule;
 			//  && this.alarm.length == 0
 			if(this.month.toString("yyyy-mm") == this.today.toString("yyyy-mm")) {
-				let {time, btn} = this.arrangeAlarm(this.today, schedule, recorder);
+				let {time, btn, isPreload} = this.arrangeAlarm(this.today, schedule, recorder); 
 				// console.log(time, btn)
 				if(time.length == 0) {
 					if(m == 11) {
@@ -229,7 +267,9 @@ Vue.component('calendar', {
 				} else {
 					if(this.alarm.length == 0 || this.alarm.substr(0, 10) < this.today.toString("yyyy-mm-dd"))
 						this.setAlarm(time);
-					if(time.substr(0, 10) == this.today.toString("yyyy-mm-dd"))
+					else if(isPreload == true && time >= this.today.toString("yyyy-mm-ddThh:MM") )
+						this.setAlarm(time);
+					if(time.substr(0, 10) == this.today.toString("yyyy-mm-dd")) // isPreload
 						this.btn = btn;
 				}
 			}
@@ -270,7 +310,7 @@ Vue.component('calendar', {
 		arrangeAlarm(date, schedule, records){
 			let s1 = date.toString("yyyy-mm-dd");
 			let morning = this.$storage("morning");
-			// console.log("morning: " + morning)
+			let preload = typeof this.preload[s1] == "undefined" ? {} : this.preload[s1];
 			for(let i = 0; i < schedule.length; i++) {
 				let week = schedule[i];
 				for(let j = 0; j < week.length; j++) {
@@ -294,10 +334,17 @@ Vue.component('calendar', {
 								state = "上班";
 						}
 						if(state.length > 0) {
-							return {time: row.date + "T" + (state == "上班" ? morning : "18:00"), btn: state};
+							if(typeof preload[state] == "string") {
+								return {time: row.date + "T" + preload[state], btn: state, isPreload: true};
+							} else 
+								return {time: row.date + "T" + (state == "上班" ? morning : "18:00"), btn: state};
 						}
-					} else if(row.date >= s1 && row.workday == 3) {
-						return {time: row.date + "T" + morning, btn: "上班"};
+					} else if(row.date >= s1 && row.workday == 3) { //今天以後
+						preload = typeof this.preload[row.date] == "undefined" ? {} : this.preload[row.date]
+						if(typeof preload["上班"] == "string") {
+							return {time: row.date + "T" + preload["上班"], btn: "上班", isPreload: true};
+						} else 
+							return {time: row.date + "T" + morning, btn: "上班"};
 					}
 				}
 			}
@@ -307,7 +354,7 @@ Vue.component('calendar', {
 			if(this.isToday() == false) {
 				alert("日期逾時，請更新網頁")
 			}
-		}
+		}, 
 	},
 	watch: {
 		

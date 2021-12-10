@@ -43,3 +43,7 @@ Date.prototype.addDays = function(days) {
   this.setDate(this.getDate() + days);
   return this;
 }
+
+Vue.prototype.$isDebug = function() {
+	return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
+}
