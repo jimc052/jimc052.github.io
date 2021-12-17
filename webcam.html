@@ -13,7 +13,7 @@
         padding: 0px 0px;
         overflow: hidden;
       }
-      .slider {
+      /* .slider {
         -webkit-appearance: none;
         width: 100%;
         height: 15px;
@@ -24,15 +24,15 @@
         -webkit-transition: .2s;
         transition: opacity .2s;
         
-      }
+      } */
     </style>
   </head>
 
   <body onload="init();">
     <canvas id="canvas"></canvas>
-    <div style="padding: 50px 10px 10px 10px;">
+    <!-- <div style="padding: 50px 10px 10px 10px;">
       <input type="range" min="0" max="100" value="0" class="slider" id="slider">
-    </div>
+    </div> -->
     
     <video onclick="snapshot(this);"
       width="100%"
@@ -94,12 +94,12 @@
       video = document.getElementById("video");
       ctx = canvas.getContext("2d");
 
-      let s = window.localStorage["webcam-rate"];
-      if(!isNaN(s)) {
-        rate = parseFloat(s);
-        document.getElementById("slider").value = (rate - 1) * 100;
-        adjust();
-      }
+      // let s = window.localStorage["webcam-rate"];
+      // if(!isNaN(s)) {
+      //   rate = parseFloat(s);
+      //   document.getElementById("slider").value = (rate - 1) * 100;
+      //   adjust();
+      // }
 
       startWebcam();
 
@@ -123,7 +123,7 @@
       let height = canvas.height * rate, width = canvas.width * rate;
       ctx.drawImage(video, axie.x, axie.y, width, height);
 
-      let j = 10;
+      let j = 12;
       let x = width / j;
       for (let i = 0; i < j; i++) {
         ctx.beginPath();
@@ -143,19 +143,19 @@
       }
     }
 
-    var slider = document.getElementById("slider");
-    slider.oninput = function(params) {
-      rate = 1 + (this.value * 0.01);
-      window.localStorage["webcam-rate"] = rate;
-      console.log(this.value + "; " + rate)
-      adjust();
-      // output.innerHTML = this.value;
-    }
+    // var slider = document.getElementById("slider");
+    // slider.oninput = function(params) {
+    //   rate = 1 + (this.value * 0.01);
+    //   window.localStorage["webcam-rate"] = rate;
+    //   console.log(this.value + "; " + rate)
+    //   adjust();
+    //   // output.innerHTML = this.value;
+    // }
 
-    function adjust() {
-      let height = canvas.height * rate, width = canvas.width * rate;
-      axie.x = ((width - canvas.width) / 2) * -1;
-      axie.y = ((height - canvas.height) / 2) * -1;
-    }
+    // function adjust() {
+    //   let height = canvas.height * rate, width = canvas.width * rate;
+    //   axie.x = ((width - canvas.width) / 2) * -1;
+    //   axie.y = ((height - canvas.height) / 2) * -1;
+    // }
   </script>
 </html>
