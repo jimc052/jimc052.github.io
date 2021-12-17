@@ -1,5 +1,5 @@
 Vue.component('record', {
-	template:  `<div style="flex: 1; display: flex; flex-direction: column;">
+	template:  `<div style="flex: 1; display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start;">
 		<div v-for="item in rows">
 			{{item[0] + "：" + item[1]}}
 		</div>
@@ -10,9 +10,9 @@ Vue.component('record', {
 				style="margin-right: 5px; color: red;"/>
 			{{alarm.substr(11)}}
 		</div>
-		<div v-for="item in preloads" style="color: orange">
+		<span class="preload" v-for="item in preloads">
 			{{item[0] + "：" + item[1]}}
-		</div>
+		</span>
 	</div>`,
 	props: {
 		datas: {
