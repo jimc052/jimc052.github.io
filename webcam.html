@@ -13,27 +13,11 @@
         padding: 0px 0px;
         overflow: hidden;
       }
-      /* .slider {
-        -webkit-appearance: none;
-        width: 100%;
-        height: 15px;
-        border-radius: 5px;  
-        background: #d3d3d3;
-        outline: none;
-        opacity: 0.7;
-        -webkit-transition: .2s;
-        transition: opacity .2s;
-        
-      } */
     </style>
   </head>
 
   <body onload="init();">
     <canvas id="canvas"></canvas>
-    <!-- <div style="padding: 50px 10px 10px 10px;">
-      <input type="range" min="0" max="100" value="0" class="slider" id="slider">
-    </div> -->
-    
     <video onclick="snapshot(this);"
       width="100%"
       height="auto"
@@ -74,6 +58,10 @@
               video.src = URL.createObjectURL(localMediaStream);
               webcamStream = localMediaStream;
             }
+            resize();
+            setInterval(() => {
+              snapshot();
+            }, 300);
           },
 
           function (err) {
@@ -93,25 +81,15 @@
       canvas = document.getElementById("canvas");
       video = document.getElementById("video");
       ctx = canvas.getContext("2d");
-
-      // let s = window.localStorage["webcam-rate"];
-      // if(!isNaN(s)) {
-      //   rate = parseFloat(s);
-      //   document.getElementById("slider").value = (rate - 1) * 100;
-      //   adjust();
-      // }
-
       startWebcam();
 
-      setInterval(() => {
-        snapshot();
-      }, 300);
+      
       window.onresize = () => {
         return (() => {
           resize();
         })();
       };
-      resize();
+      
     }
 
     function resize() {
@@ -142,20 +120,5 @@
         ctx.stroke();
       }
     }
-
-    // var slider = document.getElementById("slider");
-    // slider.oninput = function(params) {
-    //   rate = 1 + (this.value * 0.01);
-    //   window.localStorage["webcam-rate"] = rate;
-    //   console.log(this.value + "; " + rate)
-    //   adjust();
-    //   // output.innerHTML = this.value;
-    // }
-
-    // function adjust() {
-    //   let height = canvas.height * rate, width = canvas.width * rate;
-    //   axie.x = ((width - canvas.width) / 2) * -1;
-    //   axie.y = ((height - canvas.height) / 2) * -1;
-    // }
   </script>
 </html>
