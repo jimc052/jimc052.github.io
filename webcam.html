@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0px;
+        background-color: #ebecf0;
+        padding: 0px 0px;
+        overflow: hidden;
+      }
+      .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        border-radius: 5px;  
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+        
+      }
+    </style>
+  </head>
+
+  <body onload="init();">
+    <canvas id="canvas"></canvas>
+    <div style="padding: 50px 10px 10px 10px;">
+      <input type="range" min="0" max="100" value="0" class="slider" id="slider">
+    </div>
+    
+    <video onclick="snapshot(this);"
+      width="100%"
+      height="auto"
+      id="video"
+      autoplay
+      style="visibility: hidden;"
+    >
+  </video>
+  </body>
+
+  <script>
+    navigator.getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia ||
+      navigator.msGetUserMedia;
+
+    var video;
+    var webcamStream;
+    var mediaSource = new MediaSource();
+    let rate = 1, axie = {x: 0, y: 0},  canvas, ctx;
+    function startWebcam() {
+      if (navigator.getUserMedia) {
+        // let constraints = {
+        //   video: {
+        //     facingMode: "environment",
+        //     aspectRatio: 10
+        //   }
+        // };
+        let constraints = {video: true, audio: false};
+        navigator.getUserMedia(constraints,
+          function (localMediaStream) {
+            video = document.querySelector("video");
+            try {
+              video.srcObject = localMediaStream;
+              webcamStream = localMediaStream;
+            } catch (error) {
+              video.src = URL.createObjectURL(localMediaStream);
+              webcamStream = localMediaStream;
+            }
+          },
+
+          function (err) {
+            alert("The following error occured: " + err);
+          }
+        );
+      } else {
+        alert("getUserMedia not supported");
+      }
+    }
+
+    function stopWebcam() {
+      webcamStream.stop();
+    }
+
+    function init() {
+      canvas = document.getElementById("canvas");
+      video = document.getElementById("video");
+      ctx = canvas.getContext("2d");
+
+      let s = window.localStorage["webcam-rate"];
+      if(!isNaN(s)) {
+        rate = parseFloat(s);
+        document.getElementById("slider").value = (rate - 1) * 100;
+        adjust();
+      }
+
+      startWebcam();
+
+      setInterval(() => {
+        snapshot();
+      }, 300);
+      window.onresize = () => {
+        return (() => {
+          resize();
+        })();
+      };
+      resize();
+    }
+
+    function resize() {
+      canvas.width = video.getBoundingClientRect().width;
+      canvas.height = video.getBoundingClientRect().height + 23;
+    }
+
+    function snapshot() {
+      let height = canvas.height * rate, width = canvas.width * rate;
+      ctx.drawImage(video, axie.x, axie.y, width, height);
+
+      let j = 10;
+      let x = width / j;
+      for (let i = 0; i < j; i++) {
+        ctx.beginPath();
+
+        ctx.moveTo(x * (i + 1), 0);
+        ctx.lineTo(x * (i + 1), height);
+        ctx.stroke();
+      }
+
+      let y = height / j;
+      for (let i = 0; i < j; i++) {
+        ctx.beginPath();
+        
+        ctx.moveTo(0, y * (i + 1));
+        ctx.lineTo(width, y * (i + 1));
+        ctx.stroke();
+      }
+    }
+
+    var slider = document.getElementById("slider");
+    slider.oninput = function(params) {
+      rate = 1 + (this.value * 0.01);
+      window.localStorage["webcam-rate"] = rate;
+      console.log(this.value + "; " + rate)
+      adjust();
+      // output.innerHTML = this.value;
+    }
+
+    function adjust() {
+      let height = canvas.height * rate, width = canvas.width * rate;
+      axie.x = ((width - canvas.width) / 2) * -1;
+      axie.y = ((height - canvas.height) / 2) * -1;
+    }
+  </script>
+</html>
