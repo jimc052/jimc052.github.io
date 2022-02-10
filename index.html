@@ -1,19 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>VOA</title>
+	<title>github-jimc052</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<style>
+		body {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+		button {
+			min-width: 80px;
+			height: 40px;
+			/* font-size: 20px; */
+			background-color: #4CAF50; /* Green */
+			border: none;
+			color: white;
+			/* padding: 15px 32px; */
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+		}
+		button + button {
+			margin-left: 5px;
+		}
 	</style>
 </head>
 <body>
-  <div id="app" style="overflow: hidden;">
-  </div>
+  <button data='VOA'>VOA</button>
+	<button data='gym'>健身</button>
+	<button data='MyTube'>MyTube</button>
 </body>
 <script>
 	window.onload = async function(){
-
+		let arr = document.querySelectorAll("button");
+		arr.forEach(item=> {
+			item.addEventListener("click", (e)=> {
+				let data = e.target.getAttribute("data")
+				location.href = `./${data}/index.html`
+			})			
+		})
 	}
 </script>
 </html>
