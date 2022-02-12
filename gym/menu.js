@@ -43,6 +43,10 @@ Vue.component('gym-menu', {
           {title: "上臂屈曲", start: 95, end: 103},
         ]
       }, {
+        title: "彈力帶划船", id: "h9iN9flDpI0", 
+        children: [
+        ]        
+      }, {
         title: "腹肌10分鐘運動-May", id: "4pOjPjN7AqI", 
         children: [
           {title: "抬腿", start: 17.8, end: 47},
@@ -116,11 +120,44 @@ Vue.component('gym-menu', {
           {title: "登山者", start:  500.5, end: 552.5},
           {title: "左右膝碰肘", start:  553, end: 605.5},
         ]
+      }, {
+        title: "*** 木板锻炼挑战", id: "e13yvYaOyqg",
+        children: [
+        ]
+      }, {
+        title: "腹部锻炼撕裂斜肌", id: "3kgqeZj5fIE", 
+        children: [
+        ]
+      }, {
+        title: "腹肌锻炼程序", id: "Kd4Yjkr5qMM", 
+        children: [
+        ]
+      }, {
+        title: "在家中最好的热身运动", id: "-aK12bO4evs", 
+        children: [
+        ]
+      }, {
+        title: "下腹肌最佳练习", id: "3b-701_2sds", 
+        children: [
+        ]
+      }, {
+        title: "腿部练习", id: "e6C0Ia5Cazo", 
+        children: [
+        ]
+      }, {
+        title: "热身", id: "Wi0wLCg4jho", 
+        children: [
+        ]
       }]
 		}; // 
 	},
 	created(){
-    /* 
+    /*    
+      }, {
+        title: "", id: "", 
+        children: [
+        ]
+
       }, {
         title: "", id: "", 
         children: [
