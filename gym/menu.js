@@ -41,11 +41,7 @@ Vue.component('gym-menu', {
           {title: "站姿划船", start: 55, end: 74},
           {title: "臥姿划船", start: 75, end: 94},
           {title: "上臂屈曲", start: 95, end: 103},
-        ]
-      }, {
-        title: "彈力帶划船", id: "h9iN9flDpI0", 
-        children: [
-        ]        
+        ]       
       }, {
         title: "腹肌10分鐘運動-May", id: "4pOjPjN7AqI", 
         children: [
@@ -121,12 +117,33 @@ Vue.component('gym-menu', {
           {title: "左右膝碰肘", start:  553, end: 605.5},
         ]
       }, {
-        title: "*** 木板锻炼挑战", id: "e13yvYaOyqg",
+        title: "*** 平板锻炼挑战", id: "e13yvYaOyqg",
         children: [
+          {title: "登山板", start: 6, end: 49},
+          {title: "平板支撐側平舉", start: 68, end: 110},
+          {title: "平板到腳趾輕拍", start: 127, end: 172},
+          {title: "前平板支撐(手腳提升)", start: 187, end: 230},
+          {title: "平板杰克", start: 247, end: 291},
+          {title: "動態平板支撐", start: 307, end: 351},
+          {title: "扭轉平板", start: 367, end: 412},
+          {title: "前平板支撐", start: 427, end: 483},
         ]
       }, {
         title: "腹部锻炼撕裂斜肌", id: "3kgqeZj5fIE", 
         children: [
+          {title: "躺膝扭動", start: 1, end: 39},
+          {title: "扭轉卷腹", start: 57, end: 95},
+          {title: "腳跟碰觸", start: 107, end: 146},
+          {title: "俄羅斯轉", start: 161, end: 200},
+          {title: "抬腿-左", start: 212, end: 250},
+          {title: "抬腿-右", start: 255, end: 291},
+          {title: "俯臥撐", start: 305, end: 342},
+          {title: "平板膝蓋扭轉", start: 359.5, end: 399},
+          {title: "斜向緊縮(右)", start: 410, end: 449},
+          {title: "斜向緊縮(左)", start: 453, end: 492},
+          {title: "扭臀", start: 503, end: 542},
+          {title: "斜高膝", start: 558, end: 597},
+          {title: "雨刷", start: 609, end: 648},
         ]
       }, {
         title: "腹肌锻炼程序", id: "Kd4Yjkr5qMM", 
@@ -148,6 +165,11 @@ Vue.component('gym-menu', {
         title: "热身", id: "Wi0wLCg4jho", 
         children: [
         ]
+      }, {
+          title: "腹肌", id: "gGqQX9HqHEk", 
+          children: [
+          ]
+  
       }]
 		}; // 
 	},

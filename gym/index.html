@@ -86,13 +86,13 @@
 				</div>
 				<div id="player"></div>
 			</div>
-			<gym-player ref="player" @on-click="onClick"  />
+			<gym-player ref="player" @on-click="onClickPlay"  />
 		</div>
 	</div>
 </body>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-	var vm = null, player, index, videoId;
+	var vm = null, player, index, videoId, id1, id2;
 	window.onload = async function(){
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		Vue.prototype.$isDebug = function() {
@@ -128,6 +128,9 @@
       		el.style.visibility = "visible";
 				},
         async onSelect(item){
+					clearInterval(id1);
+					clearInterval(id2);
+
 					this.title = item.title;
 					this.$refs["player"].play(item);
 
@@ -162,24 +165,42 @@
 						});						
 					}, 300);
         },
-				onClick(item) {
-					console.log(item)
-					player.loadVideoById({
-						videoId: videoId,
-						startSeconds: item.start,
-						endSeconds: item.end 
-					})
+				onClickPlay(item) {
+					clearInterval(id1);
+					clearInterval(id2);
+
+					player.seekTo(item.start);
+					id1 = setInterval(() => {
+						// console.log("state: " + player.getPlayerState())
+						if(player.getPlayerState() != 1) {
+							player.playVideo();
+						} else if(player.getPlayerState() == 1) {
+							clearInterval(id1)
+							stop()
+						}
+					}, 300);
+
+					function stop() {
+						id2 = setInterval(() => {
+							if(player.getCurrentTime() < item.start || player.getCurrentTime() > item.end) {
+								player.pauseVideo();
+							// } else if(player.getPlayerState() == 2) {
+								clearInterval(id2);
+							}
+						}, 300);						
+					}
 				}
 			}
 		})
 	}
 
 	function onYouTubeIframeAPIReady() {
-		console.log("onYouTubeIframeAPIReady................")
+		// console.log("onYouTubeIframeAPIReady................")
 	}
 	function onPlayerStateChange(e) {
 		// console.log("onPlayerStateChange: " + e.data + " ..................")
 		/*
+		https://developers.google.com/youtube/iframe_api_reference#playVideo
 		-1：unstarted 未啟動，初次載入
 		0：ended 結束
 		1：playing 播放中
