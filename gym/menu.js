@@ -12,16 +12,18 @@ Vue.component('gym-menu', {
         style="cursor: pointer; margin-left: 10px;"></Icon>
         
       </div>
-      <i-menu theme="light" :width="width" ref="menu" @on-select="onSelect" style="flex: 1" 
+      <i-menu theme="light" :width="width" ref="menu" @on-select="onSelect" 
+        style="flex: 1; overflow-y: auto; overflow-x: hidden; " 
         :active-name="active">
         <menu-group title="">
-          <menu-item v-for="(item, index) in menu" :name="index + ''" :key="index">
+          <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
               {{item.title}}
           </menu-item>
         </menu-group>
       </i-menu>
-      <div style="" id="version">
-        2021-05-28 08:30
+      <div style="display: flex; flex-direction: row; align-items: center;" id="version">
+        <div  style="flex: 1;">2022-02-15 08:30</div>
+        <i-button v-if="$isDebug()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
   `,
@@ -117,6 +119,20 @@ Vue.component('gym-menu', {
           {title: "左右膝碰肘", start:  553, end: 605.5},
         ]
       }, {
+        title: "腹肌锻炼", id: "IrA9dvgRKR0", 
+        children: [
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+        ]
+      }, {
         title: "*** 平板锻炼挑战", id: "e13yvYaOyqg",
         children: [
           {title: "登山板", start: 6, end: 49},
@@ -146,30 +162,72 @@ Vue.component('gym-menu', {
           {title: "雨刷", start: 609, end: 648},
         ]
       }, {
-        title: "腹肌锻炼程序", id: "Kd4Yjkr5qMM", 
+        title: "在家中最好的热身运动 =====", id: "-aK12bO4evs", 
         children: [
-        ]
-      }, {
-        title: "在家中最好的热身运动", id: "-aK12bO4evs", 
-        children: [
+          {title: "拍打", start: 1, end: 29},
+          {title: "手臂圈", start: 30, end: 59},
+          {title: "中間側平舉", start: 61, end: 89},
+          {title: "站立側彎", start: 91, end: 119},
+          {title: "側抬腿", start: 121, end: 149},
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
         ]
       }, {
         title: "下腹肌最佳练习", id: "3b-701_2sds", 
         children: [
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
         ]
       }, {
         title: "腿部练习", id: "e6C0Ia5Cazo", 
         children: [
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
         ]
       }, {
         title: "热身", id: "Wi0wLCg4jho", 
         children: [
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
+          // {title: "", start: , end: },
         ]
       }, {
           title: "腹肌", id: "gGqQX9HqHEk", 
           children: [
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
+            // {title: "", start: , end: },
           ]
-  
       }]
 		}; // 
 	},
@@ -188,7 +246,7 @@ Vue.component('gym-menu', {
     */
 	},
 	mounted () {
-    let m = window.localStorage["youtube-menu"];
+    let m = window.localStorage["gym-menu"];
     if(typeof m == "string" || typeof x == "number") {
       this.active = m;
       for(let i = 0; i < this.menu.length; i++ ) {
@@ -204,6 +262,7 @@ Vue.component('gym-menu', {
         this.$refs.menu.updateOpened();
         this.$refs.menu.updateActiveName();
       });
+      document.getElementById("menu" + this.active).scrollIntoView({block: "center"});
     }, 600);
     this.onSelect(this.active);
     this.broadcast.$on('onResize', this.onResize);
@@ -215,7 +274,7 @@ Vue.component('gym-menu', {
     async onSelect(index){
       if(index < this.menu.length) {
         this.$emit('on-select', this.menu[index]);
-        window.localStorage["youtube-menu"] = this.menu[index].id;
+        window.localStorage["gym-menu"] = this.menu[index].id;
         if(this.smallScreen == true) {
           this.onClickIcon();
         }
@@ -238,6 +297,9 @@ Vue.component('gym-menu', {
         this.width = "240";
         el.style.visibility = "visible";
       }
+    }, 
+    onClickAdd(){
+      this.$emit('on-click');
     }
 	},
 	computed: {

@@ -1,13 +1,18 @@
 Vue.component('gym-player', { 
 	template:  `
-    <div style="padding: 0px 2px 15px 2px;" id="btnPlays">
-      <i-button v-for="(item, index) in rows" :key="index"
-				:type="active == index || prev == index ? 'warning' : 'default'"
-				:ghost="prev == index"
-        @click.native="onClick(index)">
-        {{item.title}}
-      </i-button>
-    </div>
+		<div style="display: flex; flex-direction: row; align-items: center;">
+			<div style="padding: 0px 2px 15px 2px; flex: 1;" id="btnPlays">
+				<i-button v-for="(item, index) in rows" :key="index"
+					:type="active == index || prev == index ? 'warning' : 'default'"
+					:ghost="prev == index"
+					@click.native="onClick(index)">
+					{{item.title}}
+				</i-button>
+			</div>
+			<i-button type="success" v-if="$isDebug()" @click.native="onClickEdit()" 
+				icon="md-create"  shape="circle"
+				style="margin: 0px 5px; "></i-button>
+		</div>
   `,
 	props: {
 		// title: String
@@ -38,7 +43,7 @@ Vue.component('gym-player', {
 			this.active = -1;
       this.rows = Array.isArray(item.children) ? item.children : [];
 			this.videoId = item.id;
-			let m = window.localStorage["youtube-" + this.videoId];
+			let m = window.localStorage["gym-" + this.videoId];
 			if(typeof m == "string") {
 				let x = this.rows.findIndex((item)=>{
 					return item.title == m;
@@ -63,7 +68,7 @@ Vue.component('gym-player', {
       this.$emit('on-click', this.rows[index]);
 			this.active = index;
 			this.prev = -1;
-			window.localStorage["youtube-" + this.videoId] = this.rows[index].title;
+			window.localStorage["gym-" + this.videoId] = this.rows[index].title;
     },
 		onKeydown(event){
 			// let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
@@ -85,6 +90,9 @@ Vue.component('gym-player', {
 					this.onClick(this.active + 1)
 				}
 			}
+		},
+		onClickEdit(){
+
 		}
 	},
 	computed: {

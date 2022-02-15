@@ -16,6 +16,7 @@
 	<script src="https://unpkg.com/lodash@4.16.0"></script>
 	<script src="./menu.js"></script>
 	<script src="./player.js"></script>
+	<script src="./list.js"></script>
 	
 	<style>
 		* {
@@ -68,11 +69,23 @@
 			z-index: 1000;
 		}
 
+		#list .ivu-modal-header, #list .ivu-modal-body {
+				margin: 0px;
+				padding: 0px;
+		}
+
+		.list + .list {
+			border-top: 1px solid #c5c5c5;
+		}
+		#list > .list:last-child {
+			border-bottom: 1px solid #c5c5c5;
+		}
+
 	</style>
 </head>
 <body style="overflow: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div><gym-menu @on-select="onSelect"  /></div>
+		<div><gym-menu @on-select="onSelect" @on-click="onClickAdd" /></div>
 		<div style="flex: 1;">
 			<div id="playerParent">
 				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
@@ -88,6 +101,8 @@
 			</div>
 			<gym-player ref="player" @on-click="onClickPlay"  />
 		</div>
+		<dlg-list :visible="typeof editData == 'object' " :editData="editData" 
+			@close="editData = undefined" @update="updateEditData"/>
 	</div>
 </body>
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -105,7 +120,8 @@
 				return {
 					index: -1,
 					smallScreen: false, 
-					title: ""
+					title: "",
+					editData: undefined
 				};
 			},
 			created() {
@@ -121,11 +137,24 @@
 				}
 				resize();
 				console.log("debug: " + this.$isDebug())
+				
+				
 			},
 			methods: {
+				updateEditData(){
+
+				},
 				onClickIcon(){
 					let el = document.getElementById("frameMenu");
       		el.style.visibility = "visible";
+				},
+				onClickAdd(){
+					this.editData = {
+						title: "", 
+						id: "",
+						data: [
+						]
+					}
 				},
         async onSelect(item){
 					clearInterval(id1);

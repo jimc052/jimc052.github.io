@@ -7426,7 +7426,7 @@ Vue.component('my-menu', {
           ul.style.overflowX = "hidden";
           ul.style.overflowY = "auto";
           setTimeout(()=>{
-          document.getElementById(slef.active).scrollIntoView({block: "center",});
+            document.getElementById(slef.active).scrollIntoView({block: "center",});
           }, 1000); 
         }, 300)
       }
