@@ -31,8 +31,8 @@
 			margin: 0px;
 			background-color: #ebecf0;
 			padding: 0px 0px;
-			/* visibility: hidden; */
 			color: rgb(0, 0, 0);
+			overflow: hidden;
 		}
 		html, body, #app {
 			min-height: 100% !important;
@@ -192,7 +192,7 @@
 								'onStateChange': onPlayerStateChange
 							}
 						});						
-					}, 300);
+					}, 100);
         },
 				onClickPlay(item) {
 					clearInterval(id1);

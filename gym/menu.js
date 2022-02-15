@@ -17,7 +17,7 @@ Vue.component('gym-menu', {
         :active-name="active">
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
-              {{item.title}}
+              {{item.title + (item.children.length == 0 ? ' ??????' : '')}}
           </menu-item>
         </menu-group>
       </i-menu>
@@ -162,15 +162,19 @@ Vue.component('gym-menu', {
           {title: "雨刷", start: 609, end: 648},
         ]
       }, {
-        title: "在家中最好的热身运动 =====", id: "-aK12bO4evs", 
+        title: "在家中最好的热身运动", id: "-aK12bO4evs", 
         children: [
           {title: "拍打", start: 1, end: 29},
           {title: "手臂圈", start: 30, end: 59},
           {title: "中間側平舉", start: 61, end: 89},
           {title: "站立側彎", start: 91, end: 119},
           {title: "側抬腿", start: 121, end: 149},
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
+          {title: "弓步", start: 151, end: 179},
+          {title: "星際衝刺", start: 181, end: 210},
+          {title: "螃蟹轉", start: 211, end: 240},
+          {title: "平板支撐", start: 241, end: 270},
+          {title: "平躺天使", start: 271, end: 300},
+          {title: "跳躍杰克", start: 302, end: 330.5},
         ]
       }, {
         title: "下腹肌最佳练习", id: "3b-701_2sds", 

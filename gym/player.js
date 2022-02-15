@@ -1,7 +1,7 @@
 Vue.component('gym-player', { 
 	template:  `
-		<div style="display: flex; flex-direction: row; align-items: center;">
-			<div style="padding: 0px 2px 15px 2px; flex: 1;" id="btnPlays">
+		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+			<div style="padding: 0px 2px 15px 2px; flex: 1; " id="btnPlays">
 				<i-button v-for="(item, index) in rows" :key="index"
 					:type="active == index || prev == index ? 'warning' : 'default'"
 					:ghost="prev == index"
@@ -9,9 +9,9 @@ Vue.component('gym-player', {
 					{{item.title}}
 				</i-button>
 			</div>
-			<i-button type="success" v-if="$isDebug()" @click.native="onClickEdit()" 
-				icon="md-create"  shape="circle"
-				style="margin: 0px 5px; "></i-button>
+			<i-button type="success" v-if="$isDebug() && rows.length > 0" 
+				@click.native="onClickEdit()"  icon="md-create" shape="circle"
+				style="margin: 0px 5px; 20px 5px" />
 		</div>
   `,
 	props: {
@@ -62,7 +62,7 @@ Vue.component('gym-player', {
 			setTimeout(() => {
 				let el = document.getElementById("btnPlays");
 				el.style.visibility = "visible";				
-			}, 1000);
+			}, 300);
 		},
     onClick(index) {
       this.$emit('on-click', this.rows[index]);
