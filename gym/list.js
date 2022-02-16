@@ -5,7 +5,7 @@ Vue.component('dlg-list', {
 		>
 		<div slot="header" 
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
-			<div style="flex: 1; color: white;">清單</div>
+			<div style="flex: 1; color: white; font-size: 20px;">{{"清單：" + (typeof editdata.id == "string" && editdata.id.length > 0 ? editdata.id : "" )}}</div>
 			<Icon type="md-add" size="22" @click.native="add" 
 				v-if="title.length > 0 && id.length > 0"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
@@ -17,7 +17,7 @@ Vue.component('dlg-list', {
 					<i-input element-id="editTitle" v-model="title" style="flex: 1;" placeholder="title" />
 				</div>
 				<div style="flex: 1; padding: 0px 5px 5px 5px;">
-					<i-input element-id="editID" v-model="id" style="flex: 1; "  placeholder="id"/>
+					<i-input v-if="typeof editdata.id == 'string' &&  editdata.id.length == 0" element-id="editID" v-model="id" style="flex: 1; "  placeholder="id"/>
 				</div>
 
 				<div v-for="(item, index) in rows" :key="index" 
@@ -64,6 +64,18 @@ Vue.component('dlg-list', {
 		} ,
 		editdata: {
 			type: Object,
+			default() {
+				return {
+					id: "",
+					title: "",
+					children: []
+				}
+			}
+			// default: {
+			// 	id: "",
+			// 	title: "",
+			// 	children: []
+			// }
 		} ,
 	},
 	data() {
@@ -83,8 +95,8 @@ Vue.component('dlg-list', {
 	},
 	async mounted () {
 		// console.log(this.editdata)
-		this.width =  350;
-		this.height = 380;
+		this.width =  450;
+		this.height = 450;
 		let el = document.querySelector("#list .ivu-modal");
 		el.style.margin = "0px";
 		setTimeout(()=>{
@@ -123,10 +135,10 @@ Vue.component('dlg-list', {
 		add(){
 			this.rows.push("")
 			this.cursor = this.rows.length - 1;
-			this.name = "";
+			this.name = ""; this.start = ""; this.end = "";
 		},
 		close(){
-			this.cursor = -1; this.name = "";
+			this.cursor = -1; this.name = ""; this.start = ""; this.end = "";
 			this.$emit("close");
 		},
 		del(index){
@@ -136,7 +148,7 @@ Vue.component('dlg-list', {
 				this.$emit("update", this.rows, "del", s)
 			}
 			this.cursor = -1;
-			this.name = "";
+			this.name = ""; this.start = ""; this.end = "";
 		},
 		play(index){
 			// if(this.rows[this.cursor] != this.name) {
@@ -146,7 +158,7 @@ Vue.component('dlg-list', {
 			// 		this.$emit("update", this.rows, s, this.name);
 			// 	}, 200);
 			// }
-			this.cursor = -1; this.name = "";
+			// this.cursor = -1; this.name = "";
 		},
 		onResize(){
 			clearTimeout(this.resizeId);
@@ -163,12 +175,12 @@ Vue.component('dlg-list', {
 			}, 300);
 		},
 		onFocus(){
-			if(this.cursor >= 0) {
-				setTimeout(() => {
-					this.cursor = -1; 
-					this.name = "";
-				}, 600);
-			}
+			// if(this.cursor >= 0) {
+			// 	setTimeout(() => {
+			// 		this.cursor = -1; 
+			// 		this.name = "";
+			// 	}, 600);
+			// }
 		}
 	},
 	computed: {	
