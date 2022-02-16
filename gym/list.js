@@ -37,8 +37,6 @@ Vue.component('dlg-list', {
 							<i-input  size="large" element-id="editEnd" v-model="end" style="flex: 1; style='height: 100%;' " />
 						</div>
 					</div>
-
-					
 					<div v-else style="" @click="play(index)" class="rows">
 						<div>{{item.title}}</div>
 						<div>{{item.start}}</div>
@@ -71,11 +69,6 @@ Vue.component('dlg-list', {
 					children: []
 				}
 			}
-			// default: {
-			// 	id: "",
-			// 	title: "",
-			// 	children: []
-			// }
 		} ,
 	},
 	data() {
@@ -89,6 +82,7 @@ Vue.component('dlg-list', {
 			end: "",
 			width: 0,
 			height: 0,
+			dirty: false
 		};
 	},
 	created(){
@@ -112,6 +106,22 @@ Vue.component('dlg-list', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		isNumber(s) {
+			if(("" + s).length == 0) return false;
+			let exp = /[0-9]/;
+			let arr = ("" + s).split(".");
+			for(let x = 0; x < arr.length; x++) {
+				let str = arr[x];
+				for(let i = 0; i < str.length; i++) {
+					let chr = str.substr(i, 1);
+					let b = exp.test(chr);
+					if(b == false) {
+						return false;
+					}
+				}
+			}
+			return true;
+		},
 		onKeydown(event) {
 			// let self = this;
 			// let o = document.activeElement;
@@ -133,7 +143,7 @@ Vue.component('dlg-list', {
 			// }
 		},
 		add(){
-			this.rows.push("")
+			this.rows.push({})
 			this.cursor = this.rows.length - 1;
 			this.name = ""; this.start = ""; this.end = "";
 		},
@@ -143,22 +153,40 @@ Vue.component('dlg-list', {
 		},
 		del(index){
 			if(this.cursor == -1) {
-				let s = this.rows[index]
 				this.rows.splice(index, 1);
-				this.$emit("update", this.rows, "del", s)
+				this.dirty = true;
+				this.cursor = -1;
+				this.name = ""; this.start = ""; this.end = "";
+			} else {
+				let name = this.name, start = this.start, end = this.end;
+				let cursor = this.cursor;
+				this.name = ""; this.start = ""; this.end = "";
+				this.cursor = -1;
+
+				if(name.trim().length > 0 && this.isNumber(start) && this.isNumber(end)) {
+					if(this.rows[cursor].title == name 
+						&& this.rows[cursor].start == start
+						&& this.rows[cursor].end == end) return;
+					if(parseFloat(start) >= parseFloat(end)) return;
+
+					this.rows[cursor].title = name; 
+					this.rows[cursor].start = start; 
+					this.rows[cursor].end = end;
+					this.dirty = true;
+				}
 			}
-			this.cursor = -1;
-			this.name = ""; this.start = ""; this.end = "";
 		},
 		play(index){
-			// if(this.rows[this.cursor] != this.name) {
-			// 	let s = this.rows[this.cursor];
-			// 	this.rows[this.cursor] = this.name;
-			// 	setTimeout(() => {
-			// 		this.$emit("update", this.rows, s, this.name);
-			// 	}, 200);
-			// }
-			// this.cursor = -1; this.name = "";
+			let start = 0, end = 0;
+			if(this.cursor == index) {
+				start = document.getElementById("editStart").value;
+				end = document.getElementById("editEnd").value;
+			} else {
+				start = this.rows[index].start;
+				end = this.rows[index].end;
+			}
+			console.log({end, start})
+			this.$emit('on-click-play', {end, start});
 		},
 		onResize(){
 			clearTimeout(this.resizeId);
@@ -187,13 +215,13 @@ Vue.component('dlg-list', {
 	},
 	watch: {
 		editdata(value) {
-			console.log(value)
 			this.title = value.title;
 			this.id = value.id;
 			this.rows = [];
 			value.children.forEach(el => {
 				this.rows.push(Object.assign(el))
 			});
+			this.dirty = false;
 		},
 		data(value) {
 			// let arr = typeof value == "string" ? value.split("\n") : []

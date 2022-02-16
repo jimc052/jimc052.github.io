@@ -133,6 +133,7 @@
 		</div>
 		<dlg-list :visible="typeof editData == 'object' " :editdata="editData" 
 			@close="editData = undefined" @update="onUpdateEditData"
+			@on-click-play="onClickPlay"
 		/>
 	</div>
 </body>

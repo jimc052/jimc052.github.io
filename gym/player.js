@@ -9,7 +9,7 @@ Vue.component('gym-player', {
 					{{item.title}}
 				</i-button>
 			</div>
-			<i-button type="success" v-if="$isDebug() && rows.length > 0" 
+			<i-button type="success" v-if="$isDebug()" 
 				@click.native="onClickEdit()"  icon="md-create" shape="circle"
 				style="margin: 0px 5px; 20px 5px" />
 		</div>
