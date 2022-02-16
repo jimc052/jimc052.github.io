@@ -303,7 +303,7 @@ Vue.component('gym-menu', {
       }
     }, 
     onClickAdd(){
-      this.$emit('on-click');
+      this.$emit('on-click-add');
     }
 	},
 	computed: {

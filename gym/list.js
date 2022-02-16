@@ -6,29 +6,49 @@ Vue.component('dlg-list', {
 		<div slot="header" 
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white;">清單</div>
-			<Icon type="md-add" size="22" @click.native="add" style="cursor: pointer; color: white; margin-right: 10px;" />
+			<Icon type="md-add" size="22" @click.native="add" 
+				v-if="title.length > 0 && id.length > 0"
+				style="cursor: pointer; color: white; margin-right: 10px;" />
 			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
 		</div>
 		<div :style="{height: height + 'px', overflow: 'hidden'}">
 			<div style="height: 100%; overflow-y: auto; " id="listFrame">
+				<div style="flex: 1; padding: 5px;">
+					<i-input element-id="editTitle" v-model="title" style="flex: 1;" placeholder="title" />
+				</div>
+				<div style="flex: 1; padding: 0px 5px 5px 5px;">
+					<i-input element-id="editID" v-model="id" style="flex: 1; "  placeholder="id"/>
+				</div>
+
 				<div v-for="(item, index) in rows" :key="index" 
 					style="display: flex; flex-direction: row; justify-content: center; align-items: center;
 						padding: 5px 5px; min-height: 44px;	
 					"
 					class="list"
 				>
-					<i-input v-if="cursor == index" size="large" element-id="editList"
-						v-model="model" style="flex: 1; style='height: 100%;' " />
-					<div v-else style="cursor: pointer; flex: 1; font-size: 18px;"
-						@click="$yahoo(item)"
-					>
-						{{item}}
+					<div v-if="cursor == index" style="" @click="play(index)" class="rows">
+						<div>
+							<i-input  size="large" element-id="editName" v-model="name" style="flex: 1; style='height: 100%;' " />
+						</div>
+						<div>
+							<i-input  size="large" element-id="editStart" v-model="start" style="flex: 1; style='height: 100%;' " />
+						</div>
+						<div>
+							<i-input  size="large" element-id="editEnd" v-model="end" style="flex: 1; style='height: 100%;' " />
+						</div>
 					</div>
-					<Icon v-if="cursor == index" type="md-cloud-upload" size="18" 
-						@click.native="upload();" 
+
+					
+					<div v-else style="" @click="play(index)" class="rows">
+						<div>{{item.title}}</div>
+						<div>{{item.start}}</div>
+						<div>{{item.end}}</div>
+					</div>
+					<Icon v-if="cursor == index" type="md-headset" size="18" 
+						@click.native="play(index);" 
 						style="cursor: pointer; margin-left: 6px;" />
 					<Icon v-else type="md-create" size="18" 
-						@click.native="cursor = index; model = item;" 
+						@click.native="cursor = index; name = item.title; start = item.start; end = item.end" 
 						style="cursor: pointer; margin-left: 6px;" />
 					<Icon :type="cursor == index ? 'md-close' : 'md-trash'" size="18"
 						@click.native="del(index)" 
@@ -42,24 +62,29 @@ Vue.component('dlg-list', {
 			type: Boolean,
 			default: false
 		} ,
-		editData: Object
+		editdata: {
+			type: Object,
+		} ,
 	},
 	data() {
 		return {
+      title: "", 
+      id: "",
 			rows: [],
 			cursor: -1,
-			model: "",
-			width: 280,
-			height: 350,
-      title: "", 
-      id: ""
+			name: "",
+			start: "",
+			end: "",
+			width: 0,
+			height: 0,
 		};
 	},
 	created(){
 	},
 	async mounted () {
-		this.width =  320;
-		this.height = 350;
+		// console.log(this.editdata)
+		this.width =  350;
+		this.height = 380;
 		let el = document.querySelector("#list .ivu-modal");
 		el.style.margin = "0px";
 		setTimeout(()=>{
@@ -82,11 +107,11 @@ Vue.component('dlg-list', {
 			// // let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			// let sk = event.shiftKey, code = event.keyCode;
 			// // console.log("key: " + code + "/" + pk)
-			// if(o.tagName == "INPUT" && event.target.id == "editList" && this.visible == true){
+			// if(o.tagName == "INPUT" && event.target.id == "editName" && this.visible == true){
 			// 	if(code == 13) {
-			// 		this.upload();
+			// 		this.play();
 			// 	} else if(code == 27) {
-			// 		this.cursor = -1; this.model = "";
+			// 		this.cursor = -1; this.name = "";
 			// 	} else {
 			// 		return;
 			// 	}
@@ -98,10 +123,10 @@ Vue.component('dlg-list', {
 		add(){
 			this.rows.push("")
 			this.cursor = this.rows.length - 1;
-			this.model = "";
+			this.name = "";
 		},
 		close(){
-			this.cursor = -1; this.model = "";
+			this.cursor = -1; this.name = "";
 			this.$emit("close");
 		},
 		del(index){
@@ -111,17 +136,17 @@ Vue.component('dlg-list', {
 				this.$emit("update", this.rows, "del", s)
 			}
 			this.cursor = -1;
-			this.model = "";
+			this.name = "";
 		},
-		upload(){
-			// if(this.rows[this.cursor] != this.model) {
+		play(index){
+			// if(this.rows[this.cursor] != this.name) {
 			// 	let s = this.rows[this.cursor];
-			// 	this.rows[this.cursor] = this.model;
+			// 	this.rows[this.cursor] = this.name;
 			// 	setTimeout(() => {
-			// 		this.$emit("update", this.rows, s, this.model);
+			// 		this.$emit("update", this.rows, s, this.name);
 			// 	}, 200);
 			// }
-			this.cursor = -1; this.model = "";
+			this.cursor = -1; this.name = "";
 		},
 		onResize(){
 			clearTimeout(this.resizeId);
@@ -141,7 +166,7 @@ Vue.component('dlg-list', {
 			if(this.cursor >= 0) {
 				setTimeout(() => {
 					this.cursor = -1; 
-					this.model = "";
+					this.name = "";
 				}, 600);
 			}
 		}
@@ -149,6 +174,15 @@ Vue.component('dlg-list', {
 	computed: {	
 	},
 	watch: {
+		editdata(value) {
+			console.log(value)
+			this.title = value.title;
+			this.id = value.id;
+			this.rows = [];
+			value.children.forEach(el => {
+				this.rows.push(Object.assign(el))
+			});
+		},
 		data(value) {
 			// let arr = typeof value == "string" ? value.split("\n") : []
 			// arr.sort((a, b) => {
@@ -166,13 +200,13 @@ Vue.component('dlg-list', {
 		cursor(value) {
 			if(value > -1) {
 				setTimeout(() => {
-					let el = document.getElementById("editList");
+					let el = document.getElementById("editName");
 					el.focus();
 					el.addEventListener('keydown', this.onKeydown, false);
 					el.addEventListener('blur', this.onFocus, false);
 				}, 300);
 			} else {
-				let el = document.getElementById("editList");
+				let el = document.getElementById("editName");
 				el.removeEventListener('keydown', this.onKeydown, false);
 				el.removeEventListener('keydown', this.onFocus, false);
 			}

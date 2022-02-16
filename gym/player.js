@@ -5,7 +5,7 @@ Vue.component('gym-player', {
 				<i-button v-for="(item, index) in rows" :key="index"
 					:type="active == index || prev == index ? 'warning' : 'default'"
 					:ghost="prev == index"
-					@click.native="onClick(index)">
+					@click.native="onClickPlay(index)">
 					{{item.title}}
 				</i-button>
 			</div>
@@ -26,6 +26,7 @@ Vue.component('gym-player', {
 		};
 	},
 	created(){
+
 	},
 	mounted () {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
@@ -40,6 +41,7 @@ Vue.component('gym-player', {
   },
 	methods: {
     async play(item){
+			// console.log(JSON.stringify(item))
 			this.active = -1;
       this.rows = Array.isArray(item.children) ? item.children : [];
 			this.videoId = item.id;
@@ -64,8 +66,8 @@ Vue.component('gym-player', {
 				el.style.visibility = "visible";				
 			}, 300);
 		},
-    onClick(index) {
-      this.$emit('on-click', this.rows[index]);
+    onClickPlay(index) {
+      this.$emit('on-click-play', this.rows[index]);
 			this.active = index;
 			this.prev = -1;
 			window.localStorage["gym-" + this.videoId] = this.rows[index].title;
@@ -92,7 +94,7 @@ Vue.component('gym-player', {
 			}
 		},
 		onClickEdit(){
-
+			this.$emit('on-click-edit');
 		}
 	},
 	computed: {
