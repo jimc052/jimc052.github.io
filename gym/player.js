@@ -58,6 +58,7 @@ Vue.component('gym-player', {
 				this.prev = 0;
 			}
 			let el = document.getElementById("btnPlays");
+			// el.innerHTML = "";
 			el.style.visibility = "hidden";
     },
 		onPlayerReady(){

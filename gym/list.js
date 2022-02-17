@@ -6,7 +6,7 @@ Vue.component('dlg-list', {
 		<div slot="header" 
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white; font-size: 20px;">{{"清單：" + (typeof editdata.id == "string" && editdata.id.length > 0 ? editdata.id : "" )}}</div>
-			<Icon type="md-add" size="22" @click.native="add" 
+			<Icon type="md-add" size="22" @click.native="addRow" 
 				v-if="title.length > 0 && id.length > 0"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
 			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
@@ -26,7 +26,7 @@ Vue.component('dlg-list', {
 					"
 					class="list"
 				>
-					<div v-if="cursor == index" style="" @click="play(index)" class="rows">
+					<div v-if="cursor == index" style="" class="rows">
 						<div>
 							<i-input  size="large" element-id="editName" v-model="name" style="flex: 1; style='height: 100%;' " />
 						</div>
@@ -37,7 +37,7 @@ Vue.component('dlg-list', {
 							<i-input  size="large" element-id="editEnd" v-model="end" style="flex: 1; style='height: 100%;' " />
 						</div>
 					</div>
-					<div v-else style="" @click="play(index)" class="rows">
+					<div v-else style="" @click="play(index); cursor = -1; " class="rows">
 						<div>{{item.title}}</div>
 						<div>{{item.start}}</div>
 						<div>{{item.end}}</div>
@@ -123,31 +123,71 @@ Vue.component('dlg-list', {
 			return true;
 		},
 		onKeydown(event) {
-			// let self = this;
-			// let o = document.activeElement;
-			// // let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
-			// // let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
-			// let sk = event.shiftKey, code = event.keyCode;
+			let o = document.activeElement;
+			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let sk = event.shiftKey, code = event.keyCode;
 			// // console.log("key: " + code + "/" + pk)
-			// if(o.tagName == "INPUT" && event.target.id == "editName" && this.visible == true){
-			// 	if(code == 13) {
+			if(o.tagName == "INPUT" && this.visible == true){
+				if(code == 13) {
+					if(event.target.id == "editName") {
+						if(o.value.trim().length > 0) {
+							if(o.value.trim() != this.rows[this.cursor].title) {
+								this.rows[this.cursor].title = o.value.trim();
+								this.dirty = true;
+							}
+							document.getElementById("editStart").focus();
+						}
+					} else if(event.target.id == "editStart") {
+						if(o.value.trim().length > 0 && this.isNumber(o.value)) {
+							if(this.rows[this.cursor].start != parseFloat(o.value.trim())) {
+								this.rows[this.cursor].start = parseFloat(o.value.trim());
+								this.dirty = true;
+							}
+							document.getElementById("editEnd").focus();
+						}
+					} else if(event.target.id == "editEnd") {
+						if(o.value.trim().length > 0 && this.isNumber(o.value)) {
+							if(this.rows[this.cursor].end != parseFloat(o.value.trim())) {
+								this.rows[this.cursor].end = parseFloat(o.value.trim());
+								this.dirty = true;
+							}
+							this.cursor = -1;
+						}
+					}
 			// 		this.play();
 			// 	} else if(code == 27) {
 			// 		this.cursor = -1; this.name = "";
 			// 	} else {
 			// 		return;
-			// 	}
-			// 	event.preventDefault();
-			// 	event.stopImmediatePropagation();
-			// 	event.stopPropagation();
-			// }
+				}
+				// event.preventDefault();
+				// event.stopImmediatePropagation();
+				// event.stopPropagation();
+			}
 		},
-		add(){
+		addRow(){
 			this.rows.push({})
 			this.cursor = this.rows.length - 1;
 			this.name = ""; this.start = ""; this.end = "";
 		},
 		close(){
+			let bTitle = this.title.trim().length > 0 && this.title != this.editdata.title;
+			let bID = this.id.trim().length > 0 && this.id != this.editdata.id;
+			let children = [];
+			if(this.dirty == true) {
+				this.rows.forEach(item=>{
+					if(item.title.trim().length > 0 && ("" + item.start).trim().length > 0 && ("" + item.end).trim().length > 0) {
+						children.push({title: item.title, start: parseFloat(item.start), end: parseFloat(item.end)})
+					}
+				})
+			} else if(bTitle == true || bID == true) {
+				children = this.rows;
+			}
+
+			console.log({title: this.title, id: this.id, children})
+			if(bTitle == true || bID == true || children.length > 0)
+				this.$emit("update", {title: this.title, id: this.id, children});
 			this.cursor = -1; this.name = ""; this.start = ""; this.end = "";
 			this.$emit("close");
 		},
@@ -170,8 +210,8 @@ Vue.component('dlg-list', {
 					if(parseFloat(start) >= parseFloat(end)) return;
 
 					this.rows[cursor].title = name; 
-					this.rows[cursor].start = start; 
-					this.rows[cursor].end = end;
+					this.rows[cursor].start = parseFloat(start); 
+					this.rows[cursor].end = parseFloat(end);
 					this.dirty = true;
 				}
 			}
@@ -209,6 +249,9 @@ Vue.component('dlg-list', {
 			// 		this.name = "";
 			// 	}, 600);
 			// }
+		},
+		onChange(e) {
+			this.dirty = true;
 		}
 	},
 	computed: {	
@@ -219,7 +262,7 @@ Vue.component('dlg-list', {
 			this.id = value.id;
 			this.rows = [];
 			value.children.forEach(el => {
-				this.rows.push(Object.assign(el))
+				this.rows.push(Object.assign({}, el))
 			});
 			this.dirty = false;
 		},
@@ -244,11 +287,33 @@ Vue.component('dlg-list', {
 					el.focus();
 					el.addEventListener('keydown', this.onKeydown, false);
 					el.addEventListener('blur', this.onFocus, false);
+					el.addEventListener('change', this.onChange, false);
+
+					el = document.getElementById("editStart");
+					el.addEventListener('keydown', this.onKeydown, false);
+					el.addEventListener('blur', this.onFocus, false);
+					el.addEventListener('change', this.onChange, false);
+
+					el = document.getElementById("editEnd");
+					el.addEventListener('keydown', this.onKeydown, false);
+					el.addEventListener('blur', this.onFocus, false);
+					el.addEventListener('change', this.onChange, false);
 				}, 300);
 			} else {
 				let el = document.getElementById("editName");
 				el.removeEventListener('keydown', this.onKeydown, false);
 				el.removeEventListener('keydown', this.onFocus, false);
+				el.removeEventListener('change', this.onChange, false);
+
+				el = document.getElementById("editStart");
+				el.removeEventListener('keydown', this.onKeydown, false);
+				el.removeEventListener('keydown', this.onFocus, false);
+				el.removeEventListener('change', this.onChange, false);
+
+				el = document.getElementById("editEnd");
+				el.removeEventListener('keydown', this.onKeydown, false);
+				el.removeEventListener('keydown', this.onFocus, false);
+				el.removeEventListener('change', this.onChange, false);
 			}
 		}
 	}

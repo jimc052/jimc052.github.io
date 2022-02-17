@@ -115,7 +115,7 @@
 </head>
 <body style="overflow: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div><gym-menu @on-select="onSelect" @on-click-add="onClickAdd" /></div>
+		<div><gym-menu @on-select="onSelect" @on-click-add="onClickAdd" ref="menu"/></div>
 		<div style="flex: 1;">
 			<div id="playerParent">
 				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
@@ -171,8 +171,14 @@
 				console.log("debug: " + this.$isDebug())
 			},
 			methods: {
-				onUpdateEditData(){
-
+				onUpdateEditData(data){
+					console.log(data)
+					clearInterval(id1);
+					clearInterval(id2);
+					player.pauseVideo();
+					this.$refs["menu"].set(data)
+					// this.$refs["menu"].set(data)
+					this.onSelect(data)
 				},
 				onClickEdit(){
 					this.editData = this.item;

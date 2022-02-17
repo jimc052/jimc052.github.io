@@ -304,6 +304,16 @@ Vue.component('gym-menu', {
     }, 
     onClickAdd(){
       this.$emit('on-click-add');
+    },
+    set(data){
+      let i = this.menu.findIndex(el =>{
+        return el.id == data.id;
+      })
+      if(i > -1) {
+        this.menu[i] = data;
+        this.$set(this.menu, i, data)
+        console.log(data)
+      }
     }
 	},
 	computed: {
