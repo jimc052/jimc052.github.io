@@ -7,17 +7,18 @@ Vue.component('dlg-list', {
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white; font-size: 20px;">{{"清單：" + (typeof editdata.id == "string" && editdata.id.length > 0 ? editdata.id : "" )}}</div>
 			<Icon type="md-add" size="22" @click.native="addRow" 
-				v-if="title.length > 0 && id.length > 0"
+				v-if="mode == 'edit'"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
 			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
 		</div>
 		<div :style="{height: height + 'px', overflow: 'hidden'}">
 			<div style="height: 100%; overflow-y: auto; " id="listFrame">
 				<div style="flex: 1; padding: 5px;">
-					<i-input element-id="editTitle" v-model="title" style="flex: 1;" placeholder="title" />
+					<i-input element-id="editTitle" size="large" v-model="title" style="flex: 1;" placeholder="title" />
 				</div>
 				<div style="flex: 1; padding: 0px 5px 5px 5px;">
-					<i-input v-if="typeof editdata.id == 'string' &&  editdata.id.length == 0" element-id="editID" v-model="id" style="flex: 1; "  placeholder="id"/>
+					<i-input v-if="typeof editdata.id == 'string' &&  editdata.id.length == 0" size="large"
+						element-id="editID" v-model="id" style="flex: 1; "  placeholder="id"/>
 				</div>
 
 				<div v-for="(item, index) in rows" :key="index" 
@@ -82,7 +83,8 @@ Vue.component('dlg-list', {
 			end: "",
 			width: 0,
 			height: 0,
-			dirty: false
+			dirty: false,
+			mode: "new"
 		};
 	},
 	created(){
@@ -258,6 +260,8 @@ Vue.component('dlg-list', {
 	},
 	watch: {
 		editdata(value) {
+			console.log(value)
+			this.mode = value.id.length == 0 ? "new" : "edit";
 			this.title = value.title;
 			this.id = value.id;
 			this.rows = [];
@@ -265,20 +269,10 @@ Vue.component('dlg-list', {
 				this.rows.push(Object.assign({}, el))
 			});
 			this.dirty = false;
-		},
-		data(value) {
-			// let arr = typeof value == "string" ? value.split("\n") : []
-			// arr.sort((a, b) => {
-			// 	a = a.toUpperCase();
-			// 	b = b.toUpperCase();
-			// 	if(a > b)
-			// 		return 1;
-			// 	else if(a < b)
-			// 		return -1;
-			// 	else
-			// 		return 0;
-			// });
-			// this.rows = arr;
+			setTimeout(() => {
+				let el = document.getElementById("editTitle");
+				el.focus();
+			}, 700);
 		},
 		cursor(value) {
 			if(value > -1) {

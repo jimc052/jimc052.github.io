@@ -1,7 +1,11 @@
+// 
 Vue.component('gym-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-			<div style="padding: 0px 2px 15px 2px; flex: 1; " id="btnPlays">
+			<div id="btnPlays"
+				style="padding: 0px 2px 15px 2px; flex: 1;"
+				:style="{height: (rows.length == 0 && $isDebug() ? '60px' : 'auto')}"
+			>
 				<i-button v-for="(item, index) in rows" :key="index"
 					:type="active == index || prev == index ? 'warning' : 'default'"
 					:ghost="prev == index"
@@ -64,7 +68,7 @@ Vue.component('gym-player', {
 		onPlayerReady(){
 			setTimeout(() => {
 				let el = document.getElementById("btnPlays");
-				el.style.visibility = "visible";				
+				el.style.visibility = "visible";
 			}, 300);
 		},
     onClickPlay(index) {
