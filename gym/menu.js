@@ -22,7 +22,7 @@ Vue.component('gym-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-02-17 09:00</div>
+        <div  style="flex: 1;">2022-02-17 16:00</div>
         <i-button v-if="$isDebug()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
@@ -250,7 +250,23 @@ Vue.component('gym-menu', {
     */
 	},
 	mounted () {
-    let m = window.localStorage["gym-menu"];
+    let m = window.localStorage["gym-ds"], json = {};
+    if(typeof m == "string" && m.length > 0) {
+      json = JSON.parse(m);
+    }
+
+    this.menu.forEach(el => {
+      if(typeof json[el.id] != "undefined") {
+        el = json[el.id];
+        delete json[el.id];
+      }
+    });
+
+    for(let key in json) {
+      this.menu.push(json[key])
+    }
+
+    m = window.localStorage["gym-menu"];
     if(typeof m == "string" || typeof x == "number") {
       this.active = m;
       for(let i = 0; i < this.menu.length; i++ ) {
@@ -312,8 +328,16 @@ Vue.component('gym-menu', {
       if(i > -1) {
         this.menu[i] = data;
         this.$set(this.menu, i, data)
-        console.log(data)
+      } else {
+        this.menu.push(data)
       }
+
+      let m = window.localStorage["gym-ds"], json = {};
+      if(typeof m == "string" && m.length > 0) {
+        json = JSON.parse(m);
+      }
+      json[data.id] = json;
+      window.localStorage["gym-ds"] = JSON.stringify(json);
     }
 	},
 	computed: {
