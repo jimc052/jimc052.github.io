@@ -121,16 +121,16 @@ Vue.component('gym-menu', {
       }, {
         title: "腹肌锻炼", id: "IrA9dvgRKR0", 
         children: [
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
+          {"title": "腳跟觸地", "start": 5, "end": 46 }, 
+          {"title": "交叉仰臥起坐", "start": 52.5, "end": 97}, 
+          {"title": "膝觸",  "start": 127.8, "end": 172}, 
+          {"title": "抬腿", "start": 175.5, "end": 220}, 
+          {"title": "長臂仰臥起坐", "start": 251, "end": 295}, 
+          {"title": "向上緊縮", "start": 298.5, "end": 342},  
+          {"title": "仰臥起坐",  "start": 374, "end": 418.5}, 
+          {"title": "卷腹抬腿", "start": 421.5,  "end": 466}, 
+          {"title": "卷腹向上拍手",  "start": 497.5, "end": 541}, 
+          {"title": "斜仰臥起坐(左右)", "start": 544.5,"end": 603.8}
         ]
       }, {
         title: "*** 平板锻炼挑战", id: "e13yvYaOyqg",
@@ -255,9 +255,9 @@ Vue.component('gym-menu', {
       json = JSON.parse(m);
     }
 
-    this.menu.forEach(el => {
+    this.menu.forEach((el, index) => {
       if(typeof json[el.id] != "undefined") {
-        el = json[el.id];
+        this.$set(this.menu, index, json[el.id])
         delete json[el.id];
       }
     });
@@ -336,7 +336,7 @@ Vue.component('gym-menu', {
       if(typeof m == "string" && m.length > 0) {
         json = JSON.parse(m);
       }
-      json[data.id] = json;
+      json[data.id] = data;
       window.localStorage["gym-ds"] = JSON.stringify(json);
     }
 	},
