@@ -7,14 +7,11 @@ Vue.component('dlg-list', {
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white; font-size: 20px;">{{"清單：" + (typeof editdata.id == "string" && editdata.id.length > 0 ? editdata.id : "" )}}</div>
 			<Icon type="md-add" size="22" @click.native="addRow" 
-				v-if="mode == 'edit'"
+				v-if="mode == 'edit' && cursor == -1"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
-
-			<Icon type="md-clipboard" size="22" @click.native="writeToConsole" 
-				v-if="rows.length  > 0"
-				style="cursor: pointer; color: white; margin-right: 10px;" />
-
-			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
+			<Icon type="md-close" size="22" 
+				v-if="cursor == -1"
+				@click.native="close" style="cursor: pointer; color: white;" />
 		</div>
 		<div :style="{height: height + 'px', overflow: 'hidden'}">
 			<div style="height: 100%; overflow-y: auto; " id="listFrame">
@@ -134,7 +131,7 @@ Vue.component('dlg-list', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
-			// // console.log("key: " + code + "/" + pk)
+			console.log("key: " + code + "/" + pk)
 			if(o.tagName == "INPUT" && this.visible == true){
 				if(code == 13) {
 					if(event.target.id == "editName") {
@@ -177,18 +174,6 @@ Vue.component('dlg-list', {
 			this.rows.push({})
 			this.cursor = this.rows.length - 1;
 			this.name = ""; this.start = ""; this.end = "";
-		},
-		writeToConsole(){
-			let s =``;
-			this.rows.forEach(item =>{
-				s += "\n    " + JSON.stringify(item) + ",";
-			})
-			console.log(
-`{title: "${this.title}", id: "${this.id}", 
-  children: [${s}
-  ]
-}`
-			)
 		},
 		close(){
 			let bTitle = this.title.trim().length > 0 && this.title != this.editdata.title;

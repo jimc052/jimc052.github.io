@@ -81,19 +81,20 @@ Vue.component('gym-player', {
 			// let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			// let sk = event.shiftKey, code = event.keyCode;
 			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
-
+			// console.log(event.keyCode + ", " + this.active)
+			if(this.rows.length == 0) return;
 			if(event.keyCode == 32) {
 				if(this.prev > -1)
-					this.onClick(this.prev)
+					this.onClickPlay(this.prev)
 				if(this.active > -1)
-					this.onClick(this.active)
+					this.onClickPlay(this.active)
 			} else if(event.keyCode == 37) {
 				if(this.active > 0) {
-					this.onClick(this.active - 1)
+					this.onClickPlay(this.active - 1)
 				}
 			} else if(event.keyCode == 39) {
 				if(this.active < this.rows.length - 1) {
-					this.onClick(this.active + 1)
+					this.onClickPlay(this.active + 1)
 				}
 			}
 		},
