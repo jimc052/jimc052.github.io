@@ -17,6 +17,12 @@
 	<script src="./menu.js"></script>
 	<script src="./player.js"></script>
 	<script src="./list.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
+	<script src="../VOA/system/fireStore.js"></script>
 	
 	<style>
 		* {
@@ -144,9 +150,26 @@
 <script>
 	var vm = null, player, index, videoId, id1, id2;
 	window.onload = async function(){
+		let email =  window.localStorage["email"];
+		let password =  window.localStorage["password"];
+		if(typeof email == "string" && email.length > 0 ) {
+			try {
+				FireStore.initial();
+				await FireStore.signIn(email, password)
+				// console.log("FireStore.mail: " + FireStore.mail())
+			} catch(e) {
+				console.log(e)
+			}
+		}
+
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		Vue.prototype.$isDebug = function() {
 			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
+		}
+
+		Vue.prototype.$isAdmin = function() {
+			let mail = FireStore.mail();
+			return typeof mail == "string" && mail.length > 0;
 		}
 
 		vm = new Vue({

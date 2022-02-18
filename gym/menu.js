@@ -18,14 +18,14 @@ Vue.component('gym-menu', {
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
               <span>{{item.title}}</span>
-              <span v-if="$isDebug() && item.children.length == 0" style="color: red; font-size: 8px;">{{"無"}}</span>
+              <span v-if="$isAdmin() && item.children.length == 0" style="color: red; font-size: 8px;">{{"無"}}</span>
               <span v-if="typeof item.mode == 'string'" style="color: blue; font-size: 8px;">{{"暫存"}}</span>
           </menu-item>
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
         <div  style="flex: 1;">2022-02-17 16:00</div>
-        <i-button v-if="$isDebug()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
+        <i-button v-if="$isAdmin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
   `,
@@ -120,120 +120,120 @@ Vue.component('gym-menu', {
           {title: "登山者", start:  500.5, end: 552.5},
           {title: "左右膝碰肘", start:  553, end: 605.5},
         ]
-      }, {
-        title: "腹肌锻炼", id: "IrA9dvgRKR0", 
-        children: [
-          {"title": "腳跟觸地", "start": 5, "end": 46 }, 
-          {"title": "交叉仰臥起坐", "start": 52.5, "end": 97}, 
-          {"title": "膝觸",  "start": 127.8, "end": 172}, 
-          {"title": "抬腿", "start": 175.5, "end": 220}, 
-          {"title": "長臂仰臥起坐", "start": 251, "end": 295}, 
-          {"title": "向上緊縮", "start": 298.5, "end": 342},  
-          {"title": "仰臥起坐",  "start": 374, "end": 418.5}, 
-          {"title": "卷腹抬腿", "start": 421.5,  "end": 466}, 
-          {"title": "卷腹向上拍手",  "start": 497.5, "end": 541}, 
-          {"title": "斜仰臥起坐(左右)", "start": 544.5,"end": 603.8}
-        ]
-      }, {
-        title: "*** 平板锻炼挑战", id: "e13yvYaOyqg",
-        children: [
-          {title: "登山板", start: 6, end: 49},
-          {title: "平板支撐側平舉", start: 68, end: 110},
-          {title: "平板到腳趾輕拍", start: 127, end: 172},
-          {title: "前平板支撐(手腳提升)", start: 187, end: 230},
-          {title: "平板杰克", start: 247, end: 291},
-          {title: "動態平板支撐", start: 307, end: 351},
-          {title: "扭轉平板", start: 367, end: 412},
-          {title: "前平板支撐", start: 427, end: 483},
-        ]
-      }, {
-        title: "腹部锻炼撕裂斜肌", id: "3kgqeZj5fIE", 
-        children: [
-          {title: "躺膝扭動", start: 1, end: 39},
-          {title: "扭轉卷腹", start: 57, end: 95},
-          {title: "腳跟碰觸", start: 107, end: 146},
-          {title: "俄羅斯轉", start: 161, end: 200},
-          {title: "抬腿-左", start: 212, end: 250},
-          {title: "抬腿-右", start: 255, end: 291},
-          {title: "俯臥撐", start: 305, end: 342},
-          {title: "平板膝蓋扭轉", start: 359.5, end: 399},
-          {title: "斜向緊縮(右)", start: 410, end: 449},
-          {title: "斜向緊縮(左)", start: 453, end: 492},
-          {title: "扭臀", start: 503, end: 542},
-          {title: "斜高膝", start: 558, end: 597},
-          {title: "雨刷", start: 609, end: 648},
-        ]
-      }, {
-        title: "在家中最好的热身运动", id: "-aK12bO4evs", 
-        children: [
-          {title: "拍打", start: 1, end: 29},
-          {title: "手臂圈", start: 30, end: 59},
-          {title: "中間側平舉", start: 61, end: 89},
-          {title: "站立側彎", start: 91, end: 119},
-          {title: "側抬腿", start: 121, end: 149},
-          {title: "弓步", start: 151, end: 179},
-          {title: "星際衝刺", start: 181, end: 210},
-          {title: "螃蟹轉", start: 211, end: 240},
-          {title: "平板支撐", start: 241, end: 270},
-          {title: "平躺天使", start: 271, end: 300},
-          {title: "跳躍杰克", start: 302, end: 330.5},
-        ]
-      }, {
-        title: "下腹肌最佳练习", id: "3b-701_2sds", 
-        children: [
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-        ]
-      }, {
-        title: "腿部练习", id: "e6C0Ia5Cazo", 
-        children: [
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-        ]
-      }, {
-        title: "热身", id: "Wi0wLCg4jho", 
-        children: [
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-          // {title: "", start: , end: },
-        ]
-      }, {
-          title: "腹肌", id: "gGqQX9HqHEk", 
-          children: [
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-            // {title: "", start: , end: },
-          ]
+      // }, {
+      //   title: "腹肌锻炼", id: "IrA9dvgRKR0", 
+      //   children: [
+      //     {"title": "腳跟觸地", "start": 5, "end": 46 }, 
+      //     {"title": "交叉仰臥起坐", "start": 52.5, "end": 97}, 
+      //     {"title": "膝觸",  "start": 127.8, "end": 172}, 
+      //     {"title": "抬腿", "start": 175.5, "end": 220}, 
+      //     {"title": "長臂仰臥起坐", "start": 251, "end": 295}, 
+      //     {"title": "向上緊縮", "start": 298.5, "end": 342},  
+      //     {"title": "仰臥起坐",  "start": 374, "end": 418.5}, 
+      //     {"title": "卷腹抬腿", "start": 421.5,  "end": 466}, 
+      //     {"title": "卷腹向上拍手",  "start": 497.5, "end": 541}, 
+      //     {"title": "斜仰臥起坐(左右)", "start": 544.5,"end": 603.8}
+      //   ]
+      // }, {
+      //   title: "*** 平板锻炼挑战", id: "e13yvYaOyqg",
+      //   children: [
+      //     {title: "登山板", start: 6, end: 49},
+      //     {title: "平板支撐側平舉", start: 68, end: 110},
+      //     {title: "平板到腳趾輕拍", start: 127, end: 172},
+      //     {title: "前平板支撐(手腳提升)", start: 187, end: 230},
+      //     {title: "平板杰克", start: 247, end: 291},
+      //     {title: "動態平板支撐", start: 307, end: 351},
+      //     {title: "扭轉平板", start: 367, end: 412},
+      //     {title: "前平板支撐", start: 427, end: 483},
+      //   ]
+      // }, {
+      //   title: "腹部锻炼撕裂斜肌", id: "3kgqeZj5fIE", 
+      //   children: [
+      //     {title: "躺膝扭動", start: 1, end: 39},
+      //     {title: "扭轉卷腹", start: 57, end: 95},
+      //     {title: "腳跟碰觸", start: 107, end: 146},
+      //     {title: "俄羅斯轉", start: 161, end: 200},
+      //     {title: "抬腿-左", start: 212, end: 250},
+      //     {title: "抬腿-右", start: 255, end: 291},
+      //     {title: "俯臥撐", start: 305, end: 342},
+      //     {title: "平板膝蓋扭轉", start: 359.5, end: 399},
+      //     {title: "斜向緊縮(右)", start: 410, end: 449},
+      //     {title: "斜向緊縮(左)", start: 453, end: 492},
+      //     {title: "扭臀", start: 503, end: 542},
+      //     {title: "斜高膝", start: 558, end: 597},
+      //     {title: "雨刷", start: 609, end: 648},
+      //   ]
+      // }, {
+      //   title: "在家中最好的热身运动", id: "-aK12bO4evs", 
+      //   children: [
+      //     {title: "拍打", start: 1, end: 29},
+      //     {title: "手臂圈", start: 30, end: 59},
+      //     {title: "中間側平舉", start: 61, end: 89},
+      //     {title: "站立側彎", start: 91, end: 119},
+      //     {title: "側抬腿", start: 121, end: 149},
+      //     {title: "弓步", start: 151, end: 179},
+      //     {title: "星際衝刺", start: 181, end: 210},
+      //     {title: "螃蟹轉", start: 211, end: 240},
+      //     {title: "平板支撐", start: 241, end: 270},
+      //     {title: "平躺天使", start: 271, end: 300},
+      //     {title: "跳躍杰克", start: 302, end: 330.5},
+      //   ]
+      // }, {
+      //   title: "下腹肌最佳练习", id: "3b-701_2sds", 
+      //   children: [
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //   ]
+      // }, {
+      //   title: "腿部练习", id: "e6C0Ia5Cazo", 
+      //   children: [
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //   ]
+      // }, {
+      //   title: "热身", id: "Wi0wLCg4jho", 
+      //   children: [
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //     // {title: "", start: , end: },
+      //   ]
+      // }, {
+      //     title: "腹肌", id: "gGqQX9HqHEk", 
+      //     children: [
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //       // {title: "", start: , end: },
+      //     ]
       }]
 		}; // 
 	},
@@ -252,7 +252,7 @@ Vue.component('gym-menu', {
     */
 	},
 	mounted () {
-    let m = window.localStorage["gym-ds"], json = {};
+    let m = window.localStorage["gym-ds"], json = {}, self = this;
     if(typeof m == "string" && m.length > 0) {
       json = JSON.parse(m);
     }
@@ -293,6 +293,7 @@ Vue.component('gym-menu', {
     }, 600);
     this.onSelect(this.active);
     this.broadcast.$on('onResize', this.onResize);
+
 	},
 	destroyed() {
     this.broadcast.$off('onResize', this.onResize);
@@ -345,6 +346,22 @@ Vue.component('gym-menu', {
       }
       json[data.id] = data;
       window.localStorage["gym-ds"] = JSON.stringify(json);
+    },
+    async upload(json){ // 寫好了，還沒寫作........
+      console.log("fiebase.............")
+      let date = (new Date()).getTime();
+      try {
+        let ref = FireStore.db.collection("YouTube").doc("GYM");
+        let obj = Object.assign({}, json);
+        obj.modifyDate = date;
+        obj.index = i;
+        let id = obj.id;
+        delete obj.id;
+        json[id] = obj
+        let x = await ref.set(json);        
+      } catch(e) {
+        console.log(e)
+      }
     }
 	},
 	computed: {
@@ -353,3 +370,47 @@ Vue.component('gym-menu', {
     
 	}
 });
+/*
+
+
+    async function fiebase2(){
+      console.log("fiebase.............")
+      let date = (new Date()).getTime(); // /" + report
+      // let ref = FireStore.db.collection("YouTube").doc("GYM");
+      try {
+        let ref = FireStore.db.collection("YouTube").doc("GYM");
+        json = {};
+        for(let i = 0; i < self.menu.length; i++) {
+          let obj = Object.assign({}, self.menu[i]);
+          obj.modifyDate = date;
+          obj.index = i;
+          let id = obj.id;
+          delete obj.id;
+          json[id] = obj
+        }
+
+        let x = await ref.set(json);
+
+        // for(let i = 0; i < self.menu.length; i++) {
+        //   let obj = Object.assign({}, self.menu[i]);
+        //   obj.modifyDate = date;
+        //   obj.index = i;
+        //   let id = obj.id;
+        //   delete obj.id;
+
+
+        //   let ref = FireStore.db.collection("GYM").doc(id);
+        //   let x = await ref.set(obj);
+        //   console.log(x)
+        //   // if(i > 2) break;
+        // }
+        
+      } catch(e) {
+        console.log(e)
+      }      
+    }
+    setTimeout(() => {
+      // fiebase2();  
+		}, 3000)
+
+*/
