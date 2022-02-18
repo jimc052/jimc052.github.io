@@ -200,9 +200,8 @@
 					clearInterval(id1);
 					clearInterval(id2);
 					player.pauseVideo();
-					this.$refs["menu"].set(data)
-					// this.$refs["menu"].set(data)
-					this.onSelect(data)
+					if(this.$refs["menu"].set(data) > -1)
+						this.onSelect(data)
 				},
 				onClickEdit(){
 					this.editData = this.item;

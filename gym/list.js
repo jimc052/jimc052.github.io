@@ -275,7 +275,6 @@ Vue.component('dlg-list', {
 	},
 	watch: {
 		editdata(value) {
-			console.log(value)
 			this.mode = value.id.length == 0 ? "new" : "edit";
 			this.title = value.title;
 			this.id = value.id;

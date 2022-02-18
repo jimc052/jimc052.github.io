@@ -23,7 +23,7 @@ Vue.component('gym-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-02-18 16:30</div>
+        <div  style="flex: 1;">2022-02-18 17:00</div>
         <i-button v-if="$isAdmin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
@@ -136,6 +136,7 @@ Vue.component('gym-menu', {
         obj.index = this.menu.length - 1;
       }
       this.upload(obj)
+      return i;
     },
     async upload(json){
       let id = json.id;
