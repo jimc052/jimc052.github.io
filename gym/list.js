@@ -11,7 +11,7 @@ Vue.component('dlg-list', {
 				style="cursor: pointer; color: white; margin-right: 10px;" />
 
 			<Icon type="md-clipboard" size="22" @click.native="writeToConsole" 
-				v-if="mode == 'edit'"
+				v-if="rows.length  > 0"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
 
 			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
