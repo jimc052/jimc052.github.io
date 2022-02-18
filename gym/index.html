@@ -168,8 +168,7 @@
 		}
 
 		Vue.prototype.$isAdmin = function() {
-			let mail = FireStore.mail();
-			return typeof mail == "string" && mail.length > 0;
+			return FireStore.login;
 		}
 
 		vm = new Vue({
