@@ -17,7 +17,9 @@ Vue.component('gym-menu', {
         :active-name="active">
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
-              {{item.title + ($isDebug() && item.children.length == 0 ? ' ??????' : '')}}
+              <span>{{item.title}}</span>
+              <span v-if="$isDebug() && item.children.length == 0" style="color: red; font-size: 8px;">{{"無"}}</span>
+              <span v-if="typeof item.mode == 'string'" style="color: blue; font-size: 8px;">{{"暫存"}}</span>
           </menu-item>
         </menu-group>
       </i-menu>
@@ -254,16 +256,19 @@ Vue.component('gym-menu', {
     if(typeof m == "string" && m.length > 0) {
       json = JSON.parse(m);
     }
+    // console.log(m)
 
     this.menu.forEach((el, index) => {
       if(typeof json[el.id] != "undefined") {
-        this.$set(this.menu, index, json[el.id])
+        this.$set(this.menu, index, Object.assign({mode: "temp"},json[el.id]))
         delete json[el.id];
       }
     });
 
     for(let key in json) {
-      this.menu.push(json[key])
+      let data = Object.assign({mode: "temp"}, json[key]);
+      this.menu.push(data)
+      this.$set(this.menu, this.menu.length - 1, data)
     }
 
     m = window.localStorage["gym-menu"];
@@ -282,7 +287,9 @@ Vue.component('gym-menu', {
         this.$refs.menu.updateOpened();
         this.$refs.menu.updateActiveName();
       });
-      document.getElementById("menu" + this.active).scrollIntoView({block: "center"});
+      let el = document.getElementById("menu" + this.active);
+      if(el != null)
+        el.scrollIntoView({block: "center"});
     }, 600);
     this.onSelect(this.active);
     this.broadcast.$on('onResize', this.onResize);

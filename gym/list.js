@@ -9,6 +9,11 @@ Vue.component('dlg-list', {
 			<Icon type="md-add" size="22" @click.native="addRow" 
 				v-if="mode == 'edit'"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
+
+			<Icon type="md-clipboard" size="22" @click.native="writeToConsole" 
+				v-if="mode == 'edit'"
+				style="cursor: pointer; color: white; margin-right: 10px;" />
+
 			<Icon type="md-close" size="22" @click.native="close" style="cursor: pointer; color: white;" />
 		</div>
 		<div :style="{height: height + 'px', overflow: 'hidden'}">
@@ -172,6 +177,18 @@ Vue.component('dlg-list', {
 			this.rows.push({})
 			this.cursor = this.rows.length - 1;
 			this.name = ""; this.start = ""; this.end = "";
+		},
+		writeToConsole(){
+			let s =``;
+			this.rows.forEach(item =>{
+				s += "\n    " + JSON.stringify(item) + ",";
+			})
+			console.log(
+`{title: "${this.title}", id: "${this.id}", 
+  children: [${s}
+  ]
+}`
+			)
 		},
 		close(){
 			let bTitle = this.title.trim().length > 0 && this.title != this.editdata.title;
