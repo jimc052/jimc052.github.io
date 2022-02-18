@@ -4,7 +4,7 @@ Vue.component('gym-player', {
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
 			<div id="btnPlays"
 				style="padding: 0px 2px 15px 2px; flex: 1;"
-				:style="{height: (rows.length == 0 && $isDebug() ? '60px' : 'auto')}"
+				:style="{height: (rows.length == 0 && $isAdmin() ? '60px' : 'auto')}"
 			>
 				<i-button v-for="(item, index) in rows" :key="index"
 					:type="active == index || prev == index ? 'warning' : 'default'"
@@ -13,7 +13,7 @@ Vue.component('gym-player', {
 					{{item.title}}
 				</i-button>
 			</div>
-			<i-button type="success" v-if="$isDebug()" 
+			<i-button type="success" v-if="$isAdmin() && videoId.length > 0" 
 				@click.native="onClickEdit()"  icon="md-create" shape="circle"
 				style="margin: 0px 5px; 20px 5px" />
 		</div>
@@ -34,7 +34,6 @@ Vue.component('gym-player', {
 	},
 	mounted () {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
-		console.log("debug: " + this.$isDebug())
 		window.addEventListener('keydown', this.onKeydown, false);
 	},
 	destroyed() {

@@ -203,10 +203,8 @@ Vue.component('dlg-list', {
 			} else if(bTitle == true || bID == true) {
 				children = this.rows;
 			}
-
-			console.log({title: this.title, id: this.id, children})
 			if(bTitle == true || bID == true || children.length > 0)
-				this.$emit("update", {title: this.title, id: this.id, children});
+				this.$emit("update", {title: this.title, id: this.id, children, index: this.editdata.index});
 			this.cursor = -1; this.name = ""; this.start = ""; this.end = "";
 			this.$emit("close");
 		},
