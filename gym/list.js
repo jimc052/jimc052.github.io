@@ -7,7 +7,7 @@ Vue.component('dlg-list', {
 				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white; font-size: 20px;">{{"清單：" + (typeof editdata.id == "string" && editdata.id.length > 0 ? editdata.id : "" )}}</div>
 			<Icon type="md-add" size="22" @click.native="addRow" 
-				v-if="mode == 'edit' && cursor == -1"
+				v-if="cursor == -1"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
 			<Icon type="md-close" size="22" 
 				v-if="cursor == -1"
@@ -93,8 +93,8 @@ Vue.component('dlg-list', {
 	},
 	async mounted () {
 		// console.log(this.editdata)
-		this.width =  450;
-		this.height = 450;
+		this.width =  350;
+		this.height = 400;
 		let el = document.querySelector("#list .ivu-modal");
 		el.style.margin = "0px";
 		setTimeout(()=>{
@@ -129,12 +129,15 @@ Vue.component('dlg-list', {
 		onKeydown(event) {
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
-			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let ck = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let ok = navigator.userAgent.indexOf('Macintosh') > -1  ? event.altKey : false;
 			let sk = event.shiftKey, code = event.keyCode;
-			console.log("key: " + code + "/" + pk)
+			let id = event.target.id;
+			// console.log("key: " + code + ", pk: " + pk + ", cntrl: " + ck + ", option: " + ok)
+
 			if(o.tagName == "INPUT" && this.visible == true){
 				if(code == 13) {
-					if(event.target.id == "editName") {
+					if(id == "editName") {
 						if(o.value.trim().length > 0) {
 							if(o.value.trim() != this.rows[this.cursor].title) {
 								this.rows[this.cursor].title = o.value.trim();
@@ -142,7 +145,7 @@ Vue.component('dlg-list', {
 							}
 							document.getElementById("editStart").focus();
 						}
-					} else if(event.target.id == "editStart") {
+					} else if(id == "editStart") {
 						if(o.value.trim().length > 0 && this.isNumber(o.value)) {
 							if(this.rows[this.cursor].start != parseFloat(o.value.trim())) {
 								this.rows[this.cursor].start = parseFloat(o.value.trim());
@@ -150,18 +153,31 @@ Vue.component('dlg-list', {
 							}
 							document.getElementById("editEnd").focus();
 						}
-					} else if(event.target.id == "editEnd") {
+					} else if(id == "editEnd") {
 						if(o.value.trim().length > 0 && this.isNumber(o.value)) {
 							if(this.rows[this.cursor].end != parseFloat(o.value.trim())) {
 								this.rows[this.cursor].end = parseFloat(o.value.trim());
 								this.dirty = true;
 							}
-							this.cursor = -1;
+							this.reset();
 						}
 					}
 			// 		this.play();
-			// 	} else if(code == 27) {
-			// 		this.cursor = -1; this.name = "";
+				} else if((id == "editStart" || id == "editEnd") && ok && (code == 37 || code == 39)) {
+					let x = ((code == 37 ? -0.5 : 0.5) + parseFloat(document.getElementById(id).value)).toFixed(1);
+					if(id == "editStart") 
+						this.start = x
+					else 
+						this.end = x
+					player.seekTo(x);
+				} else if((id == "editStart" || id == "editEnd") && pk) {
+					// document.getElementById(id).value = player.getCurrentTime().toFixed(1);
+					if(id == "editStart") 
+						this.start = player.getCurrentTime().toFixed(1)
+					else 
+						this.end = player.getCurrentTime().toFixed(1)
+				} else if(code == 27) {
+					this.reset();
 			// 	} else {
 			// 		return;
 				}
@@ -169,6 +185,10 @@ Vue.component('dlg-list', {
 				// event.stopImmediatePropagation();
 				// event.stopPropagation();
 			}
+		},
+		reset(){
+			this.name = ""; this.start = ""; this.end = "";
+			this.cursor = -1;
 		},
 		addRow(){
 			this.rows.push({})
@@ -190,27 +210,24 @@ Vue.component('dlg-list', {
 			}
 			if(bTitle == true || bID == true || children.length > 0)
 				this.$emit("update", {title: this.title, id: this.id, children, index: this.editdata.index});
-			this.cursor = -1; this.name = ""; this.start = ""; this.end = "";
+			this.reset();
 			this.$emit("close");
 		},
 		del(index){
 			if(this.cursor == -1) {
 				this.rows.splice(index, 1);
 				this.dirty = true;
-				this.cursor = -1;
-				this.name = ""; this.start = ""; this.end = "";
+				this.reset();
 			} else {
 				let name = this.name, start = this.start, end = this.end;
 				let cursor = this.cursor;
-				this.name = ""; this.start = ""; this.end = "";
-				this.cursor = -1;
+				this.reset();
 
 				if(name.trim().length > 0 && this.isNumber(start) && this.isNumber(end)) {
 					if(this.rows[cursor].title == name 
 						&& this.rows[cursor].start == start
 						&& this.rows[cursor].end == end) return;
 					if(parseFloat(start) >= parseFloat(end)) return;
-
 					this.rows[cursor].title = name; 
 					this.rows[cursor].start = parseFloat(start); 
 					this.rows[cursor].end = parseFloat(end);

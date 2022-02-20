@@ -61,13 +61,15 @@ Vue.component('gym-player', {
 				this.prev = 0;
 			}
 			let el = document.getElementById("btnPlays");
-			// el.innerHTML = "";
 			el.style.visibility = "hidden";
     },
 		onPlayerReady(){
 			setTimeout(() => {
 				let el = document.getElementById("btnPlays");
 				el.style.visibility = "visible";
+				// if(this.rows.length > 0) {
+				// 	player.seekTo(this.rows[this.prev].start);
+				// }
 			}, 300);
 		},
     onClickPlay(index) {
@@ -77,12 +79,15 @@ Vue.component('gym-player', {
 			window.localStorage["gym-" + this.videoId] = this.rows[index].title;
     },
 		onKeydown(event){
+			let o = document.activeElement;
 			// let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			// let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			// let sk = event.shiftKey, code = event.keyCode;
 			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
+			// console.log(o.id)
 			if(this.rows.length == 0) return;
+			if(o.tagName == "INPUT") return;
 			if(event.keyCode == 32) {
 				if(this.prev > -1)
 					this.onClickPlay(this.prev)
