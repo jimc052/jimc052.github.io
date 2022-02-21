@@ -3,6 +3,7 @@ Vue.component('gym-menu', {
 	template:  `
     <div id='frameMenu' style="height: 100%; display: flex; flex-direction: column;"
         :style="{width: width + 'px'}">
+      
       <div v-if="smallScreen" id="headerMenu" :style="{background: '#2d8cf0', 
         'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
         'align-items': 'center',
@@ -12,8 +13,21 @@ Vue.component('gym-menu', {
         style="cursor: pointer; margin-left: 10px;"></Icon>
         
       </div>
+      <div style="padding: 10px 10px; z-index: 10;" v-if="!smallScreen && 1 == 0">
+        <!-- 只是為了開放給 另一個專案用, 還沒寫 -->
+        <Dropdown >
+          <a href="javascript:void(0)">
+              hover 触发
+            <Icon type="ios-arrow-down"></Icon>
+          </a>
+          <DropdownMenu slot="list">
+              <DropdownItem>驴打滚</DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
+      </div>
+      
       <i-menu theme="light" :width="width" ref="menu" @on-select="onSelect" 
-        style="flex: 1; overflow-y: auto; overflow-x: hidden; " 
+        style="flex: 1; overflow-y: auto; overflow-x: hidden; z-index: 0;" 
         :active-name="active">
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
@@ -33,7 +47,7 @@ Vue.component('gym-menu', {
 	data() {
 		return {
       smallScreen: true, 
-      width: "240",
+      width: "250",
       active: "0",
       menu: []
 		}; // 
@@ -55,7 +69,6 @@ Vue.component('gym-menu', {
 	mounted () {
     this.intit();
     this.broadcast.$on('onResize', this.onResize);
-
 	},
 	destroyed() {
     this.broadcast.$off('onResize', this.onResize);
