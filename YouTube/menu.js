@@ -14,7 +14,7 @@ Vue.component('yt-menu', {
         
       </div>
       <div style="padding: 10px 10px; z-index: 10;" v-if="!smallScreen && project.length > 0">
-        <Dropdown @on-click="onClickProject" v-if="project.length > 0" >
+        <Dropdown @on-click="onClickProject">
           <a href="javascript:void(0)">
               {{project[topic].title}}
             <Icon type="ios-arrow-down"></Icon>
@@ -31,13 +31,13 @@ Vue.component('yt-menu', {
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
             <span>{{item.title}}</span>
-            <span v-if="$isAdmin() && (typeof item.children == 'undefined' || item.children.length == 0)" style="color: red; font-size: 8px;">{{"無"}}</span>
+            <span v-if="$isDebug() && $isLogin() && (typeof item.children == 'undefined' || item.children.length == 0)" style="color: red; font-size: 8px;">{{"無"}}</span>
           </menu-item>
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
         <div  style="flex: 1;">2022-02-18 17:00</div>
-        <i-button v-if="$isAdmin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
+        <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
   `,
@@ -77,7 +77,7 @@ Vue.component('yt-menu', {
   },
 	methods: {
     async intit(){
-      if(this.$isAdmin()) {
+      if(this.$isLogin()) {
         this.project = await this.downloadProject();
         if(this.project.length > 0) {
           let m = window.localStorage["yt-project"];
@@ -87,40 +87,14 @@ Vue.component('yt-menu', {
           this.menu = await this.downloadMenu();
         }
       }
-      // let menu = this.$isAdmin() ? await this.download() : await this.getMenu(); 
-      // menu.forEach((el, index) => {
-      //   this.$set(this.menu, index, el)
-      // });
-
-      // let m = window.localStorage["yt-menu"];
-      // if(typeof m == "string" || typeof x == "number") {
-      //   this.active = m;
-      //   for(let i = 0; i < this.menu.length; i++ ) {
-      //     if(this.menu[i].id == m) {
-      //       this.active = i.toString();
-      //       break;
-      //     }
-      //   }
-      // } else 
-      //   this.active = '0';
-      // setTimeout(() => {
-      //   this.$nextTick(()=>{
-      //     this.$refs.menu.updateOpened();
-      //     this.$refs.menu.updateActiveName();
-      //   });
-      //   let el = document.getElementById("menu" + this.active);
-      //   if(el != null)
-      //     el.scrollIntoView({block: "center"});
-      // }, 600);
-      // this.onSelect(this.active);
       document.body.style.visibility = "visible";
-
       this.projectUpload()
     },
     async onSelect(index){
       if(index < this.menu.length) {
         this.$emit('on-select', this.menu[index]);
-        window.localStorage["yt-menu"] = this.menu[index].id;
+        let project = this.project[this.topic].id;
+        window.localStorage["yt-menu-" + project] = this.menu[index].id;
         if(this.smallScreen == true) {
           this.onClickIcon();
         }
@@ -202,12 +176,12 @@ Vue.component('yt-menu', {
     async downloadMenu(){
       return new Promise( async (success, error) => {
         try {
+          let project = this.project[this.topic].id;
           let menu = [];
           let snapshot = await FireStore.db.collection("YouTube").doc("目錄")
-            .collection(this.project[this.topic].id).get();
+            .collection(project).get();
           snapshot.forEach(async doc => {
             let json = Object.assign({id: doc.id}, doc.data());
-            // console.log(json)
             menu.push(json);
           });
           menu.sort((a, b) => {
@@ -218,6 +192,29 @@ Vue.component('yt-menu', {
             else
               return 0;
           });
+
+          let m = window.localStorage["yt-menu-" + project];
+          if(typeof m == "string" || typeof x == "number") {
+            // this.active = m;
+            for(let i = 0; i < menu.length; i++ ) {
+              if(menu[i].id == m) {
+                this.active = i.toString();
+                break;
+              }
+            }
+          } else 
+            this.active = '0';
+          console.log(m + "-" + this.active)
+          setTimeout(() => {
+            this.$nextTick(()=>{
+              this.$refs.menu.updateOpened();
+              this.$refs.menu.updateActiveName();
+            });
+            let el = document.getElementById("menu" + this.active);
+            if(el != null)
+              el.scrollIntoView({block: "center"});
+            this.onSelect(this.active);
+          }, 600);
           success(menu);
         } catch(e) {
           console.log(e)
@@ -225,6 +222,7 @@ Vue.component('yt-menu', {
       });
     },
     async projectUpload(){
+      return;
       console.log("fiebase.............")
       let date = (new Date()).getTime(); // /" + report
       let project = [{title: "ALCPT", key: "ALCPT"},
@@ -705,26 +703,6 @@ Vue.component('yt-menu', {
 
       uploadMenu();
     },
-    async allUpload(){
-      console.log("fiebase.............")
-      let menu = await this.getMenu();
-      let date = (new Date()).getTime(); // /" + report
-      // let ref = FireStore.db.collection("YouTube").doc("YouTube");
-      try {
-        for(let i = 0; i < menu.length; i++) {
-          let obj = Object.assign({}, menu[i]);
-          obj.modifyDate = date;
-          obj.index = i;
-          let id = obj.id;
-          delete obj.id;
-          let ref = FireStore.db.collection("YouTube").doc(id);
-          let x = await ref.set(obj);
-          console.log(x)
-        }
-      } catch(e) {
-        console.log(e)
-      } 
-    },
     async onClickProject(name){
       console.log(name)
       this.topic = name;
@@ -737,45 +715,3 @@ Vue.component('yt-menu', {
 	watch: {
 	}
 });
-/*
-    async function fiebase2(){
-      console.log("fiebase.............")
-      let date = (new Date()).getTime(); // /" + report
-      // let ref = FireStore.db.collection("YouTube").doc("YouTube");
-      try {
-        let ref = FireStore.db.collection("YouTube").doc("YouTube");
-        json = {};
-        for(let i = 0; i < self.menu.length; i++) {
-          let obj = Object.assign({}, self.menu[i]);
-          obj.modifyDate = date;
-          obj.index = i;
-          let id = obj.id;
-          delete obj.id;
-          json[id] = obj
-        }
-
-        let x = await ref.set(json);
-
-        // for(let i = 0; i < self.menu.length; i++) {
-        //   let obj = Object.assign({}, self.menu[i]);
-        //   obj.modifyDate = date;
-        //   obj.index = i;
-        //   let id = obj.id;
-        //   delete obj.id;
-
-
-        //   let ref = FireStore.db.collection("YouTube").doc(id);
-        //   let x = await ref.set(obj);
-        //   console.log(x)
-        //   // if(i > 2) break;
-        // }
-        
-      } catch(e) {
-        console.log(e)
-      }      
-    }
-    setTimeout(() => {
-      // fiebase2();  
-		}, 3000)
-
-*/
