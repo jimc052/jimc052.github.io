@@ -29,19 +29,21 @@ Vue.component('dlg-list', {
 					"
 					class="list"
 				>
-					<div v-if="cursor == index" style="" class="rows">
+					<div v-if="cursor == index" style="" :class="display">
 						<div>
-							<i-input  size="large" element-id="editName" v-model="name" style="flex: 1; style='height: 100%;' " />
+							<i-input v-if="display == 'col3'" size="large" element-id="editName" v-model="name" style="flex: 1; style='height: 100%;' " />
+							<div v-else>{{index + 1}}</div>
 						</div>
 						<div>
-							<i-input  size="large" element-id="editStart" v-model="start" style="flex: 1; style='height: 100%;' " />
+							<i-input size="large" element-id="editStart" v-model="start" style="flex: 1; style='height: 100%;' " />
 						</div>
 						<div>
-							<i-input  size="large" element-id="editEnd" v-model="end" style="flex: 1; style='height: 100%;' " />
+							<i-input size="large" element-id="editEnd" v-model="end" style="flex: 1; style='height: 100%;' " />
 						</div>
 					</div>
-					<div v-else style="" @click="play(index); cursor = -1; " class="rows">
-						<div>{{item.title}}</div>
+					<div v-else style="" @click="play(index); cursor = -1; " :class="display">
+						<div v-if="display == 'col3'">{{item.title}}</div>
+						<div v-else>{{index + 1}}</div>
 						<div>{{item.start}}</div>
 						<div>{{item.end}}</div>
 					</div>
@@ -62,6 +64,10 @@ Vue.component('dlg-list', {
 		visible: {
 			type: Boolean,
 			default: false
+		},
+		display: {
+			type: String,
+			default: "col2" // col3
 		} ,
 		editdata: {
 			type: Object,
@@ -133,10 +139,14 @@ Vue.component('dlg-list', {
 			let ok = navigator.userAgent.indexOf('Macintosh') > -1  ? event.altKey : false;
 			let sk = event.shiftKey, code = event.keyCode;
 			let id = event.target.id;
-			// console.log("key: " + code + ", pk: " + pk + ", cntrl: " + ck + ", option: " + ok)
+			// console.log("key: " + code + ", pk: " + pk + ", cntrl: " + ck + ", option: " + ok);
 
+			// console.log(String.fromCharCode(code) + ": " + (/\d/.test(String.fromCharCode(code))))
 			if(o.tagName == "INPUT" && this.visible == true){
-				if(code == 13) {
+				let b = true;
+				if(pk && code == 82) {
+					b = false;
+				} else if(code == 13) {
 					if(id == "editName") {
 						if(o.value.trim().length > 0) {
 							if(o.value.trim() != this.rows[this.cursor].title) {
@@ -162,7 +172,6 @@ Vue.component('dlg-list', {
 							this.reset();
 						}
 					}
-			// 		this.play();
 				} else if((id == "editStart" || id == "editEnd") && ok && (code == 37 || code == 39)) {
 					let x = ((code == 37 ? -0.5 : 0.5) + parseFloat(document.getElementById(id).value)).toFixed(1);
 					if(id == "editStart") 
@@ -170,6 +179,19 @@ Vue.component('dlg-list', {
 					else 
 						this.end = x
 					player.seekTo(x);
+				} else if((id == "editStart" || id == "editEnd") && ok && code == 80) { // p
+					let x = parseFloat(parseFloat(document.getElementById(id).value).toFixed(1));
+					console.log(x + ", " + typeof x)
+					let start = 0, end = 0;
+					if(id == "editStart"){
+						start = x;
+						end = x + 5;
+					} else {
+						start = x - 5;
+						end = x;
+					}
+					console.log(start + "; " + end)
+					this.$emit('on-click-play', {end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && pk) {
 					// document.getElementById(id).value = player.getCurrentTime().toFixed(1);
 					if(id == "editStart") 
@@ -178,12 +200,17 @@ Vue.component('dlg-list', {
 						this.end = player.getCurrentTime().toFixed(1)
 				} else if(code == 27) {
 					this.reset();
-			// 	} else {
-			// 		return;
+				// } else if ((id == "editStart" || id == "editEnd") && code > 47 && code < 58) {
+				// 	e.preventDefault();
+				// 	return false;
+				} else {
+					b = false;
 				}
-				// event.preventDefault();
-				// event.stopImmediatePropagation();
-				// event.stopPropagation();
+				if(b == true) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					event.stopPropagation();				
+				}
 			}
 		},
 		reset(){
@@ -201,8 +228,18 @@ Vue.component('dlg-list', {
 			let children = [];
 			if(this.dirty == true) {
 				this.rows.forEach(item=>{
-					if(item.title.trim().length > 0 && ("" + item.start).trim().length > 0 && ("" + item.end).trim().length > 0) {
-						children.push({title: item.title, start: parseFloat(item.start), end: parseFloat(item.end)})
+					let bChange = (this.display == "col3" && item.title.trim().length > 0) || this.display == "col2" 
+						? true : false;
+					if(bChange == true && ("" + item.start).trim().length > 0 && ("" + item.end).trim().length > 0) {
+						let json = {
+							
+							start: parseFloat(item.start), 
+							end: parseFloat(item.end)
+						}
+						if(this.display == "col3") {
+							json.title = item.title;
+						}
+						children.push(json)
 					}
 				})
 			} else if(bTitle == true || bID == true) {
@@ -223,12 +260,12 @@ Vue.component('dlg-list', {
 				let cursor = this.cursor;
 				this.reset();
 
-				if(name.trim().length > 0 && this.isNumber(start) && this.isNumber(end)) {
-					if(this.rows[cursor].title == name 
-						&& this.rows[cursor].start == start
-						&& this.rows[cursor].end == end) return;
+				if(((this.display == "col3" && name.trim().length > 0) || this.display == "col2") && this.isNumber(start) && this.isNumber(end)) {
+					let bChange = this.display == "col3" && (this.rows[cursor].title == name) ? false : true;
+					if(bChange == false && this.rows[cursor].start == start && this.rows[cursor].end == end) return;
+
 					if(parseFloat(start) >= parseFloat(end)) return;
-					this.rows[cursor].title = name; 
+					if(this.display == "col3") this.rows[cursor].title = name;
 					this.rows[cursor].start = parseFloat(start); 
 					this.rows[cursor].end = parseFloat(end);
 					this.dirty = true;
@@ -281,9 +318,11 @@ Vue.component('dlg-list', {
 			this.title = value.title;
 			this.id = value.id;
 			this.rows = [];
-			value.children.forEach(el => {
-				this.rows.push(Object.assign({}, el))
-			});
+			if(Array.isArray(value.children)){
+				value.children.forEach(el => {
+					this.rows.push(Object.assign({}, el))
+				});
+			}
 			this.dirty = false;
 			setTimeout(() => {
 				let el = document.getElementById("editTitle");
@@ -293,16 +332,20 @@ Vue.component('dlg-list', {
 		cursor(value) {
 			if(value > -1) {
 				setTimeout(() => {
-					let el = document.getElementById("editName");
-					el.focus();
-					el.addEventListener('keydown', this.onKeydown, false);
-					el.addEventListener('blur', this.onFocus, false);
-					el.addEventListener('change', this.onChange, false);
+					let el;
+					if(this.display == "col3") {
+						el = document.getElementById("editName");
+						el.focus();
+						el.addEventListener('keydown', this.onKeydown, false);
+						el.addEventListener('blur', this.onFocus, false);
+						el.addEventListener('change', this.onChange, false);
+					}
 
 					el = document.getElementById("editStart");
 					el.addEventListener('keydown', this.onKeydown, false);
 					el.addEventListener('blur', this.onFocus, false);
 					el.addEventListener('change', this.onChange, false);
+					if(this.display == "col2") el.focus();
 
 					el = document.getElementById("editEnd");
 					el.addEventListener('keydown', this.onKeydown, false);
@@ -310,11 +353,13 @@ Vue.component('dlg-list', {
 					el.addEventListener('change', this.onChange, false);
 				}, 300);
 			} else {
-				let el = document.getElementById("editName");
-				el.removeEventListener('keydown', this.onKeydown, false);
-				el.removeEventListener('keydown', this.onFocus, false);
-				el.removeEventListener('change', this.onChange, false);
-
+				let el;
+				if(this.display == "col3") {
+					el = document.getElementById("editName");
+					el.removeEventListener('keydown', this.onKeydown, false);
+					el.removeEventListener('keydown', this.onFocus, false);
+					el.removeEventListener('change', this.onChange, false);
+				}
 				el = document.getElementById("editStart");
 				el.removeEventListener('keydown', this.onKeydown, false);
 				el.removeEventListener('keydown', this.onFocus, false);

@@ -6,14 +6,16 @@ Vue.component('yt-player', {
 				style="padding: 0px 2px 15px 2px; flex: 1;"
 				:style="{height: (rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 'auto')}"
 			>
-				<i-button v-for="(item, index) in rows" :key="index"
+				<i-button v-for="(item, index) in rows" :key="index" class="btn"
 					:type="active == index || prev == index ? 'warning' : 'default'"
 					:ghost="prev == index"
 					@click.native="onClickPlay(index)">
-					{{item.title}}
+					<span v-if="typeof item.title == 'string' ">{{item.title}}</span>
+					<span v-else>{{(index + 1)}}</span>
 				</i-button>
 			</div>
 			<i-button type="success" v-if="$isDebug() && $isLogin() && videoId.length > 0" 
+				
 				@click.native="onClickEdit()"  icon="md-create" shape="circle"
 				style="margin: 0px 5px; 20px 5px" />
 		</div>
@@ -30,7 +32,6 @@ Vue.component('yt-player', {
 		};
 	},
 	created(){
-
 	},
 	mounted () {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
@@ -44,15 +45,21 @@ Vue.component('yt-player', {
   },
 	methods: {
     async play(item){
-			// console.log(JSON.stringify(item))
+			this.prev = -1;
 			this.active = -1;
       this.rows = Array.isArray(item.children) ? item.children : [];
 			this.videoId = item.id;
 			let m = window.localStorage["yt-" + this.videoId];
-			if(typeof m == "string") {
-				let x = this.rows.findIndex((item)=>{
-					return item.title == m;
-				});
+
+			let x = -1;
+			if(typeof m != "undefined") {
+				if(isNaN(m)) {
+					x = this.rows.findIndex((item)=>{
+						return item.title == m;
+					});
+				} else {
+					x = parseInt(m);
+				}
 				if(x > -1) 
 					this.prev = x;
 				else 
@@ -62,6 +69,12 @@ Vue.component('yt-player', {
 			}
 			let el = document.getElementById("btnPlays");
 			el.style.visibility = "hidden";
+			if(this.prev > -1) {
+				setTimeout(() => {
+					let arr = document.querySelectorAll(".btn")
+					arr[this.prev].focus();
+				}, 600);				
+			}
     },
 		onPlayerReady(){
 			setTimeout(() => {
@@ -76,7 +89,7 @@ Vue.component('yt-player', {
       this.$emit('on-click-play', this.rows[index]);
 			this.active = index;
 			this.prev = -1;
-			window.localStorage["yt-" + this.videoId] = this.rows[index].title;
+			window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
     },
 		onKeydown(event){
 			let o = document.activeElement;
@@ -91,13 +104,13 @@ Vue.component('yt-player', {
 			if(event.keyCode == 32) {
 				if(this.prev > -1)
 					this.onClickPlay(this.prev)
-				if(this.active > -1)
+				else if(this.active > -1)
 					this.onClickPlay(this.active)
-			} else if(event.keyCode == 37) {
+			} else if(event.keyCode == 37) { // left
 				if(this.active > 0) {
 					this.onClickPlay(this.active - 1)
 				}
-			} else if(event.keyCode == 39) {
+			} else if(event.keyCode == 39) { // right
 				if(this.active < this.rows.length - 1) {
 					this.onClickPlay(this.active + 1)
 				}

@@ -142,9 +142,9 @@ Vue.component('yt-menu', {
       delete json.id;
       let date = (new Date()).getTime();
       try {
-        let ref = FireStore.db.collection("YouTube").doc(id);
-        json.date = date;
-        let x = await ref.set(json);        
+        let ref = FireStore.db.collection("YouTube").doc("目錄").
+              collection(this.project[this.topic].id).doc(id);
+        let x = await ref.set(json);
       } catch(e) {
         console.log(e)
       }
