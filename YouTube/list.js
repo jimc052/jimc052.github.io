@@ -4,7 +4,7 @@ Vue.component('dlg-list', {
 			style=""			
 		>
 		<div slot="header" 
-				style="display: flex; flex-direction: row; align-items: center; padding: 8px 12px; background-color: rgb(70, 160, 240)">
+				style="display: flex; flex-direction: row; align-items: center; padding: 10px 12px; background-color: rgb(70, 160, 240)">
 			<div style="flex: 1; color: white; font-size: 20px;">{{"清單：" + (typeof editdata.id == "string" && editdata.id.length > 0 ? editdata.id : "" )}}</div>
 			<Icon type="md-add" size="22" @click.native="addRow" 
 				v-if="cursor == -1"
@@ -146,7 +146,7 @@ Vue.component('dlg-list', {
 				let b = true;
 				if(pk && code == 82) {
 					b = false;
-				} else if(code == 13) {
+				} else if(code == 13) { // enter
 					if(id == "editName") {
 						if(o.value.trim().length > 0) {
 							if(o.value.trim() != this.rows[this.cursor].title) {
@@ -155,22 +155,27 @@ Vue.component('dlg-list', {
 							}
 							document.getElementById("editStart").focus();
 						}
-					} else if(id == "editStart") {
-						if(o.value.trim().length > 0 && this.isNumber(o.value)) {
-							if(this.rows[this.cursor].start != parseFloat(o.value.trim())) {
-								this.rows[this.cursor].start = parseFloat(o.value.trim());
+					} else if(id == "editStart" || id == "editEnd") {
+						let editStart = document.getElementById("editStart").value.trim();
+						if(editStart.length > 0 && this.isNumber(editStart)) {
+							if(this.rows[this.cursor].start != parseFloat(editStart)) {
+								this.rows[this.cursor].start = parseFloat(editStart);
 								this.dirty = true;
 							}
+						}
+						let editEnd = document.getElementById("editEnd").value.trim();
+						if(editEnd.length > 0 && this.isNumber(editEnd)) {
+							if(this.rows[this.cursor].end != parseFloat(editEnd)) {
+								this.rows[this.cursor].end = parseFloat(editEnd);
+								this.dirty = true;
+							}
+						}
+						if(o.value.trim().length == 0 || !this.isNumber(o.value.trim()))
+							return false;
+						else if(id == "editStart" )
 							document.getElementById("editEnd").focus();
-						}
-					} else if(id == "editEnd") {
-						if(o.value.trim().length > 0 && this.isNumber(o.value)) {
-							if(this.rows[this.cursor].end != parseFloat(o.value.trim())) {
-								this.rows[this.cursor].end = parseFloat(o.value.trim());
-								this.dirty = true;
-							}
+						else
 							this.reset();
-						}
 					}
 				} else if((id == "editStart" || id == "editEnd") && ok && (code == 37 || code == 39)) {
 					let x = ((code == 37 ? -0.5 : 0.5) + parseFloat(document.getElementById(id).value)).toFixed(1);
@@ -181,7 +186,7 @@ Vue.component('dlg-list', {
 					player.seekTo(x);
 				} else if((id == "editStart" || id == "editEnd") && ok && code == 80) { // p
 					let x = parseFloat(parseFloat(document.getElementById(id).value).toFixed(1));
-					console.log(x + ", " + typeof x)
+					// console.log(x + ", " + typeof x)
 					let start = 0, end = 0;
 					if(id == "editStart"){
 						start = x;
@@ -190,7 +195,7 @@ Vue.component('dlg-list', {
 						start = x - 5;
 						end = x;
 					}
-					console.log(start + "; " + end)
+					// console.log(start + "; " + end)
 					this.$emit('on-click-play', {end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && pk) {
 					// document.getElementById(id).value = player.getCurrentTime().toFixed(1);

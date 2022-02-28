@@ -90,6 +90,12 @@ Vue.component('yt-player', {
 			this.active = index;
 			this.prev = -1;
 			window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
+			if(index > -1 && index < this.rows.length) {
+				setTimeout(() => {
+					let arr = document.querySelectorAll(".btn")
+					arr[index].focus();
+				}, 600);				
+			}
     },
 		onKeydown(event){
 			let o = document.activeElement;
@@ -105,7 +111,7 @@ Vue.component('yt-player', {
 				if(this.prev > -1)
 					this.onClickPlay(this.prev)
 				else if(this.active > -1)
-					this.onClickPlay(this.active)
+					this.onClickPlay(this.active);
 			} else if(event.keyCode == 37) { // left
 				if(this.active > 0) {
 					this.onClickPlay(this.active - 1)
