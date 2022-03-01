@@ -96,9 +96,15 @@
 			z-index: 1000;
 		}
 
-		#list .ivu-modal-header, #list .ivu-modal-body {
+		#list .ivu-modal-header, #list .ivu-modal-body{
 				margin: 0px;
 				padding: 0px;
+		}
+
+		#dlgEdit .ivu-modal-body {
+				margin: 0px;
+				padding: 5px;
+			overflow: hidden;
 		}
 
 		.list:first-child {
@@ -164,6 +170,10 @@
 		input {
 			font-size: 18px !important;
 		}
+
+		#player {
+			visibility: hidden;
+		}
 	</style>
 </head>
 <body style="overflow: hidden; visibility: hidden;">
@@ -180,7 +190,7 @@
 					style="cursor: pointer; margin-left: 10px; margin-right: 10px;"></Icon>
 					{{item.title}}
 				</div>
-				<div id="player"></div>
+				<div id="player" style="visibility: hidden;"></div>
 			</div>
 			<yt-player ref="player" @on-click-play="onClickPlay"  @on-click-edit="onClickEdit" />
 		</div>

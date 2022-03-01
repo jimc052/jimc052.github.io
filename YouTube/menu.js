@@ -36,7 +36,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-02-26 09:30</div>
+        <div  style="flex: 1;">2022-03-01 13:30</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
@@ -133,6 +133,10 @@ Vue.component('yt-menu', {
       } else {
         this.menu.push(data)
         obj.index = this.menu.length - 1;
+      }
+
+      if(obj.id == "" && typeof obj.topic == "undefined") {
+        // obj.topic = []
       }
       this.upload(obj)
       return i;

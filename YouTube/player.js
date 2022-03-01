@@ -15,9 +15,13 @@ Vue.component('yt-player', {
 				</i-button>
 			</div>
 			<i-button type="success" v-if="$isDebug() && $isLogin() && videoId.length > 0" 
-				
 				@click.native="onClickEdit()"  icon="md-create" shape="circle"
 				style="margin: 0px 5px; 20px 5px" />
+			<modal v-model="visible" class-name="vertical-center-modal" 
+				title="編輯"  fullscreen style="overflow: hidden;" id="dlgEdit">
+				<textarea style="width: 100%; height: 100%; font-size: 18px;">{{content}}
+				</textarea>
+			</modal>
 		</div>
   `,
 	props: {
@@ -28,7 +32,9 @@ Vue.component('yt-player', {
       rows: [],
 			active: -1,
 			prev: -1,
-			videoId: ""
+			videoId: "",
+			visible: false,
+			content: ""
 		};
 	},
 	created(){
@@ -45,6 +51,7 @@ Vue.component('yt-player', {
   },
 	methods: {
     async play(item){
+			this.content = JSON.stringify(item) // 還沒寫
 			this.prev = -1;
 			this.active = -1;
       this.rows = Array.isArray(item.children) ? item.children : [];
