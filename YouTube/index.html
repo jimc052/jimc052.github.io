@@ -293,6 +293,13 @@
 							videoId: item.id,
 							height: clientHeight,
 							width: myParent.clientWidth, // '640',
+							playerVars: { 
+								'controls': 0 , 
+								disablekb: 1,
+								iv_load_policy: 3, 
+								cc_load_policy: 0, 
+								modestbranding: 1
+							},
 							events: {
 								'onReady': ()=>{
 									console.log("onPlayerReady.........")
@@ -351,6 +358,8 @@
 https://www.iviewui.com/components/menu
 https://www.iviewui.com/components/modal
 https://www.iviewui.com/components/icon
+
+https://developers.google.com/youtube/iframe_api_reference
 */
 </script>
 </html>
