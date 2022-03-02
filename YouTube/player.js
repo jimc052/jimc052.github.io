@@ -1,9 +1,9 @@
-// 
+
 Vue.component('yt-player', { 
 	template:  `
-		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
 			<div id="btnPlays"
-				style="padding: 0px 2px 15px 2px; flex: 1;"
+				style="padding: 5px 5px 5px 5px; flex: 1;"
 				:style="{height: (rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 'auto')}"
 			>
 				<i-button v-for="(item, index) in rows" :key="index" class="btn"
@@ -14,14 +14,18 @@ Vue.component('yt-player', {
 					<span v-else>{{(index + 1)}}</span>
 				</i-button>
 			</div>
-			<i-button type="success" v-if="$isDebug() && $isLogin() && videoId.length > 0" 
-				@click.native="onClickEdit()"  icon="md-create" shape="circle"
-				style="margin: 0px 5px; 20px 5px" />
-			<modal v-model="visible" class-name="vertical-center-modal" 
-				title="編輯"  fullscreen style="overflow: hidden;" id="dlgEdit">
-				<textarea style="width: 100%; height: 100%; font-size: 18px;">{{content}}
-				</textarea>
-			</modal>
+
+			<div v-if="$isDebug() && $isLogin() && videoId.length > 0"
+				style="flex-direction: row; margin: 3px 5px;"
+			>
+				<i-button type="success"  
+					@click.native="onClickList()"  icon="md-create" shape="circle" />
+
+				<i-button type="success"
+					@click.native="onClickEdit()"  icon="md-document" shape="circle"
+				/>
+			</div>
+			
 		</div>
   `,
 	props: {
@@ -33,8 +37,8 @@ Vue.component('yt-player', {
 			active: -1,
 			prev: -1,
 			videoId: "",
-			visible: false,
-			content: ""
+			content: undefined,
+			height: 0,
 		};
 	},
 	created(){
@@ -47,11 +51,9 @@ Vue.component('yt-player', {
 		window.removeEventListener('keydown', this.onKeydown, false);
     this.broadcast.$off('onPlayerReady', this.onPlayerReady);
   },
-	destroyed() {		
-  },
 	methods: {
     async play(item){
-			this.content = JSON.stringify(item) // 還沒寫
+			this.content = item;
 			this.prev = -1;
 			this.active = -1;
       this.rows = Array.isArray(item.children) ? item.children : [];
@@ -98,6 +100,7 @@ Vue.component('yt-player', {
 			this.prev = -1;
 			window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
 			if(index > -1 && index < this.rows.length) {
+				self.broadcast.$emit('exam', index);
 				setTimeout(() => {
 					let arr = document.querySelectorAll(".btn")
 					arr[index].focus();
@@ -128,6 +131,9 @@ Vue.component('yt-player', {
 					this.onClickPlay(this.active + 1)
 				}
 			}
+		},
+		onClickList(){
+			this.$emit('on-click-list');
 		},
 		onClickEdit(){
 			this.$emit('on-click-edit');

@@ -17,6 +17,8 @@
 	<script src="./menu.js"></script>
 	<script src="./player.js"></script>
 	<script src="./list.js"></script>
+	<script src="./editor.js"></script>
+	<script src="./exam.js"></script>
 
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
@@ -188,16 +190,29 @@
 					}">
 					<Icon type="md-menu" size="28" color="white" @click.native="onClickIcon" 
 					style="cursor: pointer; margin-left: 10px; margin-right: 10px;"></Icon>
-					{{item.title}}
+					{{typeof editData == "object" ? editData.title : ""}}
 				</div>
+				<yt-exam ref="exam" v-if="typeof editData == 'object' && typeof editData.topic == 'object' " />
 				<div id="player" style="visibility: hidden;"></div>
 			</div>
-			<yt-player ref="player" @on-click-play="onClickPlay"  @on-click-edit="onClickEdit" />
+			<yt-player ref="player" @on-click-play="onClickPlay"  
+				@on-click-list="onClickOpenDlg('list')" 
+				@on-click-edit="onClickOpenDlg('editor')" 
+			/>
 		</div>
-		<dlg-list :visible="typeof editData == 'object' " :editdata="editData" 
-			@close="editData = undefined" @update="onUpdateEditData"
-			@on-click-play="onClickPlay"
-		/>
+		<div>
+			<yt-editor :visible="dialog == 'editor' " :editdata="editData" 
+				@on-close="dialog = '';" 
+				@update="onUpdateEditData"
+			/>			
+		</div>
+		<div>
+			<dlg-list :visible="dialog == 'list' " :editdata="editData" 
+				@close="dialog = '';" 
+				@update="onUpdateEditData"
+				@on-click-play="onClickPlay"
+			/>			
+		</div>
 	</div>
 </body>
 <script src="https://www.youtube.com/iframe_api"></script>
@@ -231,8 +246,8 @@
 				return {
 					index: -1,
 					smallScreen: false, 
-					item: {},
-					editData: undefined
+					editData: undefined,
+					dialog: ""
 				};
 			},
 			created() {
@@ -256,14 +271,14 @@
 					player.pauseVideo();
 					if(this.$refs["menu"].set(data) > -1)
 						this.onSelect(data)
+					// console.log(data)
 				},
-				onClickEdit(){
-					this.editData = this.item;
+				onClickOpenDlg(dlg){
+					this.dialog = dlg;
 				},
 				onClickIcon(){
 					let el = document.getElementById("frameMenu");
       		el.style.visibility = "visible";
-					this.editData = undefined;
 				},
 				onClickAdd(){
 					this.editData = {
@@ -274,12 +289,11 @@
 					}
 				},
         async onSelect(item){
-					this.editData = undefined;
 					// console.log(JSON.stringify(item))
 					clearInterval(id1);
 					clearInterval(id2);
 
-					this.item = item;
+					this.editData = item;
 					this.$refs["player"].play(item);
 
 					let node = document.getElementById("player");
@@ -288,8 +302,16 @@
 					}
 					var newDiv = document.createElement('DIV');
 					newDiv.id = "player";
+					newDiv.style.visibility = "hidden";
+
 					var myParent = document.getElementById('playerParent');
-					myParent.appendChild(newDiv);
+					if(Array.isArray(item.topic))
+						document.body.appendChild(newDiv);
+					else {
+						myParent.appendChild(newDiv);
+						newDiv.style.visibility = "visible";
+					}
+
 					setTimeout(() => {
 						var btnPlays = document.getElementById('btnPlays');
 						var clientHeight = document.body.clientHeight - btnPlays.clientHeight ;
@@ -301,8 +323,8 @@
 						videoId = item.id;
 						player = new YT.Player('player', {
 							videoId: item.id,
-							height: clientHeight,
-							width: myParent.clientWidth, // '640',
+							height: !Array.isArray(item.topic) ? clientHeight : 0,
+							width: !Array.isArray(item.topic) ? myParent.clientWidth : 0, // '640',
 							playerVars: { 
 								'controls': 0 , 
 								disablekb: 1,
@@ -314,6 +336,15 @@
 								'onReady': ()=>{
 									console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
+									if(Array.isArray(item.topic)){
+										newDiv.style.height = "0px";
+										newDiv.style.width = "0px";
+										let exam = document.getElementById('exam');
+										exam.style.height = clientHeight + "px";
+										exam.style.width = myParent.clientWidth + "px";
+
+										this.$refs["exam"].set(item.topic)
+									}
 								},
 								'onStateChange': onPlayerStateChange
 							}

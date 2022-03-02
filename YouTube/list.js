@@ -250,8 +250,10 @@ Vue.component('dlg-list', {
 			} else if(bTitle == true || bID == true) {
 				children = this.rows;
 			}
-			if(bTitle == true || bID == true || children.length > 0)
-				this.$emit("update", {title: this.title, id: this.id, children, index: this.editdata.index});
+			if(bTitle == true || bID == true || children.length > 0) {
+				let json = Object.assign(this.editdata, {title: this.title, id: this.id, children})
+				this.$emit("update", json);
+			}
 			this.reset();
 			this.$emit("close");
 		},
