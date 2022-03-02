@@ -100,7 +100,7 @@ Vue.component('yt-player', {
 			this.prev = -1;
 			window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
 			if(index > -1 && index < this.rows.length) {
-				self.broadcast.$emit('exam', index);
+				this.broadcast.$emit('exam', index);
 				setTimeout(() => {
 					let arr = document.querySelectorAll(".btn")
 					arr[index].focus();

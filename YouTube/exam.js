@@ -1,8 +1,24 @@
 Vue.component('yt-exam', { 
 	template:  `
-    <div style="height: 0px; border: 1px red solid; " id="exam" >
-      <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" :key="index">
-        <div>{{item.question}}</div>
+    <div style="height: 0px; padding: 10px; overflow-y: auto; " id="exam" >
+      <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
+				:key="index"
+				style="margin-bottom: 10px;"
+			>
+        <div :style="{color: active == index ? '#2d8cf0' : '', fontSize: '20px'}"
+				>
+					{{item.question}}
+				</div>
+
+				<div v-for="(el, i) in item.option" :id="'option' + index + '-' + i " 
+					:name="index + '-' + i" :key="index + '-' + i"
+					style="margin-left: 20px; "
+				>
+					<span style="font-size: 20px;">{{(i + 1) + "). "}}</span>
+					<span :style="{color: i == item.answer ? 'orange' : '', fontSize: '20px'}">
+						{{el}}
+					</span>
+				</div>
       </div>
     </div>
   `,
@@ -10,29 +26,39 @@ Vue.component('yt-exam', {
 	},
 	data() {
 		return {
-      topic: []
+      topic: [],
+			active: -1
 		};
 	},
 	created(){
 	},
 	mounted () {
+		this.broadcast.$on('exam', this.exam);
 	},
 	destroyed() {	
     this.broadcast.$off('exam', this.exam);
   },
 	methods: {
-    exam() {
+    exam(index) {
+			this.active = index;
+			let el = document.getElementById("topic" + this.active);
+      if(el != null) el.scrollIntoView({block: "center"});
 		},
     set(item) {
-      console.log(item)
-      this.topic = item;
+      this.topic = [];
+			item.forEach(el => {
+				let json = Object.assign({}, el)
+				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br />')
+				this.topic.push(json);
+			});
+      
     }
 	},
 	computed: {
 	},
 	watch: {
 		topic(value) {
-			console.log(value)
+			// console.log(value)
 		}
 	}
 });
