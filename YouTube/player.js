@@ -115,7 +115,7 @@ Vue.component('yt-player', {
 			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
 			// console.log(o.id)
-			if(this.rows.length == 0 || this.isDialog() == true) return;
+			if(this.rows.length == 0 || this.$isDialog() == true) return;
 			if(o.tagName == "INPUT") return;
 			if(event.keyCode == 32) {
 				if(this.prev > -1)
