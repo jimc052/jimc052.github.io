@@ -1,23 +1,29 @@
+//; 
 Vue.component('yt-exam', { 
 	template:  `
     <div style="height: 0px; overflow-y: auto; background-color: white;" id="exam" >
       <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
 				:key="index"
-				style="margin-bottom: 10px; user-select: auto !important;"
+				:style="{backgroundColor: active == index ? '#eee' : '', 
+					padding: '5px 10px', marginBottom: '5px', userSelect: 'text !important'}"
 			>
-        <div :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}"
+        <div v-if="isExam == false" :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}"
 					v-html="item.question"
-					style="user-select: auto !important;"
-				>
+					style="user-select: text !important;"
+				/>
+
+				<div v-else :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}">
+					{{(index + 1) + "."}}
 				</div>
+				
 
 				<div v-for="(el, i) in item.option" :id="'option' + index + '-' + i " 
 					:name="index + '-' + i" :key="index + '-' + i"
-					style="margin-left: 20px; "
+					style="margin-left: 30px; "
 				>
-					<span style="font-size: 20px;">{{(i + 1) + "). "}}</span>
-					<span :style="{color: i == item.answer ? 'orange' : '', fontSize: '20px'}" 
-						style="user-select: auto !important;">
+					<span style="font-size: 22px;">{{(i + 1) + "). "}}</span>
+					<span :style="{color: i == item.answer && !isExam ? 'orange' : '', fontSize: '22px'}" 
+						style="user-select: text !important;">
 						{{el}}
 					</span>
 				</div>
@@ -29,13 +35,17 @@ Vue.component('yt-exam', {
 	data() {
 		return {
       topic: [],
-			active: -1
+			active: -1,
+			isExam: true
 		};
 	},
 	created(){
 	},
 	mounted () {
 		this.broadcast.$on('exam', this.exam);
+		if(location.href.indexOf("exam=N") > -1) {
+			this.isExam = false;
+		}
 	},
 	destroyed() {	
     this.broadcast.$off('exam', this.exam);
@@ -58,7 +68,7 @@ Vue.component('yt-exam', {
 		},
     set(item) {
 			let el = document.getElementById("exam");
-      if(el != null) el.style.padding = "10px 30px";
+      if(el != null) el.style.padding = "10px 10px";
       this.topic = [];
 			item.forEach(el => {
 				let json = Object.assign({}, el)
