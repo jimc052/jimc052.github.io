@@ -3,7 +3,7 @@ Vue.component('yt-player', {
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
 			<div id="btnPlays"
-				style="padding: 5px 5px 5px 5px; flex: 1;"
+				style="padding: 2px; flex: 1;"
 				:style="{height: (rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 'auto')}"
 			>
 				<i-button v-for="(item, index) in rows" :key="index" class="btn"
@@ -16,7 +16,7 @@ Vue.component('yt-player', {
 			</div>
 
 			<div v-if="$isDebug() && $isLogin() && videoId.length > 0"
-				style="flex-direction: row; margin: 3px 5px;"
+				style="flex-direction: row; margin: 3px 10px 3px 0px;"
 			>
 				<i-button type="success"  
 					@click.native="onClickList()"  icon="md-create" shape="circle" />
@@ -115,7 +115,7 @@ Vue.component('yt-player', {
 			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
 			// console.log(o.id)
-			if(this.rows.length == 0) return;
+			if(this.rows.length == 0 || this.isDialog() == true) return;
 			if(o.tagName == "INPUT") return;
 			if(event.keyCode == 32) {
 				if(this.prev > -1)

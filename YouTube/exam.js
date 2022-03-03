@@ -1,13 +1,13 @@
 Vue.component('yt-exam', { 
 	template:  `
-    <div style="height: 0px; padding: 10px; overflow-y: auto; " id="exam" >
+    <div style="height: 0px; overflow-y: auto; background-color: white;" id="exam" >
       <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
 				:key="index"
 				style="margin-bottom: 10px;"
 			>
-        <div :style="{color: active == index ? '#2d8cf0' : '', fontSize: '20px'}"
+        <div :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}"
+					v-html="item.question"
 				>
-					{{item.question}}
 				</div>
 
 				<div v-for="(el, i) in item.option" :id="'option' + index + '-' + i " 
@@ -42,16 +42,27 @@ Vue.component('yt-exam', {
     exam(index) {
 			this.active = index;
 			let el = document.getElementById("topic" + this.active);
-      if(el != null) el.scrollIntoView({block: "center"});
+			if(el == null) return;
+			let offsetTop = el.offsetTop;
+			let offsetBottom = offsetTop + el.clientHeight;
+
+			let viewer = document.querySelector("#exam");
+			let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;
+
+			if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
+			} else {
+				viewer.scrollTop = offsetTop - 60;
+			}
 		},
     set(item) {
+			let el = document.getElementById("exam");
+      if(el != null) el.style.padding = "10px 30px";
       this.topic = [];
 			item.forEach(el => {
 				let json = Object.assign({}, el)
-				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br />')
+				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;')
 				this.topic.push(json);
 			});
-      
     }
 	},
 	computed: {

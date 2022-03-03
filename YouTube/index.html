@@ -180,9 +180,9 @@
 </head>
 <body style="overflow: hidden; visibility: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div><yt-menu @on-select="onSelect" @on-click-add="onClickAdd" ref="menu"/></div>
+		<div style="border-right:  1px rgb(0, 0, 0, 0.3) solid;"><yt-menu @on-select="onSelect" @on-click-add="onClickAdd" ref="menu"/></div>
 		<div style="flex: 1;">
-			<div id="playerParent">
+			<div id="playerParent" style="padding: 2px;">
 				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
 					'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
 					'align-items': 'center',
@@ -240,6 +240,10 @@
 			return FireStore.login;
 		}
 
+		Vue.prototype.$isDialog = function() {
+			return this.dialog == "" ? false : true;
+		}
+
 		vm = new Vue({
 			el: '#app',
 			data() {
@@ -247,7 +251,8 @@
 					index: -1,
 					smallScreen: false, 
 					editData: undefined,
-					dialog: ""
+					dialog: "",
+					video: true
 				};
 			},
 			created() {
@@ -305,26 +310,29 @@
 					newDiv.style.visibility = "hidden";
 
 					var myParent = document.getElementById('playerParent');
-					if(Array.isArray(item.topic))
-						document.body.appendChild(newDiv);
-					else {
+					if(!Array.isArray(item.topic) || location.href.indexOf("video=Y") > -1){
+						this.video = true;
 						myParent.appendChild(newDiv);
 						newDiv.style.visibility = "visible";
+					} else {
+						this.video = false;
+						document.body.appendChild(newDiv);
 					}
 
 					setTimeout(() => {
 						var btnPlays = document.getElementById('btnPlays');
-						var clientHeight = document.body.clientHeight - btnPlays.clientHeight ;
+						var clientHeight = document.body.clientHeight - btnPlays.clientHeight;
 						var header = document.getElementById('header');
 						if(header != null){
 							clientHeight -= header.clientHeight;
 						}
+						if(Array.isArray(item.children)) clientHeight -= this.video == true ? 20 : 10;
 
 						videoId = item.id;
 						player = new YT.Player('player', {
 							videoId: item.id,
-							height: !Array.isArray(item.topic) ? clientHeight : 0,
-							width: !Array.isArray(item.topic) ? myParent.clientWidth : 0, // '640',
+							height: this.video == true ? clientHeight : 0,
+							width: this.video == true  ? myParent.clientWidth : 0,
 							playerVars: { 
 								'controls': 0 , 
 								disablekb: 1,
@@ -336,13 +344,12 @@
 								'onReady': ()=>{
 									console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
-									if(Array.isArray(item.topic)){
+									if(this.video == false){
 										newDiv.style.height = "0px";
 										newDiv.style.width = "0px";
 										let exam = document.getElementById('exam');
 										exam.style.height = clientHeight + "px";
 										exam.style.width = myParent.clientWidth + "px";
-
 										this.$refs["exam"].set(item.topic)
 									}
 								},
