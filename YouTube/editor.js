@@ -2,18 +2,18 @@ Vue.component('yt-editor', {
 	template:  `
     <modal v-model="visible" class-name="vertical-center-modal" 
         fullscreen style="overflow: hidden;" id="dlgEdit">
-      <Tabs type="card" id="tabs">
-        <TabPane :closable="false" label="基本資料" :style="{height: height + 'px'}">
+      <Tabs type="card" id="tabs" value="1">
+        <TabPane :closable="false" label="基本資料" :style="{height: height + 'px'}"  name="0">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="title" />
         </TabPane>
 
-				<TabPane :closable="false" label="題目" :style="{height: height + 'px'}">
+				<TabPane :closable="false" label="題目" :style="{height: height + 'px'}" name="1">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="topic" />
         </TabPane>
 
-				<TabPane :closable="false" label="位置" :style="{height: height + 'px'}">
+				<TabPane :closable="false" label="位置" :style="{height: height + 'px'}"  name="2">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="children" />
         </TabPane>

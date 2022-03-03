@@ -25,7 +25,6 @@
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
 	<script src="../VOA/system/fireStore.js"></script>
-	
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -233,7 +232,9 @@
 
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		Vue.prototype.$isDebug = function() {
-			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
+			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 
+				|| location.href.indexOf("debug=Y") > -1 
+				? true : false;
 		}
 
 		Vue.prototype.$isLogin = function() {
@@ -241,7 +242,7 @@
 		}
 
 		Vue.prototype.$isDialog = function() {
-			return this.dialog == "" ? false : true;
+			return vm.dialog == "" ? false : true;
 		}
 
 		vm = new Vue({
@@ -405,6 +406,7 @@
 /* 	
 https://www.iviewui.com/components/menu
 https://www.iviewui.com/components/modal
+https://www.iviewui.com/components/tabs
 https://www.iviewui.com/components/icon
 
 https://developers.google.com/youtube/iframe_api_reference

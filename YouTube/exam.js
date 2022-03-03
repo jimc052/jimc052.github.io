@@ -3,10 +3,11 @@ Vue.component('yt-exam', {
     <div style="height: 0px; overflow-y: auto; background-color: white;" id="exam" >
       <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
 				:key="index"
-				style="margin-bottom: 10px;"
+				style="margin-bottom: 10px; user-select: auto !important;"
 			>
         <div :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}"
 					v-html="item.question"
+					style="user-select: auto !important;"
 				>
 				</div>
 
@@ -15,7 +16,8 @@ Vue.component('yt-exam', {
 					style="margin-left: 20px; "
 				>
 					<span style="font-size: 20px;">{{(i + 1) + "). "}}</span>
-					<span :style="{color: i == item.answer ? 'orange' : '', fontSize: '20px'}">
+					<span :style="{color: i == item.answer ? 'orange' : '', fontSize: '20px'}" 
+						style="user-select: auto !important;">
 						{{el}}
 					</span>
 				</div>
