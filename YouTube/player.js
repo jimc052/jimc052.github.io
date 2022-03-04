@@ -154,6 +154,8 @@ Vue.component('yt-player', {
 					setTimeout(() => {
 						self.onClickPlay(i);
 					}, 1000 * 10);
+				} else {
+					self.broadcast.$off('playend', playend);
 				}
 			}
 		}
