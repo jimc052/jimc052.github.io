@@ -4,7 +4,8 @@ Vue.component('yt-exam', {
     <div style="height: 0px; overflow-y: auto; background-color: white;" id="exam" >
       <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
 				:key="index"
-				:style="{backgroundColor: active == index ? '#eee' : '', borderRadius: '10px',
+				:style="{backgroundColor: active == index ? '#f5f5f5' : '', borderRadius: '8px',
+					border: active == index ? '1px solid #ddd' : '', 
 					padding: '5px 10px', marginBottom: '5px', userSelect: 'text !important'}"
 			>
         <div v-if="isExam == false" :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}"
@@ -43,6 +44,7 @@ Vue.component('yt-exam', {
 	},
 	mounted () {
 		this.broadcast.$on('exam', this.exam);
+		// this.broadcast.$on('exam', this.exam);
 		// if(location.href.indexOf("exam=N") > -1) {
 		// 	this.isExam = false;
 		// }

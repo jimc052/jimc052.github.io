@@ -360,6 +360,7 @@
 					}, 100);
         },
 				onClickPlay(item) {
+					let self = this;
 					clearInterval(id1);
 					clearInterval(id2);
 
@@ -380,6 +381,7 @@
 								player.pauseVideo();
 							// } else if(player.getPlayerState() == 2) {
 								clearInterval(id2);
+								self.broadcast.$emit('playend');
 							}
 						}, 50);						
 					}

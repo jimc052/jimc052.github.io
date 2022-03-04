@@ -14,18 +14,21 @@ Vue.component('yt-player', {
 					<span v-else>{{(index + 1)}}</span>
 				</i-button>
 			</div>
+			<div>
+				<div v-if="$isDebug() && $isLogin() && videoId.length > 0"
+					style="flex-direction: row; margin: 3px 10px 3px 0px;"
+				>
+					<i-button type="success"  
+						@click.native="onClickList()"  icon="md-create" shape="circle" />
 
-			<div v-if="$isDebug() && $isLogin() && videoId.length > 0"
-				style="flex-direction: row; margin: 3px 10px 3px 0px;"
-			>
-				<i-button type="success"  
-					@click.native="onClickList()"  icon="md-create" shape="circle" />
-
-				<i-button type="success"
-					@click.native="onClickEdit()"  icon="md-document" shape="circle"
+					<i-button type="success"
+						@click.native="onClickEdit()"  icon="md-document" shape="circle"
+					/>
+				</div>
+				<i-button type="primary" v-if="$isLogin() && videoId.length > 0"
+					@click.native="countdown()"  icon="md-walk" shape="circle"
 				/>
 			</div>
-			
 		</div>
   `,
 	props: {
@@ -46,6 +49,7 @@ Vue.component('yt-player', {
 	mounted () {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
+		
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -137,6 +141,21 @@ Vue.component('yt-player', {
 		},
 		onClickEdit(){
 			this.$emit('on-click-edit');
+		},
+		countdown(index){
+			let self = this;
+			this.broadcast.$on('playend', playend);
+			let i = 0;
+			this.onClickPlay(i)
+
+			function playend() {
+				if(i < self.rows.length) {
+					i++;
+					setTimeout(() => {
+						self.onClickPlay(i);
+					}, 1000 * 10);
+				}
+			}
 		}
 	},
 	computed: {
