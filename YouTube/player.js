@@ -122,11 +122,11 @@ Vue.component('yt-player', {
 					this.onClickPlay(this.prev)
 				else if(this.active > -1)
 					this.onClickPlay(this.active);
-			} else if(event.keyCode == 37) { // left
+			} else if(event.keyCode == 37 || event.keyCode == 38) { // left, up
 				if(this.active > 0) {
 					this.onClickPlay(this.active - 1)
 				}
-			} else if(event.keyCode == 39) { // right
+			} else if(event.keyCode == 39 || event.keyCode == 40) { // right, right
 				if(this.active < this.rows.length - 1) {
 					this.onClickPlay(this.active + 1)
 				}

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -293,6 +292,7 @@
 						children: [
 						]
 					}
+					this.dialog = "list";
 				},
         async onSelect(item){
 					// console.log(JSON.stringify(item))
@@ -350,7 +350,7 @@
 										newDiv.style.width = "0px";
 										let exam = document.getElementById('exam');
 										exam.style.height = clientHeight + "px";
-										exam.style.width = myParent.clientWidth + "px";
+										// exam.style.width = myParent.clientWidth + "px";
 										this.$refs["exam"].set(item.topic)
 									}
 								},
@@ -372,7 +372,7 @@
 							clearInterval(id1)
 							stop()
 						}
-					}, 300);
+					}, 50);
 
 					function stop() {
 						id2 = setInterval(() => {
@@ -381,7 +381,7 @@
 							// } else if(player.getPlayerState() == 2) {
 								clearInterval(id2);
 							}
-						}, 300);						
+						}, 50);						
 					}
 				}
 			}

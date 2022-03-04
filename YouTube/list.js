@@ -178,14 +178,23 @@ Vue.component('dlg-list', {
 							this.reset();
 					}
 				} else if((id == "editStart" || id == "editEnd") && ok && (code == 37 || code == 39)) {
-					let x = ((code == 37 ? -0.5 : 0.5) + parseFloat(document.getElementById(id).value)).toFixed(1);
-					if(id == "editStart") 
-						this.start = x
-					else 
-						this.end = x
-					player.seekTo(x);
+					let x = parseFloat(document.getElementById(id).value).toFixed(2);
+					x = (code == 37 ? -0.5 : 0.5) + parseFloat(x);
+					let start = 0, end = 0;
+					if(id == "editStart") {
+						this.start = x;
+						start = x;
+						end = x + 5;
+					} 						
+					else { 
+						start = x - 5;
+						end = x;
+						this.end = x;
+					}
+					// console.log("start: " + start + ", end: " + end)
+					this.$emit('on-click-play', {end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && ok && code == 80) { // p
-					let x = parseFloat(parseFloat(document.getElementById(id).value).toFixed(1));
+					let x = parseFloat(parseFloat(document.getElementById(id).value).toFixed(2));
 					// console.log(x + ", " + typeof x)
 					let start = 0, end = 0;
 					if(id == "editStart"){
@@ -198,11 +207,11 @@ Vue.component('dlg-list', {
 					// console.log(start + "; " + end)
 					this.$emit('on-click-play', {end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && pk) {
-					// document.getElementById(id).value = player.getCurrentTime().toFixed(1);
+					// document.getElementById(id).value = player.getCurrentTime().toFixed(2);
 					if(id == "editStart") 
-						this.start = player.getCurrentTime().toFixed(1)
+						this.start = player.getCurrentTime().toFixed(2)
 					else 
-						this.end = player.getCurrentTime().toFixed(1)
+						this.end = player.getCurrentTime().toFixed(2)
 				} else if(code == 27) {
 					this.reset();
 				// } else if ((id == "editStart" || id == "editEnd") && code > 47 && code < 58) {
@@ -288,7 +297,7 @@ Vue.component('dlg-list', {
 				start = this.rows[index].start;
 				end = this.rows[index].end;
 			}
-			console.log({end, start})
+			// console.log({end, start})
 			this.$emit('on-click-play', {end, start});
 		},
 		onResize(){
