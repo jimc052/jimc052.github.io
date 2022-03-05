@@ -14,9 +14,9 @@ Vue.component('yt-player', {
 					<span v-else>{{(index + 1)}}</span>
 				</i-button>
 			</div>
-			<div>
+			<div style="margin: 3px 10px 3px 0px;">
 				<div v-if="$isDebug() && $isLogin() && videoId.length > 0"
-					style="flex-direction: row; margin: 3px 10px 3px 0px;"
+					style="flex-direction: row; margin-bottom: 5px;"
 				>
 					<i-button type="success"  
 						@click.native="onClickList()"  icon="md-create" shape="circle" />
@@ -25,7 +25,7 @@ Vue.component('yt-player', {
 						@click.native="onClickEdit()"  icon="md-document" shape="circle"
 					/>
 				</div>
-				<i-button type="primary" v-if="$isLogin() && videoId.length > 0"
+				<i-button type="primary" v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
 					@click.native="countdown()"  icon="md-walk" shape="circle"
 				/>
 			</div>

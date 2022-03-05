@@ -9,7 +9,7 @@ Vue.component('dlg-list', {
 			<Icon type="md-add" size="22" @click.native="addRow" 
 				v-if="cursor == -1"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
-			<Icon type="md-close" size="22" 
+			<Icon type="md-checkmark" size="22" 
 				v-if="cursor == -1"
 				@click.native="close" style="cursor: pointer; color: white;" />
 		</div>
@@ -53,7 +53,7 @@ Vue.component('dlg-list', {
 					<Icon v-else type="md-create" size="18" 
 						@click.native="cursor = index; name = item.title; start = item.start; end = item.end" 
 						style="cursor: pointer; margin-left: 6px;" />
-					<Icon :type="cursor == index ? 'md-close' : 'md-trash'" size="18"
+					<Icon :type="cursor == index ? 'md-checkmark' : 'md-trash'" size="18"
 						@click.native="del(index)" 
 						style="cursor: pointer; margin-left: 6px;" />
 				</div>
@@ -178,8 +178,9 @@ Vue.component('dlg-list', {
 							this.reset();
 					}
 				} else if((id == "editStart" || id == "editEnd") && ok && (code == 37 || code == 39)) {
-					let x = parseFloat(document.getElementById(id).value).toFixed(2);
-					x = (code == 37 ? -0.5 : 0.5) + parseFloat(x);
+					if(!this.isNumber(document.getElementById(id).value)) return;
+
+					let x = (code == 37 ? -0.5 : 0.5) + toNumber(document.getElementById(id).value);
 					let start = 0, end = 0;
 					if(id == "editStart") {
 						this.start = x;
@@ -187,22 +188,28 @@ Vue.component('dlg-list', {
 						end = x + 5;
 					} 						
 					else { 
-						start = x - 5;
+						start = this.isNumber(document.getElementById("editStart").value) 
+							? toNumber(document.getElementById("editStart").value) : x - 3;
+						console.log(start)
 						end = x;
 						this.end = x;
+						start = end - start > 3 ? end - 3 : start;
 					}
 					// console.log("start: " + start + ", end: " + end)
 					this.$emit('on-click-play', {end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && ok && code == 80) { // p
-					let x = parseFloat(parseFloat(document.getElementById(id).value).toFixed(2));
+					if(!this.isNumber(document.getElementById(id).value)) return;
+					let x = toNumber(document.getElementById(id).value);
 					// console.log(x + ", " + typeof x)
 					let start = 0, end = 0;
 					if(id == "editStart"){
 						start = x;
 						end = x + 5;
 					} else {
-						start = x - 5;
+						start = this.isNumber(document.getElementById("editStart").value) 
+							? toNumber(document.getElementById("editStart").value) : x - 3;
 						end = x;
+						start = end - start > 3 ? end - 3 : start;
 					}
 					// console.log(start + "; " + end)
 					this.$emit('on-click-play', {end: end, start: start});
@@ -225,6 +232,10 @@ Vue.component('dlg-list', {
 					event.stopImmediatePropagation();
 					event.stopPropagation();				
 				}
+			}
+
+			function toNumber(num) {
+				return parseFloat(parseFloat(num).toFixed(2));
 			}
 		},
 		reset(){

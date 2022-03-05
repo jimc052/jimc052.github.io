@@ -190,7 +190,8 @@
 					style="cursor: pointer; margin-left: 10px; margin-right: 10px;"></Icon>
 					{{typeof editData == "object" ? editData.title : ""}}
 				</div>
-				<yt-exam ref="exam" v-if="typeof editData == 'object' && typeof editData.topic == 'object' " />
+				<yt-exam ref="exam" @update="onUpdateTopic"
+					v-if="typeof editData == 'object' && typeof editData.topic == 'object' " />
 				<div id="player" style="visibility: hidden;"></div>
 			</div>
 			<yt-player ref="player" @on-click-play="onClickPlay"  
@@ -270,13 +271,15 @@
 				console.log("debug: " + this.$isDebug())
 			},
 			methods: {
+				onUpdateTopic(){
+
+				},
 				onUpdateEditData(data){
 					clearInterval(id1);
 					clearInterval(id2);
 					player.pauseVideo();
 					if(this.$refs["menu"].set(data) > -1)
 						this.onSelect(data)
-					// console.log(data)
 				},
 				onClickOpenDlg(dlg){
 					this.dialog = dlg;
@@ -298,6 +301,7 @@
 					// console.log(JSON.stringify(item))
 					clearInterval(id1);
 					clearInterval(id2);
+					this.dialog = "";
 
 					this.editData = item;
 					this.$refs["player"].play(item);
