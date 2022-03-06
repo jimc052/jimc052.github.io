@@ -1,7 +1,8 @@
 //; 
 Vue.component('yt-exam', { 
 	template:  `
-    <div style="height: 0px; overflow-y: auto; background-color: white;" id="exam" >
+    <div id="exam" 
+			style="height: 0px; overflow-y: auto; background-color: white; position: relative;"  >
       <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
 				:key="index"
 				:style="{backgroundColor: active == index ? '#f5f5f5' : '', borderRadius: '8px',
@@ -22,16 +23,24 @@ Vue.component('yt-exam', {
 					style="margin-left: 30px; "
 				>
 					<span style="font-size: 22px; ">{{(i + 1) + "). "}}</span>
+
 					<input type="radio" style="margin: 0px 5px;" :name="'radio' + index"
 						:checked="item.answer == i"
 						@click="onClickRadio(index, i)"
-					/> 
+						v-if="$isDebug() || isExam"
+					/>
 					<span :style="{color: i == item.answer && !isExam ? 'orange' : '', fontSize: '22px'}" 
-						style="user-select: text !important;">
+						style="user-select: text !important;"
+					>
 						{{el}}
 					</span>
 				</div>
       </div>
+
+			<i-button type="success" icon="md-cloud-done" shape="circle" @click.native="update()"  
+				style="position: fixed; right: 20px; bottom: 50%;"
+				v-if="isDirty && !isExam"
+			/>
     </div>
   `,
 	props: {
@@ -40,7 +49,9 @@ Vue.component('yt-exam', {
 		return {
       topic: [],
 			active: -1,
-			isExam: false
+			isExam: false, // 還沒確定，是否要寫測試模式
+			isDirty: false,
+			origin: []
 		};
 	},
 	created(){
@@ -71,20 +82,38 @@ Vue.component('yt-exam', {
 				viewer.scrollTop = offsetTop - 60;
 			}
 		},
-    set(item) {
+    set(id, item) {
+			this.origin = item;
 			let el = document.getElementById("exam");
       if(el != null) el.style.padding = "10px 10px";
+			el.scrollTop = 0;
+			el.style.scrollBehavior = "smooth";
       this.topic = [];
 			item.forEach(el => {
+				// el.question = el.question.replace('<br/>&nbsp;&nbsp;&nbsp;', "\n");
 				let json = Object.assign({}, el)
-				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;')
+				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;');
 				this.topic.push(json);
 			});
+			setTimeout(() => {
+				let m = window.localStorage["yt-" + id];
+				if(typeof m != "undefined") {
+					this.exam(parseInt(m, 10))
+				}				
+			}, 600);
     },
 		onClickRadio(index, i) {
 			let data = this.topic[index];
 			data.answer = i
-			this.$set(this.topic, index, data)
+			this.$set(this.topic, index, data);
+			this.isDirty = true;
+		},
+		update() {
+			this.topic.forEach((el, index) => {
+				this.origin[index].answer = el.answer;
+			})
+			this.$emit("update", this.origin);
+			this.isDirty = false;
 		}
 	},
 	computed: {

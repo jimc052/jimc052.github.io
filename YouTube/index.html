@@ -271,8 +271,9 @@
 				console.log("debug: " + this.$isDebug())
 			},
 			methods: {
-				onUpdateTopic(){
-
+				onUpdateTopic(json){
+					this.editData.topic = json;
+					this.$refs["menu"].set(this.editData)
 				},
 				onUpdateEditData(data){
 					clearInterval(id1);
@@ -299,6 +300,7 @@
 				},
         async onSelect(item){
 					// console.log(JSON.stringify(item))
+					window.localStorage["yt-temp"] = JSON.stringify(item);
 					clearInterval(id1);
 					clearInterval(id2);
 					this.dialog = "";
@@ -355,7 +357,7 @@
 										let exam = document.getElementById('exam');
 										exam.style.height = clientHeight + "px";
 										// exam.style.width = myParent.clientWidth + "px";
-										this.$refs["exam"].set(item.topic)
+										this.$refs["exam"].set(item.id, item.topic)
 									}
 								},
 								'onStateChange': onPlayerStateChange
