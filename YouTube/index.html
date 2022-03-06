@@ -68,6 +68,9 @@
 		.ivu-menu-item-group-title {
 			display: none !important;
 		}
+		#btnPlays {
+			overflow-y: auto;
+		}
 		#btnPlays > button + button {
 			margin-left: 1px;
 		}
@@ -352,9 +355,9 @@
 					}
 
 					setTimeout(() => {
-						var btnPlays = document.getElementById('btnPlays');
-						var clientHeight = document.body.clientHeight - btnPlays.clientHeight;
-						var header = document.getElementById('header');
+						let btnPlays = document.getElementById('btnPlays');
+						let clientHeight = document.body.clientHeight - btnPlays.clientHeight;
+						let header = document.getElementById('header');
 						if(header != null){
 							clientHeight -= header.clientHeight;
 						}

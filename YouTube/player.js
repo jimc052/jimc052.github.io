@@ -6,7 +6,8 @@ Vue.component('yt-player', {
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
 			<div id="btnPlays"
 				style="padding: 2px; flex: 1;"
-				:style="{height: (rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 'auto')}"
+				:style="{height: (rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 
+				smallScreen ? '120px' : 'auto')}"
 			>
 				<i-button v-for="(item, index) in rows" :key="index" class="btn"
 					:type="active == index || prev == index ? 'warning' : 'default'"
@@ -46,7 +47,8 @@ Vue.component('yt-player', {
 			videoId: "",
 			content: undefined,
 			height: 0,
-			examing: false
+			examing: false,
+			smallScreen: true, 
 		};
 	},
 	created(){
@@ -54,15 +56,21 @@ Vue.component('yt-player', {
 	mounted () {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
+		this.broadcast.$on('onResize', this.onResize);
 		
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
     this.broadcast.$off('onPlayerReady', this.onPlayerReady);
+		this.broadcast.$off('onResize', this.onResize);
 		clearTimeout(idPlay)
   },
 	methods: {
-    async play(item){
+		onResize(small){
+			this.smallScreen = small;
+	
+		},
+		async play(item){
 			this.content = item;
 			this.prev = -1;
 			this.active = -1;
@@ -95,14 +103,16 @@ Vue.component('yt-player', {
 					arr[this.prev].focus();
 				}, 600);				
 			}
+			console.log(this.smallScreen)
+			if(this.smallScreen) {
+				el.style.height = "80px";
+				el.style.overflowY = "auto";
+			}
     },
 		onPlayerReady(){
 			setTimeout(() => {
 				let el = document.getElementById("btnPlays");
 				el.style.visibility = "visible";
-				// if(this.rows.length > 0) {
-				// 	player.seekTo(this.rows[this.prev].start);
-				// }
 			}, 300);
 		},
     onClickPlay(index) {
