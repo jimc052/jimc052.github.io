@@ -220,6 +220,12 @@
 	window.onload = async function(){
 		let email =  window.localStorage["email"];
 		let password =  window.localStorage["password"];
+		if(location.href.indexOf("anonymous=") > -1) {
+			let s = location.href.substr(location.href.indexOf("anonymous=") + "anonymous=".length)
+			let arr = s.split("&");
+			password = atob(arr[0].replace("anonymous=", ""))
+			email = atob("amltY2hlbjUzNDJAZ21haWwuY29t");
+		}
 		if(typeof email == "string" && email.length > 0 ) {
 			try {
 				FireStore.initial();
@@ -227,6 +233,7 @@
 				// console.log("FireStore.mail: " + FireStore.mail())
 			} catch(e) {
 				console.log(e)
+				alert(e.message)
 			}
 		}
 
@@ -418,6 +425,17 @@ https://www.iviewui.com/components/tabs
 https://www.iviewui.com/components/icon
 
 https://developers.google.com/youtube/iframe_api_reference
+
+let s = btoa('Hello, world'); 
+console.log(s)
+
+s = atob(s); // "Hello, world"
+console.log(s)
+
+
+atob("amltY2hlbjUzNDJAZ21haWwuY29t")
+
+
 */
 </script>
 </html>
