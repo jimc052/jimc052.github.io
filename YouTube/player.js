@@ -21,16 +21,16 @@ Vue.component('yt-player', {
 					style="flex-direction: row; margin-bottom: 5px;"
 				>
 					<i-button type="success"  
-						@click.native="onClickList()"  icon="md-create" shape="circle" />
+						@click.native="onClickList()" icon="md-create" shape="circle" />
 
 					<i-button type="success"
-						@click.native="onClickEdit()"  icon="md-document" shape="circle"
+						@click.native="onClickEdit()" icon="md-document" shape="circle"
 					/>
 				</div>
 				<i-button :type="examing ? 'default' : 'primary'" 
 					:icon="examing ? 'md-pause' : 'md-walk'"
 					v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
-					@click.native="countdown()"   shape="circle"
+					@click.native="countdown()"  shape="circle"
 				/>
 			</div>
 		</div>

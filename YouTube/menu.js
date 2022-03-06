@@ -36,7 +36,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-06 11:00</div>
+        <div  style="flex: 1;">2022-03-06 11:20</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
@@ -149,6 +149,7 @@ Vue.component('yt-menu', {
         let ref = FireStore.db.collection("YouTube").doc("目錄").
               collection(this.project[this.topic].id).doc(id);
         let x = await ref.set(json);
+        this.$Notice.success({title: '已上傳 Firebase'});
       } catch(e) {
         console.log(e)
       }

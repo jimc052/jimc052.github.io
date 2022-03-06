@@ -101,6 +101,9 @@
       let arr1 = ta1.value.split("\n"), arr2 = [], arr3 = [], s1 = "";
       arr1.forEach((el, index1) => {
        if(el.trim().length == 0 || index1 == arr1.length - 1) {
+         if(index1 == arr1.length - 1 && el.trim().length > 0) {
+          s1 += (s1.length > 0 ? "\n" : "") + el;
+         }
          if(s1.length > 0) arr2.push(s1)
          s1 = "";
        } else {
