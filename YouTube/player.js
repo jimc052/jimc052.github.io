@@ -1,4 +1,6 @@
 
+let idPlay;
+
 Vue.component('yt-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
@@ -25,8 +27,10 @@ Vue.component('yt-player', {
 						@click.native="onClickEdit()"  icon="md-document" shape="circle"
 					/>
 				</div>
-				<i-button type="primary" v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
-					@click.native="countdown()"  icon="md-walk" shape="circle"
+				<i-button :type="examing ? 'default' : 'primary'" 
+					:icon="examing ? 'md-pause' : 'md-walk'"
+					v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
+					@click.native="countdown()"   shape="circle"
 				/>
 			</div>
 		</div>
@@ -42,6 +46,7 @@ Vue.component('yt-player', {
 			videoId: "",
 			content: undefined,
 			height: 0,
+			examing: false
 		};
 	},
 	created(){
@@ -54,6 +59,7 @@ Vue.component('yt-player', {
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
     this.broadcast.$off('onPlayerReady', this.onPlayerReady);
+		clearTimeout(idPlay)
   },
 	methods: {
     async play(item){
@@ -63,6 +69,7 @@ Vue.component('yt-player', {
       this.rows = Array.isArray(item.children) ? item.children : [];
 			this.videoId = item.id;
 			let m = window.localStorage["yt-" + this.videoId];
+			clearTimeout(idPlay)
 
 			let x = -1;
 			if(typeof m != "undefined") {
@@ -143,18 +150,26 @@ Vue.component('yt-player', {
 			this.$emit('on-click-edit');
 		},
 		countdown(index){
+			clearTimeout(idPlay)
+			if(this.examing == true) {
+				this.examing = false;
+				return;
+			} else {
+				this.examing = true;
+			}
 			let self = this;
 			this.broadcast.$on('playend', playend);
 			let i = 0;
 			this.onClickPlay(i)
 
 			function playend() {
-				if(i < self.rows.length) {
+				if(i < self.rows.length && self.examing == true) {
 					i++;
-					setTimeout(() => {
+					idPlay = setTimeout(() => {
 						self.onClickPlay(i);
 					}, 1000 * 10);
 				} else {
+					clearTimeout(idPlay)
 					self.broadcast.$off('playend', playend);
 				}
 			}

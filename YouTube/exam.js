@@ -37,10 +37,15 @@ Vue.component('yt-exam', {
 				</div>
       </div>
 
-			<i-button type="success" icon="md-cloud-done" shape="circle" @click.native="update()"  
-				style="position: fixed; right: 20px; bottom: 50%;"
-				v-if="isDirty && !isExam"
-			/>
+			<div style="position: fixed; right: 20px; bottom: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+				<a id="linkExamYouTube" href="" target="_blank" 
+					style="margin-bottom: 10px; justify-content: center; align-items: center;">
+					<Icon type="logo-youtube" size="30" />
+				</a>
+				<i-button type="success" icon="md-cloud-done" shape="circle" @click.native="update()"  
+					v-if="isDirty && !isExam"
+				/>
+			</div>
     </div>
   `,
 	props: {
@@ -101,6 +106,8 @@ Vue.component('yt-exam', {
 					this.exam(parseInt(m, 10))
 				}				
 			}, 600);
+			let link = document.getElementById("linkExamYouTube");
+			link.href = `https://www.youtube.com/watch?v=${id}`;
     },
 		onClickRadio(index, i) {
 			let data = this.topic[index];

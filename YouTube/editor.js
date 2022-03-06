@@ -17,6 +17,14 @@ Vue.component('yt-editor', {
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="children" />
         </TabPane>
+
+				<div  slot="extra">
+					<a id="linkMP3" href="" target="_blank" style="margin: 0px 10px;">下載 MP3</a>
+					<a id="linkYouTube" href="" target="_blank" style="margin-right: 10px;">
+						<Icon type="logo-youtube" size="24"  />
+					</a>
+				</div>
+				
       </Tabs>
 
       <div slot="header" style="height: 1px; bacground-color: red; overflow: hidden; visiblity: hidden;"></div>
@@ -144,6 +152,13 @@ Vue.component('yt-editor', {
 					let h2 = document.querySelector("#tabs .ivu-tabs-bar").clientHeight;
 					this.height = (h1 - h2);
 				}, 300);
+
+				let link = document.getElementById("linkMP3");
+				link.href = `https://www.yout.com/watch?v=${obj.id}`;
+				console.log(`https://www.youtube.com/watch?v=${obj.id}`)
+
+				link = document.getElementById("linkYouTube");
+				link.href = `https://www.youtube.com/watch?v=${obj.id}`;
 			} else {
 				this.topic = "";
 				this.title = "";

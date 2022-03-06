@@ -220,10 +220,11 @@
 	window.onload = async function(){
 		let email =  window.localStorage["email"];
 		let password =  window.localStorage["password"];
-		if(location.href.indexOf("anonymous=") > -1) {
-			let s = location.href.substr(location.href.indexOf("anonymous=") + "anonymous=".length)
+		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
+			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
+			let s = location.href.substr(location.href.indexOf(key) + key.length)
 			let arr = s.split("&");
-			s = arr[0].replace("anonymous=", "");
+			s = arr[0].replace(key, "");
 			s = atob(s)
 			arr = s.split("\t")
 			email = arr[0];
@@ -242,8 +243,9 @@
 
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		Vue.prototype.$isDebug = function() {
-			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 
-				|| location.href.indexOf("debug=Y") > -1 
+			return (location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 
+				|| location.href.indexOf("debug=Y") > -1)
+				&& location.href.indexOf("anonymous=") == -1
 				? true : false;
 		}
 
@@ -428,17 +430,6 @@ https://www.iviewui.com/components/tabs
 https://www.iviewui.com/components/icon
 
 https://developers.google.com/youtube/iframe_api_reference
-
-let s = btoa('Hello, world'); 
-console.log(s)
-
-s = atob(s); // "Hello, world"
-console.log(s)
-
-
-atob("amltY2hlbjUzNDJAZ21haWwuY29t")
-
-
 */
 </script>
 </html>
