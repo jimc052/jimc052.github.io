@@ -223,8 +223,11 @@
 		if(location.href.indexOf("anonymous=") > -1) {
 			let s = location.href.substr(location.href.indexOf("anonymous=") + "anonymous=".length)
 			let arr = s.split("&");
-			password = atob(arr[0].replace("anonymous=", ""))
-			email = atob("amltY2hlbjUzNDJAZ21haWwuY29t");
+			s = arr[0].replace("anonymous=", "");
+			s = atob(s)
+			arr = s.split("\t")
+			email = arr[0];
+			password = arr[1];
 		}
 		if(typeof email == "string" && email.length > 0 ) {
 			try {
