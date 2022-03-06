@@ -49,6 +49,7 @@ Vue.component('yt-player', {
 			height: 0,
 			examing: false,
 			smallScreen: true, 
+			cycle: 0
 		};
 	},
 	created(){
@@ -63,12 +64,11 @@ Vue.component('yt-player', {
 		window.removeEventListener('keydown', this.onKeydown, false);
     this.broadcast.$off('onPlayerReady', this.onPlayerReady);
 		this.broadcast.$off('onResize', this.onResize);
-		clearTimeout(idPlay)
+		this.stop();
   },
 	methods: {
 		onResize(small){
 			this.smallScreen = small;
-	
 		},
 		async play(item){
 			this.content = item;
@@ -77,7 +77,7 @@ Vue.component('yt-player', {
       this.rows = Array.isArray(item.children) ? item.children : [];
 			this.videoId = item.id;
 			let m = window.localStorage["yt-" + this.videoId];
-			clearTimeout(idPlay)
+			this.stop();
 
 			let x = -1;
 			if(typeof m != "undefined") {
@@ -103,12 +103,14 @@ Vue.component('yt-player', {
 					arr[this.prev].focus();
 				}, 600);				
 			}
-			console.log(this.smallScreen)
-			if(this.smallScreen) {
-				el.style.height = "80px";
-				el.style.overflowY = "auto";
-			}
     },
+		stop(){
+			if(player)
+				player.pauseVideo();
+			this.examing = false;
+			clearTimeout(idPlay)
+			this.broadcast.$off('playend', this.playend);
+		},
 		onPlayerReady(){
 			setTimeout(() => {
 				let el = document.getElementById("btnPlays");
@@ -119,7 +121,8 @@ Vue.component('yt-player', {
       this.$emit('on-click-play', this.rows[index]);
 			this.active = index;
 			this.prev = -1;
-			window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
+			if(this.examing == false)
+				window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
 			if(index > -1 && index < this.rows.length) {
 				this.broadcast.$emit('exam', index);
 				setTimeout(() => {
@@ -154,34 +157,34 @@ Vue.component('yt-player', {
 			}
 		},
 		onClickList(){
+			this.stop();
 			this.$emit('on-click-list');
 		},
 		onClickEdit(){
+			this.stop();
 			this.$emit('on-click-edit');
 		},
 		countdown(index){
 			clearTimeout(idPlay)
 			if(this.examing == true) {
 				this.examing = false;
+				this.stop();
 				return;
 			} else {
 				this.examing = true;
 			}
-			let self = this;
-			this.broadcast.$on('playend', playend);
-			let i = 0;
-			this.onClickPlay(i)
-
-			function playend() {
-				if(i < self.rows.length && self.examing == true) {
-					i++;
-					idPlay = setTimeout(() => {
-						self.onClickPlay(i);
-					}, 1000 * 10);
-				} else {
-					clearTimeout(idPlay)
-					self.broadcast.$off('playend', playend);
-				}
+			this.broadcast.$on('playend', this.playend);
+			this.cycle = 0;
+			this.onClickPlay(this.cycle)
+		},
+		playend(){
+			if(this.cycle < this.rows.length && this.examing == true) {
+				this.cycle++;
+				idPlay = setTimeout(() => {
+					this.onClickPlay(this.cycle);
+				}, 1000 * 10);
+			} else {
+				this.stop();
 			}
 		}
 	},

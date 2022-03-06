@@ -410,12 +410,15 @@
 					}, 50);
 
 					function stop() {
+						if(player.getPlayerState() != 1) return;
 						id2 = setInterval(() => {
 							if(player.getCurrentTime() < item.start || player.getCurrentTime() > item.end) {
+								if(player.getPlayerState() == 1) 
+									self.broadcast.$emit('playend');
 								player.pauseVideo();
-							// } else if(player.getPlayerState() == 2) {
+								clearInterval(id2);								
+							} else if(player.getPlayerState() != 1) {
 								clearInterval(id2);
-								self.broadcast.$emit('playend');
 							}
 						}, 50);						
 					}
@@ -428,6 +431,10 @@
 		// console.log("onYouTubeIframeAPIReady................")
 	}
 	function onPlayerStateChange(e) {
+		if(e.data == 2) {
+			clearInterval(id1);
+			clearInterval(id2);
+		}
 		// console.log("onPlayerStateChange: " + e.data + " ..................")
 		/*
 		https://developers.google.com/youtube/iframe_api_reference#playVideo
