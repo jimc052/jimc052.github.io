@@ -183,7 +183,6 @@ Vue.component('yt-editor', {
 				t = t - s;
 				let m = (t / 60).toFixed(0);
 				return (m < 10 ? '0' : '') + m + ":" + (s < 10 ? '0' : '') + s + ":" + ms;
-				// return t
 			}
 		}
 	}
