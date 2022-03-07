@@ -2,7 +2,7 @@ Vue.component('yt-editor', {
 	template:  `
     <modal v-model="visible" class-name="vertical-center-modal" 
         fullscreen style="overflow: hidden;" id="dlgEdit">
-      <Tabs type="card" id="tabs" value="1">
+      <Tabs type="card" id="tabs" value="原稿">
         <TabPane :closable="false" label="基本資料" :style="{height: height + 'px'}"  name="0">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="title" />
@@ -16,6 +16,11 @@ Vue.component('yt-editor', {
 				<TabPane :closable="false" label="位置" :style="{height: height + 'px'}"  name="2">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="children" />
+        </TabPane>
+
+				<TabPane :closable="false" label="原稿" :style="{height: height + 'px'}"  name="原稿">
+          <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px; background-color: #eee;"
+          v-model="source" readonly />
         </TabPane>
 
 				<div  slot="extra"  style="display: flex; flex-direction: row;">
@@ -51,6 +56,7 @@ Vue.component('yt-editor', {
 			topic: "",
 			children: "",
 			height: 0,
+			source: ""
 		};
 	},
 	created(){
@@ -88,7 +94,7 @@ Vue.component('yt-editor', {
 	watch: {
 		visible(value) {
 			if(value == true) {
-				let obj = Object.assign({}, this.editdata)
+				let obj = Object.assign({}, this.editdata);
 				this.topic = "";
 				if(Array.isArray(obj.topic)) {
 					let s = "", cols = ["question", "answer", "option"];
@@ -152,6 +158,30 @@ Vue.component('yt-editor', {
 						+ (typeof obj[key] == "string" ? `"${obj[key]}"` : obj[key]) 
 				}
 				this.title = "{\n" + s + "\n}";
+				this.source = "{\n" + s; 
+				if(this.topic.length > 0) {
+					this.source += `,\n  "topic": `;
+					this.topic.split("\n").forEach((el, index) => {
+						if(el.trim().length == 0) return;
+						if(index == this.topic.length - 1) 
+							this.source += "  ";
+						else if(index > 0)
+							this.source += "    ";
+						this.source += el + (index == this.topic.length - 1 ? "" : "\n")
+					})
+				}
+				if(this.children.length > 0) {
+					this.source += `,\n  "children": `;
+					this.children.split("\n").forEach((el, index) => {
+						if(el.trim().length == 0) return;
+						if(index == this.children.length - 1) 
+							this.source += "  ";
+						else if(index > 0)
+							this.source += "    ";
+						this.source += el + (index == this.children.length - 1 ? "" : "\n")
+					})
+				}
+				this.source += "\n}";
 				setTimeout(() => {
 					let body = document.querySelector("#dlgEdit .ivu-modal-body");
 					body.style.top = "0px";
@@ -162,7 +192,6 @@ Vue.component('yt-editor', {
 
 				let link = document.getElementById("linkMP3");
 				link.href = `https://www.yout.com/watch?v=${obj.id}`;
-				console.log(`https://www.youtube.com/watch?v=${obj.id}`)
 
 				link = document.getElementById("linkYouTube");
 				link.href = `https://www.youtube.com/watch?v=${obj.id}`;
@@ -170,6 +199,7 @@ Vue.component('yt-editor', {
 				this.topic = "";
 				this.title = "";
 				this.children = "";
+				this.source = "";
 			}
 
 			function toTimes(t) {
