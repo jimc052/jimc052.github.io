@@ -18,7 +18,8 @@ Vue.component('yt-editor', {
           v-model="children" />
         </TabPane>
 
-				<div  slot="extra">
+				<div  slot="extra"  style="display: flex; flex-direction: row;">
+					<div id="minutes" style="user-select: text;" />
 					<a id="linkMP3" href="" target="_blank" style="margin: 0px 10px;">下載 MP3</a>
 					<a id="linkYouTube" href="" target="_blank" style="margin-right: 10px;">
 						<Icon type="logo-youtube" size="24"  />
@@ -28,7 +29,8 @@ Vue.component('yt-editor', {
       </Tabs>
 
       <div slot="header" style="height: 1px; bacground-color: red; overflow: hidden; visiblity: hidden;"></div>
-      <div slot="footer" style="">
+      <div slot="footer">
+				
 				<Button @click="update" type="success">存檔</Button>
 				<Button @click="close">關閉</Button>
       </div>
@@ -136,6 +138,11 @@ Vue.component('yt-editor', {
 						s += (s.length > 0 ? ",\n" : "") + "{"+ s2 + "}";
 					}
 					this.children = "[\n" + s + "\n]";
+					
+					let minutes = document.getElementById("minutes");
+
+					minutes.innerText = toTimes(obj.children[0].start) + " ~ " + 
+						toTimes(obj.children[obj.children.length - 1].end);
 					delete obj.children;
 				}
 
@@ -163,6 +170,20 @@ Vue.component('yt-editor', {
 				this.topic = "";
 				this.title = "";
 				this.children = "";
+			}
+
+			function toTimes(t) {
+				let x = t + "";
+				let arr = x.split(".");
+				let ms = "00";
+				if(arr.length == 2) {
+					ms = (arr[1].length == 1 ? "0" : "") + arr[1];
+				}
+				let s = (t % 60).toFixed(0);
+				t = t - s;
+				let m = (t / 60).toFixed(0);
+				return (m < 10 ? '0' : '') + m + ":" + (s < 10 ? '0' : '') + s + ":" + ms;
+				// return t
 			}
 		}
 	}
