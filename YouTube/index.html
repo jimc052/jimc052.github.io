@@ -369,7 +369,7 @@
 							height: this.video == true ? clientHeight : 0,
 							width: this.video == true  ? myParent.clientWidth : 0,
 							playerVars: { 
-								'controls': 0 , 
+								'controls': 0, 
 								disablekb: 1,
 								iv_load_policy: 3, 
 								cc_load_policy: 0, 
@@ -377,6 +377,7 @@
 							},
 							events: {
 								'onReady': ()=>{
+									player.setPlaybackRate(0.9)
 									console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
 									if(this.video == false){
