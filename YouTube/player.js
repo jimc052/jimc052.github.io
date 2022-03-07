@@ -28,8 +28,8 @@ Vue.component('yt-player', {
 						@click.native="onClickEdit()" icon="md-document" shape="circle"
 					/>
 				</div>
-				<i-button :type="examing ? 'default' : 'primary'" 
-					:icon="examing ? 'md-pause' : 'md-walk'"
+				<i-button :type="isPlaying ? 'default' : 'primary'" 
+					:icon="isPlaying ? 'md-pause' : 'md-walk'"
 					v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
 					@click.native="countdown()"  shape="circle"
 				/>
@@ -47,7 +47,7 @@ Vue.component('yt-player', {
 			videoId: "",
 			content: undefined,
 			height: 0,
-			examing: false,
+			isPlaying: false,
 			smallScreen: true, 
 			cycle: 0
 		};
@@ -106,7 +106,7 @@ Vue.component('yt-player', {
     },
 		stop(){
 			if(player) player.pauseVideo();
-			this.examing = false;
+			this.isPlaying = false;
 			clearTimeout(idPlay)
 			this.broadcast.$off('playend', this.playend);
 		},
@@ -120,8 +120,11 @@ Vue.component('yt-player', {
       this.$emit('on-click-play', this.rows[index]);
 			this.active = index;
 			this.prev = -1;
-			if(this.examing == false)
+			if(this.isPlaying == false)
 				window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
+			else {
+				// console.log("onClickPlay: " + index + ", " + (new Date()))
+			}
 			if(index > -1 && index < this.rows.length) {
 				this.broadcast.$emit('exam', index);
 				setTimeout(() => {
@@ -164,20 +167,18 @@ Vue.component('yt-player', {
 			this.$emit('on-click-edit');
 		},
 		countdown(index){
-			clearTimeout(idPlay)
-			if(this.examing == true) {
-				this.examing = false;
+			if(this.isPlaying == true) {
 				this.stop();
-				return;
 			} else {
-				this.examing = true;
+				clearTimeout(idPlay)
+				this.isPlaying = true;
+				this.broadcast.$on('playend', this.playend);
+				this.cycle = 0;
+				this.onClickPlay(this.cycle)
 			}
-			this.broadcast.$on('playend', this.playend);
-			this.cycle = 0;
-			this.onClickPlay(this.cycle)
 		},
 		playend(){
-			if(this.cycle < this.rows.length - 1 && this.examing == true) {
+			if(this.cycle < this.rows.length - 1 && this.isPlaying == true) {
 				this.cycle++;
 				idPlay = setTimeout(() => {
 					this.onClickPlay(this.cycle);
