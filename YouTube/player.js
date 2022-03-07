@@ -105,8 +105,7 @@ Vue.component('yt-player', {
 			}
     },
 		stop(){
-			if(player)
-				player.pauseVideo();
+			if(player) player.pauseVideo();
 			this.examing = false;
 			clearTimeout(idPlay)
 			this.broadcast.$off('playend', this.playend);
@@ -178,7 +177,7 @@ Vue.component('yt-player', {
 			this.onClickPlay(this.cycle)
 		},
 		playend(){
-			if(this.cycle < this.rows.length && this.examing == true) {
+			if(this.cycle < this.rows.length - 1 && this.examing == true) {
 				this.cycle++;
 				idPlay = setTimeout(() => {
 					this.onClickPlay(this.cycle);
