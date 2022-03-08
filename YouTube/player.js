@@ -58,7 +58,6 @@ Vue.component('yt-player', {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
-		
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);

@@ -328,7 +328,12 @@
 				},
         async onSelect(item){
 					// console.log(JSON.stringify(item))
-					window.localStorage["yt-temp"] = JSON.stringify(item);
+					// window.localStorage["yt-temp"] = JSON.stringify(item);
+					let exam = document.getElementById("exam");
+					if(exam != null) exam.style.visibility = "hidden";
+					let btnPlays = document.getElementById("btnPlays");
+					if(btnPlays != null) btnPlays.style.visibility = "hidden";
+
 					clearInterval(id1);
 					clearInterval(id2);
 					this.dialog = "";
@@ -378,13 +383,14 @@
 							events: {
 								'onReady': ()=>{
 									player.setPlaybackRate(0.9)
-									console.log("onPlayerReady.........")
+									// console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
 									if(this.video == false){
 										newDiv.style.height = "0px";
 										newDiv.style.width = "0px";
 										let exam = document.getElementById('exam');
 										exam.style.height = clientHeight + "px";
+										exam.style.visibility = "visible";
 										// exam.style.width = myParent.clientWidth + "px";
 										this.$refs["exam"].set(item.id, item.topic)
 									}
