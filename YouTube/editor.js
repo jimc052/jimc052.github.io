@@ -208,6 +208,8 @@ Vue.component('yt-editor', {
 				let ms = "00";
 				if(arr.length == 2) {
 					ms = (arr[1].length == 1 ? "0" : "") + arr[1];
+					x = x.replace("." + arr[1]);
+					t = parseInt(x, 10)
 				}
 				let s = (t % 60).toFixed(0);
 				t = t - s;

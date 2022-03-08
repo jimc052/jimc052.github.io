@@ -1,0 +1,348 @@
+{
+  "id": "nUtU5Klvg-I",
+  "index": 3,
+  "modifyDate": 1645828197211,
+  "title": "Form 44",
+  "topic": [{
+      "question": "1. The student went to the right room. Which room did he go to?",
+      "answer": 0,
+      "option": ["the correct room","the large room","the room on the left","the wrong room"]  
+    },{
+      "question": "2. Peter and I had been conversing since 10 o'clock. What have we been doing?",
+      "answer": 2,
+      "option": ["walking","dancing","talking","eating"]  
+    },{
+      "question": "3. Where do you take the dirty clothes?",
+      "answer": 1,
+      "option": ["to the kitchen","to the laundry","to the bookstore","to the skating rink"]  
+    },{
+      "question": "4. Jack spilt the soda water. What was spilt?",
+      "answer": 2,
+      "option": ["the salad dressing","the milk","the soft drink","the sweet wine"]  
+    },{
+      "question": "5. You should select the right answer for each question. What should you do?",
+      "answer": 2,
+      "option": ["study the right answer","try out the right answer","choose the right answer","correct the answer"]  
+    },{
+      "question": "6. I asked for his opinion. What did I want?",
+      "answer": 1,
+      "option": ["his money","his ideas","his car","his tools"]  
+    },{
+      "question": "7. Mary asked Joe if he had a nice trip. Joe answered, \"Yes.\"",
+      "answer": 2,
+      "option": ["He had a poor time.","He had an accident.","He enjoyed his trip.","He is going on a trip."]  
+    },{
+      "question": "8. This hat fits me all right. I will take it.",
+      "answer": 2,
+      "option": ["It is the wrong size.","It is too tight.","It is the right size.","It is bright."]  
+    },{
+      "question": "9. Every six months, Mr. Brown takes his car to the mechanic for an inspection.",
+      "answer": 2,
+      "option": ["Mr. Brown wrecks his car every 6 months.","Mr. Brown trades his car every 6 months.","The mechanic examines Mr. Brown's car every 6 months.","The mechanic repairs Mr. Brown's car every 6 months."]  
+    },{
+      "question": "10. Billy has football practice every afternoon at four o'clock. When does he have football practice?",
+      "answer": 2,
+      "option": ["at 4 a.m.","in the morning","at 4 p.m.","at night"]  
+    },{
+      "question": "11. What is the capacity of this water tank?",
+      "answer": 2,
+      "option": ["4 feet","6 pounds","20 gallons","3 dollars"]  
+    },{
+      "question": "12. He hears a strange noise. What kind of noise does he hear?",
+      "answer": 1,
+      "option": ["a loud noise","an unfamiliar noise","a familiar noise","a bad noise"]  
+    },{
+      "question": "13. Each of the boys has a separate room. What does each boy have?",
+      "answer": 2,
+      "option": ["a small room","an air-conditioned room","a room of his own","a room with a partition"]  
+    },{
+      "question": "14. Mr. Jones made a major change in the regulation. What kind of change was it?",
+      "answer": 1,
+      "option": ["a small change","an important change","a timely change","a temporary change"]  
+    },{
+      "question": "15. Mrs. King has a serious ailment. What does she have?",
+      "answer": 0,
+      "option": ["an illness","a remedy","a cure","a doctor"]  
+    },{
+      "question": "16. Pilots must read their instruments accurately. How must they read them?",
+      "answer": 2,
+      "option": ["alone","with others","correctly","quickly"]  
+    },{
+      "question": "17. Mr. Grayson told us to watch out. What did he tell us to do?",
+      "answer": 0,
+      "option": ["be careful","study the report","find the answer","be clear"]  
+    },{
+      "question": "18. John said, \"It's nine am and I'm leaving right away.\" When is he leaving?",
+      "answer": 1,
+      "option": ["after a while","immediately","at noon","before 9:00 a.m."]  
+    },{
+      "question": "19. Watkins forgot my telephone number.",
+      "answer": 2,
+      "option": ["He dialed it.","He got it from me.","He didn't remember it.","He wrote it down."]  
+    },{
+      "question": "20. There's something the matter with the engine.",
+      "answer": 3,
+      "option": ["The car is running fine.","The car doesn't make any noise.","The engine was removed from the car.","The car is not running well."]  
+    },{
+      "question": "21. The room was quiet.",
+      "answer": 1,
+      "option": ["It was very big.","It was not noisy.","It was very old.","It had many people in it."]  
+    },{
+      "question": "22. John kept watching the people swim.",
+      "answer": -1,
+      "option": ["He liked to swim.","He went swimming with the people.","He continued to look at the swimmers.","He continued helping the swimmers."]  
+    },{
+      "question": "23. The cat doesn't like to take a bath.",
+      "answer": 1,
+      "option": ["It doesn't like fire.","It doesn't like water.","It doesn't like fish.","It doesn't like dirt."]  
+    },{
+      "question": "24. Joe said, \"This is a difficult course. But I believe I can make it.\"",
+      "answer": 0,
+      "option": ["He thinks he will succeed.","He doesn't think he will succeed.","He's not going to take the course.","He'll finish without difficulty."]  
+    },{
+      "question": "25. Our team was composed of three people.",
+      "answer": 3,
+      "option": ["Our team saw the three people.","Our team talked to the three people.","The three people defeated our team.","The three people made up our team."]  
+    },{
+      "question": "26. Headquarters is next to the lab building.",
+      "answer": 1,
+      "option": ["It is across from the lab building.","It is beside the lab building.","It is under the lab building.","It is above the lab building."]  
+    },{
+      "question": "27. They kept their people in mind.",
+      "answer": 3,
+      "option": ["They neglected their people.","They liked their people.","They forgot their people.","They remembered their people."]  
+    },{
+      "question": "28. The cashier gave me some change. What did he give me?",
+      "answer": 1,
+      "option": ["cashier's checks","coins","different money","checks for cash"]  
+    },{
+      "question": "29. Mr. Long liked the cartoons in the evening newspaper. What were they?",
+      "answer": 1,
+      "option": ["headlines","drawings","stories","news"]  
+    },{
+      "question": "30. The clock is attached to the wall. Where is the clock?",
+      "answer": 1,
+      "option": ["away from the wall","hanging on the wall","inside the wall","on top of the wall"]  
+    },{
+      "question": "31. We were on a tour when the accident happened. What were we doing when the accident\nhappened?",
+      "answer": 2,
+      "option": ["making a turn","building a tower","taking a trip","getting off the bus"]  
+    },{
+      "question": "32. Joe quit working after sunset. When did Joe stop?",
+      "answer": 1,
+      "option": ["after sitting down","after the sun went down","after the sun came up","immediately after noon"]  
+    },{
+      "question": "33. Tom asked the clerk, \"How much are the eggs?\" What should the clerk say?",
+      "answer": 0,
+      "option": ["They are 55 cents a dozen.","There are twelve in a carton.","They have protein in them.","I like them scrambled."]  
+    },{
+      "question": "34. The people are moving up so that they can see the game better. Where are they going?",
+      "answer": 1,
+      "option": ["to the rear","forward","to the ocean","next door"]  
+    },{
+      "question": "35. Thomas Edison was considered to be a genius. What does this mean?",
+      "answer": 1,
+      "option": ["He was considerate of others.","He had extraordinary talent.","He had considerable wealth.","He contributed to industry."]  
+    },{
+      "question": "36. I have a pain in my right arm.",
+      "answer": 0,
+      "option": ["My arm hurts very much.","My arm has paint on it.","I have dirt on my right arm.","I have no feeling in my arm."]  
+    },{
+      "question": "37. The mail clerk said he was sorry he didn't have a letter for me.",
+      "answer": 3,
+      "option": ["The mail clerk was sad.","The mail clerk had a letter for me.","The mail clerk said I was sorry.","There was no mail for me."]  
+    },{
+      "question": "38. The children cooked their own supper tonight. I didn't help them.",
+      "answer": 3,
+      "option": ["Supper was prepared by my wife.","My wife and I prepared the supper.","The children can't cook at all.","The children did all the work."]  
+    },{
+      "question": "39.  In a bank, one must be able to identify oneself.",
+      "answer": 0,
+      "option": ["One must prove who one is.","One must show that one has money.","One must write a check.","One must show the writer of the check."]  
+    },{
+      "question": "40. What is the function of this switch?",
+      "answer": 3,
+      "option": ["It's only a very small part.","It's used only once a day.","It's electrical.","It's used to turn on the motor."]  
+    },{
+      "question": "41. John said that his car is in good shape.",
+      "answer": 2,
+      "option": ["The owner of the car is good.","The car's design is good.","Its condition is good.","Its price is good."]  
+    },{
+      "question": "42. Occasionally, Joe becomes irritated with his friends.",
+      "answer": 2,
+      "option": ["He picks his friends carefully.","He jokes with his friends.","He becomes annoyed with his friends.","He gets too involved with his friends."]  
+    },{
+      "question": "43. Henry, please take charge of the class.",
+      "answer": 0,
+      "option": ["Control the class.","Leave the class.","Study the class.","Dismiss the class."]  
+    },{
+      "question": "44. I am running short of cash at present.",
+      "answer": 0,
+      "option": ["I have little money now.","I have only small bills.","I have more money than usual.","I have a lot of cash at present"]  
+    },{
+      "question": "45. Did you intend to do that?",
+      "answer": 3,
+      "option": ["Yes, it was a lucky accident.","Yes, I found out about it later.","Yes, it was a surprise to me.","Yes, I planned it carefully."]  
+    },{
+      "question": "46. What is a bulb used for?",
+      "answer": 0,
+      "option": ["to emit electric light","to switch off the light","to measure electricity","to turn on the light"]  
+    },{
+      "question": "47. The humidity is high this afternoon. What is the weather like?",
+      "answer": 2,
+      "option": ["It is hot.","It is cloudy.","It is damp.","It is windy."]  
+    },{
+      "question": "46. What is a bulb used for?",
+      "answer": 0,
+      "option": ["to emit electric light","to switch off the light","to measure electricity","to turn on the light"]  
+    },{
+      "question": "47. The humidity is high this afternoon. What is the weather like?",
+      "answer": 2,
+      "option": ["It is hot.","It is cloudy.","It is damp.","It is windy."]  
+    },{
+      "question": "48. The hotel manager said that Jim would operate the elevator today. What will Jim do?",
+      "answer": 1,
+      "option": ["He will use the elevator.","He will run the elevator.","He will repair the elevator.","He will study the elevator."]  
+    },{
+      "question": "49. Did you help her make up her mind?",
+      "answer": 1,
+      "option": ["Yes, I decided for myself.","Yes, I helped her decide.","Yes, I minded about the maid.","Yes, I looked for a new sign."]  
+    },{
+      "question": "50. We'll have to tear down the engine. What will we have to do?",
+      "answer": 1,
+      "option": ["replace the engine","take the engine apart","run the engine slower","take the engine out"]  
+    },{
+      "question": "51. This is a harmless animal.",
+      "answer": 2,
+      "option": ["It can kill you.","It may hurt you.","It won't hurt you.","The animal is afraid."]  
+    },{
+      "question": "52. Although this saw is new, it's dull.",
+      "answer": 0,
+      "option": ["It's rusty.","It may hurt you.","It needs to be cleaned.","It's very sharp."]  
+    },{
+      "question": "53. Tom coiled the wire before he put it away.",
+      "answer": 1,
+      "option": ["He straightened the wire.","He arranged it in circles.","He cut it in half.","He marked it."]  
+    },{
+      "question": "54. He said he would pick me up in his truck.",
+      "answer": 1,
+      "option": ["He said he would get a used truck.","He told me he would call for me in his truck.","He told me he would sell his truck.","He said I should call him up."]  
+    },{
+      "question": "55. Every night the wind dies down. What happens when the wind dies down?",
+      "answer": 1,
+      "option": ["The wind is strong.","The wind becomes still.","It is very cold.","It is blowing full blast."]  
+    },{
+      "question": "56. Yesterday it drizzled all day.",
+      "answer": 3,
+      "option": ["Sleet fell during the storm.","It snowed all day.","Heavy rain fell al day.","There was a light rain."]  
+    },{
+      "question": "57. W: I hear that Lt. Winters is joining you.\nM: Yes. What kind of person do you think he is?\nQ: What does the man want to know about Lt Winters?",
+      "answer": 2,
+      "option": ["who his parents are","where he is coming from","if he has good character","when he is expected to arrive"]  
+    },{
+      "question": "58.  W: What did you tell them?\nM: That the situation is critical.\nQ: What does the man mean?",
+      "answer": 1,
+      "option": ["Something funny is happening.","There is a severe problem.","Something strange is happening.","There is nothing to talk about."]  
+    },{
+      "question": "59. W: Why can't you let me in?\nM: I forgot the key.\nQ: Why can't the man and woman go in?",
+      "answer": 1,
+      "option": ["The man won't let her.","The door is locked.","No one is there.","She has forgotten how."]  
+    },{
+      "question": "60. W: What does Billy want?\nM: Ablanket.\nQ: Why does Bill want a blanket?",
+      "answer": 2,
+      "option": ["He's hungry.","He's thirsty.","He's cold.","He's hurt."]  
+    },{
+      "question": "61. W: Can your brother lift that heavy weight?\nM: Yes, he is the school champion in weight lifting.\nQ: How would you describe the man's brother?",
+      "answer": 1,
+      "option": ["He is fat.","He is muscular.","He is interesting.","He is studious."]  
+    },{
+      "question": "62. W: The club had a meeting last night.\nM: I know. I was present.\nQ: What did the man mean?",
+      "answer": 1,
+      "option": ["He was the leader of the club.","He attended the meeting.","He enjoys the club's meeting.","He received a gift at the meeting."]  
+    },{
+      "question": "63. M: What are you waiting for?\nW: For you to apologize.\nQ: What does she expect the man to do?",
+      "answer": 1,
+      "option": ["introduce her","tell her he is sorry","leave the room","open the door for her"]  
+    },{
+      "question": "64. M: What is the matter?\nW: The man tried to grab my purse.\nQ: What was happened?",
+      "answer": 0,
+      "option": ["Someone tried to rob the woman.","Someone wanted to borrow money.","Someone insulted the woman.","Someone left the woman."]  
+    },{
+      "question": "65. W: Do you want some help?\nM: Yes. Would you please catalog these books so we can find what we want?\nQ: What did the man ask the woman to do?",
+      "answer": 1,
+      "option": ["Put the books in a neat pile.","List the books in some orderly way.","Write the titles of the books on their covers.","Put the books on a shelf according to size."]  
+    },{
+      "question": "66. M: What's Peter's house like?\nW: It's huge.\nQ: What did she say about his house?",
+      "answer": 0,
+      "option": ["His house is big.","His house is pretty.","His house is old.","His house is modern."]
+    }
+  ],
+  "children": [
+    {"start": 19.8, "end": 25.35},
+    {"start": 25.45, "end": 30.96},
+    {"start": 31.4, "end": 34.3},
+    {"start": 34.7, "end": 38.31},
+    {"start": 38.5, "end": 43.64},
+    {"start": 43.8, "end": 47.41},
+    {"start": 47.93, "end": 52.96},
+    {"start": 53.4, "end": 57},
+    {"start": 57.2, "end": 63.6},
+    {"start": 63.8, "end": 70.93},
+    {"start": 71.2, "end": 74.73},
+    {"start": 74.9, "end": 80.2},
+    {"start": 80.24, "end": 85.4},
+    {"start": 85.5, "end": 92.22},
+    {"start": 92.25, "end": 97},
+    {"start": 97.05, "end": 102.7},
+    {"start": 102.89, "end": 108.41},
+    {"start": 108.6, "end": 114.34},
+    {"start": 114.6, "end": 118.04},
+    {"start": 118.2, "end": 121.5},
+    {"start": 121.7, "end": 124},
+    {"start": 124.5, "end": 127.52},
+    {"start": 127.6, "end": 131.4},
+    {"start": 131.7, "end": 137.3},
+    {"start": 137.5, "end": 141},
+    {"start": 141.3, "end": 145.1},
+    {"start": 145.11, "end": 148.62},
+    {"start": 148.8, "end": 153.35},
+    {"start": 153.7, "end": 159.5},
+    {"start": 159.7, "end": 163.85},
+    {"start": 163.99, "end": 170.4},
+    {"start": 170.6, "end": 175.67},
+    {"start": 175.8, "end": 181.7},
+    {"start": 181.91, "end": 188.6},
+    {"start": 188.7, "end": 194.2},
+    {"start": 194.41, "end": 198},
+    {"start": 198.22, "end": 203.24},
+    {"start": 203.6, "end": 209.3},
+    {"start": 209.5, "end": 214.3},
+    {"start": 214.51, "end": 217.04},
+    {"start": 217.26, "end": 221.3},
+    {"start": 221.4, "end": 226.2},
+    {"start": 226.3, "end": 230.2},
+    {"start": 230.3, "end": 234},
+    {"start": 234.2, "end": 237},
+    {"start": 237.23, "end": 240.45},
+    {"start": 240.6, "end": 245.7},
+    {"start": 245.93, "end": 252.8},
+    {"start": 253, "end": 256.3},
+    {"start": 256.54, "end": 261.3},
+    {"start": 261.51, "end": 264.5},
+    {"start": 264.6, "end": 268.15},
+    {"start": 268.36, "end": 272.5},
+    {"start": 272.74, "end": 276.42},
+    {"start": 276.65, "end": 282.4},
+    {"start": 282.62, "end": 286.07},
+    {"start": 286.32, "end": 299.83},
+    {"start": 300.04, "end": 308.05},
+    {"start": 308.3, "end": 316.99},
+    {"start": 317.21, "end": 324.2},
+    {"start": 324.45, "end": 335.85},
+    {"start": 336.06, "end": 344.8},
+    {"start": 344.95, "end": 353.47},
+    {"start": 353.7, "end": 361.5},
+    {"start": 361.75, "end": 373.79},
+    {"start": 374.01, "end": 382.2}
+  ]
+}

@@ -215,9 +215,11 @@ Vue.component('dlg-list', {
 					this.$emit('on-click-play', {end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && pk) {
 					// document.getElementById(id).value = player.getCurrentTime().toFixed(2);
-					if(id == "editStart") 
-						this.start = player.getCurrentTime().toFixed(2)
-					else 
+					if(id == "editStart") {
+						let x = player.getCurrentTime() + 0.2;
+						this.start = x.toFixed(2);
+						this.$emit('on-click-play', {end: x + 5, start: x});
+					} else 
 						this.end = player.getCurrentTime().toFixed(2)
 				} else if(code == 27) {
 					this.reset();
