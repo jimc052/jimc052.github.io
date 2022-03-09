@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,15 +10,20 @@
 	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
 	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
 	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
-	<!-- 
-		https://unpkg.com/vue-histogram-slider
-	 -->
 	
 	<script src="https://unpkg.com/marked@0.3.6"></script>
 	<script src="https://unpkg.com/lodash@4.16.0"></script>
 	<script src="./menu.js"></script>
 	<script src="./player.js"></script>
-	
+	<script src="./list.js"></script>
+	<script src="./editor.js"></script>
+	<script src="./exam.js"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
+	<script src="../VOA/system/fireStore.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -33,18 +37,49 @@
 			margin: 0px;
 			background-color: #ebecf0;
 			padding: 0px 0px;
-			/* visibility: hidden; */
 			color: rgb(0, 0, 0);
+			overflow: hidden;
 		}
 		html, body, #app {
 			min-height: 100% !important;
 			height: 100%;
 		}
+		.ivu-menu-item {
+			padding: 0px 16px !important;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			border-bottom: 1px #eee solid;
+		}
+		.ivu-menu-item > span:nth-child(1){
+			flex: 1;
+			height: 55px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+		.ivu-menu-item > span:nth-child(2){
+			padding-left: 5px;
+		}
+
 		.ivu-menu-item-group-title {
 			display: none !important;
 		}
+		#btnPlays {
+			overflow-y: auto;
+			padding-right: 2px;
+		}
+		#btnPlays > button {
+			width: 50px;
+			margin-left: 2px;
+			margin-top: 2px;
+		}
+
 		#btnPlays > button + button {
-			margin-left: 1px;
+			/* margin-left: 1px; */
 		}
 		#version{
 			padding: 10px 0 10px 0px; 
@@ -70,87 +105,173 @@
 			position: absolute;
 			z-index: 1000;
 		}
-		#frameMenu {
-			height: 100%; 
-			display: flex; 
-			flex-direction: column;
+
+		#list .ivu-modal-header, #list .ivu-modal-body{
+				margin: 0px;
+				padding: 0px;
 		}
-		#frameMenu > ul {
-			flex: 1;
+
+		#dlgEdit .ivu-modal-body {
+				margin: 0px;
+				padding: 5px;
 			overflow: hidden;
 		}
-		
-		.ivu-menu-opened > ul > li + li{
-			border-top: 1px #cccccc solid;
+
+		.list:first-child {
+			margin-top: 20px;
 		}
-		.ivu-menu-opened > ul > li:first-child{
-			border-top: 1px #cccccc solid;
+		.list {
+			border-top: 1px solid #c5c5c5;
 		}
-		.ivu-menu-opened > ul > li:last-child{
-			border-bottom: 1px #cccccc solid;
+		.list:last-child {
+			border-bottom: 1px solid #c5c5c5;
+			margin-bottom: 20px;
 		}
-		.ivu-menu-item {
-			padding: 10px 10px 10px 20px !important;
-			overflow:hidden;
+		.list > .col2,  .list > .col3{
+			cursor: pointer; 
+			flex: 1; 
+			font-size: 18px;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+		.list > .col2 > div:nth-child(1) {
+			width: 60px;
+			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+			/* border: 1px solid red; */
+			padding-right: 20px;
+			text-align: right;
 		}
-		.activeMenu {
-			background-color: #F0F0F0;
+		.list > .col2 > div:nth-child(2) {
+			flex: 1;
+			text-align: right;
+			/* border: 1px solid red; */
+			padding-right: 3px;
 		}
-		.ivu-menu-submenu-title {
-			padding: 10px 5px !important;
+		.list > .col2 > div:nth-child(3) {
+		  flex: 1;
+			text-align: right;
+			padding-right: 3px;
+			/* border: 1px solid red; */
 		}
-		#link {
-			/* display: inline-block; */
-			/* padding: 10px; */
-			/* font: bold 11px Arial; */
-			text-decoration: none;
-			background-color: #EEEEEE;
-			color: #2d8cf0;
-			padding: 5px 8px;
-			border-top: 1px solid #CCCCCC;
-			border-right: 1px solid #333333;
-			border-bottom: 1px solid #333333;
-			border-left: 1px solid #CCCCCC;
+		.list > .col3 > div:nth-child(1) {
+			flex: 1;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			/* border: 1px solid red; */
+			padding-right: 3px;
 		}
-		#header {
-			background: #2d8cf0; 
-			display: flex; flex-direction: row; justify-content: flex-start;
-			align-items: center;
-			height: 50px; padding-right: 5px; color: white
+		.list > .col3 > div:nth-child(2) {
+			width: 60px;
+			text-align: right;
+			/* border: 1px solid red; */
+			padding-right: 3px;
+		}
+		.list > .col3 > div:nth-child(3) {
+			width: 60px;
+			text-align: right;
+			padding-right: 3px;
+			/* border: 1px solid red; */
+		}
+		input {
+			font-size: 18px !important;
+		}
+
+		#player {
+			visibility: hidden;
+		}
+		.ivu-notice-title {
+			font-size: 20px;
+			line-height: 20px;
+		}
+		.ivu-notice-desc {
+			font-size: 16px;
 		}
 	</style>
 </head>
-<body style="overflow: hidden;">
+<body style="overflow: hidden; visibility: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div>
-			<my-menu @on-select="onSelect" />
-		</div>
+		<div style="border-right:  1px rgb(0, 0, 0, 0.3) solid;"><yt-menu @on-select="onSelect" @on-click-add="onClickAdd" ref="menu"/></div>
 		<div style="flex: 1;">
-			<div id="playerParent">
-				<div v-if="smallScreen" id="header" ref="header" style="visibility: hidden;">
+			<div id="playerParent" style="padding: 2px;">
+				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
+					'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
+					'align-items': 'center',
+					height: '50px', 'padding-right': '5px', color: 'white'
+					}">
 					<Icon type="md-menu" size="28" color="white" @click.native="onClickIcon" 
 					style="cursor: pointer; margin-left: 10px; margin-right: 10px;"></Icon>
-					{{title}}
+					{{typeof editData == "object" ? editData.title : ""}}
 				</div>
+				<yt-exam ref="exam" @update="onUpdateTopic"
+					v-if="typeof editData == 'object' && typeof editData.topic == 'object' " />
+				<div id="player" style="visibility: hidden;"></div>
 			</div>
-			<my-player ref="footer" @on-click="onClick" />
+			<yt-player ref="player" @on-click-play="onClickPlay"  
+				@on-click-list="onClickOpenDlg('list')" 
+				@on-click-edit="onClickOpenDlg('editor')" 
+			/>
+		</div>
+		<div>
+			<yt-editor :visible="dialog == 'editor' " :editdata="editData" 
+				@on-close="dialog = '';" 
+				@update="onUpdateEditData"
+			/>			
+		</div>
+		<div>
+			<dlg-list :visible="dialog == 'list' " :editdata="editData" 
+				@close="dialog = '';" 
+				@update="onUpdateEditData"
+				@on-click-play="onClickPlay"
+			/>			
 		</div>
 	</div>
 </body>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-	var vm = null, player, index, videoId, recorders = {};
+	var vm = null, player, index, videoId, id1, id2;
 	window.onload = async function(){
-		Vue.prototype.broadcast = new Vue(); // 廣播用元件
-		Vue.prototype.$isDebug = function() {
-			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
+		let email =  window.localStorage["email"];
+		let password =  window.localStorage["password"];
+		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
+			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
+			let s = location.href.substr(location.href.indexOf(key) + key.length)
+			let arr = s.split("&");
+			s = arr[0].replace(key, "");
+			s = atob(s)
+			arr = s.split("\t")
+			email = arr[0];
+			password = arr[1];
+		}
+		if(typeof email == "string" && email.length > 0 ) {
+			try {
+				FireStore.initial();
+				await FireStore.signIn(email, password)
+				// console.log("FireStore.mail: " + FireStore.mail())
+			} catch(e) {
+				console.log(e)
+				alert(e.message)
+			}
 		}
 
-		let s = window.localStorage["mytube"];
-		if(typeof s == "string" && s.length > 0) {
-			recorders = JSON.parse(s);
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+		Vue.prototype.$isDebug = function() {
+			return (location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 
+				|| location.href.indexOf("debug=Y") > -1)
+				&& location.href.indexOf("anonymous=") == -1
+				? true : false;
+		}
+
+		Vue.prototype.$isLogin = function() {
+			return FireStore.login;
+		}
+
+		Vue.prototype.$isDialog = function() {
+			return vm.dialog == "" ? false : true;
 		}
 
 		vm = new Vue({
@@ -159,29 +280,73 @@
 				return {
 					index: -1,
 					smallScreen: false, 
-					title: ""
+					editData: undefined,
+					dialog: "",
+					video: true
 				};
 			},
 			created() {
 				iview.lang('zh-TW');
 			},
 			async mounted(){
-				window.onresize = this.resize;
-				setTimeout(()=>{
-					this.resize();
-				}, 300)
+				window.onresize = resize;
 
-				
-				console.log(this.$refs["header"])
+				let self = this;
+				function resize() {
+					self.smallScreen = document.body.clientWidth > 600 ? false : true;
+					self.broadcast.$emit('onResize', self.smallScreen);
+				}
+				resize();
+				console.log("debug: " + this.$isDebug())
+
+				// this.$Notice.success({
+        //   	duration: 0,
+				// 		title: '測試文字',
+				// 		desc: '測試文字'
+				// });
 			},
 			methods: {
+				onUpdateTopic(json){
+					this.editData.topic = json;
+					this.$refs["menu"].set(this.editData)
+				},
+				onUpdateEditData(data){
+					clearInterval(id1);
+					clearInterval(id2);
+					player.pauseVideo();
+					if(this.$refs["menu"].set(data) > -1)
+						this.onSelect(data)
+				},
+				onClickOpenDlg(dlg){
+					this.dialog = dlg;
+				},
 				onClickIcon(){
 					let el = document.getElementById("frameMenu");
       		el.style.visibility = "visible";
 				},
+				onClickAdd(){
+					this.editData = {
+						title: "", 
+						id: "",
+						children: [
+						]
+					}
+					this.dialog = "list";
+				},
         async onSelect(item){
-					this.title = item.title;
-					this.$refs["footer"].play(item);
+					// console.log(JSON.stringify(item))
+					// window.localStorage["yt-temp"] = JSON.stringify(item);
+					let exam = document.getElementById("exam");
+					if(exam != null) exam.style.visibility = "hidden";
+					let btnPlays = document.getElementById("btnPlays");
+					if(btnPlays != null) btnPlays.style.visibility = "hidden";
+
+					clearInterval(id1);
+					clearInterval(id2);
+					this.dialog = "";
+
+					this.editData = item;
+					this.$refs["player"].play(item);
 
 					let node = document.getElementById("player");
 					if (node != null && node.parentNode) {
@@ -189,112 +354,119 @@
 					}
 					var newDiv = document.createElement('DIV');
 					newDiv.id = "player";
+					newDiv.style.visibility = "hidden";
+
 					var myParent = document.getElementById('playerParent');
-					myParent.appendChild(newDiv);
+					if(!Array.isArray(item.topic) || location.href.indexOf("video=Y") > -1){
+						this.video = true;
+						myParent.appendChild(newDiv);
+						newDiv.style.visibility = "visible";
+					} else {
+						this.video = false;
+						document.body.appendChild(newDiv);
+					}
+
 					setTimeout(() => {
-						var btnPlays = document.getElementById('btnPlays');
-						var clientHeight = document.body.clientHeight - btnPlays.clientHeight ;
-						var header = document.getElementById('header');
+						let btnPlays = document.getElementById('btnPlays');
+						let clientHeight = document.body.clientHeight - btnPlays.clientHeight;
+						let header = document.getElementById('header');
 						if(header != null){
 							clientHeight -= header.clientHeight;
 						}
-						console.log(`${item.key}`);
-						document.title = 'MyTube [' + item.author + "]";
-						videoId = item.key;
-						// https://developers.google.com/youtube/player_parameters?hl=zh-cn
+						if(Array.isArray(item.children)) clientHeight -= this.video == true ? 20 : 10;
+
+						videoId = item.id;
 						player = new YT.Player('player', {
-							videoId: item.key,
-							height: clientHeight,
-							width: myParent.clientWidth, // '640',
+							videoId: item.id,
+							height: this.video == true ? clientHeight : 0,
+							width: this.video == true  ? myParent.clientWidth : 0,
+							playerVars: { 
+								'controls': 0, 
+								disablekb: 1,
+								iv_load_policy: 3, 
+								cc_load_policy: 0, 
+								modestbranding: 1
+							},
 							events: {
 								'onReady': ()=>{
-									console.log("onPlayerReady.........")
+									player.setPlaybackRate(0.9)
+									// console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
-									setTimeout(() => {
-										if(typeof recorders[item.key] == "number") {
-											// player.seekTo(recorders[item.key]);
-											player.loadVideoById({
-												videoId: item.key,
-												startSeconds: recorders[item.key],
-												// endSeconds: item.end 
-											})
-										}
-									}, 600);
+									if(this.video == false){
+										newDiv.style.height = "0px";
+										newDiv.style.width = "0px";
+										let exam = document.getElementById('exam');
+										exam.style.height = clientHeight + "px";
+										exam.style.visibility = "visible";
+										// exam.style.width = myParent.clientWidth + "px";
+										this.$refs["exam"].set(item.id, item.topic)
+									}
 								},
 								'onStateChange': onPlayerStateChange
-							},
-							playerVars: {
-								autoplay: 1, // Auto-play the video on load, 默认值为 0
-								// controls: 0, // Show pause/play buttons in player, 0 - 播放器控件不会在播放器中显示。
-								// showinfo: 1, // Hide the video title, 2018 年 9 月 25 日后，此参数已被弃用，并会被忽略
-								modestbranding: 1, // Hide the Youtube Logo, 此参数可让您使用不显示 YouTube 徽标的 YouTube 播放器。将参数值设置为 1 可以阻止 YouTube 徽标显示在控制栏中。
-								fs: 0, // 0 可以阻止全屏按钮显示在播放器中。默认值为 1
-								// cc_load_policy: 0, // Hide closed captions
-								iv_load_policy: 3, // Hide the Video Annotations, 将参数值设置为 1 会在默认情况下显示视频注释，而将其设置为 3 则默认不显示。默认值为 1。
-								// start: 5,
-								// end: 10,
-								loop: 1,
-								autohide: 0 // Hide video controls when playing
 							}
 						});						
-					}, 300);
+					}, 100);
         },
-				onClick(item) {
-					player.loadVideoById({
-						videoId: videoId,
-						startSeconds: item.start,
-						endSeconds: item.end,
-					})
-				},
-				resize(){
-					this.smallScreen = document.body.clientWidth > 600 ? false : true;
-					this.broadcast.$emit('onResize', this.smallScreen);
-					setTimeout(()=>{
-						let el = document.getElementById("header");
-						if(el != null) el.style.visibility = "visible";
-					}, 1000)
+				onClickPlay(item) {
+					let self = this;
+					clearInterval(id1);
+					clearInterval(id2);
+
+					player.seekTo(item.start);
+					id1 = setInterval(() => {
+						// console.log("state: " + player.getPlayerState())
+						if(player.getPlayerState() != 1) {
+							player.playVideo();
+						} else if(player.getPlayerState() == 1) {
+							clearInterval(id1)
+							stop()
+						}
+					}, 50);
+
+					function stop() {
+						if(player.getPlayerState() != 1) return;
+						id2 = setInterval(() => {
+							if(player.getCurrentTime() < item.start || player.getCurrentTime() > item.end) {
+								if(player.getPlayerState() == 1) 
+									self.broadcast.$emit('playend');
+								player.pauseVideo();
+								clearInterval(id2);								
+							} else if(player.getPlayerState() != 1) {
+								clearInterval(id2);
+							}
+						}, 50);						
+					}
 				}
 			}
 		})
 	}
 
 	function onYouTubeIframeAPIReady() {
-		console.log("onYouTubeIframeAPIReady................")
+		// console.log("onYouTubeIframeAPIReady................")
 	}
-	let intervalID;
 	function onPlayerStateChange(e) {
-		console.log("onPlayerStateChange: " + e.data + " ..................")
-		if(e.data == 1) {
-			intervalID = setInterval(() => {
-				recorders[videoId] = player.getCurrentTime();
-				window.localStorage["mytube"] = JSON.stringify(recorders);
-				// console.log(player.getCurrentTime())
-			}, 1000 * 3);
-		}  else {
-			if(e.data == 0 || e.data == 2) {
-				recorders[videoId] = e.data == 0 ? 0 : player.getCurrentTime();
-				window.localStorage["mytube"] = JSON.stringify(recorders);
-			}
-			clearInterval(intervalID);
+		if(e.data == 2) {
+			clearInterval(id1);
+			clearInterval(id2);
 		}
+		// console.log("onPlayerStateChange: " + e.data + " ..................")
 		/*
+		https://developers.google.com/youtube/iframe_api_reference#playVideo
 		-1：unstarted 未啟動，初次載入
 		0：ended 結束
 		1：playing 播放中
 		2：paused 暫停
 		3：buffering 緩衝中
 		5：video cued 準備好可以播放了
-		player.playVideo()
-		player.stopVideo();
-		player.pauseVideo()
 		*/
 	}
-	
 /* 	
-	// https://www.iviewui.com/components/menu
-	// https://www.iviewui.com/components/modal
-	// https://www.iviewui.com/components/icon
-	*/
+https://www.iviewui.com/components/menu
+https://www.iviewui.com/components/modal
+https://www.iviewui.com/components/tabs
+https://www.iviewui.com/components/icon
 
+https://developers.google.com/youtube/iframe_api_reference
+*/
 </script>
 </html>
