@@ -9,8 +9,9 @@ Vue.component('yt-exam', {
 					border: active == index ? '1px solid #ddd' : '', 
 					padding: '5px 10px', marginBottom: '5px', userSelect: 'text !important'}"
 			>
-        <div v-if="isExam == false" :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}"
-					v-html="item.question"
+        <div v-if="isExam == false" v-html="item.question"
+					:style="{color: item.answer == -1 ? 'red' : (active == index ? '#2d8cf0': ''), 
+						fontSize: '24px'}"
 					style="user-select: text !important;"
 				/>
 
@@ -22,7 +23,7 @@ Vue.component('yt-exam', {
 					:name="index + '-' + i" :key="index + '-' + i"
 					style="margin-left: 30px; "
 				>
-					<span style="font-size: 22px; ">{{(i + 1) + "). "}}</span>
+					<span style="font-size: 22px;">{{(i + 1) + "). "}}</span>
 
 					<input type="radio" style="margin: 0px 5px;" :name="'radio' + index"
 						:checked="item.answer == i"
