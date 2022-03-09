@@ -2,932 +2,338 @@
   "id": "cjIAZ3XP3Is",
   "index": 0,
   "title": "Form 41",
-  "topic": [
-    {
+  "topic": [{
       "question": "1. A new car will cost eight thousand dollars or higher. How much will the new car cost?",
       "answer": 2,
-      "option": [
-        "only $8,000",
-        "less than S8,000",
-        "$8,000 or more",
-        "just $8,000"
-      ]
-    },
-    {
+      "option": ["only $8,000","less than S8,000","$8,000 or more","just $8,000"]  
+    },{
       "question": "2. Tom said, \"Sometimes I eat out.\" Where does Tom sometimes have his meal?",
       "answer": 1,
-      "option": [
-        "at home",
-        "in a restaurant",
-        "in bed",
-        "in the kitchen"
-      ]
-    },
-    {
+      "option": ["at home","in a restaurant","in bed","in the kitchen"]  
+    },{
       "question": "3. Kim talked to Mary this morning.",
       "answer": 3,
-      "option": [
-        "Kim and Mary listened this morning.",
-        "Kim looked for Mary this morning.",
-        "Mary didn't see Kim this morning.",
-        "Mary listened to Kim this morning."
-      ]
-    },
-    {
+      "option": ["Kim and Mary listened this morning.","Kim looked for Mary this morning.","Mary didn't see Kim this morning.","Mary listened to Kim this morning."]  
+    },{
       "question": "4. Robert doesn't speak Spanish, and James doesn't, either.",
       "answer": 2,
-      "option": [
-        "Robert and James speak Spanish.",
-        "Only Robert speaks Spanish.",
-        "Neither of them speaks Spanish.",
-        "Only James doesn't speak Spanish."
-      ]
-    },
-    {
+      "option": ["Robert and James speak Spanish.","Only Robert speaks Spanish.","Neither of them speaks Spanish.","Only James doesn't speak Spanish."]  
+    },{
       "question": "5. Carl said, \"I need to buy a pair of new shoes, but I don't have the time.\"",
       "answer": 2,
-      "option": [
-        "Carl bought a pair of shoes.",
-        "Carl has time to do some shopping.",
-        "He doesn't have time to buy new shoes",
-        "He doesn't have the money to buy the shoes."
-      ]
-    },
-    {
+      "option": ["Carl bought a pair of shoes.","Carl has time to do some shopping.","He doesn't have time to buy new shoes","He doesn't have the money to buy the shoes."]  
+    },{
       "question": "6. The new student is nervous about the test.",
       "answer": 3,
-      "option": [
-        "The test doesn't bother him.",
-        "He is happy about the test.",
-        "He thinks the test is easy.",
-        "He is worried about the test."
-      ]
-    },
-    {
+      "option": ["The test doesn't bother him.","He is happy about the test.","He thinks the test is easy.","He is worried about the test."]  
+    },{
       "question": "7. This hat fits me alright. I'll take it.",
       "answer": 2,
-      "option": [
-        "It is the wrong size.",
-        "It is too tight.",
-        "It is the right size.",
-        "It is bright."
-      ]
-    },
-    {
+      "option": ["It is the wrong size.","It is too tight.","It is the right size.","It is bright."]  
+    },{
       "question": "8. Martin knows more than the other men and has become the head of the group.",
       "answer": 3,
-      "option": [
-        "He is a follower now.",
-        "He is a cook now.",
-        "He is a father now.",
-        "He is a leader now."
-      ]
-    },
-    {
+      "option": ["He is a follower now.","He is a cook now.","He is a father now.","He is a leader now."]  
+    },{
       "question": "9. Mr. Miller knows what the population of New York is.",
       "answer": 3,
-      "option": [
-        "He knows where New York is.",
-        "He knows how to get to New York.",
-        "He knows how many miles away New York is.",
-        "He knows how manv people live in New Yok."
-      ]
-    },
-    {
+      "option": ["He knows where New York is.","He knows how to get to New York.","He knows how many miles away New York is.","He knows how manv people live in New Yok."]  
+    },{
       "question": "10. You should select the right answer for each question. What should you do?",
       "answer": 2,
-      "option": [
-        "study the right answer",
-        "try out the right answer",
-        "choose the right answer",
-        "correct the answer"
-      ]
-    },
-    {
+      "option": ["study the right answer","try out the right answer","choose the right answer","correct the answer"]  
+    },{
       "question": "11. Most accidents take place in heavy traffic.",
       "answer": 1,
-      "option": [
-        "Accidents happen at yellow lights.",
-        "Accidents occur when there are many cars.",
-        "Accidents are cut down during the night.",
-        "Accidents increase when the lights are red."
-      ]
-    },
-    {
+      "option": ["Accidents happen at yellow lights.","Accidents occur when there are many cars.","Accidents are cut down during the night.","Accidents increase when the lights are red."]  
+    },{
       "question": "12. Mr. James asked John, \"Do you have a local bank account?\" What did Mr. James want to know?",
       "answer": 0,
-      "option": [
-        "if John had money in a bank.",
-        "if John could count money",
-        "if the bank was open",
-        "if the account was for Mr. James"
-      ]
-    },
-    {
+      "option": ["if John had money in a bank.","if John could count money","if the bank was open","if the account was for Mr. James"]  
+    },{
       "question": "13. Will this plane be delayed?",
       "answer": 1,
-      "option": [
-        "Yes, it will be early.",
-        "No, it won't be late.",
-        "Yes, it came yesterday.",
-        "No, it is a private plane."
-      ]
-    },
-    {
+      "option": ["Yes, it will be early.","No, it won't be late.","Yes, it came yesterday.","No, it is a private plane."]  
+    },{
       "question": "14. Where is a person's neck?",
       "answer": 3,
-      "option": [
-        "between his foot and his leg",
-        "between his hand and his arm",
-        "between his legs and his back",
-        "between his shoulders and his head"
-      ]
-    },
-    {
+      "option": ["between his foot and his leg","between his hand and his arm","between his legs and his back","between his shoulders and his head"]  
+    },{
       "question": "15. I had approximately ten dollars in my pocket, How much money did I have?",
       "answer": 1,
-      "option": [
-        "exactly ten dollais",
-        "about ten dollars",
-        "a lot more than ten dollars",
-        "much less than ten dollars"
-      ]
-    },
-    {
+      "option": ["exactly ten dollais","about ten dollars","a lot more than ten dollars","much less than ten dollars"]  
+    },{
       "question": "16. Frank notified his employer. What did Frank do?",
       "answer": 2,
-      "option": [
-        "He played a joke.",
-        "He went out for a long lunch.",
-        "He told his employer something.",
-        "He asked his employer for more money."
-      ]
-    },
-    {
+      "option": ["He played a joke.","He went out for a long lunch.","He told his employer something.","He asked his employer for more money."]  
+    },{
       "question": "17. Do the students get off the bus here?",
       "answer": 2,
-      "option": [
-        "Yes, they enter the bus here.",
-        "Yes, the bus leaved for town.",
-        "Yes, the students leave the bus here.",
-        "Yes, the students use this bus."
-      ]
-    },
-    {
+      "option": ["Yes, they enter the bus here.","Yes, the bus leaved for town.","Yes, the students leave the bus here.","Yes, the students use this bus."]  
+    },{
       "question": "18. If it rains, the students may not go to the drive-in movie.",
       "answer": 3,
-      "option": [
-        "If it rains, the students will go to the drive-in.",
-        "It is certain that they will go to the drive-in.",
-        "If they go, it is sure to rain.",
-        "It is not certain that they will go."
-      ]
-    },
-    {
+      "option": ["If it rains, the students will go to the drive-in.","It is certain that they will go to the drive-in.","If they go, it is sure to rain.","It is not certain that they will go."]  
+    },{
       "question": "19. The highways in some states are very narrow.",
       "answer": 2,
-      "option": [
-        "They are poor.",
-        "They are long.",
-        "They are not wide.",
-        "They are not nice."
-      ]
-    },
-    {
+      "option": ["They are poor.","They are long.","They are not wide.","They are not nice."]  
+    },{
       "question": "20. Mary was silent all evening.",
       "answer": 0,
-      "option": [
-        "She didn't talk.",
-        "She didn't move.",
-        "She didn't eat.",
-        "She didn't sleep."
-      ]
-    },
-    {
+      "option": ["She didn't talk.","She didn't move.","She didn't eat.","She didn't sleep."]  
+    },{
       "question": "21. George went away when Shally arrived.",
       "answer": 1,
-      "option": [
-        "He smiled.",
-        "He left.",
-        "He slept.",
-        "He cried."
-      ]
-    },
-    {
+      "option": ["He smiled.","He left.","He slept.","He cried."]  
+    },{
       "question": "22. Mr. Smith is very punctual.",
       "answer": 3,
-      "option": [
-        "He is never on time.",
-        "He likes to punch holes.",
-        "He is always late.",
-        "He is always on time."
-      ]
-    },
-    {
+      "option": ["He is never on time.","He likes to punch holes.","He is always late.","He is always on time."]  
+    },{
       "question": "23. The rock crashed through the window.",
       "answer": 2,
-      "option": [
-        "It went through an open window.",
-        "It did not go through the window.",
-        "It hit and broke the window.",
-        "It passed near the window."
-      ]
-    },
-    {
+      "option": ["It went through an open window.","It did not go through the window.","It hit and broke the window.","It passed near the window."]  
+    },{
       "question": "24. We will terminate our course next week.",
       "answer": 3,
-      "option": [
-        "We'll accelerate our course.",
-        "We'll postpone our course.",
-        "We'll start our course.",
-        "We'll end our course."
-      ]
-    },
-    {
+      "option": ["We'll accelerate our course.","We'll postpone our course.","We'll start our course.","We'll end our course."]  
+    },{
       "question": "25. The needle moved to the left because the tank was empty.",
       "answer": 3,
-      "option": [
-        "The gasoline tank stayed full.",
-        "The empty tank was on the left.",
-        "The left-hand indicator had no needle.",
-        "The indicator showed an empty tank."
-      ]
-    },
-    {
+      "option": ["The gasoline tank stayed full.","The empty tank was on the left.","The left-hand indicator had no needle.","The indicator showed an empty tank."]  
+    },{
       "question": "26. The pilot should concentrate on his flight.",
       "answer": 3,
-      "option": [
-        "He should read his manual.",
-        "He should fly often.",
-        "He should rest during a flight.",
-        "He should pay close attention to it."
-      ]
-    },
-    {
+      "option": ["He should read his manual.","He should fly often.","He should rest during a flight.","He should pay close attention to it."]  
+    },{
       "question": "27. There is no communication between them.",
       "answer": 3,
-      "option": [
-        "They sit next to each other.",
-        "They like each other.",
-        "They do not go to school.",
-        "They do not talk to each other."
-      ]
-    },
-    {
+      "option": ["They sit next to each other.","They like each other.","They do not go to school.","They do not talk to each other."]  
+    },{
       "question": "28. The airplane was delayed. What happened to the plane?",
       "answer": 0,
-      "option": [
-        "It arrived late.",
-        "It arrived early.",
-        "It crashed.",
-        "It had to return."
-      ]
-    },
-    {
+      "option": ["It arrived late.","It arrived early.","It crashed.","It had to return."]  
+    },{
       "question": "29. We were on a tour when the accident happened. What were we doing when the accident happened?",
       "answer": 2,
-      "option": [
-        "making a turn",
-        "building a tower",
-        "taking a trip",
-        "getting off the bus"
-      ]
-    },
-    {
+      "option": ["making a turn","building a tower","taking a trip","getting off the bus"]  
+    },{
       "question": "30. Joe wants to glance at the materials in the store. What does he want to do?",
       "answer": 3,
-      "option": [
-        "buy something",
-        "handle the materials",
-        "test the materials",
-        "have a quick look at the materials"
-      ]
-    },
-    {
+      "option": ["buy something","handle the materials","test the materials","have a quick look at the materials"]  
+    },{
       "question": "31. Carl said, \"I would rather have steak than chicken.\" What does Carl prefer?",
       "answer": 1,
-      "option": [
-        "chicken",
-        "steak",
-        "both types of meat",
-        "all kinds of meat"
-      ]
-    },
-    {
+      "option": ["chicken","steak","both types of meat","all kinds of meat"]  
+    },{
       "question": "32. Where did you put my pencil this morning?",
       "answer": 2,
-      "option": [
-        "I got it from Miss Bell.",
-        "I ate it for breakfast.",
-        "I laid it on the bookcase.",
-        "I bought it at the bookstore."
-      ]
-    },
-    {
+      "option": ["I got it from Miss Bell.","I ate it for breakfast.","I laid it on the bookcase.","I bought it at the bookstore."]  
+    },{
       "question": "33. During the experiment, the gas was compressed. What happened to the gas?",
       "answer": 1,
-      "option": [
-        "It became lighter.",
-        "It became denser.",
-        "It became clearer.",
-        "It became darker."
-      ]
-    },
-    {
+      "option": ["It became lighter.","It became denser.","It became clearer.","It became darker."]  
+    },{
       "question": "34. Lt. Adams was concerned about the health of his men. How did he feel about their health?",
       "answer": 2,
-      "option": [
-        "sad",
-        "uninterested",
-        "worried",
-        "satisfied"
-      ]
-    },
-    {
+      "option": ["sad","uninterested","worried","satisfied"]  
+    },{
       "question": "35. Jack told me that his friend is always in a hurry.",
       "answer": 1,
-      "option": [
-        "Jack's friend is always late.",
-        "Jack's friend is always rushing.",
-        "Jack's friend does everything slowly.",
-        "Jack's friend always asks for more time to finish."
-      ]
-    },
-    {
+      "option": ["Jack's friend is always late.","Jack's friend is always rushing.","Jack's friend does everything slowly.","Jack's friend always asks for more time to finish."]  
+    },{
       "question": "36. Ben didn't want to go to school yesterday. But I made him go.",
       "answer": 1,
-      "option": [
-        "Ben stayed at home yesterday.",
-        "Ben went to school yesterday.",
-        "I did not see Ben at school yesterday.",
-        "I did not want Ben to go to school yesterday."
-      ]
-    },
-    {
+      "option": ["Ben stayed at home yesterday.","Ben went to school yesterday.","I did not see Ben at school yesterday.","I did not want Ben to go to school yesterday."]  
+    },{
       "question": "37.  He wouldn't want to go through that experience again.",
       "answer": 0,
-      "option": [
-        "He has a dislike for experiences like that one.",
-        "He must like to do it again.",
-        "He enjoys experiences like that one.",
-        "He would like to do it again."
-      ]
-    },
-    {
+      "option": ["He has a dislike for experiences like that one.","He must like to do it again.","He enjoys experiences like that one.","He would like to do it again."]  
+    },{
       "question": "38. James is an efficient worker.",
       "answer": 2,
-      "option": [
-        "He supervises other workers.",
-        "He does unsatisfactory work.",
-        "He does his work quickly and well.",
-        "He complains a lot."
-      ]
-    },
-    {
+      "option": ["He supervises other workers.","He does unsatisfactory work.","He does his work quickly and well.","He complains a lot."]  
+    },{
       "question": "39. You should never skip class.",
       "answer": 0,
-      "option": [
-        "You shouldn't miss class.",
-        "You shouldn't be in class today.",
-        "You shouldn't attend class.",
-        "You should never go to class."
-      ]
-    },
-    {
+      "option": ["You shouldn't miss class.","You shouldn't be in class today.","You shouldn't attend class.","You should never go to class."]  
+    },{
       "question": "40. The driver is relaxed behind the wheel.",
       "answer": 0,
-      "option": [
-        "He is at ease.",
-        "He is frightened.",
-        "He is tense.",
-        "He is careful."
-      ]
-    },
-    {
+      "option": ["He is at ease.","He is frightened.","He is tense.","He is careful."]  
+    },{
       "question": "41. The precipitation was good for the farmer's crops.",
       "answer": 0,
-      "option": [
-        "The rain helped the crops to grow.",
-        "The farmers were paid good money for their crops.",
-        "The sun helped the crops to ripen quickly.",
-        "The farmers planted just the right crops."
-      ]
-    },
-    {
+      "option": ["The rain helped the crops to grow.","The farmers were paid good money for their crops.","The sun helped the crops to ripen quickly.","The farmers planted just the right crops."]  
+    },{
       "question": "42. John said that his car is in good shape.",
       "answer": 2,
-      "option": [
-        "The owner of the car is good.",
-        "The car's design is good.",
-        "Its condition is good.",
-        "Its price is good."
-      ]
-    },
-    {
+      "option": ["The owner of the car is good.","The car's design is good.","Its condition is good.","Its price is good."]  
+    },{
       "question": "43. Since the time of World War I, incredible progress has been made in the development and production of this weapon.",
       "answer": 3,
-      "option": [
-        "The progress is small.",
-        "The progress is as expected.",
-        "No progress has been made since World War I.",
-        "The progress is almost unbelievable."
-      ]
-    },
-    {
+      "option": ["The progress is small.","The progress is as expected.","No progress has been made since World War I.","The progress is almost unbelievable."]  
+    },{
       "question": "44. The students seem a little bored with the lesson today.",
       "answer": 2,
-      "option": [
-        "They are very interested in it.",
-        "They can't remember it at all.",
-        "They are not interested in it.",
-        "They are able to understand it."
-      ]
-    },
-    {
+      "option": ["They are very interested in it.","They can't remember it at all.","They are not interested in it.","They are able to understand it."]  
+    },{
       "question": "45. The pilot was ejected from the plane.",
       "answer": 2,
-      "option": [
-        "The pilot was entering the plane.",
-        "The pilot was attached to the plane.",
-        "The pilot was thrown out of the plane.",
-        "The pilot was undecided about the plane."
-      ]
-    },
-    {
+      "option": ["The pilot was entering the plane.","The pilot was attached to the plane.","The pilot was thrown out of the plane.","The pilot was undecided about the plane."]  
+    },{
       "question": "46. The food was shipped yesterday. What happened to the food?",
       "answer": 0,
-      "option": [
-        "It was sent off",
-        "It was wet.",
-        "It was eaten.",
-        "It was inspected."
-      ]
-    },
-    {
+      "option": ["It was sent off","It was wet.","It was eaten.","It was inspected."]  
+    },{
       "question": "47. The humidity is high this afternoon. What is the weather like?",
       "answer": 2,
-      "option": [
-        "It is hot.",
-        "It is cloudy.",
-        "It is damp.",
-        "It is windy."
-      ]
-    },
-    {
+      "option": ["It is hot.","It is cloudy.","It is damp.","It is windy."]  
+    },{
       "question": "48. The weather report says we should expect hail. What should we expect?",
       "answer": 3,
-      "option": [
-        "a light shower",
-        "many clouds",
-        "snow flakes",
-        "icy particles"
-      ]
-    },
-    {
+      "option": ["a light shower","many clouds","snow flakes","icy particles"]  
+    },{
       "question": "49. Who sits in a cockpit?",
       "answer": 3,
-      "option": [
-        "a cook",
-        "a farmer",
-        "a pilot",
-        "a dentist"
-      ]
-    },
-    {
+      "option": ["a cook","a farmer","a pilot","a dentist"]  
+    },{
       "question": "50. The hotel manager said that Jim would operate the elevator today. What will Jim do?",
       "answer": 1,
-      "option": [
-        "He will use the elevator.",
-        "He will run the elevator.",
-        "He will repair the elevator.",
-        "He will study the elevator."
-      ]
-    },
-    {
+      "option": ["He will use the elevator.","He will run the elevator.","He will repair the elevator.","He will study the elevator."]  
+    },{
       "question": "51. Sue got knocked over by a big wave. Where was she?",
       "answer": 3,
-      "option": [
-        "at home",
-        "in the city",
-        "in the mountain",
-        "at the ocean"
-      ]
-    },
-    {
+      "option": ["at home","in the city","in the mountain","at the ocean"]  
+    },{
       "question": "52. Carla kept an eye on the fuel gage. What did she do?",
       "answer": 0,
-      "option": [
-        "She watched the fuel gage.",
-        "She found the fuel gage.",
-        "She fixed the fuel gage.",
-        "She admired the fuel gage."
-      ]
-    },
-    {
+      "option": ["She watched the fuel gage.","She found the fuel gage.","She fixed the fuel gage.","She admired the fuel gage."]  
+    },{
       "question": "53. Tom will lend you some money.",
       "answer": 1,
-      "option": [
-        "Tom needs to borrow some money.",
-        "You can borrow money from Tom.",
-        "Tom will send for some money.",
-        "Tom left his money in the bank."
-      ]
-    },
-    {
+      "option": ["Tom needs to borrow some money.","You can borrow money from Tom.","Tom will send for some money.","Tom left his money in the bank."]  
+    },{
       "question": "54. Syivia poured the coffee.",
       "answer": 0,
-      "option": [
-        "She filled the cup with coffee.",
-        "She drank the coffee from a cup.",
-        "She made the coffee in a pot.",
-        "She warmed the coffee on the stove."
-      ]
-    },
-    {
+      "option": ["She filled the cup with coffee.","She drank the coffee from a cup.","She made the coffee in a pot.","She warmed the coffee on the stove."]  
+    },{
       "question": "55. Mary spent a fourth of her money. How much of it did she spend?",
       "answer": 1,
-      "option": [
-        "twenty-five",
-        "a quarter",
-        "a half",
-        "four"
-      ]
-    },
-    {
+      "option": ["twenty-five","a quarter","a half","four"]  
+    },{
       "question": "56.  Johnny has been falling behind in his school work. How is he doing?",
       "answer": 2,
-      "option": [
-        "His work is getting better.",
-        "He's been doing his work faster.",
-        "He hasn't been doing all the work.",
-        "His work isn't as bad as it was."
-      ]
-    },
-    {
+      "option": ["His work is getting better.","He's been doing his work faster.","He hasn't been doing all the work.","His work isn't as bad as it was."]  
+    },{
       "question": "57. W: Did you finish your assignment last night?\nM: No, I didn't. I had a party last night.\nQ: Why didn't the student finish his assignment last night?",
       "answer": 3,
-      "option": [
-        "because he was sleepy",
-        "because he wasn't busy",
-        "because he didn't have a party",
-        "because he had a party"
-      ]
-    },
-    {
+      "option": ["because he was sleepy","because he wasn't busy","because he didn't have a party","because he had a party"]  
+    },{
       "question": "58. M: What are you doing?\nW: Taking a break.\nQ: What does the woman say she is doing?",
       "answer": 3,
-      "option": [
-        "She's driving",
-        "She's studying",
-        "She's running.",
-        "She's relaxing."
-      ]
-    },
-    {
+      "option": ["She's driving","She's studying","She's running.","She's relaxing."]  
+    },{
       "question": "59. M: Do you want me to close the windows?\nW: Yes. It looks like a storm is coming.\nQ: Why should he close the windows?",
       "answer": 0,
-      "option": [
-        "to keep the rain and wind out",
-        "to keep the noise out",
-        "to keep the house dark",
-        "to keep the lightning out"
-      ]
-    },
-    {
+      "option": ["to keep the rain and wind out","to keep the noise out","to keep the house dark","to keep the lightning out"]  
+    },{
       "question": "60. W: John looks awful.\nM: He should. It's been a long time since he had a good meal.\nQ: What did the man say about John?",
       "answer": 1,
-      "option": [
-        "He needs a good bath.",
-        "He isn't eating properly.",
-        "He hasn't worked for a long time.",
-        "He needs some new clothes."
-      ]
-    },
-    {
+      "option": ["He needs a good bath.","He isn't eating properly.","He hasn't worked for a long time.","He needs some new clothes."]  
+    },{
       "question": "61. W: Doctor, can't you help us?\nM: I'm sorry. I can't. I don't have my instruments.\nQ: What does the doctor need?",
       "answer": 1,
-      "option": [
-        "his nurse",
-        "his tools",
-        "his license",
-        "his medicines"
-      ]
-    },
-    {
+      "option": ["his nurse","his tools","his license","his medicines"]  
+    },{
       "question": "62. W: Does bus number forty-five go to the train station?\nM: No, but I can give you a transfer.\nW: Alright, I will take it.\nQ: What will the woman do?",
       "answer": 3,
-      "option": [
-        "She'll ride the bus that goes directly to the station.",
-        "The woman doesn't want to change buses.",
-        "The woman will remain on bus No. 45.",
-        "The woman will change to another bus."
-      ]
-    },
-    {
+      "option": ["She'll ride the bus that goes directly to the station.","The woman doesn't want to change buses.","The woman will remain on bus No. 45.","The woman will change to another bus."]  
+    },{
       "question": "63. W: What's that?\nM: It's an example of modern art.\nW: Yes, but what is it constructed of?\nQ: What does she want to know?",
       "answer": 1,
-      "option": [
-        "what it represents",
-        "what it is made of",
-        "what it does",
-        "what it looks like"
-      ]
-    },
-    {
+      "option": ["what it represents","what it is made of","what it does","what it looks like"]  
+    },{
       "question": "64. M: What do you want to know?\nW: The purpose of all this.\nQ: What did the woman want to know?",
       "answer": 3,
-      "option": [
-        "She wants to know the cost.",
-        "She wants to know the cause.",
-        "She wants to know the answer.",
-        "She wants to know the reason."
-      ]
-    },
-    {
+      "option": ["She wants to know the cost.","She wants to know the cause.","She wants to know the answer.","She wants to know the reason."]  
+    },{
       "question": "65. M: May I help you?\nW: Yes. I'd like to have an explanation for this letter.\nQ: What does the woman want?",
       "answer": 1,
-      "option": [
-        "a stamp to mail the letter.",
-        "the reason why the letter was written",
-        "an address for the letter",
-        "something with which to seal the letter"
-      ]
-    },
-    {
+      "option": ["a stamp to mail the letter.","the reason why the letter was written","an address for the letter","something with which to seal the letter"]  
+    },{
       "question": "66. M: Aren't you going to cook those tomatoes?\nW: No. It's too much bother.\nQ: Why isn't she going to cook the tomatoes?",
       "answer": 3,
-      "option": [
-        "It costs too much.",
-        "Uncooked tomatoes are better.",
-        "There are too many tomatoes.",
-        "It's a lot of trouble."
-      ]
-    }
-  ],
+      "option": ["It costs too much.","Uncooked tomatoes are better.","There are too many tomatoes.","It's a lot of trouble."]
+    }],
   "children": [
-    {
-      "start": 25,
-      "end": 35
-    },
-    {
-      "start": 48,
-      "end": 58.5
-    },
-    {
-      "start": 70.5,
-      "end": 76
-    },
-    {
-      "start": 91.5,
-      "end": 98.5
-    },
-    {
-      "start": 113.5,
-      "end": 123
-    },
-    {
-      "start": 142.5,
-      "end": 149
-    },
-    {
-      "start": 164.5,
-      "end": 170
-    },
-    {
-      "start": 185.5,
-      "end": 193
-    },
-    {
-      "start": 208.5,
-      "end": 214.5
-    },
-    {
-      "start": 235.5,
-      "end": 242
-    },
-    {
-      "start": 262,
-      "end": 268
-    },
-    {
-      "start": 286,
-      "end": 294.5
-    },
-    {
-      "start": 313,
-      "end": 317
-    },
-    {
-      "start": 333,
-      "end": 338
-    },
-    {
-      "start": 354,
-      "end": 360.5
-    },
-    {
-      "start": 377,
-      "end": 383.5
-    },
-    {
-      "start": 402,
-      "end": 407.5
-    },
-    {
-      "start": 426,
-      "end": 432
-    },
-    {
-      "start": 452,
-      "end": 457
-    },
-    {
-      "start": 472,
-      "end": 477.5
-    },
-    {
-      "start": 492,
-      "end": 498
-    },
-    {
-      "start": 512,
-      "end": 517
-    },
-    {
-      "start": 533.5,
-      "end": 538
-    },
-    {
-      "start": 558,
-      "end": 563.5
-    },
-    {
-      "start": 577.5,
-      "end": 585.5
-    },
-    {
-      "start": 602.5,
-      "end": 608
-    },
-    {
-      "start": 625.5,
-      "end": 630.5
-    },
-    {
-      "start": 648.5,
-      "end": 654
-    },
-    {
-      "start": 668.5,
-      "end": 677.5
-    },
-    {
-      "start": 691,
-      "end": 698.5
-    },
-    {
-      "start": 717,
-      "end": 725.5
-    },
-    {
-      "start": 740.5,
-      "end": 745.5
-    },
-    {
-      "start": 761.5,
-      "end": 769
-    },
-    {
-      "start": 785.5,
-      "end": 794
-    },
-    {
-      "start": 805,
-      "end": 810
-    },
-    {
-      "start": 829,
-      "end": 835.5
-    },
-    {
-      "start": 858,
-      "end": 863.5
-    },
-    {
-      "start": 883,
-      "end": 887.5
-    },
-    {
-      "start": 905,
-      "end": 910
-    },
-    {
-      "start": 926,
-      "end": 930
-    },
-    {
-      "start": 945,
-      "end": 950.5
-    },
-    {
-      "start": 971.5,
-      "end": 976.5
-    },
-    {
-      "start": 995,
-      "end": 1005
-    },
-    {
-      "start": 1023.5,
-      "end": 1029
-    },
-    {
-      "start": 1045.5,
-      "end": 1050
-    },
-    {
-      "start": 1070,
-      "end": 1076
-    },
-    {
-      "start": 1091.5,
-      "end": 1097.5
-    },
-    {
-      "start": 1111.5,
-      "end": 1119.5
-    },
-    {
-      "start": 1132.5,
-      "end": 1137
-    },
-    {
-      "start": 1152,
-      "end": 1160.5
-    },
-    {
-      "start": 1177,
-      "end": 1183.5
-    },
-    {
-      "start": 1198.5,
-      "end": 1206
-    },
-    {
-      "start": 1221.5,
-      "end": 1226
-    },
-    {
-      "start": 1243.5,
-      "end": 1247.5
-    },
-    {
-      "start": 1265.5,
-      "end": 1273
-    },
-    {
-      "start": 1286,
-      "end": 1292.5
-    },
-    {
-      "start": 1324.6,
-      "end": 1337.4
-    },
-    {
-      "start": 1353.5,
-      "end": 1361.5
-    },
-    {
-      "start": 1374.1,
-      "end": 1384.5
-    },
-    {
-      "start": 1403.5,
-      "end": 1414.5
-    },
-    {
-      "start": 1436.5,
-      "end": 1447
-    },
-    {
-      "start": 1461,
-      "end": 1473.6
-    },
-    {
-      "start": 1494.1,
-      "end": 1507.4
-    },
-    {
-      "start": 1521.8,
-      "end": 1531
-    },
-    {
-      "start": 1549.5,
-      "end": 1558.5
-    },
-    {
-      "start": 1576.5,
-      "end": 1586
-    }
-  ]
+    {"start": 25, "end": 35},
+    {"start": 48, "end": 58.5},
+    {"start": 70.5, "end": 76},
+    {"start": 91.5, "end": 98.5},
+    {"start": 113.5, "end": 123},
+    {"start": 142.5, "end": 149},
+    {"start": 164.5, "end": 170},
+    {"start": 185.5, "end": 193},
+    {"start": 208.5, "end": 214.5},
+    {"start": 235.5, "end": 242},
+    {"start": 262, "end": 268},
+    {"start": 286, "end": 294.5},
+    {"start": 313, "end": 317},
+    {"start": 333, "end": 338},
+    {"start": 354, "end": 360.5},
+    {"start": 377, "end": 383.5},
+    {"start": 402, "end": 407.5},
+    {"start": 426, "end": 432},
+    {"start": 452, "end": 457},
+    {"start": 472, "end": 477.5},
+    {"start": 492, "end": 498},
+    {"start": 512, "end": 517},
+    {"start": 533.5, "end": 538},
+    {"start": 558, "end": 563.5},
+    {"start": 577.5, "end": 585.5},
+    {"start": 602.5, "end": 608},
+    {"start": 625.5, "end": 630.5},
+    {"start": 648.5, "end": 654},
+    {"start": 668.5, "end": 677.5},
+    {"start": 691, "end": 698.5},
+    {"start": 717, "end": 725.5},
+    {"start": 740.5, "end": 745.5},
+    {"start": 761.5, "end": 769},
+    {"start": 785.5, "end": 794},
+    {"start": 805, "end": 810},
+    {"start": 829, "end": 835.5},
+    {"start": 858, "end": 863.5},
+    {"start": 883, "end": 887.5},
+    {"start": 905, "end": 910},
+    {"start": 926, "end": 930},
+    {"start": 945, "end": 950.5},
+    {"start": 971.5, "end": 976.5},
+    {"start": 995, "end": 1005},
+    {"start": 1023.5, "end": 1029},
+    {"start": 1045.5, "end": 1050},
+    {"start": 1070, "end": 1076},
+    {"start": 1091.5, "end": 1097.5},
+    {"start": 1111.5, "end": 1119.5},
+    {"start": 1132.5, "end": 1137},
+    {"start": 1152, "end": 1160.5},
+    {"start": 1177, "end": 1183.5},
+    {"start": 1198.5, "end": 1206},
+    {"start": 1221.5, "end": 1226},
+    {"start": 1243.5, "end": 1247.5},
+    {"start": 1265.5, "end": 1273},
+    {"start": 1286, "end": 1292.5},
+    {"start": 1324.6, "end": 1337.4},
+    {"start": 1353.5, "end": 1361.5},
+    {"start": 1374.1, "end": 1384.5},
+    {"start": 1403.5, "end": 1414.5},
+    {"start": 1436.5, "end": 1447},
+    {"start": 1461, "end": 1473.6},
+    {"start": 1494.1, "end": 1507.4},
+    {"start": 1521.8, "end": 1531},
+    {"start": 1549.5, "end": 1558.5},
+    {"start": 1576.5, "end": 1586}
+    ]
+
 }

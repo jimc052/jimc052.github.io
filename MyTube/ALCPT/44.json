@@ -192,14 +192,6 @@
       "answer": 2,
       "option": ["It is hot.","It is cloudy.","It is damp.","It is windy."]  
     },{
-      "question": "46. What is a bulb used for?",
-      "answer": 0,
-      "option": ["to emit electric light","to switch off the light","to measure electricity","to turn on the light"]  
-    },{
-      "question": "47. The humidity is high this afternoon. What is the weather like?",
-      "answer": 2,
-      "option": ["It is hot.","It is cloudy.","It is damp.","It is windy."]  
-    },{
       "question": "48. The hotel manager said that Jim would operate the elevator today. What will Jim do?",
       "answer": 1,
       "option": ["He will use the elevator.","He will run the elevator.","He will repair the elevator.","He will study the elevator."]  
@@ -248,7 +240,7 @@
       "answer": 1,
       "option": ["The man won't let her.","The door is locked.","No one is there.","She has forgotten how."]  
     },{
-      "question": "60. W: What does Billy want?\nM: Ablanket.\nQ: Why does Bill want a blanket?",
+      "question": "60. W: What does Billy want?\nM: A blanket.\nQ: Why does Bill want a blanket?",
       "answer": 2,
       "option": ["He's hungry.","He's thirsty.","He's cold.","He's hurt."]  
     },{
@@ -275,8 +267,7 @@
       "question": "66. M: What's Peter's house like?\nW: It's huge.\nQ: What did she say about his house?",
       "answer": 0,
       "option": ["His house is big.","His house is pretty.","His house is old.","His house is modern."]
-    }
-  ],
+    }],
   "children": [
     {"start": 19.8, "end": 25.35},
     {"start": 25.45, "end": 30.96},

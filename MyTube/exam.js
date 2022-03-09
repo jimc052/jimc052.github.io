@@ -94,10 +94,12 @@ Vue.component('yt-exam', {
 			el.scrollTop = 0;
 			el.style.scrollBehavior = "smooth";
       this.topic = [];
-			item.forEach(el => {
+			item.forEach((el, index) => {
 				// el.question = el.question.replace('<br/>&nbsp;&nbsp;&nbsp;', "\n");
 				let json = Object.assign({}, el)
+				if(index == 60) console.log(json.question)
 				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;');
+				if(index == 60) console.log(json.question)
 				this.topic.push(json);
 			});
 			setTimeout(() => {

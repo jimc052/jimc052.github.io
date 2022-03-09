@@ -3,932 +3,337 @@
   "index": 1,
   "modifyDate": 1645828197211,
   "title": "Form 42",
-  "topic": [
-    {
+  "topic": [{
       "question": "1. The woman is getting vegetables at the store. What is she getting?",
       "answer": 2,
-      "option": [
-        "something to wear",
-        "something to read",
-        "something to eat",
-        "something to play"
-      ]
-    },
-    {
+      "option": ["something to wear","something to read","something to eat","something to play"]  
+    },{
       "question": "2. Mary asked Joe if he had a nice trip. Joe answered, \"Yes.\"",
       "answer": 2,
-      "option": [
-        "He had a poor time.",
-        "He had an accident.",
-        "He enjoyed his trip.",
-        "He is going on a trip."
-      ]
-    },
-    {
+      "option": ["He had a poor time.","He had an accident.","He enjoyed his trip.","He is going on a trip."]  
+    },{
       "question": "3. Traffic is heavy in town during the rush hour.",
       "answer": 2,
-      "option": [
-        "There are many accidents.",
-        "There are many people shopping.",
-        "There are many cars on the street.",
-        "There are few cars on the street."
-      ]
-    },
-    {
+      "option": ["There are many accidents.","There are many people shopping.","There are many cars on the street.","There are few cars on the street."]  
+    },{
       "question": "4. Tom got on the wrong bus yesterday. Jim did too.",
       "answer": 2,
-      "option": [
-        "Jim rode in two buses.",
-        "Tome missed the wrong bus yesterday.",
-        "Both Jim and Tom rode the wrong bus",
-        "Jim didn't get on the wrong bus yesterday."
-      ]
-    },
-    {
+      "option": ["Jim rode in two buses.","Tome missed the wrong bus yesterday.","Both Jim and Tom rode the wrong bus","Jim didn't get on the wrong bus yesterday."]  
+    },{
       "question": "5. Mr. Richards employed a lot of people.",
       "answer": 0,
-      "option": [
-        "A lot of people work for Mr. Richards.",
-        "A lot of people live with Mr. Richards.",
-        "A lot of people agree with Mr. Richards.",
-        "A lot of people listen to Mr. Richards."
-      ]
-    },
-    {
+      "option": ["A lot of people work for Mr. Richards.","A lot of people live with Mr. Richards.","A lot of people agree with Mr. Richards.","A lot of people listen to Mr. Richards."]  
+    },{
       "question": "6. Mr. Miller knows what the population of New York is.",
       "answer": 3,
-      "option": [
-        "He knows where New York is.",
-        "He knows how to get to New York.",
-        "He knows how many miles away New York is",
-        "He knows how many people live in New York."
-      ]
-    },
-    {
+      "option": ["He knows where New York is.","He knows how to get to New York.","He knows how many miles away New York is","He knows how many people live in New York."]  
+    },{
       "question": "7. Every six months, Mr. Brown takes his car to the mechanic for an inspection.",
       "answer": 2,
-      "option": [
-        "Mr. Brown wrecks his every 6 months.",
-        "Mr. Brown trades his car every 6 months.",
-        "The mechanic examines Mr. Brown's car every 6 months.",
-        "The mechanic repairs Mr. Brown's car every 6 months"
-      ]
-    },
-    {
+      "option": ["Mr. Brown wrecks his every 6 months.","Mr. Brown trades his car every 6 months.","The mechanic examines Mr. Brown's car every 6 months.","The mechanic repairs Mr. Brown's car every 6 months"]  
+    },{
       "question": "8. Jane selected a book.",
       "answer": 3,
-      "option": [
-        "She read a book.",
-        "She found a book.",
-        "She sold a book.",
-        "She chose a book."
-      ]
-    },
-    {
+      "option": ["She read a book.","She found a book.","She sold a book.","She chose a book."]  
+    },{
       "question": "9. When I'm at home, I would like to take it easy.",
       "answer": 3,
-      "option": [
-        "I like to work hard.",
-        "I like to study a lot.",
-        "I like to take a bath.",
-        "I like to relax."
-      ]
-    },
-    {
+      "option": ["I like to work hard.","I like to study a lot.","I like to take a bath.","I like to relax."]  
+    },{
       "question": "10. This gas is invisible.",
       "answer": 0,
-      "option": [
-        "You can't see it.",
-        "You can't smell it.",
-        "You can't obtain it.",
-        "You can't use it."
-      ]
-    },
-    {
+      "option": ["You can't see it.","You can't smell it.","You can't obtain it.","You can't use it."]  
+    },{
       "question": "11. The face of the clock was damaged. What part of the clock was damaged?",
       "answer": 0,
-      "option": [
-        "the front",
-        "the inside",
-        "the leg",
-        "the bell"
-      ]
-    },
-    {
+      "option": ["the front","the inside","the leg","the bell"]  
+    },{
       "question": "12. One of the students bought a portable typewriter. What kind did he get?",
       "answer": 2,
-      "option": [
-        "a very large typewriter",
-        "a very heavy typewriter",
-        "a typewriter which is light and easy to move.",
-        "a typewriter that cannot be moved"
-      ]
-    },
-    {
+      "option": ["a very large typewriter","a very heavy typewriter","a typewriter which is light and easy to move.","a typewriter that cannot be moved"]  
+    },{
       "question": "13. Each of the boys has a separate room. What does each boy have?",
       "answer": 2,
-      "option": [
-        "a small room",
-        "an air-conditioned room",
-        "a room of his own",
-        "a room with a partition"
-      ]
-    },
-    {
+      "option": ["a small room","an air-conditioned room","a room of his own","a room with a partition"]  
+    },{
       "question": "14. The weather report calls for thundershowers. What will the weather be like?",
       "answer": 2,
-      "option": [
-        "icy",
-        "sunny",
-        "rainy",
-        "snowy"
-      ]
-    },
-    {
+      "option": ["icy","sunny","rainy","snowy"]  
+    },{
       "question": "15. Do you always drive so fast?",
       "answer": 1,
-      "option": [
-        "No, I have never driven slowly.",
-        "No, only when I am in a hurry.",
-        "Yes, I would like to drive very much.",
-        "Yes, or we will be late."
-      ]
-    },
-    {
+      "option": ["No, I have never driven slowly.","No, only when I am in a hurry.","Yes, I would like to drive very much.","Yes, or we will be late."]  
+    },{
       "question": "16. Bob will stay in the guest room. Where will he stay?",
       "answer": 0,
-      "option": [
-        "in a visitor's room",
-        "in the living room",
-        "in the family room",
-        "in the dining room"
-      ]
-    },
-    {
+      "option": ["in a visitor's room","in the living room","in the family room","in the dining room"]  
+    },{
       "question": "17. He tried to avoid the accident. What did he try to do?",
       "answer": 3,
-      "option": [
-        "cause the accident",
-        "record the accident",
-        "get near the accident",
-        "keep away from the accident"
-      ]
-    },
-    {
+      "option": ["cause the accident","record the accident","get near the accident","keep away from the accident"]  
+    },{
       "question": "18. The instrument was of European origin.",
       "answer": 1,
-      "option": [
-        "It was destroyed in Europe.",
-        "It was made in Europe.",
-        "It was played in Europe.",
-        "It was sent to Europe."
-      ]
-    },
-    {
+      "option": ["It was destroyed in Europe.","It was made in Europe.","It was played in Europe.","It was sent to Europe."]  
+    },{
       "question": "19. The president could not come to give his speech today and Mr. Jones is here to represent him.",
       "answer": 1,
-      "option": [
-        "Jones is angry at the president.",
-        "Jones will give the president's speech for him.",
-        "Jones won't be able to meet the president.",
-        "Jones is waiting for the president."
-      ]
-    },
-    {
+      "option": ["Jones is angry at the president.","Jones will give the president's speech for him.","Jones won't be able to meet the president.","Jones is waiting for the president."]  
+    },{
       "question": "20. This car needs a check-up.",
       "answer": 1,
-      "option": [
-        "It needs a repair job.",
-        "It needs to be looked over.",
-        "It needs to be cleaned.",
-        "It needs an oil change."
-      ]
-    },
-    {
+      "option": ["It needs a repair job.","It needs to be looked over.","It needs to be cleaned.","It needs an oil change."]  
+    },{
       "question": "21. Go straight ahead to the bus station.",
       "answer": 1,
-      "option": [
-        "Turn around and go there.",
-        "It's in front of you.",
-        "Go around the corner.",
-        "Hurry to the bus station."
-      ]
-    },
-    {
+      "option": ["Turn around and go there.","It's in front of you.","Go around the corner.","Hurry to the bus station."]  
+    },{
       "question": "22. The room needed many things.",
       "answer": 2,
-      "option": [
-        "It regulated many things.",
-        "It excluded many things.",
-        "It required many things.",
-        "It contained many things."
-      ]
-    },
-    {
+      "option": ["It regulated many things.","It excluded many things.","It required many things.","It contained many things."]  
+    },{
       "question": "23. George likes a variety of foods.",
       "answer": 3,
-      "option": [
-        "He likes foods out of the garden.",
-        "He only likes very hot foods.",
-        "He likes very sweet foods.",
-        "He likes different kinds of foods."
-      ]
-    },
-    {
+      "option": ["He likes foods out of the garden.","He only likes very hot foods.","He likes very sweet foods.","He likes different kinds of foods."]  
+    },{
       "question": "24. John kept watching the people swim.",
       "answer": 2,
-      "option": [
-        "He liked to swim.",
-        "He went swimming with the people.",
-        "He continued to look at the swimmers.",
-        "He continued helping the swimmers."
-      ]
-    },
-    {
+      "option": ["He liked to swim.","He went swimming with the people.","He continued to look at the swimmers.","He continued helping the swimmers."]  
+    },{
       "question": "25. The entire class is going to leave for the United States.",
       "answer": 3,
-      "option": [
-        "Many will go.",
-        "A few will go.",
-        "Some will go.",
-        "They will all go."
-      ]
-    },
-    {
+      "option": ["Many will go.","A few will go.","Some will go.","They will all go."]  
+    },{
       "question": "26. The organization set up a training schedule.",
       "answer": 3,
-      "option": [
-        "A schedule was lost.",
-        "A schedule was destroyed.",
-        "A schedule was found.",
-        "A schedule was established."
-      ]
-    },
-    {
+      "option": ["A schedule was lost.","A schedule was destroyed.","A schedule was found.","A schedule was established."]  
+    },{
       "question": "27. Why did Ted look at his watch?",
       "answer": 2,
-      "option": [
-        "He had to catch the ball.",
-        "He wanted to shave.",
-        "He wanted to know the time.",
-        "He had to wash his face."
-      ]
-    },
-    {
+      "option": ["He had to catch the ball.","He wanted to shave.","He wanted to know the time.","He had to wash his face."]  
+    },{
       "question": "28. A soldier was taught to take care of himself. What is the soldier taught to do?",
       "answer": 3,
-      "option": [
-        "look at himself.",
-        "follow himself",
-        "forget himself",
-        "protect himself"
-      ]
-    },
-    {
+      "option": ["look at himself.","follow himself","forget himself","protect himself"]  
+    },{
       "question": "29. As soon as we arrived, the rain began to fall. When did it start raining?",
       "answer": 1,
-      "option": [
-        "before we arrived",
-        "when we arrived",
-        "immediately before our arrival",
-        "an hour after we arrived"
-      ]
-    },
-    {
+      "option": ["before we arrived","when we arrived","immediately before our arrival","an hour after we arrived"]  
+    },{
       "question": "30. One of the many devices used by weathermen is a barometer. What does a barometer measure?",
       "answer": 1,
-      "option": [
-        "rainfall",
-        "atmospheric pressure",
-        "temperature",
-        "wind velocity"
-      ]
-    },
-    {
+      "option": ["rainfall","atmospheric pressure","temperature","wind velocity"]  
+    },{
       "question": "31. You should use this weapon for long range only. When should you use it?",
       "answer": 1,
-      "option": [
-        "in the rain only",
-        "for long distances",
-        "for a long period of time",
-        "in the forest"
-      ]
-    },
-    {
+      "option": ["in the rain only","for long distances","for a long period of time","in the forest"]  
+    },{
       "question": "32. Anna complained that she was starving. What was she complaining about?",
       "answer": 0,
-      "option": [
-        "being hungry",
-        "being tired",
-        "being sleepy",
-        "being sick"
-      ]
-    },
-    {
+      "option": ["being hungry","being tired","being sleepy","being sick"]  
+    },{
       "question": "33. Sam drove down a bumpy road. What kind of road was it?",
       "answer": 1,
-      "option": [
-        "a narrow road",
-        "a rough road",
-        "a dark road",
-        "a long road"
-      ]
-    },
-    {
+      "option": ["a narrow road","a rough road","a dark road","a long road"]  
+    },{
       "question": "34. The commander recommended the sergeant for award.",
       "answer": 3,
-      "option": [
-        "The commander punished him.",
-        "The commander put him to work.",
-        "The commander took him off the job.",
-        "The commander suggested his name."
-      ]
-    },
-    {
+      "option": ["The commander punished him.","The commander put him to work.","The commander took him off the job.","The commander suggested his name."]  
+    },{
       "question": "35. We are saving these seats for our friends.",
       "answer": 3,
-      "option": [
-        "Our friends won't use the seats.",
-        "Our friends are in the seats.",
-        "The seats for our friends are cheap.",
-        "The seats are being held for our friends."
-      ]
-    },
-    {
+      "option": ["Our friends won't use the seats.","Our friends are in the seats.","The seats for our friends are cheap.","The seats are being held for our friends."]  
+    },{
       "question": "36. I had just left the office when you called.",
       "answer": 0,
-      "option": [
-        "I left only a minute before you called.",
-        "You called before I left.",
-        "My office is to the left.",
-        "I entered the office just as you called."
-      ]
-    },
-    {
+      "option": ["I left only a minute before you called.","You called before I left.","My office is to the left.","I entered the office just as you called."]  
+    },{
       "question": "37. There were at least twenty people at the meeting last night.",
       "answer": 3,
-      "option": [
-        "There were twelve people at the meeting.",
-        "There was a pair of twins at the meeting.",
-        "There were fewer than twenty people there.",
-        "There was a minimum of twenty people there."
-      ]
-    },
-    {
+      "option": ["There were twelve people at the meeting.","There was a pair of twins at the meeting.","There were fewer than twenty people there.","There was a minimum of twenty people there."]  
+    },{
       "question": "38. The newspaper gives the news objectively.",
       "answer": 1,
-      "option": [
-        "The opinion of the writer is given.",
-        "Only the facts of the news are presented.",
-        "A personal evaluation of the news is given.",
-        "The news is presented in fiction form."
-      ]
-    },
-    {
+      "option": ["The opinion of the writer is given.","Only the facts of the news are presented.","A personal evaluation of the news is given.","The news is presented in fiction form."]  
+    },{
       "question": "39. Tom does not recognize his errors.",
       "answer": 3,
-      "option": [
-        "He knows his errors.",
-        "He makes few errors.",
-        "He knows how to make corrections.",
-        "He cannot tell when he makes an error."
-      ]
-    },
-    {
+      "option": ["He knows his errors.","He makes few errors.","He knows how to make corrections.","He cannot tell when he makes an error."]  
+    },{
       "question": "40. We were unable to forecast the weather.",
       "answer": 3,
-      "option": [
-        "We couldn't change it.",
-        "We couldn't' enjoy it.",
-        "We couldn't examine it.",
-        "We couldn't predict it."
-      ]
-    },
-    {
+      "option": ["We couldn't change it.","We couldn't' enjoy it.","We couldn't examine it.","We couldn't predict it."]  
+    },{
       "question": "41. Before you cash a check, you must endorse it.",
       "answer": 3,
-      "option": [
-        "You must present your identification.",
-        "You must complete an application form.",
-        "You must keep it flat at all times.",
-        "You must write your name on the back."
-      ]
-    },
-    {
+      "option": ["You must present your identification.","You must complete an application form.","You must keep it flat at all times.","You must write your name on the back."]  
+    },{
       "question": "42. The Watkins family has often invited Jack to visit them.",
       "answer": 1,
-      "option": [
-        "Jack has often asked the Watkins family to see him.",
-        "The Watkins family has often dropped in on Jack.",
-        "They have often asked Jack to come over.",
-        "They would like to have Jack live with them."
-      ]
-    },
-    {
+      "option": ["Jack has often asked the Watkins family to see him.","The Watkins family has often dropped in on Jack.","They have often asked Jack to come over.","They would like to have Jack live with them."]  
+    },{
       "question": "43. Pick up a package of cigarettes for me.",
       "answer": 1,
-      "option": [
-        "Lend me a package of cigarettes.",
-        "Get me a package of cigarettes.",
-        "Give him a package of cigarettes.",
-        "Sell me a package of cigarettes."
-      ]
-    },
-    {
+      "option": ["Lend me a package of cigarettes.","Get me a package of cigarettes.","Give him a package of cigarettes.","Sell me a package of cigarettes."]  
+    },{
       "question": "44. Give the captain a ring after you land.",
       "answer": 1,
-      "option": [
-        "Go and see him.",
-        "Call him on the phone.",
-        "Take someone to see him.",
-        "Attract his attention."
-      ]
-    },
-    {
+      "option": ["Go and see him.","Call him on the phone.","Take someone to see him.","Attract his attention."]  
+    },{
       "question": "45. The student found out about the trip yesterday. What happened yesterday?",
       "answer": 0,
-      "option": [
-        "The student learned about the trip.",
-        "The student forgot about the trip.",
-        "The student was worried about the trip.",
-        "The student didn't think about the trip."
-      ]
-    },
-    {
+      "option": ["The student learned about the trip.","The student forgot about the trip.","The student was worried about the trip.","The student didn't think about the trip."]  
+    },{
       "question": "46. What is a bulb used for?",
       "answer": 0,
-      "option": [
-        "to emit electric light",
-        "to switch off the light",
-        "to measure electricity",
-        "to turn on the light"
-      ]
-    },
-    {
+      "option": ["to emit electric light","to switch off the light","to measure electricity","to turn on the light"]  
+    },{
       "question": "47. The humidity is high this afternoon. What is the weather like?",
       "answer": 2,
-      "option": [
-        "It is hot.",
-        "It is cloudy.",
-        "It is damp.",
-        "It is windy."
-      ]
-    },
-    {
+      "option": ["It is hot.","It is cloudy.","It is damp.","It is windy."]  
+    },{
       "question": "48. Sue got knocked over by a big wave. Where was she?",
       "answer": 3,
-      "option": [
-        "at home",
-        "in the city",
-        "in the mountains",
-        "at the ocean"
-      ]
-    },
-    {
+      "option": ["at home","in the city","in the mountains","at the ocean"]  
+    },{
       "question": "49. Carol kept working on the problem until she solved it.",
       "answer": 3,
-      "option": [
-        "She is working on it.",
-        "She kept it.",
-        "She finally gave up.",
-        "She worked it out."
-      ]
-    },
-    {
+      "option": ["She is working on it.","She kept it.","She finally gave up.","She worked it out."]  
+    },{
       "question": "50. We took our vacation so long ago, I can't remember much about it.",
       "answer": 1,
-      "option": [
-        "Our vacation lasted for a long time.",
-        "It has been a long time since our vacation.",
-        "It will be a long time until our vacation.",
-        "Our vacation will last for a long time."
-      ]
-    },
-    {
+      "option": ["Our vacation lasted for a long time.","It has been a long time since our vacation.","It will be a long time until our vacation.","Our vacation will last for a long time."]  
+    },{
       "question": "51. The report had to be amended.",
       "answer": 3,
-      "option": [
-        "It had to be recorded.",
-        "It had to be mailed.",
-        "It had to be compiled.",
-        "It had to be changed."
-      ]
-    },
-    {
+      "option": ["It had to be recorded.","It had to be mailed.","It had to be compiled.","It had to be changed."]  
+    },{
       "question": "52. The student has gone back to his country for good.",
       "answer": 2,
-      "option": [
-        "He has left for the time being.",
-        "He has left temporarily.",
-        "He has left permanently.",
-        "He left in a hurry."
-      ]
-    },
-    {
+      "option": ["He has left for the time being.","He has left temporarily.","He has left permanently.","He left in a hurry."]  
+    },{
       "question": "53. Many English words are composed of two words put together. Which of these words is made up of two words?",
       "answer": 2,
-      "option": [
-        "movement",
-        "comparatively",
-        "cloudburst",
-        "encountered"
-      ]
-    },
-    {
+      "option": ["movement","comparatively","cloudburst","encountered"]  
+    },{
       "question": "54. The temperature is dropping very fast today. What's happening?",
       "answer": 1,
-      "option": [
-        "The price of mercury is going up.",
-        "It's getting colder.",
-        "The pressure is increasing.",
-        "The day is warming up."
-      ]
-    },
-    {
+      "option": ["The price of mercury is going up.","It's getting colder.","The pressure is increasing.","The day is warming up."]  
+    },{
       "question": "55. Frank couldn't afford to get a new car.",
       "answer": 2,
-      "option": [
-        "He couldn't get interested in a new car.",
-        "He couldn't decide about getting a new car.",
-        "He didn't have enough money to get a new car.",
-        "He didn't want to get a new car."
-      ]
-    },
-    {
+      "option": ["He couldn't get interested in a new car.","He couldn't decide about getting a new car.","He didn't have enough money to get a new car.","He didn't want to get a new car."]  
+    },{
       "question": "56. The pilot carried out his mission.",
       "answer": 0,
-      "option": [
-        "He accomplished his mission.",
-        "He planned his mission.",
-        "He continued his mission.",
-        "He cancelled his mission."
-      ]
-    },
-    {
+      "option": ["He accomplished his mission.","He planned his mission.","He continued his mission.","He cancelled his mission."]  
+    },{
       "question": "57. W: Did you finish your assignment last night?\nM: No, I didn't. I had a party last night.\nQ: Why didn't the student finish his assignment last night?",
       "answer": 3,
-      "option": [
-        "because he was sleepy",
-        "because he wasn't busy",
-        "because he didn't have a party",
-        "because he had a party"
-      ]
-    },
-    {
+      "option": ["because he was sleepy","because he wasn't busy","because he didn't have a party","because he had a party"]  
+    },{
       "question": "58. W: What did you tell them?\nM: That the situation is critical.\nQ: What does the man mean?",
       "answer": 1,
-      "option": [
-        "Something funny is happening.",
-        "There is a severe problem",
-        "Something strange is happening.",
-        "There is nothing to talk about."
-      ]
-    },
-    {
+      "option": ["Something funny is happening.","There is a severe problem","Something strange is happening.","There is nothing to talk about."]  
+    },{
       "question": "59. W: I thought you were going to buy a new camera.\nM: I was, but this used one is cheaper.\nQ: What did the man buy?",
       "answer": 2,
-      "option": [
-        "He bought a better camera.",
-        "He bought a larger camera.",
-        "He bought a less expensive camera.",
-        "He bought a newer model."
-      ]
-    },
-    {
+      "option": ["He bought a better camera.","He bought a larger camera.","He bought a less expensive camera.","He bought a newer model."]  
+    },{
       "question": "60. W: What does Mr. Cobb do for a living?\nM: He writes fictions.\nQ: What does Mr. Cobb do?",
       "answer": 2,
-      "option": [
-        "He writes news.",
-        "He writes textbooks.",
-        "He writes stories.",
-        "He writes reports."
-      ]
-    },
-    {
+      "option": ["He writes news.","He writes textbooks.","He writes stories.","He writes reports."]  
+    },{
       "question": "61. W: How are the patients?\nM: They are doing very well except the man in room twelve.\nQ: Where did this conversation most likely take place?",
       "answer": 1,
-      "option": [
-        "in a school",
-        "in a hospital",
-        "in a barracks",
-        "in a hotel"
-      ]
-    },
-    {
+      "option": ["in a school","in a hospital","in a barracks","in a hotel"]  
+    },{
       "question": "62. M : Where does Carolyn work?\nW: In an automobile factory.\nM: What are her duty hours?\nW: She works from nine to five\nQ: When does Carolyn work?",
       "answer": 3,
-      "option": [
-        "after five o'clock.",
-        "in a factory",
-        "eight hours",
-        "from nine to five"
-      ]
-    },
-    {
+      "option": ["after five o'clock.","in a factory","eight hours","from nine to five"]  
+    },{
       "question": "63. W: What caused the engine to fail?\nM: It failed because of poor maintenance.\nQ: What did the man blame the failure on?",
       "answer": 2,
-      "option": [
-        "low grade fuel",
-        "rough roads",
-        "improper care",
-        "proper lubrication"
-      ]
-    },
-    {
+      "option": ["low grade fuel","rough roads","improper care","proper lubrication"]  
+    },{
       "question": "64. M: Did you see the new tank?\nM: No, but I saw the design for it.\nQ: What did the woman see?",
       "answer": 0,
-      "option": [
-        "a plan",
-        "a color",
-        "a soldier",
-        "a mistake"
-      ]
-    },
-    {
+      "option": ["a plan","a color","a soldier","a mistake"]  
+    },{
       "question": "65. W1: Where should we meet tomorrow?\nW2: I think this corner would be good.\nM: I was going to say the post office, but now I think we'd better meet right here.\nQ: Where will the man and the woman probably meet?",
       "answer": 2,
-      "option": [
-        "on the base",
-        "at the office",
-        "on the corner",
-        "at the post office"
-      ]
-    },
-    {
+      "option": ["on the base","at the office","on the corner","at the post office"]  
+    },{
       "question": "66. M: May I help you?\nW: Yes. I'd like an explanation for this letter.\nQ: What does the woman want?",
       "answer": 1,
-      "option": [
-        "a stamp to mail the letter",
-        "the reason why the letter was written",
-        "an address for the letter",
-        "something with which to seal the letter"
-      ]
-    }
-  ],
+      "option": ["a stamp to mail the letter","the reason why the letter was written","an address for the letter","something with which to seal the letter"]
+    }],
   "children": [
-    {
-      "start": 20,
-      "end": 25
-    },
-    {
-      "start": 25.4,
-      "end": 30.5
-    },
-    {
-      "start": 30.7,
-      "end": 34.2
-    },
-    {
-      "start": 34.5,
-      "end": 39.05
-    },
-    {
-      "start": 39.1,
-      "end": 42.5
-    },
-    {
-      "start": 42.7,
-      "end": 47.4
-    },
-    {
-      "start": 47.5,
-      "end": 53.3
-    },
-    {
-      "start": 53.95,
-      "end": 56.2
-    },
-    {
-      "start": 56.5,
-      "end": 61
-    },
-    {
-      "start": 61.14,
-      "end": 63.1
-    },
-    {
-      "start": 63.25,
-      "end": 68.3
-    },
-    {
-      "start": 68.5,
-      "end": 73.95
-    },
-    {
-      "start": 74.2,
-      "end": 79.55
-    },
-    {
-      "start": 79.59,
-      "end": 85.03
-    },
-    {
-      "start": 85.1,
-      "end": 88.5
-    },
-    {
-      "start": 88.58,
-      "end": 93.2
-    },
-    {
-      "start": 93.25,
-      "end": 98.28
-    },
-    {
-      "start": 98.4,
-      "end": 101.7
-    },
-    {
-      "start": 101.9,
-      "end": 108.8
-    },
-    {
-      "start": 108.9,
-      "end": 111.92
-    },
-    {
-      "start": 112.47,
-      "end": 115.3
-    },
-    {
-      "start": 115.85,
-      "end": 119
-    },
-    {
-      "start": 119.2,
-      "end": 122.52
-    },
-    {
-      "start": 123.07,
-      "end": 126.5
-    },
-    {
-      "start": 126.53,
-      "end": 131.25
-    },
-    {
-      "start": 131.28,
-      "end": 136.3
-    },
-    {
-      "start": 136.5,
-      "end": 139.51
-    },
-    {
-      "start": 140.05,
-      "end": 146.06
-    },
-    {
-      "start": 146.3,
-      "end": 152.85
-    },
-    {
-      "start": 152.9,
-      "end": 158.9
-    },
-    {
-      "start": 158.93,
-      "end": 164.88
-    },
-    {
-      "start": 164.95,
-      "end": 170.7
-    },
-    {
-      "start": 170.8,
-      "end": 176.38
-    },
-    {
-      "start": 176.4,
-      "end": 180.7
-    },
-    {
-      "start": 180.8,
-      "end": 184.7
-    },
-    {
-      "start": 184.75,
-      "end": 188.8
-    },
-    {
-      "start": 189,
-      "end": 193.7
-    },
-    {
-      "start": 194,
-      "end": 197.85
-    },
-    {
-      "start": 198,
-      "end": 201.6
-    },
-    {
-      "start": 201.7,
-      "end": 205
-    },
-    {
-      "start": 205.1,
-      "end": 209
-    },
-    {
-      "start": 209.3,
-      "end": 214.1
-    },
-    {
-      "start": 214.3,
-      "end": 218
-    },
-    {
-      "start": 218.04,
-      "end": 221.8
-    },
-    {
-      "start": 221.83,
-      "end": 227.5
-    },
-    {
-      "start": 227.6,
-      "end": 230.99
-    },
-    {
-      "start": 231.04,
-      "end": 236.33
-    },
-    {
-      "start": 236.37,
-      "end": 241.4
-    },
-    {
-      "start": 241.45,
-      "end": 246.2
-    },
-    {
-      "start": 246.3,
-      "end": 251.5
-    },
-    {
-      "start": 251.6,
-      "end": 255.4
-    },
-    {
-      "start": 255.41,
-      "end": 259.7
-    },
-    {
-      "start": 259.76,
-      "end": 268.2
-    },
-    {
-      "start": 268.3,
-      "end": 273.83
-    },
-    {
-      "start": 273.87,
-      "end": 277.6
-    },
-    {
-      "start": 277.7,
-      "end": 281.2
-    },
-    {
-      "start": 281.3,
-      "end": 294.7
-    },
-    {
-      "start": 294.73,
-      "end": 302.8
-    },
-    {
-      "start": 302.81,
-      "end": 313.2
-    },
-    {
-      "start": 313.22,
-      "end": 321.8
-    },
-    {
-      "start": 321.85,
-      "end": 333.8
-    },
-    {
-      "start": 333.86,
-      "end": 347.85
-    },
-    {
-      "start": 347.89,
-      "end": 357.8
-    },
-    {
-      "start": 357.9,
-      "end": 367.6
-    },
-    {
-      "start": 367.7,
-      "end": 383.5
-    },
-    {
-      "start": 383.55,
-      "end": 393.1
-    }
+    {"start": 20, "end": 25},
+    {"start": 25.4, "end": 30.5},
+    {"start": 30.7, "end": 34.2},
+    {"start": 34.5, "end": 39.05},
+    {"start": 39.1, "end": 42.5},
+    {"start": 42.7, "end": 47.4},
+    {"start": 47.5, "end": 53.3},
+    {"start": 53.95, "end": 56.2},
+    {"start": 56.5, "end": 61},
+    {"start": 61.14, "end": 63.1},
+    {"start": 63.25, "end": 68.3},
+    {"start": 68.5, "end": 73.95},
+    {"start": 74.2, "end": 79.55},
+    {"start": 79.59, "end": 85.03},
+    {"start": 85.1, "end": 88.5},
+    {"start": 88.58, "end": 93.2},
+    {"start": 93.25, "end": 98.28},
+    {"start": 98.4, "end": 101.7},
+    {"start": 101.9, "end": 108.8},
+    {"start": 108.9, "end": 111.92},
+    {"start": 112.47, "end": 115.3},
+    {"start": 115.85, "end": 119},
+    {"start": 119.2, "end": 122.52},
+    {"start": 123.07, "end": 126.5},
+    {"start": 126.53, "end": 131.25},
+    {"start": 131.28, "end": 136.3},
+    {"start": 136.5, "end": 139.51},
+    {"start": 140.05, "end": 146.06},
+    {"start": 146.3, "end": 152.85},
+    {"start": 152.9, "end": 158.9},
+    {"start": 158.93, "end": 164.88},
+    {"start": 164.95, "end": 170.7},
+    {"start": 170.8, "end": 176.38},
+    {"start": 176.4, "end": 180.7},
+    {"start": 180.8, "end": 184.7},
+    {"start": 184.75, "end": 188.8},
+    {"start": 189, "end": 193.7},
+    {"start": 194, "end": 197.85},
+    {"start": 198, "end": 201.6},
+    {"start": 201.7, "end": 205},
+    {"start": 205.1, "end": 209},
+    {"start": 209.3, "end": 214.1},
+    {"start": 214.3, "end": 218},
+    {"start": 218.04, "end": 221.8},
+    {"start": 221.83, "end": 227.5},
+    {"start": 227.6, "end": 230.99},
+    {"start": 231.04, "end": 236.33},
+    {"start": 236.37, "end": 241.4},
+    {"start": 241.45, "end": 246.2},
+    {"start": 246.3, "end": 251.5},
+    {"start": 251.6, "end": 255.4},
+    {"start": 255.41, "end": 259.7},
+    {"start": 259.76, "end": 268.2},
+    {"start": 268.3, "end": 273.83},
+    {"start": 273.87, "end": 277.6},
+    {"start": 277.7, "end": 281.2},
+    {"start": 281.3, "end": 294.7},
+    {"start": 294.73, "end": 302.8},
+    {"start": 302.81, "end": 313.2},
+    {"start": 313.22, "end": 321.8},
+    {"start": 321.85, "end": 333.8},
+    {"start": 333.86, "end": 347.85},
+    {"start": 347.89, "end": 357.8},
+    {"start": 357.9, "end": 367.6},
+    {"start": 367.7, "end": 383.5},
+    {"start": 383.55, "end": 393.1}
   ]
 }
