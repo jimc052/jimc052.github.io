@@ -1,0 +1,341 @@
+{
+  "id": "wlCxzGWIYaY",
+  "index": 5,
+  "modifyDate": 1645828197211,
+  "title": "Form 46",
+  "topic": [{
+      "question": "1. The student went to the right room. Which room did he go to?",
+      "answer": 0,
+      "option": ["the correct room","the large room","the room on the left","the wrong room"]  
+    },{
+      "question": "2. Donald brought his son a dog. What did Donald do?",
+      "answer": 2,
+      "option": ["He took his child to the store.","He gave a game to his child.","He gave an animal to his child","He gave lessons to his child."]  
+    },{
+      "question": "3. The men are going to construct a house. What would they use?",
+      "answer": 2,
+      "option": ["powder","fuel","tools","fans"]  
+    },{
+      "question": "4. Bob and Bill are getting together for lunch. What will Bob do?",
+      "answer": 3,
+      "option": ["eat Bill's lunch","eat lunch alone","do Bill's work for him","eat lunch with Bill"]  
+    },{
+      "question": "5. Mary asked Joe if he had a nice trip. Joe answered, \"Yes.\"",
+      "answer": 2,
+      "option": ["He had a poor time.","He had an accident.","He enjoyed his trip.","He is going on a trip."]  
+    },{
+      "question": "6. The instructor placed the book on the table.",
+      "answer": 1,
+      "option": ["He found it there.","He put it there.","He took it from there.","He looked for it there."]  
+    },{
+      "question": "7. Please pass the salt.",
+      "answer": 3,
+      "option": ["Please fill the salt shaker.","Don't use the salt.","Put salt on it, please.","Please hand me the salt."]  
+    },{
+      "question": "8. Sam is the same size as Henry.",
+      "answer": 2,
+      "option": ["They are both 25 years old.","They are both lieutenants.","They are both 6 feet tall.","They are both students."]  
+    },{
+      "question": "9. Susan was packing her baggage.",
+      "answer": 0,
+      "option": ["Susan was going on a trip.","Susan was going to the movies.","Susan was going to the office.","Susan was going for a walk."]  
+    },{
+      "question": "10. Most accidents take place in heavy traffic.",
+      "answer": 1,
+      "option": ["Accidents happen at yellow lights.","Accidents occur when there are many cars.","Accidents are cut down during the night.","Accidents increase when the lights are red."]  
+    },{
+      "question": "11. Is this your favorite?",
+      "answer": 0,
+      "option": ["Yes, I like it best.","Yes, it won't work.","Yes, it's very hot.","Yes, I don't want it."]  
+    },{
+      "question": "12. Sergeant White was driving his brand new car. He heard a loud noise. He stopped to see what it was. When did he hear a noise?",
+      "answer": 1,
+      "option": ["while getting in his car","while driving his car","when he first saw car","after he stopped his car"]  
+    },{
+      "question": "13. One of the students bought a portable typewriter. What kind did he get?",
+      "answer": 2,
+      "option": ["a very large typewriter","a very heavy typewriter","a typewriter which is light and easy to move","a type writer that cannot be moved"]  
+    },{
+      "question": "14. What do you usually do for recreation?",
+      "answer": 1,
+      "option": ["work","play ball","eat supper","sleep"]  
+    },{
+      "question": "15. Tom arrived at the airport at six. The plane took off at seven. When did Tom arrive at the airport?",
+      "answer": 3,
+      "option": ["too late to see the plane take off","seven hours before the plane took off","after the plane took off","an hour before the plane took off"]  
+    },{
+      "question": "16. We contacted our friends. What did we do?",
+      "answer": 1,
+      "option": ["We joined them.","We communicated with them.","We agreed with them.","We employed them."]  
+    },{
+      "question": "17. Ms. Brown sits beside me in the class. Where does she sit?",
+      "answer": 3,
+      "option": ["far from me","behind me","in front of me","next to me"]  
+    },{
+      "question": "18. Joe will be gone for an extended period of time. How long will he be gone?",
+      "answer": 3,
+      "option": ["for a few days","for a day only","for a short period of time","for a long period of time"]  
+    },{
+      "question": "19. Did you bother Mr. James when you called?",
+      "answer": 3,
+      "option": ["No, I'm not his sister.","No, I haven't seen him.","No, I haven't seen him.","No, I didn't disturb him."]  
+    },{
+      "question": "20. Where is the basement of a building?",
+      "answer": 0,
+      "option": ["beneath the ground floor","on the main floor","between the first and second floors","on the roof"]  
+    },{
+      "question": "21. Sarah was pleased with the acceleration of the car. What was she pleased with?",
+      "answer": 2,
+      "option": ["the color of the car","the slow-down action","the ability to increase speed","the price of the car"]  
+    },{
+      "question": "22. There was no wind on top of the mountain.",
+      "answer": 0,
+      "option": ["The air was very calm.","It's four thousand feet high.","We reached the top by three o'clock.","Nobody was up there."]  
+    },{
+      "question": "23. The man will cooperate with the police.",
+      "answer": 0,
+      "option": ["The men will help the police.","The men will ignore the police.","The men will attack the police.","The men will confuse the police"]  
+    },{
+      "question": "24. Our team was composed of three people.",
+      "answer": 3,
+      "option": ["Our team saw the three people","Our team talked to the three people.","The three people defeated our team.","The three people made up our team."]  
+    },{
+      "question": "25. Jack has a marvelous memory.",
+      "answer": 1,
+      "option": ["He forgets very quickly.","His memory is very good.","He can't remember anything.","His memory is about average."]  
+    },{
+      "question": "26. I ran into Mr. Noland yesterday in a bookstore.",
+      "answer": 1,
+      "option": ["I avoided Mr. Nolan yesterday.","I met Mr. Nolan yesterday.","I did not see Mr. Nolan yesterday.","My car hit Mr. Nolan's car yesterday."]  
+    },{
+      "question": "27. Harry rejected my offer.",
+      "answer": 2,
+      "option": ["He didn't receive my offer.","He didn't read my offer.","He refused my offer.","He accepted my offer."]  
+    },{
+      "question": "28. Sgt Brown said, \"May I leave for town at eight?\" The instructor said, \"Yes.\"",
+      "answer": 1,
+      "option": ["Sgt Brown left for town.","Sgt Brown can leave at eight.","The instructor will not let him go.","Sgt Brown doesn't want to go."]  
+    },{
+      "question": "29. Mr. Smith said, \"Look at this column in the newspaper.\" What does he want you to look at?",
+      "answer": 1,
+      "option": ["the advertising page","a vertical section of print","a mistake on a page","the headline"]  
+    },{
+      "question": "30. The book has many chapters. What is a chapter?",
+      "answer": 1,
+      "option": ["a lot of books","a part of a book","too many pages","a type of book"]  
+    },{
+      "question": "31. What is the opposite of a tailwind?",
+      "answer": 2,
+      "option": ["a drizzle","a crosswind","a headwind","a north wind"]  
+    },{
+      "question": "32. Lt. Adams was concerned about the health of his men. How did he feel about their health?",
+      "answer": 2,
+      "option": ["sad","uninterested","worried","satisfied"]  
+    },{
+      "question": "33. Walter has a good deal of cash on hand. What does he have?",
+      "answer": 1,
+      "option": ["a good bargain","a lot of money","stocks and bonds","many expensive things"]  
+    },{
+      "question": "34. The mechanic turned off the ignition switch because the battery was dead. What did the mechanic do?",
+      "answer": 1,
+      "option": ["examined the ignition","cut off the ignition","put the ignition switch on","examined the switch connection"]  
+    },{
+      "question": "35. The children cook their own supper tonight. I didn't help them.",
+      "answer": 3,
+      "option": ["Supper was prepared by my wife.","My wife and I prepared the supper.","The children can't cook at all.","The children did all the work."]  
+    },{
+      "question": "36. Bill doesn't have a car and neither does Jim.",
+      "answer": 3,
+      "option": ["Jim does have a car.","Bill and Jim have cars.","Jim drives Bill's car.","Jim does not have a car."]  
+    },{
+      "question": "37 . This blue suit is more expensive than the gray one.",
+      "answer": 0,
+      "option": ["The gray suit is cheaper.","The blue suit is cheaper.","They are both on sale.","The cost of the suits is the same."]  
+    },{
+      "question": "38. Irene wants to know the literal meaning of the word.",
+      "answer": 3,
+      "option": ["She wants to know the slang for the word.","She wants to know the special expression.","She wants to know the opposite meaning of it.","She wants to know the exact meaning of it."]  
+    },{
+      "question": "39. Since the time of World war One, incredible progress has been made in the development and production of this weapon.",
+      "answer": 3,
+      "option": ["The progress is small.","The progress is as expected.","No progress has been made since World War I.","The progress is almost unbelievable."]  
+    },{
+      "question": "40. The sergeant told the troops to see him before they took off.",
+      "answer": 1,
+      "option": ["The sergeant told the men to leave now.","The sergeant wanted to see the troops before their departure.","The sergeant told the troops to change their uniforms.","The sergeant told the group to report for drill."]  
+    },{
+      "question": "41. Drop around after class the instructor will help you with the problem.",
+      "answer": 3,
+      "option": ["You must wait for the instructor.","The instructor can't help you after class.","The instructor wants to see you in class.","See the instructor after class."]  
+    },{
+      "question": "42. He put the money in a slot. Where did he put it?",
+      "answer": 1,
+      "option": ["in a large box","in a narrow hole","in a small bag","in a strong safe"]  
+    },{
+      "question": "43. Darlene made a decision.",
+      "answer": 1,
+      "option": ["Darlene built something.","Darlene chose what to do.","Darlene asked what to do.","Darlene made a speech."]  
+    },{
+      "question": "44. While we were discussing the matter, Alice suddenly cut in. What did she do?",
+      "answer": 0,
+      "option": ["She interrupted us.","She reduced the volume.","She fell down.","She stopped her singing."]  
+    },{
+      "question": "45. The major briefed the students the day they arrived.",
+      "answer": 3,
+      "option": ["He looked at them.","He understood them.","He gave them a test.","He talked to them."]  
+    },{
+      "question": "46. The weather report said we should expect hail. What should we expect?",
+      "answer": 3,
+      "option": ["a light shower","many clouds","snow flakes","icy particles"]  
+    },{
+      "question": "47 . The doctor wants to check John's pulse. What does the doctor want to check?",
+      "answer": 3,
+      "option": ["his fever","his throat","his ears","his heartbeat"]  
+    },{
+      "question": "48. People can sell things by placing description of what they want to sell in the newspaper. Where are these prescriptions found in the paper?",
+      "answer": 3,
+      "option": ["in the comic pages","in the first section","in the amusement pages","in the want ads"]  
+    },{
+      "question": "49. It sounds like Jack enjoyed himself at the party.",
+      "answer": 2,
+      "option": ["Jack enjoyed the sound at the party.","Jack didn't like the sounds at the party.","It seems that Jack had a good time.","Jack himself didn't like the party."]  
+    },{
+      "question": "50. Before shooting at the target, Delores computed the range.",
+      "answer": 1,
+      "option": ["She knew the range and hit the target.","She figured out the distance to the target.","She talked to the ranger before shooting at the target.","She shot and hit the target from a great distance."]  
+    },{
+      "question": "51. Harold approached the woman.",
+      "answer": 2,
+      "option": ["Harold ran from the woman.","Harold talked about the woman.","Harold walked toward the woman.","Harold asked for the woman."]  
+    },{
+      "question": "52. The students like their teacher because he sticks to the subject matter.",
+      "answer": 1,
+      "option": ["The teacher talks about everything in the class.","The teacher follows the lesson plan very closely.","The teacher answers all types of general questions.","The teacher holds his book firmly in both hands."]  
+    },{
+      "question": "53. Barbara enjoyed his act very much. What did she like?",
+      "answer": 2,
+      "option": ["his food","talking with him","what he did","reading his book"]  
+    },{
+      "question": "54. Joe went to the sporting goods store to buy a fishing rod.",
+      "answer": 3,
+      "option": ["He bought a fishing reel.","He bought a piston rod.","He bought a storage battery.","He bought a fishing pole."]  
+    },{
+      "question": "55. Wearing gym shorts in a restaurant is not acceptable.",
+      "answer": 0,
+      "option": ["You shouldn't wear them in a restaurant.","They are allowed in a restaurant.","You shouldn't change them in a restaurant.","They are worn in a restaurant."]  
+    },{
+      "question": "56. It began to drizzle soon after we landed.",
+      "answer": 0,
+      "option": ["It started to rain.","The wind began to blow.","It became foggy.","It started to snow."]  
+    },{
+      "question": "57. M: What are you doing?\nW: Taking a break.\nQ: What does the woman say she is doing?",
+      "answer": 3,
+      "option": ["She's driving.","She's studying.","She's running.","She's relaxing."]  
+    },{
+      "question": "58. M: I heard about your accident. I am glad you weren't injured. Is your car okay too?\nW: No, it was damaged.\nQ: What happened to the car?",
+      "answer": 1,
+      "option": ["It was sold.","It was broken.","It was fixed.","It was lost."]  
+    },{
+      "question": "59. W: Why are you so sad?\nM: Everywhere I go, people laugh at me.\nQ: Where do people laugh at the man?",
+      "answer": 0,
+      "option": ["in each place he goes","in a few places he goes","in one place he goes","in none of the places he goes"]  
+    },{
+      "question": "60. W: He looks better today, doctor.\nM: Good. But how's his appetite?\nQ: What does the doctor want to know?",
+      "answer": 1,
+      "option": ["if the patient is seeing all right","if the patient is eating all right","if the patient is breathing all right","if the patient is talking all right"]  
+    },{
+      "question": "61. M: I will meet you at ten. Where?\nW: I have to go to the drugstore. Meet me there.\nQ: What does the woman have to do?",
+      "answer": 2,
+      "option": ["store some drugs","see a doctor","buy some medicine","buy vegetables"]  
+    },{
+      "question": "62. W: How did Rick do on the job?\nM: His work is poor.\nQ: What do you know about Rick?",
+      "answer": 0,
+      "option": ["He did unsatisfactory work.","He did different kinds of work.","He did not have much money.","He did well on his work."]  
+    },{
+      "question": "63. W: What's the matter?\nM: I'm in a rush.\nQ: What do we know about the man?",
+      "answer": 3,
+      "option": ["He wants to go to bed.","He wants to get cleaned up.","He wants to drink something cold.","He did well on his work."]  
+    },{
+      "question": "64. W: How did you find out about the news?\nM: It was broadcast.\nQ: How did the man find out about the news?",
+      "answer": 0,
+      "option": ["He listened to it on the radio.","He learned about it from a friend.","He read about it in a newspaper.","His brother told him about it."]  
+    },{
+      "question": "65. M: What's Peter's house like?\nW: It's huge.\nQ: What did she say about the house?",
+      "answer": 0,
+      "option": ["His house is big","His house is pretty.","His house is old.","His house is modern."]  
+    },{
+      "question": "66. M: What did you think of the book?\nW: The ending is very abrupt.\nQ: What did the woman think?",
+      "answer": 2,
+      "option": ["She thought the ending was good.","She thought the ending was obvious.","She thought the ending was sudden.","She thought the ending was sad."]
+    }]
+,
+  "children": [
+    {"start": 24.5, "end": 29.54},
+    {"start": 48.24, "end": 53.27},
+    {"start": 71.5, "end": 77.55},
+    {"start": 89.5, "end": 95.51},
+    {"start": 111.5, "end": 118.03},
+    {"start": 136.5, "end": 140.45},
+    {"start": 158, "end": 162.01},
+    {"start": 179, "end": 183.47},
+    {"start": 201, "end": 205.2},
+    {"start": 222, "end": 227.01},
+    {"start": 246, "end": 250},
+    {"start": 269, "end": 280.51},
+    {"start": 301.5, "end": 309.06},
+    {"start": 331, "end": 335.39},
+    {"start": 349.5, "end": 359.51},
+    {"start": 378, "end": 382.75},
+    {"start": 398.5, "end": 404.04},
+    {"start": 420.5, "end": 427.51},
+    {"start": 445, "end": 449.51},
+    {"start": 468.5, "end": 471.54},
+    {"start": 489.5, "end": 496.51},
+    {"start": 514.5, "end": 519.17},
+    {"start": 536, "end": 539.78},
+    {"start": 558, "end": 562.39},
+    {"start": 583, "end": 586.77},
+    {"start": 609, "end": 614.02},
+    {"start": 634.5, "end": 638.05},
+    {"start": 656, "end": 663.52},
+    {"start": 684.5, "end": 692.54},
+    {"start": 709.2, "end": 714.74},
+    {"start": 732, "end": 735.73},
+    {"start": 752, "end": 760},
+    {"start": 772, "end": 778.02},
+    {"start": 794.5, "end": 803.01},
+    {"start": 820.5, "end": 826.52},
+    {"start": 847.5, "end": 853.51},
+    {"start": 871.5, "end": 876.53},
+    {"start": 898, "end": 903},
+    {"start": 924.5, "end": 933},
+    {"start": 955, "end": 960},
+    {"start": 982, "end": 988},
+    {"start": 1007.5, "end": 1012.5},
+    {"start": 1028.5, "end": 1031.68},
+    {"start": 1048.8, "end": 1055.34},
+    {"start": 1072.2, "end": 1077.21},
+    {"start": 1095, "end": 1101},
+    {"start": 1117, "end": 1123.8},
+    {"start": 1139, "end": 1150.2},
+    {"start": 1166.2, "end": 1171.24},
+    {"start": 1191, "end": 1197.54},
+    {"start": 1218, "end": 1221.84},
+    {"start": 1239.5, "end": 1246.03},
+    {"start": 1268.5, "end": 1274.53},
+    {"start": 1290.7, "end": 1297.7},
+    {"start": 1315, "end": 1320.04},
+    {"start": 1341.5, "end": 1347},
+    {"start": 1381, "end": 1387.53},
+    {"start": 1401, "end": 1411.52},
+    {"start": 1427, "end": 1436.5},
+    {"start": 1456.2, "end": 1464.54},
+    {"start": 1484, "end": 1493.52},
+    {"start": 1509.5, "end": 1518},
+    {"start": 1534.5, "end": 1540.63},
+    {"start": 1559, "end": 1568},
+    {"start": 1588, "end": 1595.51},
+    {"start": 1614, "end": 1621.6}
+    ]
+
+}
