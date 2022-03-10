@@ -31,7 +31,7 @@ Vue.component('yt-player', {
 				<i-button :type="isPlaying ? 'default' : 'primary'" 
 					:icon="isPlaying ? 'md-pause' : 'md-walk'"
 					v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
-					@click.native="countdown()"  shape="circle"
+					@click.native="startExam()"  shape="circle"
 				/>
 			</div>
 		</div>
@@ -123,6 +123,7 @@ Vue.component('yt-player', {
 				window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
 			else {
 				// console.log("onClickPlay: " + index + ", " + (new Date()))
+				this.cycle = index;
 			}
 			if(index > -1 && index < this.rows.length) {
 				this.broadcast.$emit('exam', index);
@@ -165,7 +166,7 @@ Vue.component('yt-player', {
 			// this.stop();
 			this.$emit('on-click-edit');
 		},
-		countdown(index){
+		startExam(index){
 			if(this.isPlaying == true) {
 				this.stop();
 			} else {
@@ -173,14 +174,13 @@ Vue.component('yt-player', {
 				this.isPlaying = true;
 				this.broadcast.$on('playend', this.playend);
 				this.cycle = 0;
-				this.onClickPlay(this.cycle)
+				this.onClickPlay(0)
 			}
 		},
 		playend(){
 			if(this.cycle < this.rows.length - 1 && this.isPlaying == true) {
-				this.cycle++;
 				idPlay = setTimeout(() => {
-					this.onClickPlay(this.cycle);
+					this.onClickPlay(this.cycle + 1);
 				}, 1000 * 10);
 			} else {
 				this.stop();
