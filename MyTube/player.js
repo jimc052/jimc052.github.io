@@ -159,11 +159,11 @@ Vue.component('yt-player', {
 			}
 		},
 		onClickList(){
-			// this.stop();
+			if(this.isPlaying) this.stop();
 			this.$emit('on-click-list');
 		},
 		onClickEdit(){
-			// this.stop();
+			if(this.isPlaying) this.stop();
 			this.$emit('on-click-edit');
 		},
 		startExam(index){
