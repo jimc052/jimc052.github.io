@@ -14,7 +14,7 @@ Vue.component('yt-menu', {
         
       </div>
       <div style="padding: 10px 10px; z-index: 10;" v-if="!smallScreen && project.length > 0">
-        <Dropdown @on-click="onClickProject">
+        <Dropdown @on-click="onClickProject" v-if="$isDebug()">
           <a href="javascript:void(0)">
               {{project[topic].title}}
             <Icon type="ios-arrow-down"></Icon>
@@ -36,7 +36,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-10 09:00</div>
+        <div  style="flex: 1;">2022-03-11 18:00</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
@@ -187,7 +187,8 @@ Vue.component('yt-menu', {
             .collection(project).get();
           snapshot.forEach(async doc => {
             let json = Object.assign({id: doc.id}, doc.data());
-            menu.push(json);
+            if(this.$isDebug() || (Array.isArray(json.children) && json.children.length > 0))
+              menu.push(json);  
           });
           menu.sort((a, b) => {
             if(a.index > b.index)
