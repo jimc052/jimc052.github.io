@@ -1,0 +1,341 @@
+{
+  "id": "SHZXdsF4Mk8",
+  "index": 7,
+  "modifyDate": 1645828197211,
+  "title": "Form 48",
+  "topic": [{
+      "question": "1. Mr. Smith asked Joe, \"Do you have a bank account?\" What did Mr. Smith want to know?",
+      "answer": 0,
+      "option": ["if Joe had money in a bank","if Joe could count money","if the bank was open","if the account was for Mr. Smith"]  
+    },{
+      "question": "2. The weatherman says there is a possibility of rain.",
+      "answer": 0,
+      "option": ["There may be rain.","Rain will come for sure.","There will be plenty of rain.","There will be no rain."]  
+    },{
+      "question": "3. The instructor placed the book on the table.",
+      "answer": 1,
+      "option": ["He found it there.","He put it there.","He took it from there.","He looked for it there."]  
+    },{
+      "question": "4. Mr. Richards employs a lot of people.",
+      "answer": 0,
+      "option": ["A lot of people work for Mr. Richards.","A lot of people live with Mr. Richards.","A lot of people agree with Mr. Richards.","A lot of people listen to Mr. Richards."]  
+    },{
+      "question": "5. Most accidents take place in heavy traffic.",
+      "answer": 1,
+      "option": ["Accidents happened at yellow lights.","Accidents occur when there are many cars.","Accidents are cut down during the night.","Accidents increase when the lights are red."]  
+    },{
+      "question": "6. Bill arrived at the lab just in time.",
+      "answer": 3,
+      "option": ["He was late to lab.","He arrived at the lab early.","He arrived late.","He arrived at the exact time."]  
+    },{
+      "question": "7. This machine is automatic.",
+      "answer": 1,
+      "option": ["It is operated manually.","It works by itself.","It makes too much noise.","It is a part of a car."]  
+    },{
+      "question": "8. Jennifer wants to mail the package. Where should she go?",
+      "answer": 2,
+      "option": ["to the store","to the bank","to the post office","to the police station"]  
+    },{
+      "question": "9. John has lots of new ideas. What has he been doing?",
+      "answer": 2,
+      "option": ["shopping","hunting","thinking","skiing"]  
+    },{
+      "question": "10. The woman made toast for breakfast. What did she use?",
+      "answer": 1,
+      "option": ["oranges","bread","eggs","milk"]  
+    },{
+      "question": "11. Why did you stay so late at the office last night?",
+      "answer": 3,
+      "option": ["I didn't go to the office.","Yes, it was my final time.","It was long past eight.","I wanted to finish my work."]  
+    },{
+      "question": "12. The wires were hidden in back of engine. Where were the wires hidden?",
+      "answer": 2,
+      "option": ["in front of the engine","on top of the engine","behind the engine","on the right side of the engine"]  
+    },{
+      "question": "13. The driver reached his destination with very little gasoline in the tank. How did he arrive at his destination?",
+      "answer": 2,
+      "option": ["with ample gasoline","without any gasoline","with a small amount of gasoline","with a tank full of gasoline"]  
+    },{
+      "question": "14. Walter spends an hour each day in physical training. What does Walter do?",
+      "answer": 3,
+      "option": ["He takes physical training every hour.","He goes to class for one hour.","He can't stand it physically.","He takes physical training every day."]  
+    },{
+      "question": "15. Mr. Green liked the film so much that he went to see it again. What did he do?",
+      "answer": 0,
+      "option": ["He saw the picture twice.","He left before it was over.","He told everyone about it.","He bought the picture."]  
+    },{
+      "question": "16. Which of these is a meal?",
+      "answer": 3,
+      "option": ["an animal","5,280","a jeep","breakfast"]  
+    },{
+      "question": "17. My friend has given me his address.",
+      "answer": 1,
+      "option": ["My friend drove me to his house.","My friend gave me his house number.","I have given my phone number to my friend.","I have given my address to my friend."]  
+    },{
+      "question": "18. Edward walks to the base exchange. He never takes a bus there.",
+      "answer": 1,
+      "option": ["He rides the bus to the BX.","He doesn't ride the bus there.","He usually goes there by bus.","He never goes to the BX."]  
+    },{
+      "question": "19. Carol said, \"Let's go in. I'm freezing.\" Laura said, \"I'm too. Let's go.\"",
+      "answer": 2,
+      "option": ["Carol wants to go outside.","The weather is warm.","The weather is very cold.","Laura is feeling warm."]  
+    },{
+      "question": "20. Wire conducts electric current.",
+      "answer": 0,
+      "option": ["Electric current is carried by wire.","Electric current directs wire.","Wire runs in the electric current.","Wire rejects electric current."]  
+    },{
+      "question": "21 . The men will cooperate with the police.",
+      "answer": 0,
+      "option": ["The men will help the police.","The men will ignore the police.","The men will attack the police.","The men will confuse the police."]  
+    },{
+      "question": "22. Since it was so hot, he stayed at home. Why did he remain at home?",
+      "answer": 2,
+      "option": ["because of the cold weather","because of the work at home","because of the heat","because of the humidity"]  
+    },{
+      "question": "23. A very good and great man lived a century ago. How long ago was that?",
+      "answer": 0,
+      "option": ["100 years","50 years","1,000 years","10 years"]  
+    },{
+      "question": "24. Did you make up your mind to go?",
+      "answer": 1,
+      "option": ["Yes, I forgot to go.","Yes, I decided to go.","Yes, I failed to go.","Yes, I refused to go."]  
+    },{
+      "question": "25. Mr. Smith has to go to the bank today.",
+      "answer": 2,
+      "option": ["He could go today.","He may go today.","He must go today.","He won't go today."]  
+    },{
+      "question": "26. Fred collected the students' papers in sequence.",
+      "answer": 2,
+      "option": ["He collected them in anger.","He collected them in advance.","He collected them in order.","He collected them in a box."]  
+    },{
+      "question": "27. I'll keep that information in mind.",
+      "answer": 2,
+      "option": ["I'll file it.","I'll post it.","I'll remember it.","I'll record it."]  
+    },{
+      "question": "28. We had a guest over the weekend. What did we have?",
+      "answer": 1,
+      "option": ["We had a party.","We had a visitor.","We had a windstorm.","We had a rest."]  
+    },{
+      "question": "29. Can you start a fire with two stones?",
+      "answer": 2,
+      "option": ["Can you heat the stones?","Can you make the fire hotter?","Can you light a fire with the stones?","Can the heat burn the stones?"]  
+    },{
+      "question": "30. The accident was caused by the pilot's blurred vision. What caused the accident?",
+      "answer": 0,
+      "option": ["poor eyesight","black smoke","a thick fog","a television tower"]  
+    },{
+      "question": "31. As the bus drove down the Pennsylvania Avenue, Tom glanced at the White House. What did he do?",
+      "answer": 3,
+      "option": ["He went to the White House.","He ate at the White House.","He stayed at the White House.","He looked at the White House."]  
+    },{
+      "question": "32. They walked through a dense forest. What kind of forest was it?",
+      "answer": 0,
+      "option": ["There were many trees close together.","It was high up in the mountains.","It was far away from everything.","There were few animals living there."]  
+    },{
+      "question": "33. The wires were hidden between walls.",
+      "answer": 2,
+      "option": ["You could see the wires.","The wires were in front of the walls.","You could not see the wires.","The wires were outside the walls."]  
+    },{
+      "question": "34. The Watkins family has often invited Jack to visit them.",
+      "answer": 2,
+      "option": ["Jack has often asked the Watkins family to see him.","The Watkins family has often dropped in on Jack.","They have often asked Jack to come over.","They would like to have Jack live with them."]  
+    },{
+      "question": "35. John converted his money.",
+      "answer": 0,
+      "option": ["He exchanged his money.","He spent his money.","He lost his money.","He worked for his money"]  
+    },{
+      "question": "36. Mike spread out the maps.",
+      "answer": 0,
+      "option": ["He opened the maps.","He folded the maps.","He marked the maps.","He copied the maps."]  
+    },{
+      "question": "37. Joan picked out a dress.",
+      "answer": 1,
+      "option": ["She ironed it.","She chose it.","She made it.","She wore it."]  
+    },{
+      "question": "38. The tree will obstruct the view. What would the tree do?",
+      "answer": 3,
+      "option": ["open the view","improve the view","keep the view","block the view"]  
+    },{
+      "question": "39. Bill's just beginning to catch on. What is Bill just beginning to do?",
+      "answer": 2,
+      "option": ["a get sick","play games","understand","d.perform"]  
+    },{
+      "question": "40. He picked up the shipment at the depot.",
+      "answer": 1,
+      "option": ["He looked at the shipment.","He went and got it at the depot.","He approved the shipment.","He left the shipment at the depot."]  
+    },{
+      "question": "41. How is Mr. Jones getting along in his new job?",
+      "answer": 2,
+      "option": ["His family is fine.","He's feeling well.","He's doing fine.","He bought a car."]  
+    },{
+      "question": "42. Is this a private beach?",
+      "answer": 1,
+      "option": ["Yes, the public may come.","Yes, it is owned by Mr. Collins.","Yes, it is famous.","Yes, it is sandy."]  
+    },{
+      "question": "43. Tom is going to observe the carpenters. What is he going to do?",
+      "answer": 1,
+      "option": ["pay them","watch them","help them","direct them"]  
+    },{
+      "question": "44. The ride was bumpy. How was the ride?",
+      "answer": 2,
+      "option": ["smooth","fast","rough","d.comfortable"]  
+    },{
+      "question": "45. Tom will fry potatoes for lunch.",
+      "answer": 3,
+      "option": ["He will put them in the oven.","He will put them in hot water.","He will put them in a sauce.","He will put them in hot oil."]  
+    },{
+      "question": "46. John would rather have a hamburger than a hot dog. What would he rather have?",
+      "answer": 3,
+      "option": ["both","neither","a hot dog","a hamburger"]  
+    },{
+      "question": "47. Did he give you his approval?",
+      "answer": 3,
+      "option": ["Yes, he gave me a mean look.","Yes, he gave me his promise.","Yes, he gave me a lecture.","Yes, he gave me his consent."]  
+    },{
+      "question": "48. George is going sailing. What is he going to do?",
+      "answer": 0,
+      "option": ["He is going for a boat ride.","He is going to sell a boat.","He is going to a sale.","He is going to look at some cars."]  
+    },{
+      "question": "49. This is a harmless animal.",
+      "answer": 2,
+      "option": ["It can kill you.","It may hurt you.","It won't hurt you.","The animal is afraid."]  
+    },{
+      "question": "50. The temperature was around 70 degree and it was a foggy morning.",
+      "answer": 0,
+      "option": ["You couldn't see the sun.","There was some dust in the air.","C. The air had a low moisture content.","There was a steady breeze blowing."]  
+    },{
+      "question": "51. Private Jones was assigned to guard duty.",
+      "answer": 0,
+      "option": ["He was told to do guard duty.","He was not allowed to do guard duty.","He was excused from guard duty.","He was ready to do guard duty."]  
+    },{
+      "question": "52. We were forced to land in Rome while en route to London.",
+      "answer": 0,
+      "option": ["We were going to London.","We landed in London first.","We were going to Rome.","We overflew Rome."]  
+    },{
+      "question": "53. Bill always goes along with everything his brother does.",
+      "answer": 0,
+      "option": ["Bill agrees with his brother.","Bill accompanies his brother.","Bill argues with his brother.","Bill advised his brother."]  
+    },{
+      "question": "54. The school will eventually add another branch.",
+      "answer": 2,
+      "option": ["Another branch has been added.","The school is not interested in another branch.","Sooner or later another branch will be added.","Another branch will never be added to the school."]  
+    },{
+      "question": "55. Alice's a courteous girl.",
+      "answer": 1,
+      "option": ["She is beautiful.","She is polite.","She is studious.","She tells jokes."]  
+    },{
+      "question": "56. Glenn drilled a hole in the wooden door.",
+      "answer": 1,
+      "option": ["He removed the paint.","He perforated it.","He trimmed the edges.","He sanded it down."]  
+    },{
+      "question": "57. M: I heard about your accident. I am glad you weren't injured. Is your car okay too?\nW: No. It was damaged.\nQ: What happened to the car?",
+      "answer": 1,
+      "option": ["It was sold.","It was broken.","It was fixed.","It was lost."]  
+    },{
+      "question": "58. W: Did you plan to take picture on your trip?\nM: Yes. But my camera was not working.\nQ: What do you learn from this conversation?",
+      "answer": 1,
+      "option": ["The man took pictures on the trip.","The man did not take any pictures.","C. The man did not make any plans.","The man worked instead of going on a trip."]  
+    },{
+      "question": "59. W: Would you like more vegetables?\nM: I have sufficient. Thank you.\nQ: What did the man mean?",
+      "answer": 0,
+      "option": ["He has enough.","He does not like vegetables.","He wants more.","He would like something else."]  
+    },{
+      "question": "60. W: How are your patients?\nM: They are doing very well except the man in room two twelve.\nQ: Where did this conversation most likely take place?",
+      "answer": 1,
+      "option": ["in a bank","in a hospital","in a barracks","in a hotel"]  
+    },{
+      "question": "61. M: Are you going to do this room too?\nW: Yes, and I'm going to transform it completely.\nQ: What will the woman do?",
+      "answer": 2,
+      "option": ["She's going to clean the floor.","She's going to paint the walls the same color.","She's going to change all the colors and furniture.","She's going to clean the paint."]  
+    },{
+      "question": "62. M: I hear that David is in town.\nW: Yes. His visit was a real surprise.\nQ: What did the woman say about the David's visit?",
+      "answer": 1,
+      "option": ["It is costing money.","She did not expect it.","She is waiting for it.","It is already over."]  
+    },{
+      "question": "63. M: Are you going to the meeting?\nW: Yes, I'm looking forward to it.\nQ: What does the woman mean?",
+      "answer": 0,
+      "option": ["She wants to go to the meeting.","She has to go to the meeting.","She refuses to go to the meeting.","She ought to go to the meeting."]  
+    },{
+      "question": "64. W: Did you remember to put water in this? The leaves are beginning to fall.\nM: No, i didn't. I'll do it now.\nQ: What needs water?",
+      "answer": 3,
+      "option": ["the grass","a salad","the forest","a plant"]  
+    },{
+      "question": "65. M: Can you meet me at the restaurant, Mary?\nW: Yes, it's a very convenient place.\nQ: Why will they meet at the restaurant?",
+      "answer": 0,
+      "option": ["Mary can go there very easily.","It's a good place to eat.","Not many people go there.","Mary has never been there before."]  
+    },{
+      "question": "66. W: There is a car with its light on in the parking lot. It's a blue Mercury Cougar with a Georgia license plate.\nThe car _________.",
+      "answer": 3,
+      "option": ["is illegally parked","was stolen in Georgia","is stalled at a light","has its lights on"]
+    }]
+,
+  "children": [
+    {"start": 18.5, "end": 25.5},
+    {"start": 42.9, "end": 47.91},
+    {"start": 64.13, "end": 69.14},
+    {"start": 84.87, "end": 89.02},
+    {"start": 107.5, "end": 112.18},
+    {"start": 129.93, "end": 134.44},
+    {"start": 150.5, "end": 154},
+    {"start": 173, "end": 178.01},
+    {"start": 193, "end": 198},
+    {"start": 214.5, "end": 219.54},
+    {"start": 232.5, "end": 237.1},
+    {"start": 255, "end": 262.53},
+    {"start": 284, "end": 293.02},
+    {"start": 308.5, "end": 316},
+    {"start": 334.77, "end": 341.81},
+    {"start": 359.5, "end": 363.26},
+    {"start": 380.5, "end": 385.35},
+    {"start": 406.5, "end": 412.53},
+    {"start": 431.5, "end": 439.54},
+    {"start": 455.5, "end": 460.04},
+    {"start": 477, "end": 481.43},
+    {"start": 498.5, "end": 505.51},
+    {"start": 522, "end": 528.51},
+    {"start": 542, "end": 546.38},
+    {"start": 562.5, "end": 566.51},
+    {"start": 586, "end": 591.04},
+    {"start": 608, "end": 612.13},
+    {"start": 626.5, "end": 631.54},
+    {"start": 647, "end": 651},
+    {"start": 671, "end": 678},
+    {"start": 692.5, "end": 700.53},
+    {"start": 716.5, "end": 721.55},
+    {"start": 740.5, "end": 745.37},
+    {"start": 764, "end": 769},
+    {"start": 789.5, "end": 793.16},
+    {"start": 809, "end": 813.23},
+    {"start": 828, "end": 831.51},
+    {"start": 847.5, "end": 852.53},
+    {"start": 867.5, "end": 873.04},
+    {"start": 889.5, "end": 892.96},
+    {"start": 912, "end": 917},
+    {"start": 931.5, "end": 935},
+    {"start": 954, "end": 959},
+    {"start": 976.5, "end": 981},
+    {"start": 991, "end": 995.53},
+    {"start": 1015, "end": 1021.51},
+    {"start": 1036.7, "end": 1040.76},
+    {"start": 1060, "end": 1064.89},
+    {"start": 1084.5, "end": 1088},
+    {"start": 1103.5, "end": 1108.51},
+    {"start": 1128, "end": 1132.42},
+    {"start": 1151.5, "end": 1156.54},
+    {"start": 1178, "end": 1183},
+    {"start": 1200.5, "end": 1205.52},
+    {"start": 1226.5, "end": 1230.27},
+    {"start": 1245, "end": 1249.55},
+    {"start": 1277.5, "end": 1288},
+    {"start": 1302.5, "end": 1313},
+    {"start": 1332, "end": 1340.04},
+    {"start": 1357.5, "end": 1367.54},
+    {"start": 1383, "end": 1392.51},
+    {"start": 1411.5, "end": 1421.51},
+    {"start": 1438.5, "end": 1446.2},
+    {"start": 1466.5, "end": 1476},
+    {"start": 1488.5, "end": 1497},
+    {"start": 1514, "end": 1522}
+    ]
+
+}

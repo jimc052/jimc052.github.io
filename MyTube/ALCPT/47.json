@@ -1,0 +1,341 @@
+{
+  "id": "uxW4t5QwkSI",
+  "index": 6,
+  "modifyDate": 1645828197211,
+  "title": "Form 47",
+  "topic": [{
+      "question": "1. The customer waited for the cashier. What did the customer want to do?",
+      "answer": 0,
+      "option": ["pay his bill","order his food","cook his meal","plan his meal"]  
+    },{
+      "question": "2. The weatherman said it might rain tomorrow. What is the weather outlook for tomorrow?",
+      "answer": 3,
+      "option": ["a windy day","no rain for sure","good weather","possibly rain"]  
+    },{
+      "question": "3. Jack spilt the soda water. What was spilt?",
+      "answer": 2,
+      "option": ["the salad dressing","the milk","the soft drink","the sweet wine"]  
+    },{
+      "question": "4. Sgt Walker told his men to hurry. What did he tell them to do?",
+      "answer": 3,
+      "option": ["to wash up","to stand still","C. to quiet down","to move fast"]  
+    },{
+      "question": "5. Mr. Williams. went to the barbershop to get a haircut. Then he went to the post office to get some stamps. Where did Mr. Williams go after getting a haircut?",
+      "answer": 3,
+      "option": ["to buy a money order","to get his hair trimmed","to the barbershop","to the post office"]  
+    },{
+      "question": "6. Carl said, \" I need to buy a pair of new shoes but I don't have the time.\"",
+      "answer": 2,
+      "option": ["Carl bought a pair of shoes.","Carl has time to do some shopping.","He doesn't have time to buy new shoes.","He doesn't have the money to buy the shoes."]  
+    },{
+      "question": "7. Traffic is heavy in town during the rush hour.",
+      "answer": 2,
+      "option": ["There are many accidents.","There are many people shopping.","There are many cars on the street.","There are few cars on the street."]  
+    },{
+      "question": "8. When I am at home I like to take it easy.",
+      "answer": 3,
+      "option": ["I like to work hard.","I like to study a lot.","C. I like to take a bath.","I like to relax."]  
+    },{
+      "question": "9. Is this your favorite?",
+      "answer": 0,
+      "option": ["Yes, I like it best.","Yes, it won't work.","Yes, it's very hot.","Yes, I don't want it."]  
+    },{
+      "question": "10. Why did Joe take his cloths to the laundry?",
+      "answer": 0,
+      "option": ["because they weren't clean","because they weren't comfortable","because they were old","because they were expensive"]  
+    },{
+      "question": "11. The men planted a dozen trees. How many trees did they plant?",
+      "answer": 0,
+      "option": ["12","24","C. 144","200"]  
+    },{
+      "question": "12. Jack finished his studies at a quarter after eight. When did Jack finish his studies?",
+      "answer": 1,
+      "option": ["at 8 o'clock","at 8:15","at 7:45","a few minutes before 8"]  
+    },{
+      "question": "13. Rebecca wanted cash for her car when she sold it. What did she want?",
+      "answer": 1,
+      "option": ["gas","money","oil","polish"]  
+    },{
+      "question": "14. Mary appreciates her friends. How does she feel about her friends?",
+      "answer": 1,
+      "option": ["She is unhappy with them.","She is grateful for them.","She loses her friends.","She pays no attention to them."]  
+    },{
+      "question": "15. Before he can do anything else, John needs more data. What does he need?",
+      "answer": 3,
+      "option": ["more schooling","more changes","more rest","more information"]  
+    },{
+      "question": "16. Where is a person's neck?",
+      "answer": 3,
+      "option": ["between his foot and his leg","between his hand and his arm","between his legs and his back","between his shoulders and his head"]  
+    },{
+      "question": "17.  Tony got a good mark in conduct. What did he get a good mark in?",
+      "answer": 0,
+      "option": ["behavior","health","lessons","history"]  
+    },{
+      "question": "18. Mr. Long said, \"I haven't seen Tom since the day before yesterday.\" When was the last time\nthat Mr. Long saw Tom?",
+      "answer": 2,
+      "option": ["yesterday","a week ago","two days ago","four days ago"]  
+    },{
+      "question": "19. The instructor told the class how to reach the laboratory.",
+      "answer": 2,
+      "option": ["The instructor wanted to get to the laboratory early.","The instructor got to the laboratory late.","The instructor told the class how to get there.","The class went directly to the laboratory."]  
+    },{
+      "question": "20. My car is out of order.",
+      "answer": 0,
+      "option": ["It won't run.","It will go very fast.","I keep it outside at night.","I have bought a new one."]  
+    },{
+      "question": "21. The bank is opposite the post office.",
+      "answer": 1,
+      "option": ["The bank is on a different street.","The bank is across the street from the post office.","The bank is just behind the post office.","The bank is next to the post office."]  
+    },{
+      "question": "22. The highways in some states are very narrow.",
+      "answer": 2,
+      "option": ["They are poor.","They are long.","They are not wide.","They are not nice."]  
+    },{
+      "question": "23. Mrs. Smith is looking for a new dress.",
+      "answer": 0,
+      "option": ["She was trying to find one.","She was admiring one.","She didn't want to look at one.","She bought one."]  
+    },{
+      "question": "24. He has just been assigned to a new job.",
+      "answer": 0,
+      "option": ["He was recently assigned to a new job","He was assigned to the job several months ago.","He was never assigned to the new job.","He was once assigned to a new job."]  
+    },{
+      "question": "25. The car is covered with dirt.",
+      "answer": 1,
+      "option": ["It is highly polished.","It is not clean.","It is being painted.","It is not new."]  
+    },{
+      "question": "26. Take your time.",
+      "answer": 0,
+      "option": ["Don't hurry.","Look at our watch.","Come now.","Begin immediately."]  
+    },{
+      "question": "27. How were you able to cross the Atlantic Ocean in such a short time?",
+      "answer": 3,
+      "option": ["for $250.00","in the month of May","less than ten hours","by jet plane"]  
+    },{
+      "question": "28. The dust is all over the room. Where is the dust?",
+      "answer": 1,
+      "option": ["There's no dust in the room.","There's dust everywhere in the room.","There's only a little dust in the room.","There's dust outside the room."]  
+    },{
+      "question": "29. Will you get through your homework soon?",
+      "answer": 0,
+      "option": ["Yes, I'll finish it quickly.","Yes, I think I'll start it soon.","Yes, it'll take some time to do.","Yes, I need to go through it."]  
+    },{
+      "question": "30. Mary wants to serve in the hospital. What does she want to do in the hospital?",
+      "answer": 2,
+      "option": ["buy some medicine.","see a doctor","give some help","get a private room"]  
+    },{
+      "question": "31. He was given an order to report to the office. What was he given?",
+      "answer": 1,
+      "option": ["an argument","a command","a form","a report"]  
+    },{
+      "question": "32. His engine cut out when he was in eight thousand feet. What happened to his engine?",
+      "answer": 0,
+      "option": ["It stopped.","It dropped on the ground.","It made a loud sound.","It started after being off a while."]  
+    },{
+      "question": "33. Adam prefers a red car.",
+      "answer": 3,
+      "option": ["Adam has won a red car.","Adam likes to race in his red car.","Adam always talks about this red car.","Adam would rather have a red car."]  
+    },{
+      "question": "34. Bill will go to the doctor if he feels worse tomorrow.",
+      "answer": 0,
+      "option": ["Bill might go to the doctor.","Bill went to the doctor.","Bill won't go to the doctor.","Bill will feel worse tomorrow."]  
+    },{
+      "question": "35.  Let me get my coat, Robert.",
+      "answer": 2,
+      "option": ["Robert doesn't want to get his coat.","Robert, please get my coat.","Allow me to get my coat.","Don't get my coat."]  
+    },{
+      "question": "36. There weren't any seats available for the show.",
+      "answer": 1,
+      "option": ["There were plenty of seats left.","There weren't any seats left.","The tickets weren't cheap.","Half of the seats could be used."]  
+    },{
+      "question": "37. The tool was wrapped in paper.",
+      "answer": 2,
+      "option": ["The paper was put inside the tool.","The too was explained on paper.","The tool was covered with paper.","The tool was used to cut the paper."]  
+    },{
+      "question": "38. Before you cash a check, you must endorse it.",
+      "answer": 3,
+      "option": ["You must present your identification.","You must complete an application form.","You must keep it flat at all times.","You must write your name on the back"]  
+    },{
+      "question": "39. Mike spread out the maps.",
+      "answer": 0,
+      "option": ["He opened the maps.","He folded the maps.","He marked the maps.","The copied the maps."]  
+    },{
+      "question": "40. The students made up their minds to go to the party.",
+      "answer": 0,
+      "option": ["They decided to attend.","They did not worry about the party.","They could not decide about going.","They are not going to the party."]  
+    },{
+      "question": "41. Mr. Jones missed the point.",
+      "answer": 1,
+      "option": ["He broke his pencil.","He didn't understand the idea.","He turned at the wrong intersection.","He has sharpened his pencil already."]  
+    },{
+      "question": "42. The instructor wrote a problem on the chalkboard and asked a student to work it out.",
+      "answer": 1,
+      "option": ["The instructor asked the student to present a problem.","The student was asked to solve the problem.","The student asked the instructor to take the problem out.","The instructor wanted the problem to remain unsolved."]  
+    },{
+      "question": "43. Would you keep an eye on my luggage for me?",
+      "answer": 3,
+      "option": ["Would you locate it?","Would you carry it?","Would you tag it?","Would you watch it?"]  
+    },{
+      "question": "44. Only authorized personnel may enter that office. Who may enter?",
+      "answer": 3,
+      "option": ["only the people who live in the building","only the editors and clerks","only the writers and publishers","only those with official approval"]  
+    },{
+      "question": "45. The man told his patient to rest after every meal.",
+      "answer": 0,
+      "option": ["The man is a doctor.","The man is a teacher.","The man is a salesman.","The man is a cook."]  
+    },{
+      "question": "46. As the apple fell, its velocity increased. What happened as the apple fell?",
+      "answer": 0,
+      "option": ["its speed became faster","the apple grew bigger","the apple looked darker","it became softer"]  
+    },{
+      "question": "47. He could feel the plane vibrating. What was the plane doing?",
+      "answer": 0,
+      "option": ["descending","shaking","climbing","rolling"]  
+    },{
+      "question": "48. Why did Jane have goose bumps?",
+      "answer": 1,
+      "option": ["because she is angry","because she is cold","because she is tired","because she is warm"]  
+    },{
+      "question": "49. The report had to be amended.",
+      "answer": 3,
+      "option": ["It had to be recorded.","It had to be mailed.","It had to be compiled.","It had to be changed."]  
+    },{
+      "question": "50. Harold approached the woman.",
+      "answer": 2,
+      "option": ["Harold ran from the woman.","Harold talked about the woman.","Harold walked toward the woman.","Harold asked for the woman."]  
+    },{
+      "question": "51. When the group finished their work, they got time off for a job well done.",
+      "answer": 2,
+      "option": ["The group had to work until quitting time.","The group came back to finish the job.","The group was permitted to leave early.","The group took more time to do the job."]  
+    },{
+      "question": "52. Be sure you watch carefully before you drive on the highway.",
+      "answer": 2,
+      "option": ["Be sure to look at your watch.","Be sure to get off the road.","Be sure to look around.","Be sure to take care of the car."]  
+    },{
+      "question": "53. Oil is abundant in this state.",
+      "answer": 2,
+      "option": ["It is expensive.","It is rare.","It is plentiful.","It is black."]  
+    },{
+      "question": "54. This is a pretty stiff course.",
+      "answer": 1,
+      "option": ["It is a very simple course.","It is a difficult course.","It is a short course.","It is an interesting course."]  
+    },{
+      "question": "55. Why did the welder use goggles?",
+      "answer": 3,
+      "option": ["to protect his feet","to protect his hands","to protect his hearing","to protect his sight"]  
+    },{
+      "question": "56. The enemy gave up to the superior forces. What did the enemy do?",
+      "answer": 2,
+      "option": ["defended themselves","attacked the forces","surrendered","d.counterattacked"]  
+    },{
+      "question": "57. M: Have you seen my new dog?\nW: Yes. He's very nice.\nQ: How does the woman feel about the dog?",
+      "answer": 1,
+      "option": ["She is afraid of it.","She likes it.","C. She wants it.","She dislikes it."]  
+    },{
+      "question": "58. M: Did John use the highway?\nW: Yes, he did.\nQ: What was John doing?",
+      "answer": 3,
+      "option": ["sailing","flying","swimming","driving"]  
+    },{
+      "question": "59. W: Look! Mary is running down the street.\nM: Why would she do that?\nQ: What does the man want to know?",
+      "answer": 2,
+      "option": ["where she is running","the name of the runner","the reason she is running","how fast she is running"]  
+    },{
+      "question": "60. W: What does Mr. Cobb do for a living?\nM: He writes fiction.\nQ: What does Mr. Cobb do?",
+      "answer": 2,
+      "option": ["He writes news.","He writes textbooks.","He writes stories.","He writes reports."]  
+    },{
+      "question": "61. W: Doctor, can't you help us?\nM: I am sorry I can't. I don't have my instruments.\nQ: What does the doctor meed?",
+      "answer": 1,
+      "option": ["his nurse","his tools","his license","his medicine"]  
+    },{
+      "question": "62. W: This restaurant is very crowded.\nM: I know, but we have reservations.\nQ: What does the man mean?",
+      "answer": 0,
+      "option": ["Places are being saved for them.","Large crowds don't bother them.","A special meal is being prepared for them.","There is a crowd there to greet them."]  
+    },{
+      "question": "63. M: Why don't you come over here and sit beside me?\nW: Thank you, I'll be glad to.\nQ: Where will the woman sit?",
+      "answer": 2,
+      "option": ["in front of the man","behind the man","next to the man","across from the man"]  
+    },{
+      "question": "64. M: Did you see the new tank?\nW: No, but I saw the design for it.\nQ: What did the woman see?",
+      "answer": 0,
+      "option": ["a plan","a color","a soldier","a mistake"]  
+    },{
+      "question": "65. W: Where should we meet tomorrow? I think this corner would be good.\nM: I was going to say the post office, but now I think we'd better meet right here.\nQ: Where will the man and the woman probably meet?",
+      "answer": 2,
+      "option": ["on the base","at the office","on the corner","at the post office"]  
+    },{
+      "question": "66. M: How much do I owe you?\nW: That's a dollar and a half.\nM: Here are two one-dollar bills. Keep the change.\nQ: What has happened?",
+      "answer": 2,
+      "option": ["The man gave her one dollar and fifty cents.","The man wants some change back.","The lady received two dollars.","The lady will have to pay him fifty cents."]
+    }]
+,
+  "children": [
+    {"start": 20, "end": 25.53},
+    {"start": 25.5, "end": 31.52},
+    {"start": 31.6, "end": 35.6},
+    {"start": 35.98, "end": 40.9},
+    {"start": 41.1, "end": 52.8},
+    {"start": 53.2, "end": 58.75},
+    {"start": 59.3, "end": 63.3},
+    {"start": 63.6, "end": 66.91},
+    {"start": 67.2, "end": 69.3},
+    {"start": 69.53, "end": 72.7},
+    {"start": 72.95, "end": 78.8},
+    {"start": 79.03, "end": 85.57},
+    {"start": 85.78, "end": 91.31},
+    {"start": 91.55, "end": 97.3},
+    {"start": 97.6, "end": 103.1},
+    {"start": 103.34, "end": 106},
+    {"start": 106.21, "end": 112.1},
+    {"start": 112.34, "end": 121.5},
+    {"start": 121.71, "end": 126.5},
+    {"start": 126.71, "end": 129.27},
+    {"start": 129.5, "end": 133},
+    {"start": 133.24, "end": 137},
+    {"start": 137.22, "end": 141.26},
+    {"start": 141.49, "end": 145.22},
+    {"start": 145.45, "end": 148.4},
+    {"start": 148.61, "end": 150.7},
+    {"start": 150.93, "end": 156.47},
+    {"start": 156.69, "end": 161.4},
+    {"start": 161.64, "end": 165.17},
+    {"start": 165.42, "end": 170.95},
+    {"start": 171.15, "end": 176.4},
+    {"start": 176.7, "end": 182.98},
+    {"start": 183.19, "end": 186.3},
+    {"start": 186.52, "end": 191.1},
+    {"start": 191.33, "end": 194.4},
+    {"start": 194.67, "end": 198.71},
+    {"start": 198.92, "end": 201.75},
+    {"start": 201.96, "end": 206.2},
+    {"start": 206.43, "end": 209.3},
+    {"start": 209.53, "end": 213.4},
+    {"start": 213.62, "end": 216.95},
+    {"start": 217.18, "end": 223.7},
+    {"start": 223.95, "end": 227.3},
+    {"start": 227.55, "end": 233.8},
+    {"start": 234, "end": 238.56},
+    {"start": 238.8, "end": 245.34},
+    {"start": 245.57, "end": 250.61},
+    {"start": 250.82, "end": 254.23},
+    {"start": 254.46, "end": 257.4},
+    {"start": 257.64, "end": 259.92},
+    {"start": 260.15, "end": 265.68},
+    {"start": 266.41, "end": 270.8},
+    {"start": 271.3, "end": 274.8},
+    {"start": 275.14, "end": 278.1},
+    {"start": 278.33, "end": 281.85},
+    {"start": 282.07, "end": 287.57},
+    {"start": 287.8, "end": 297.6},
+    {"start": 297.84, "end": 304.85},
+    {"start": 305.09, "end": 314.4},
+    {"start": 314.61, "end": 322.64},
+    {"start": 322.87, "end": 333.89},
+    {"start": 334.11, "end": 343.62},
+    {"start": 343.86, "end": 354.5},
+    {"start": 354.72, "end": 363.72},
+    {"start": 363.94, "end": 379.6},
+    {"start": 379.82, "end": 391.8}
+    ]
+
+}
