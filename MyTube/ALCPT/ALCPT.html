@@ -113,14 +113,25 @@
 
       arr2.forEach((el, index1) => {
         arr1 = el.split("\n");
-        let option = arr1.splice(arr1.length - 4, 4)
+        let option = arr1.splice(arr1.length - 4, 4);
+        for(let i = 0; i < option.length; i++) {
+          let e2 = option[i];
+          if(e2.indexOf("a. ") == 0 || e2.indexOf("b. ") == 0 || e2.indexOf("c. ") == 0 || e2.indexOf("d. ") == 0) {
+            e2 = e2.substr(3).trim();
+            option[i] = e2;
+          }
+        }
         arr3.push({
           question: arr1.join("\n"),
           option,
           answer: -1
         })
       });
-      ta2.value = JSON.stringify(arr3);
+      let s = "";
+      arr3.forEach(e=>{
+        s += (s.length > 0 ? ",\n" : "") + JSON.stringify(e)
+      })
+      ta2.value = `[\n${s}\n]`;
     }
   </script>
 </html>
