@@ -23,7 +23,7 @@ Vue.component('yt-exam', {
 					:name="index + '-' + i" :key="index + '-' + i"
 					style="margin-left: 30px; "
 				>
-					<span style="font-size: 22px;">{{(i + 1) + "). "}}</span>
+					<span style="font-size: 22px;">{{String.fromCharCode(i + 97) + ". "}}</span>
 
 					<input type="radio" style="margin: 0px 5px;" :name="'radio' + index"
 						:checked="item.answer == i"
@@ -98,9 +98,7 @@ Vue.component('yt-exam', {
 			item.forEach((el, index) => {
 				// el.question = el.question.replace('<br/>&nbsp;&nbsp;&nbsp;', "\n");
 				let json = Object.assign({}, el)
-				if(index == 60) console.log(json.question)
 				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;');
-				if(index == 60) console.log(json.question)
 				this.topic.push(json);
 			});
 			setTimeout(() => {

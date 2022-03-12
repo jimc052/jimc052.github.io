@@ -1,5 +1,5 @@
 
-let idPlay;
+let idPlay, ttx, idWait;
 
 Vue.component('yt-player', { 
 	template:  `
@@ -28,8 +28,8 @@ Vue.component('yt-player', {
 						@click.native="onClickEdit()" icon="md-document" shape="circle"
 					/>
 				</div>
-				<i-button :type="isPlaying ? 'default' : 'primary'" 
-					:icon="isPlaying ? 'md-pause' : 'md-walk'"
+				<i-button :type="isAuto ? 'default' : 'primary'" 
+					:icon="isAuto ? 'md-pause' : 'md-walk'"
 					v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
 					@click.native="startExam()"  shape="circle"
 				/>
@@ -47,14 +47,15 @@ Vue.component('yt-player', {
 			videoId: "",
 			content: undefined,
 			height: 0,
-			isPlaying: false,
+			isAuto: false,
 			smallScreen: true, 
 			cycle: 0
 		};
 	},
 	created(){
 	},
-	mounted () {
+	async mounted () {
+		await TTX.initial();
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
@@ -105,8 +106,9 @@ Vue.component('yt-player', {
     },
 		stop(){
 			if(player) player.pauseVideo();
-			this.isPlaying = false;
+			this.isAuto = false;
 			clearTimeout(idPlay)
+			clearTimeout(idWait)
 			this.broadcast.$off('playend', this.playend);
 		},
 		onPlayerReady(){
@@ -115,22 +117,27 @@ Vue.component('yt-player', {
 				el.style.visibility = "visible";
 			}, 300);
 		},
-    onClickPlay(index) {
-      this.$emit('on-click-play', this.rows[index]);
+    async onClickPlay(index) {
+			if(index > -1 && index < this.rows.length) {
+				this.broadcast.$emit('exam', index);
+				// setTimeout(() => {
+					if(this.isAuto == true){
+						let arr = document.querySelectorAll(".btn")
+						arr[index].focus();
+					}
+				// }, 600);				
+			}
 			this.active = index;
 			this.prev = -1;
-			if(this.isPlaying == false)
+
+      this.$emit('on-click-play', this.rows[index]);
+			// await TTX.speak(this.content.topic[index].question);
+			if(this.isAuto == false)
 				window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
 			else {
 				// console.log("onClickPlay: " + index + ", " + (new Date()))
 				this.cycle = index;
-			}
-			if(index > -1 && index < this.rows.length) {
-				this.broadcast.$emit('exam', index);
-				setTimeout(() => {
-					let arr = document.querySelectorAll(".btn")
-					arr[index].focus();
-				}, 600);				
+				// this.broadcast.$emit('playend');
 			}
     },
 		onKeydown(event){
@@ -159,32 +166,41 @@ Vue.component('yt-player', {
 			}
 		},
 		onClickList(){
-			if(this.isPlaying) this.stop();
+			if(this.isAuto) this.stop();
 			this.$emit('on-click-list');
 		},
 		onClickEdit(){
-			if(this.isPlaying) this.stop();
+			if(this.isAuto) this.stop();
 			this.$emit('on-click-edit');
 		},
-		startExam(index){
-			if(this.isPlaying == true) {
+		startExam(){
+			if(this.isAuto == true) {
 				this.stop();
 			} else {
 				clearTimeout(idPlay)
-				this.isPlaying = true;
+				this.isAuto = true;
 				this.broadcast.$on('playend', this.playend);
 				this.cycle = 0;
 				this.onClickPlay(0)
 			}
 		},
-		playend(){
-			if(this.cycle < this.rows.length - 1 && this.isPlaying == true) {
-				idPlay = setTimeout(() => {
+		async playend(){
+			if(this.cycle < this.rows.length - 1 && this.isAuto == true) {
+					await this.waiting(10);
+					let answer = this.content.topic[this.cycle].answer;
+					await TTX.speak( String.fromCharCode(answer + 97) + ". " +
+						this.content.topic[this.cycle].option[answer]);
+					// await TTX.speak(this.content.topic[this.cycle].question);
+					await this.waiting(5)
 					this.onClickPlay(this.cycle + 1);
-				}, 1000 * 10);
 			} else {
 				this.stop();
 			}
+		},
+		waiting(sec) {
+			return new Promise((resolve, reject) => {
+				idWait = setTimeout(resolve, sec * 1000);
+			});
 		}
 	},
 	computed: {
@@ -192,3 +208,51 @@ Vue.component('yt-player', {
 	watch: {
 	}
 });
+
+class TTX {
+	static initial(){
+		return new Promise(async (resolve, reject) => {
+			TTX.msg = new SpeechSynthesisUtterance();
+			TTX.msg.rate = 0.8;
+			// TTX.msg.lang = "ja-JP"; 
+			TTX.msg.lang = "en-US";
+			TTX.voices = (await TTX.getVoices()).filter(el =>{
+				// if(el.lang == TTX.msg.lang){
+				// 	console.log(el.name)
+				// }
+				return el.lang == TTX.msg.lang;
+			});
+
+			resolve();
+		});
+	}
+
+	static getVoices() {
+		return new Promise((resolve, reject) => {
+			let timer = setInterval(() => {
+				if(window.speechSynthesis.getVoices().length !== 0) {
+					resolve(window.speechSynthesis.getVoices());
+					clearInterval(timer);
+				}
+			}, 10);
+		})
+	}
+
+	static speak(text, index){
+		// 0 Alex, 1 Fred, 2 Samantha, 女生, 3, 女生
+		return new Promise((resolve, reject) => {
+			TTX.msg.onstart = function (e) {
+				// console.log("onstart")
+			}
+
+			TTX.msg.onend = function (e) {
+				// console.log("onend")
+				resolve();
+			}
+			TTX.msg.voice = TTX.voices[typeof index == "undefined" ? 0 : index];
+			TTX.msg.text = text;
+			window.speechSynthesis.cancel();
+			window.speechSynthesis.speak(TTX.msg); 
+		});
+	}
+}
