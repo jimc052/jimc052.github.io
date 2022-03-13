@@ -346,7 +346,7 @@
 					this.dialog = "";
 
 					this.editData = item;
-					this.$refs["player"].play(item);
+					this.$refs["player"].set(item);
 
 					let node = document.getElementById("player");
 					if (node != null && node.parentNode) {
@@ -460,6 +460,46 @@
 		5：video cued 準備好可以播放了
 		*/
 	}
+
+	class Youtube {
+		static play(item){
+			return new Promise(async (resolve, reject) => {
+				let self = this;
+				Youtube.stop();
+
+				player.seekTo(item.start);
+				id1 = setInterval(() => {
+					// console.log("state: " + player.getPlayerState())
+					if(player.getPlayerState() != 1) {
+						player.playVideo();
+					} else if(player.getPlayerState() == 1) {
+						clearInterval(id1)
+						_stop()
+					}
+				}, 50);
+
+				function _stop() {
+					if(player.getPlayerState() != 1) return;
+					id2 = setInterval(() => {
+						if(player.getCurrentTime() < item.start || player.getCurrentTime() > item.end) {
+							Youtube.stop();
+							player.pauseVideo();
+							resolve();							
+						} else if(player.getPlayerState() != 1) {
+							player.pauseVideo();
+							Youtube.stop();
+							resolve();
+						}
+					}, 50);						
+				}
+			});
+		}
+		static stop(){
+			clearInterval(id1);
+			clearInterval(id2);
+		}
+	}
+
 /* 	
 https://www.iviewui.com/components/menu
 https://www.iviewui.com/components/modal

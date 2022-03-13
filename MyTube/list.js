@@ -195,8 +195,7 @@ Vue.component('dlg-list', {
 						this.end = x;
 						start = end - start > 3 ? end - 3 : start;
 					}
-					// console.log("start: " + start + ", end: " + end)
-					this.$emit('on-click-play', {end: end, start: start});
+					Youtube.play({end: end, start: start})
 				} else if((id == "editStart" || id == "editEnd") && ok && code == 80) { // p
 					if(!this.isNumber(document.getElementById(id).value)) return;
 					let x = toNumber(document.getElementById(id).value);
@@ -212,13 +211,13 @@ Vue.component('dlg-list', {
 						start = end - start > 3 ? end - 3 : start;
 					}
 					// console.log(start + "; " + end)
-					this.$emit('on-click-play', {end: end, start: start});
+					Youtube.play({end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && pk) {
 					// document.getElementById(id).value = player.getCurrentTime().toFixed(2);
 					if(id == "editStart") {
 						let x = player.getCurrentTime() + 0.2;
 						this.start = x.toFixed(2);
-						this.$emit('on-click-play', {end: x + 5, start: x});
+						Youtube.play({end: x + 5, start: x});
 					} else 
 						this.end = player.getCurrentTime().toFixed(2)
 				} else if(code == 27) {
@@ -311,7 +310,7 @@ Vue.component('dlg-list', {
 				end = this.rows[index].end;
 			}
 			// console.log({end, start})
-			this.$emit('on-click-play', {end, start});
+			Youtube.play({end, start});
 		},
 		onResize(){
 			clearTimeout(this.resizeId);

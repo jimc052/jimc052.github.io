@@ -1,5 +1,5 @@
 
-let idPlay, ttx, idWait;
+let idAuto, idWait;
 
 Vue.component('yt-player', { 
 	template:  `
@@ -31,7 +31,7 @@ Vue.component('yt-player', {
 				<i-button :type="isAuto ? 'default' : 'primary'" 
 					:icon="isAuto ? 'md-pause' : 'md-walk'"
 					v-if="rows.length > 30 && $isLogin() && videoId.length > 0"
-					@click.native="startExam()"  shape="circle"
+					@click.native="autoExam()"  shape="circle"
 				/>
 			</div>
 		</div>
@@ -49,7 +49,7 @@ Vue.component('yt-player', {
 			height: 0,
 			isAuto: false,
 			smallScreen: true, 
-			cycle: 0
+			isTTX: false,
 		};
 	},
 	created(){
@@ -59,6 +59,7 @@ Vue.component('yt-player', {
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
+		Youtube.stop();
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -70,7 +71,7 @@ Vue.component('yt-player', {
 		onResize(small){
 			this.smallScreen = small;
 		},
-		async play(item){
+		async set(item){
 			this.content = item;
 			this.prev = -1;
 			this.active = -1;
@@ -105,9 +106,9 @@ Vue.component('yt-player', {
 			}
     },
 		stop(){
-			if(player) player.pauseVideo();
+			Youtube.stop();
 			this.isAuto = false;
-			clearTimeout(idPlay)
+			clearTimeout(idAuto)
 			clearTimeout(idWait)
 			this.broadcast.$off('playend', this.playend);
 		},
@@ -118,6 +119,9 @@ Vue.component('yt-player', {
 			}, 300);
 		},
     async onClickPlay(index) {
+			let self = this;
+			clearTimeout(idAuto)
+			clearTimeout(idWait)
 			if(index > -1 && index < this.rows.length) {
 				this.broadcast.$emit('exam', index);
 				// setTimeout(() => {
@@ -129,15 +133,31 @@ Vue.component('yt-player', {
 			}
 			this.active = index;
 			this.prev = -1;
-
-      this.$emit('on-click-play', this.rows[index]);
-			// await TTX.speak(this.content.topic[index].question);
 			if(this.isAuto == false)
 				window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
-			else {
-				// console.log("onClickPlay: " + index + ", " + (new Date()))
-				this.cycle = index;
-				// this.broadcast.$emit('playend');
+			TTX.stop();
+			if(this.isTTX == false) {
+				await Youtube.play(this.rows[index]);
+			} else {
+				await TTX.speak(this.content.topic[index].question);
+			}
+
+			if(Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
+				await this.waiting(5, async ()=>{
+					let answer = this.content.topic[index].answer;
+					await TTX.speak( String.fromCharCode(answer + 97) + ". " +
+						this.content.topic[index].option[answer]);
+					next();
+				})
+			} else {
+				next()
+			}
+			function next() {
+				if(self.isAuto == true)  {
+					idAuto = setTimeout(() => {
+						self.autoPlay(index + 1)	
+					}, 10 * 1000);
+				}
 			}
     },
 		onKeydown(event){
@@ -173,33 +193,29 @@ Vue.component('yt-player', {
 			if(this.isAuto) this.stop();
 			this.$emit('on-click-edit');
 		},
-		startExam(){
+		async autoExam(){
 			if(this.isAuto == true) {
+				this.isAuto = false;
 				this.stop();
 			} else {
-				clearTimeout(idPlay)
+				clearTimeout(idAuto)
 				this.isAuto = true;
-				this.broadcast.$on('playend', this.playend);
-				this.cycle = 0;
-				this.onClickPlay(0)
+				this.autoPlay(0);
 			}
 		},
-		async playend(){
-			if(this.cycle < this.rows.length - 1 && this.isAuto == true) {
-					await this.waiting(10);
-					let answer = this.content.topic[this.cycle].answer;
-					await TTX.speak( String.fromCharCode(answer + 97) + ". " +
-						this.content.topic[this.cycle].option[answer]);
-					// await TTX.speak(this.content.topic[this.cycle].question);
-					await this.waiting(5)
-					this.onClickPlay(this.cycle + 1);
-			} else {
+		async autoPlay(index) {
+			if(index < this.rows.length - 1 && this.isAuto == true) {
+				await this.onClickPlay(index);
+			}	else {
 				this.stop();
 			}
 		},
-		waiting(sec) {
+		waiting(sec, callback) {
 			return new Promise((resolve, reject) => {
-				idWait = setTimeout(resolve, sec * 1000);
+				idWait = setTimeout(()=>{
+					if(callback) callback();
+					resolve();
+				}, sec * 1000);
 			});
 		}
 	},
@@ -213,7 +229,7 @@ class TTX {
 	static initial(){
 		return new Promise(async (resolve, reject) => {
 			TTX.msg = new SpeechSynthesisUtterance();
-			TTX.msg.rate = 0.8;
+			TTX.msg.rate = 0.9;
 			// TTX.msg.lang = "ja-JP"; 
 			TTX.msg.lang = "en-US";
 			TTX.voices = (await TTX.getVoices()).filter(el =>{
@@ -241,6 +257,7 @@ class TTX {
 	static speak(text, index){
 		// 0 Alex, 1 Fred, 2 Samantha, 女生, 3, 女生
 		return new Promise((resolve, reject) => {
+			TTX.stop();
 			TTX.msg.onstart = function (e) {
 				// console.log("onstart")
 			}
@@ -251,8 +268,11 @@ class TTX {
 			}
 			TTX.msg.voice = TTX.voices[typeof index == "undefined" ? 0 : index];
 			TTX.msg.text = text;
-			window.speechSynthesis.cancel();
+			
 			window.speechSynthesis.speak(TTX.msg); 
 		});
+	}
+	static stop() {
+		window.speechSynthesis.cancel();
 	}
 }
