@@ -31,7 +31,10 @@ Vue.component('yt-menu', {
         <menu-group title="">
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
             <span>{{item.title}}</span>
-            <span v-if="$isDebug() && $isLogin() && (typeof item.children == 'undefined' || item.children.length == 0)" style="color: red; font-size: 8px;">{{"無"}}</span>
+            <span v-if="$isDebug() && $isLogin() 
+              && (typeof item.children == 'undefined' || item.children.length == 0)
+              && (typeof item.topic == 'undefined' || item.topic.length == 0)" 
+              style="color: red; font-size: 8px;">{{"無"}}</span>
           </menu-item>
         </menu-group>
       </i-menu>
@@ -187,7 +190,8 @@ Vue.component('yt-menu', {
             .collection(project).get();
           snapshot.forEach(async doc => {
             let json = Object.assign({id: doc.id}, doc.data());
-            if(this.$isDebug() || (Array.isArray(json.children) && json.children.length > 0))
+            if(this.$isDebug() || (Array.isArray(json.children) && json.children.length > 0) 
+              || (Array.isArray(json.topic) && json.topic.length > 0))
               menu.push(json);  
           });
           menu.sort((a, b) => {

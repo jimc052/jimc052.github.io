@@ -1,6 +1,5 @@
 
 let idAuto, idWait;
-
 Vue.component('yt-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
@@ -55,6 +54,7 @@ Vue.component('yt-player', {
 	created(){
 	},
 	async mounted () {
+		this.smallScreen = this.$smallScreen();
 		await TTX.initial();
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
@@ -69,6 +69,7 @@ Vue.component('yt-player', {
   },
 	methods: {
 		onResize(small){
+			console.log("resize: " + small)
 			this.smallScreen = small;
 		},
 		async set(item){

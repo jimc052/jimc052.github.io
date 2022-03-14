@@ -18,7 +18,7 @@
     },{
       "question": "4. Sgt Walker told his men to hurry. What did he tell them to do?",
       "answer": 3,
-      "option": ["to wash up","to stand still","C. to quiet down","to move fast"]  
+      "option": ["to wash up","to stand still","to quiet down","to move fast"]  
     },{
       "question": "5. Mr. Williams. went to the barbershop to get a haircut. Then he went to the post office to get some stamps. Where did Mr. Williams go after getting a haircut?",
       "answer": 3,
@@ -34,7 +34,7 @@
     },{
       "question": "8. When I am at home I like to take it easy.",
       "answer": 3,
-      "option": ["I like to work hard.","I like to study a lot.","C. I like to take a bath.","I like to relax."]  
+      "option": ["I like to work hard.","I like to study a lot.","I like to take a bath.","I like to relax."]  
     },{
       "question": "9. Is this your favorite?",
       "answer": 0,
@@ -46,7 +46,7 @@
     },{
       "question": "11. The men planted a dozen trees. How many trees did they plant?",
       "answer": 0,
-      "option": ["12","24","C. 144","200"]  
+      "option": ["12","24","144","200"]  
     },{
       "question": "12. Jack finished his studies at a quarter after eight. When did Jack finish his studies?",
       "answer": 1,
@@ -226,11 +226,11 @@
     },{
       "question": "56. The enemy gave up to the superior forces. What did the enemy do?",
       "answer": 2,
-      "option": ["defended themselves","attacked the forces","surrendered","d.counterattacked"]  
+      "option": ["defended themselves","attacked the forces","surrendered","counterattacked"]  
     },{
       "question": "57. M: Have you seen my new dog?\nW: Yes. He's very nice.\nQ: How does the woman feel about the dog?",
       "answer": 1,
-      "option": ["She is afraid of it.","She likes it.","C. She wants it.","She dislikes it."]  
+      "option": ["She is afraid of it.","She likes it.","She wants it.","She dislikes it."]  
     },{
       "question": "58. M: Did John use the highway?\nW: Yes, he did.\nQ: What was John doing?",
       "answer": 3,
@@ -267,8 +267,8 @@
       "question": "66. M: How much do I owe you?\nW: That's a dollar and a half.\nM: Here are two one-dollar bills. Keep the change.\nQ: What has happened?",
       "answer": 2,
       "option": ["The man gave her one dollar and fifty cents.","The man wants some change back.","The lady received two dollars.","The lady will have to pay him fifty cents."]
-    }]
-,
+    }
+  ],
   "children": [
     {"start": 20, "end": 25.53},
     {"start": 25.5, "end": 31.52},
@@ -336,6 +336,5 @@
     {"start": 354.72, "end": 363.72},
     {"start": 363.94, "end": 379.6},
     {"start": 379.82, "end": 391.8}
-    ]
-
+  ]
 }

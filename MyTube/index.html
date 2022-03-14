@@ -211,7 +211,7 @@
 					v-if="typeof editData == 'object' && typeof editData.topic == 'object' " />
 				<div id="player" style="visibility: hidden;"></div>
 			</div>
-			<yt-player ref="player" @on-click-play="onClickPlay"  
+			<yt-player ref="player"
 				@on-click-list="onClickOpenDlg('list')" 
 				@on-click-edit="onClickOpenDlg('editor')" 
 			/>
@@ -226,7 +226,6 @@
 			<dlg-list :visible="dialog == 'list' " :editdata="editData" 
 				@close="dialog = '';" 
 				@update="onUpdateEditData"
-				@on-click-play="onClickPlay"
 			/>			
 		</div>
 	</div>
@@ -272,6 +271,9 @@
 
 		Vue.prototype.$isDialog = function() {
 			return vm.dialog == "" ? false : true;
+		}
+		Vue.prototype.$smallScreen = function() {
+			return document.body.clientWidth > 600 ? false : true;
 		}
 
 		vm = new Vue({
@@ -406,37 +408,7 @@
 							}
 						});						
 					}, 100);
-        },
-				onClickPlay(item) {
-					let self = this;
-					clearInterval(id1);
-					clearInterval(id2);
-
-					player.seekTo(item.start);
-					id1 = setInterval(() => {
-						// console.log("state: " + player.getPlayerState())
-						if(player.getPlayerState() != 1) {
-							player.playVideo();
-						} else if(player.getPlayerState() == 1) {
-							clearInterval(id1)
-							stop()
-						}
-					}, 50);
-
-					function stop() {
-						if(player.getPlayerState() != 1) return;
-						id2 = setInterval(() => {
-							if(player.getCurrentTime() < item.start || player.getCurrentTime() > item.end) {
-								if(player.getPlayerState() == 1) 
-									self.broadcast.$emit('playend');
-								player.pauseVideo();
-								clearInterval(id2);								
-							} else if(player.getPlayerState() != 1) {
-								clearInterval(id2);
-							}
-						}, 50);						
-					}
-				}
+        }
 			}
 		})
 	}

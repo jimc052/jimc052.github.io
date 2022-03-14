@@ -158,7 +158,7 @@
     },{
       "question": "39. Bill's just beginning to catch on. What is Bill just beginning to do?",
       "answer": 2,
-      "option": ["a get sick","play games","understand","d.perform"]  
+      "option": ["a get sick","play games","understand","perform"]  
     },{
       "question": "40. He picked up the shipment at the depot.",
       "answer": 1,
@@ -178,7 +178,7 @@
     },{
       "question": "44. The ride was bumpy. How was the ride?",
       "answer": 2,
-      "option": ["smooth","fast","rough","d.comfortable"]  
+      "option": ["smooth","fast","rough","comfortable"]  
     },{
       "question": "45. Tom will fry potatoes for lunch.",
       "answer": 3,
@@ -202,7 +202,7 @@
     },{
       "question": "50. The temperature was around 70 degree and it was a foggy morning.",
       "answer": 0,
-      "option": ["You couldn't see the sun.","There was some dust in the air.","C. The air had a low moisture content.","There was a steady breeze blowing."]  
+      "option": ["You couldn't see the sun.","There was some dust in the air.","The air had a low moisture content.","There was a steady breeze blowing."]  
     },{
       "question": "51. Private Jones was assigned to guard duty.",
       "answer": 0,
@@ -234,7 +234,7 @@
     },{
       "question": "58. W: Did you plan to take picture on your trip?\nM: Yes. But my camera was not working.\nQ: What do you learn from this conversation?",
       "answer": 1,
-      "option": ["The man took pictures on the trip.","The man did not take any pictures.","C. The man did not make any plans.","The man worked instead of going on a trip."]  
+      "option": ["The man took pictures on the trip.","The man did not take any pictures.","The man did not make any plans.","The man worked instead of going on a trip."]  
     },{
       "question": "59. W: Would you like more vegetables?\nM: I have sufficient. Thank you.\nQ: What did the man mean?",
       "answer": 0,
@@ -267,8 +267,7 @@
       "question": "66. W: There is a car with its light on in the parking lot. It's a blue Mercury Cougar with a Georgia license plate.\nThe car _________.",
       "answer": 3,
       "option": ["is illegally parked","was stolen in Georgia","is stalled at a light","has its lights on"]
-    }]
-,
+    }],
   "children": [
     {"start": 18.5, "end": 25.5},
     {"start": 42.9, "end": 47.91},
@@ -336,6 +335,5 @@
     {"start": 1466.5, "end": 1476},
     {"start": 1488.5, "end": 1497},
     {"start": 1514, "end": 1522}
-    ]
-
+  ]
 }

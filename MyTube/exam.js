@@ -11,7 +11,9 @@ Vue.component('yt-exam', {
 			>
         <div v-if="isExam == false" v-html="item.question"
 					:style="{color: item.answer == -1 ? 'red' : (active == index ? '#2d8cf0': ''), 
-						fontSize: '24px'}"
+						fontSize: '24px',
+						fontWeight: active == index ? '700' : '400'
+					}"
 					style="user-select: text !important;"
 				/>
 
@@ -30,7 +32,10 @@ Vue.component('yt-exam', {
 						@click="onClickRadio(index, i)"
 						v-if="$isDebug() || isExam"
 					/>
-					<span :style="{color: i == item.answer && !isExam ? 'orange' : '', fontSize: '22px'}" 
+					<span :style="{color: i == item.answer && !isExam ? '#f90' : '', 
+							fontSize: '22px',
+							fontWeight: active == index && i == item.answer && !isExam ? '700' : '400'
+						}" 
 						style="user-select: text !important;"
 					>
 						{{el}}
