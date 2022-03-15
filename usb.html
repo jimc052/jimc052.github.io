@@ -52,6 +52,8 @@
     window.onload=function(){
       if(typeof localStorage["USB"] == "string") {
         ta1.value = localStorage["USB"];
+      } else {
+        ta1.value = "I       01N                               000000000100211224110353                                                                                                                                                                                                                                                                                                                                              ";
       }
       
       if ("serial" in navigator) {
