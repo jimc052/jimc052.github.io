@@ -1,0 +1,272 @@
+{
+  "id": "7ZhfDBkD2vU",
+  "index": 9,
+  "modifyDate": 1645828197211,
+  "title": "Form 50",
+  "topic": [{
+      "question": "1. I will allow my son to go to town. What will I do?",
+      "answer": 0,
+      "option": ["permit him to go","make him stay home","let him play at home","help him study his lessons"]  
+    },{
+      "question": "2. Where do you take your dirty clothes?",
+      "answer": 1,
+      "option": ["to the kitchen","to the laundry","to the bookstore","to the skating rink"]  
+    },{
+      "question": "3. Tom got on the wrong bus yesterday. Jim did, too.",
+      "answer": 2,
+      "option": ["Jim rode in two buses.","Tom missed the wrong bus yesterday.","Both Jim and Tom rode the wrong bus.","Jim didn't get on the wrong bus yesterday."]  
+    },{
+      "question": "4. Jones thinks English is a difficult language.",
+      "answer": 1,
+      "option": ["Jones thinks English is easy.","He thinks it is hard to learn.","He thinks it is a dead language.","He thinks it is different."]  
+    },{
+      "question": "5. Mr. Richards employs a lot of people.",
+      "answer": 0,
+      "option": ["A lot of people work for Mr. Richards.","A lot of people live with Mr. Richards.","A lot of people agree with Mr. Richards.","A lot of people listen to Mr. Richards."]  
+    },{
+      "question": "6. The weatherman says it will freeze tonight. What does he mean?",
+      "answer": 3,
+      "option": ["The humidity will be high.","The wind wil die down.","The weather will become hot.","The weather will become cold."]  
+    },{
+      "question": "7. Joe is at the store. He wants to go back to his room. It's necessary for him to walk 12 blocks. How far is it from the store to Joe's room?",
+      "answer": 2,
+      "option": ["at the room","very tired","12 blocks","in the store"]  
+    },{
+      "question": "8. John has a lot of new ideas. What has he been doing?",
+      "answer": 2,
+      "option": ["shopping","hunting","thinking","skiing"]  
+    },{
+      "question": "9. Tom said, \"This shirt cost ten ninety-eight.\" What was Tom talking about?",
+      "answer": 3,
+      "option": ["the size of the shirt","the number of the shirts","the quality of the shirt","the price of the shirt."]  
+    },{
+      "question": "10. Which of these is a machine?",
+      "answer": 2,
+      "option": ["a thermometer","a ruler","a generator","a light bulb"]  
+    },{
+      "question": "11. Jackson cooks all our meals for us. What does he do?",
+      "answer": 3,
+      "option": ["He buys the food.","He eats the food.","He sells the food.","He prepares the food."]  
+    },{
+      "question": "12. Jim mailed the letter to his wife yesterday after class. What did Jim do yesterday?",
+      "answer": 0,
+      "option": ["sent a letter home","went home to see his wife","missed his class","bought some envelopes"]  
+    },{
+      "question": "13. Rebecca wanted cash for her car when she sold it. What did she want?",
+      "answer": 1,
+      "option": ["gas","money","oil","polish"]  
+    },{
+      "question": "14. Sixty students attended church services last Sunday. How many were at the service?",
+      "answer": 1,
+      "option": ["sixteen","sixty","last Sunday","six"]  
+    },{
+      "question": "15. This house has lots of storage space. What does this house have?",
+      "answer": 0,
+      "option": ["space to keep things in","space to cook things in","space to wash things in","space to plant things in"]  
+    },{
+      "question": "16. John ate some dessert at noon. What did he do?",
+      "answer": 2,
+      "option": ["chicken noodle soup","rare roast beef","apple pie","cold meats"]  
+    },{
+      "question": "17. The nurse knew how tall he was. What did she know about him?",
+      "answer": 1,
+      "option": ["his weight","his height","his age","his name"]  
+    },{
+      "question": "18. If it rains, the students may not go to the drive-in movie.",
+      "answer": 3,
+      "option": ["If it rains, the students will go to the drive-in.","It is certain that they will go to the drive-in.","If they go, it is sure to rain.","It is not certain that they will go."]  
+    },{
+      "question": "19. The bank is opposite the post office.",
+      "answer": 1,
+      "option": ["The bank is on a different street.","The bank is across the street from the post office.","The bank is just behind the post office.","The bank is next to the post office."]  
+    },{
+      "question": "20. That street is very straight.",
+      "answer": 0,
+      "option": ["It has no curves.","It is long.","It is not very wide.","It has many stores."]  
+    },{
+      "question": "21. The drugstore is near the shoe shop.",
+      "answer": 3,
+      "option": ["It is inside the shoe shop.","It is above the shoe shop.","It is far from the shoe shop.","It is close to the show shop."]  
+    },{
+      "question": "22. Hilda returned home at fifteen twenty-five hours. When did she return?",
+      "answer": 3,
+      "option": ["in the morning","at noon","at night","in the afternoon"]  
+    },{
+      "question": "23. The rock crashed through the window.",
+      "answer": 2,
+      "option": ["It went through an open window.","It did not go through the window.","It hit and broke the window.","It passed near the window."]  
+    },{
+      "question": "24. I see a big storm approaching.",
+      "answer": 2,
+      "option": ["The storm is leaving.","The storm is ending.","The storm is coming.","The storm is improving."]  
+    },{
+      "question": "25. The wind did not damage the wheat.",
+      "answer": 2,
+      "option": ["The wind blew down the wheat.","The wind did not hurt the wheat.","The wind did not hurt the wheat.","The wind turned the wheat yellow."]  
+    },{
+      "question": "26. They kept their people in mind.",
+      "answer": 3,
+      "option": ["They neglected their people.","They liked their people.","They forgot their people.","They remembered their people."]  
+    },{
+      "question": "27. Mr. Smith has to go to the bank today.",
+      "answer": 2,
+      "option": ["He could go today.","He may go today.","He must go today.","He won't go today."]  
+    },{
+      "question": "28. This box is easy to lift because it is so light.",
+      "answer": 0,
+      "option": ["The box is not heavy.","It has a handle.","The box is not hard.","The light is on."]  
+    },{
+      "question": "29. Will you get through your homework soon?",
+      "answer": 0,
+      "option": ["Yes, I'll finish it quickly.","Yes, I think I'll start it soon.","Yes, it'll take some time to do.","Yes, I need to go through it."]  
+    },{
+      "question": "30. Aren't those two students alike?",
+      "answer": 2,
+      "option": ["Yes, I like them.","Yes, they are friends.","Yes, they look the same.","Yes, I need to go through it."]  
+    },{
+      "question": "31. The book has many chapters. What is a chapter?",
+      "answer": 1,
+      "option": ["a lot of books","a part of a book","too many pages","a type of book"]  
+    },{
+      "question": "32. Where did you put my pencil this morning?",
+      "answer": 2,
+      "option": ["I go it from Miss Bell.","I ate it for breakfast.","I laid it on the bookcase.","I bought it at the bookstore."]  
+    },{
+      "question": "33. There was an abrupt change in the weather. What kind of change was it?",
+      "answer": 1,
+      "option": ["gradual","sudden","normal","slight"]  
+    },{
+      "question": "34. He's going to take up medicine this year. What is he going to do?",
+      "answer": 3,
+      "option": ["He's going to continue working as a doctor.","He's going to teach medicine.","He's going to see the doctor.","He's going to study medicine."]  
+    },{
+      "question": "35. Mr. Jones tried the car out on the highway. What did he do?",
+      "answer": 1,
+      "option": ["He rented it.","He tested it.","He bought it.","He left it."]  
+    },{
+      "question": "36. The meat was too rare.",
+      "answer": 2,
+      "option": ["It was very delicious.","It was too tough.","It was not cooked enough.","It was well-cooked."]  
+    },{
+      "question": "37. The children cooked their supper tonight. I didn't help them.",
+      "answer": 3,
+      "option": ["Supper was prepared by my wife.","My wife and I prepared the supper.","The children can't cook at all.","The children did all the work."]  
+    },{
+      "question": "38. There were 25 students in all who made a trip to the zoo.",
+      "answer": 0,
+      "option": ["Altogether, there were 25 students on the trip.","There were 25 trips made to the zoo.","The students all were 25 years old.","There were 25 students who called the zoo."]  
+    },{
+      "question": "39. James is an efficient worker.",
+      "answer": 2,
+      "option": ["He supervises other workers.","He does unsatisfactory work.","He does his work quickly and well.","He complains a lot."]  
+    },{
+      "question": "40. The cadet was not guilty of the charge.",
+      "answer": 1,
+      "option": ["The cadet was given a fine.","The cadet was found innocent.","The cadet was sentenced to prison.","The cadet was found guilty."]  
+    },{
+      "question": "41. Bob Moore wanted to inspect the oxygen mask.",
+      "answer": 1,
+      "option": ["He wanted to leave it.","He wanted to look at it.","He wanted to get one.","He wanted to buy it."]  
+    },{
+      "question": "42. Mike spread out the maps.",
+      "answer": 0,
+      "option": ["He opened the maps.","He folded the maps.","He marked the maps.","He copied the maps."]  
+    },{
+      "question": "43. The air is dense at the sea level.",
+      "answer": 1,
+      "option": ["The air is thin.","The air is thick.","The air is hot.","The air is cool."]  
+    },{
+      "question": "44. We had to stand up in the bus on the trip to town.",
+      "answer": 3,
+      "option": ["The bus was on the wrong street.","We had to wait for the bus to town.","We had to stand at the bus stop.","All seats on the bus were taken."]  
+    },{
+      "question": "45. Mr. Long liked the cartoons in the evening newspaper. What were they?",
+      "answer": 1,
+      "option": ["headlines","drawings","stories","news"]  
+    },{
+      "question": "46. Annette says she got a new filling yesterday. What did she get?",
+      "answer": 3,
+      "option": ["her car filled with gasoline","groceries at the supermarket","some money from her bank","a cavity filled by the dentist"]  
+    },{
+      "question": "47. How did the hole get there?",
+      "answer": 1,
+      "option": ["Edward sewed it.","Edward dug it.","Edward wrote it.","Edward bought it."]  
+    },{
+      "question": "48. We are having the thundershower. What are we having?",
+      "answer": 0,
+      "option": ["a storm","a bath","a harvest day","a sunny day"]  
+    },{
+      "question": "49. Carol kept working on the problem until she solved it.",
+      "answer": 3,
+      "option": ["She is working on it.","She kept it.","She finally gave up.","She worked it out."]  
+    },{
+      "question": "50. We took our vacation so long ago, I can't remember much about it.",
+      "answer": 1,
+      "option": ["Our vacation lasted for a long time.","It has been a long time since our vacation.","It will be a long time until our vacation.","Our vacation will last for a long time."]  
+    },{
+      "question": "51. The attack was repelled.",
+      "answer": 2,
+      "option": ["It was reinforced.","It was successful.","It was fought off.","It was ordered."]  
+    },{
+      "question": "52. The temperature was around 70 degrees and it was a foggy morning.",
+      "answer": 0,
+      "option": ["You couldn't see the sun.","There was some dust in the air.","The air had a low moisture content.","There was a steady breeze blowing."]  
+    },{
+      "question": "53. The student has gone back to his country for good.",
+      "answer": 2,
+      "option": ["He has left for the time being.","He has left temporarily.","He has left permanently.","He left in a hurry."]  
+    },{
+      "question": "54. John wants a berth on the train. What did he want?",
+      "answer": 0,
+      "option": ["a place to sleep","a place to sit","a place to walk","a place to eat"]  
+    },{
+      "question": "55. Why did the welder use goggles?",
+      "answer": 3,
+      "option": ["to protect his feet","to protect his hands","to protect his hearing","to protect his sight"]  
+    },{
+      "question": "56. When we flew over the ocean, there were clouds below us.",
+      "answer": 2,
+      "option": ["We could have seen the water if we had been above the clouds.","The clouds were all above our plane.","We saw the clouds but not the water.","We could not fly above the clouds."]  
+    },{
+      "question": "57. W: Did you finish your assignment last night?\nM: No, I didn't. I had a party last night.\nQ: Why didn't the student finish his assignment?",
+      "answer": 3,
+      "option": ["because he was sleepy","because he want' busy","because he didn't have a party","because he had a party"]  
+    },{
+      "question": "58. M: Did John use the interstate?\nW: Yes, he did.\nQ: What was John doing?",
+      "answer": 3,
+      "option": ["sailing","flying","swimming","driving"]  
+    },{
+      "question": "59. W: Where have you been?\nM: I went to see a game.\nQ: What did the man see?",
+      "answer": 1,
+      "option": ["a movie","a sports contest","a friend","a birthday party"]  
+    },{
+      "question": "60. W: How are the patients?\nM: They're doing very well,except for the man in room 12.\nQ: Where did the conversation most likely take place?",
+      "answer": 1,
+      "option": ["in a school","in a hospital","in a barracks","in a hotel"]  
+    },{
+      "question": "61. M: What is the prime reason for coming here?\nW: I don't know the prime reason.\nQ: What is it the woman didn't know?",
+      "answer": 3,
+      "option": ["who had the reason","the number of reasons","the longest reason","the most important reason"]  
+    },{
+      "question": "62. W: Does the bus 45 go to the train station?\nM: No, but I can give you a transfer.\nW: Alright, I'll take it.\nQ: What will the woman do?",
+      "answer": 3,
+      "option": ["She'll ride the bus that goes directly to the station.","The woman doesn't want to change buses.","The woman will remain on bus No. 45.","The woman will change to another bus."]  
+    },{
+      "question": "63. W: What's the matter?\nM: I'm in a rush.\nQ: What do we know about the man?",
+      "answer": 3,
+      "option": ["He wants to go to bed.","He wants to get cleaned up.","He wants to drink something cold.","He wants to get somewhere fast."]  
+    },{
+      "question": "64. W: How did you find out the news?\nM: It was broadcast.\nQ: How did the man find out about the news?",
+      "answer": 0,
+      "option": ["He listened to it on the radio.","He learned about it from a friend.","He read about it in a newspaper.","His brother told him about it."]  
+    },{
+      "question": "65. W: He collects rocks from all parts of the world.\nM: That's nice. But do they have any value?\nQ: What does the man want to know?",
+      "answer": 3,
+      "option": ["Are the rocks unusual?","Are they different shapes?","Are they hard to find?","Are they worth anything?"]  
+    },{
+      "question": "66. M: What happened to your coat?\nW: It wore out.\nQ: What did the woman mean?",
+      "answer": 3,
+      "option": ["Her coat got lost.","Her coat got stolen.","Her coat got dirty.","Her coat got old."]
+    }
+  ]
+}

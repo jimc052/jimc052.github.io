@@ -69,14 +69,14 @@ Vue.component('yt-player', {
   },
 	methods: {
 		onResize(small){
-			console.log("resize: " + small)
 			this.smallScreen = small;
 		},
 		async set(item){
 			this.content = item;
 			this.prev = -1;
 			this.active = -1;
-      this.rows = Array.isArray(item.children) ? item.children : [];
+      this.rows = Array.isArray(item.children) ? item.children 
+				: (Array.isArray(item.topic) ? item.topic : []);
 			this.videoId = item.id;
 			let m = window.localStorage["yt-" + this.videoId];
 			this.stop();
@@ -108,6 +108,7 @@ Vue.component('yt-player', {
     },
 		stop(){
 			Youtube.stop();
+			TTX.stop();
 			this.isAuto = false;
 			clearTimeout(idAuto)
 			clearTimeout(idWait)
@@ -137,7 +138,7 @@ Vue.component('yt-player', {
 			if(this.isAuto == false)
 				window.localStorage["yt-" + this.videoId] = typeof this.rows[index].title == 'string' ? this.rows[index].title : index;
 			TTX.stop();
-			if(this.isTTX == false) {
+			if(this.isTTX == false && typeof this.rows[index].start == "number") {
 				await Youtube.play(this.rows[index]);
 			} else {
 				await TTX.speak(this.content.topic[index].question);
@@ -148,6 +149,13 @@ Vue.component('yt-player', {
 					let answer = this.content.topic[index].answer;
 					await TTX.speak( String.fromCharCode(answer + 97) + ". " +
 						this.content.topic[index].option[answer]);
+					/* 可以用的，但還沒有用 clearTimout
+					for(let i = 0; i < 4; i++) {
+						await TTX.speak( String.fromCharCode(i + 97) + ". " +
+						this.content.topic[index].option[i]);
+						await this.waiting(5);
+					}
+					*/
 					next();
 				})
 			} else {
@@ -257,21 +265,28 @@ class TTX {
 
 	static speak(text, index){
 		// 0 Alex, 1 Fred, 2 Samantha, 女生, 3, 女生
-		return new Promise((resolve, reject) => {
+		return new Promise(async (resolve, reject) => {
 			TTX.stop();
-			TTX.msg.onstart = function (e) {
-				// console.log("onstart")
-			}
-
-			TTX.msg.onend = function (e) {
-				// console.log("onend")
-				resolve();
-			}
 			TTX.msg.voice = TTX.voices[typeof index == "undefined" ? 0 : index];
-			TTX.msg.text = text;
-			
-			window.speechSynthesis.speak(TTX.msg); 
+
+			await _speak(text);
+			resolve();
 		});
+
+		function _speak(text) {
+			return new Promise((resolve, reject) => {
+				TTX.msg.onstart = function (e) {
+					// console.log("onstart")
+				}
+
+				TTX.msg.onend = function (e) {
+					// console.log("onend")
+					resolve();
+				}
+				TTX.msg.text = text;
+				window.speechSynthesis.speak(TTX.msg);
+			});
+		}
 	}
 	static stop() {
 		window.speechSynthesis.cancel();
