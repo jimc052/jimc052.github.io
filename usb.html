@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>USB</title>
+    <style>
+     html, body {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+    }
+  
+    button {
+      min-width: 60px;
+      padding: 5px 5px;
+    }
+    div.frame {
+      flex: 1;
+    }
+    div {
+      padding: 5px;
+    }
+    div + div {
+      padding-top: 0px !important;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100%;
+      font-size: 16px;
+    }
+    </style>
+  </head>
+  <body style="">
+    <div>
+      <button id='btnClear'>執行</button>
+    </div>
+    <div class="frame"><textarea id='ta1' placeholder="請貼上文字"></textarea></div>
+    <div class="frame"><textarea id='ta2' readonly></textarea></div class="frame">
+  </body>
+  <script>
+    var ta1 = document.getElementById("ta1");
+    var ta2 = document.getElementById("ta2");
+    window.onload=function(){
+      if(typeof localStorage["USB"] == "string") {
+        ta1.value = localStorage["USB"];
+      }
+      
+      if ("serial" in navigator) {
+      // https://juejin.cn/post/6962754264561418277
+        document.querySelector('button').addEventListener('click', async () => {
+          await USB.initial();
+          await USB.open();
+
+          let s = await USB.write(ta1.value);
+          // USB.port.close();
+          ta2.value = s;
+          console.log(s)
+        });
+      }
+    }
+    ta1.onpaste = function(){
+      setTimeout(function () {
+        localStorage["USB"] = ta1.value;
+      }, 600)
+    }
+    ta1.oninput = function () {
+      setTimeout(function () {
+        localStorage["USB"] = ta1.value;
+      }, 600)
+    }
+    
+    class USB {
+      static port;
+      static DLE = 0x10; static STX = 0x02; static ETX = 0x03; static ACK = 0x06; static NAK = 0x15;
+
+      static initial(){
+        return new Promise(async (success, error) => { 
+          const filters = [
+            { usbVendorId: 1659, usbProductId: 8963 },
+            { usbVendorId: 1659, usbProductId: 8964 },
+            { usbVendorId: 1659, usbProductId: 41216 },
+            { usbVendorId: 1659, usbProductId: 9123 }
+          ];
+          try {
+            let ports = await navigator.serial.getPorts();
+            if(ports.length > 0) {
+              USB.port = ports[0];
+            } else {
+              USB.port = await navigator.serial.requestPort({ filters });
+            }
+            const { usbProductId, usbVendorId } = USB.port.getInfo();
+            console.log(USB.port)
+            success();
+
+            navigator.serial.addEventListener("connect", (event) => {
+              // TODO: 自动打开事件。目标器或警告用户端口可用。
+              console.log(event)
+            });
+
+            navigator.serial.addEventListener("disconnect", (event) => {
+              console.log(event)
+              // TODO: Remove |event.target| from the UI.
+              // 如果打开了串行端口，还会观察到流错误。
+            });
+          } catch(err) {
+            error(err)
+          }
+        });
+      }
+      static open(json) {
+        return new Promise(async (success, error) => {
+          try {
+            if(USB.port.readable == null)
+              await USB.port.open(Object.assign({baudRate: 9600 , bufferSize: 400}, json));
+            /*
+            9600 // 聯信
+            B115200 // 台新
+
+            dataBits：每帧的数据位数(7或8)。
+            stopBits：一帧结束时的停止位数(1或2)。
+            parity：校验模式，可以是none，偶数，奇数。
+            bufferSize：应该创建的读写缓冲区大小(必须小于16MB)。
+            flowControl：流控模式(none或hardware)。
+            */
+            success();
+          } catch(e) {
+            console.log(e)
+            error(e)
+          }
+        });
+      }
+
+      static write(txt) {
+        console.log("write")
+        return new Promise(async (success, error) => {
+          const textEncoder = new TextEncoderStream();
+          const writableStreamClosed = textEncoder.readable.pipeTo(USB.port.writable);
+          const writer = textEncoder.writable.getWriter();
+
+          try{
+            await writer.write(txt);
+
+            let result = "", start = false, end = false;
+            while (USB.port.readable) {
+              const textDecoder = new TextDecoderStream();
+              const readableStreamClosed = USB.port.readable.pipeTo(textDecoder.writable);
+              const reader = textDecoder.readable.getReader();
+              let i = -1; 
+
+              // 监听来自串行设备的数据。
+              while (true) {
+                const { value, done } = await reader.read();
+                i++;
+                // console.log(i + ": " + value + " / " + value.charCodeAt() + "; " + value.length + " / " + result.length)
+                if (done) {
+                  reader.releaseLock();
+                  break;
+                }
+                // value 是一个 string.
+                if(value.charCodeAt() < 32){
+                  if(value == USB.ACK) {
+                    console.log(i + ": ACK ---------------------------------")
+                  } else if(value == USB.STX) {
+                    start = true;
+                    end = false;
+                    // result = "";
+                    console.log(i + ": STX ---------------------------------")
+                  } else if(value == USB.ETX) {
+                    end = true;
+                    console.log(i + ": ETX ---------------------------------")
+                  }
+                } else {
+                  result += value;
+                  if(result.length >= 400) {
+                    console.log(result)
+                    await writer.write(USB.ACK);
+                    await writer.write(USB.ACK);
+                    reader.releaseLock();
+                    // await reader.cancel();
+                    break;
+                  }
+                }
+                // await USB.port.close();
+              }
+              // reader.cancel();
+              // await readableStreamClosed.catch(() => { /* Ignore the error */ });
+              writer.close();
+              await writableStreamClosed;
+
+              // await USB.port.close();
+              success(result);
+              return;
+            }
+            // success(result);
+          } catch(e) {
+            console.log(e)
+            error(e)
+          }
+        });
+      }
+      static read(){
+        console.log("read")
+        return new Promise(async (success, error) => {
+          let result = "", start = false, end = false;
+          while (USB.port.readable) {
+            const textDecoder = new TextDecoderStream();
+            const readableStreamClosed = USB.port.readable.pipeTo(textDecoder.writable);
+            const reader = textDecoder.readable.getReader();
+            let i = 0; 
+
+            // 监听来自串行设备的数据。
+            while (true) {
+              const { value, done } = await reader.read();
+              if (done) {
+                // 允许稍后关闭串口。
+                console.log(result)
+                reader.releaseLock();
+                await USB.write(USB.ACK);
+                await USB.write(USB.ACK);
+                break;
+              }
+              // value 是一个 string.
+              if(value == USB.ACK) {
+                console.log("ACK: " + i + " ---------------------------------")
+              } else if(value == USB.STX) {
+                start = true;
+                result = "";
+                console.log("start: " + i + " ---------------------------------")
+              } else if(value == USB.STX) {
+                end = true;
+                console.log("end: " + i + " ---------------------------------")
+              } else if(start == true && end == false) {
+                result += value;
+                console.log(value + ": " + value.charCodeAt() + "; " + result.length)
+              }
+              i++;
+              
+              // await USB.port.close();
+            }
+            success(result);
+          }
+        });
+      }
+    }
+  </script>
+</html>
