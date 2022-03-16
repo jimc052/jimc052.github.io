@@ -1,0 +1,273 @@
+{
+  "id": "LMbJCAAQETI",
+  "index": 10,
+  "modifyDate": 1645828197211,
+  "title": "Form 51",
+  "topic": [
+    {
+      "question": "1. I will allow my son to go to town. What will I do?",
+      "answer": 0,
+      "option": ["permit him to go","make him stay home","let him play at home","help him study his lessons"]  
+    },{
+      "question": "2. What number is between 15 and 17?",
+      "answer": 0,
+      "option": ["sixteen","eighteen","nineteen","fourteen"]  
+    },{
+      "question": "3. This pencil is like that one.",
+      "answer": 2,
+      "option": ["One pencil is better.","One pencil is smaller.","The pencils are similar.","The pencils aren't the same."]  
+    },{
+      "question": "4. You can store food in a refrigerator.",
+      "answer": 1,
+      "option": ["Food may be bought a store.","Food may be kept in a refrigerator.","Food stores buy refrigerators.","You can buy it at the food store."]  
+    },{
+      "question": "5. Jim went to town yesterday with his friend to buy a pair of shoes. Where did he go?",
+      "answer": 1,
+      "option": ["yesterday","to town","with his friend","Jim did"]  
+    },{
+      "question": "6. Henry went to the snack bar. Why did he go there?",
+      "answer": 1,
+      "option": ["He went there to dance.","He went there to eat.","He went there to sleep.","He went there to play games."]  
+    },{
+      "question": "7. Jim wants to clean up. What does he want to do?",
+      "answer": 2,
+      "option": ["eat","exercise","wash","sleep"]  
+    },{
+      "question": "8. He was a passenger on that bus.",
+      "answer": 3,
+      "option": ["He cleaned it.","He worked on it.","He polished it.","He rode on it."]  
+    },{
+      "question": "9. This machine is automatic.",
+      "answer": 1,
+      "option": ["It is operated manually.","It works by itself.","It makes too much noise.","It is a part of a car."]  
+    },{
+      "question": "10. Tom said, \"This shirt cost ten ninety-eight.\" What was Tom talking about?",
+      "answer": 3,
+      "option": ["the size of the shirt","the number of shirts","the quality of the shirt","the price of the shirt"]  
+    },{
+      "question": "11. Rose Allen broke her mirror. \nShe couldn't _______.",
+      "answer": 2,
+      "option": ["talk to anyone","read her book","see herself","tell time"]  
+    },{
+      "question": "12. These two wires should not come in contact with each other.",
+      "answer": 0,
+      "option": ["They should not touch.","They should not be different.","They should not be used.","They are not the same size."]  
+    },{
+      "question": "13. Lt. Small said, \"I left as soon as the meeting broke up.\" When did he leave?",
+      "answer": 2,
+      "option": ["during the meeting","before the meeting","when the meeting ended","at the start of the meeting"]  
+    },{
+      "question": "14. Albert quit working after sunset. When did he stop?",
+      "answer": 1,
+      "option": ["after sitting down","after the sun went down","before the sun came up","during sunrise"]  
+    },{
+      "question": "15. John and Mary had an argument. What did they have?",
+      "answer": 0,
+      "option": ["a difference of opinion","a party","a long way to go","an understanding"]  
+    },{
+      "question": "16. Tom said that the classroom was available. What did Tom say about the classroom?",
+      "answer": 2,
+      "option": ["It was the right size.","It was too large.","It was ready for use.","It was being used."]  
+    },{
+      "question": "17. Mr. Jones tried out the car on the highway. What did he do?",
+      "answer": 1,
+      "option": ["He rented it.","He tested it.","He bought it.","He lent it."]  
+    },{
+      "question": "18. Tom isn't in the class because he has been sick for two weeks.",
+      "answer": 2,
+      "option": ["Tom is now in class.","Tom has been in class for two weeks.","Tom is ill.","Tom is in good health."]  
+    },{
+      "question": "19. Tom told the clerk, \"I want a pack of cigarettes.\"",
+      "answer": 1,
+      "option": ["James needed some matches.","James will buy some cigarettes.","James wants to see some cigarettes.","James saw some cigarettes in a package."]  
+    },{
+      "question": "20. That street is very straight.",
+      "answer": 0,
+      "option": ["It has no curves.","It is long.","It is not very wide.","It has many stores."]  
+    },{
+      "question": "21. Lt. Lee sent his sister a letter.",
+      "answer": 0,
+      "option": ["He mailed a letter.","His sister gave him a letter.","He didn't write a letter.","He called his sister."]  
+    },{
+      "question": "22. Corporal Harris has great respect for his officers.",
+      "answer": 3,
+      "option": ["He dislikes them very much.","He makes them unhappy.","He has great trouble working with them.","He has a high regard for them."]  
+    },{
+      "question": "23. You should never skip class.",
+      "answer": 0,
+      "option": ["You shouldn't miss class.","You shouldn't be in class today.","You shouldn't attend class.","You should never go to class."]  
+    },{
+      "question": "24. Stick to your studies.",
+      "answer": 1,
+      "option": ["Avoid your studies.","Continue your studies.","Cancel your studies.","Drop your studies."]  
+    },{
+      "question": "25. John will entertain the visitors.",
+      "answer": 1,
+      "option": ["John will examine the visitors.","John will amuse the visitors.","John will turn away the visitors."]  
+    },{
+      "question": "26. Tom said, \"These apples are spoiled.\" What did he say\nabout the apples?",
+      "answer": 0,
+      "option": ["The apples are not good.","The apples are good.","The apples are pretty.","The apples are small."]  
+    },{
+      "question": "27. The dust is all over the room. Where is the dust?",
+      "answer": 1,
+      "option": ["There's no dust in the room.","There's dust everywhere in the room.","There's only a little dust in the room","There's dust outside the room."]  
+    },{
+      "question": "28. Ted collected the students' papers in sequence.",
+      "answer": 2,
+      "option": ["He collected them in anger.","He collected them in advance.","He collected them in order.","He collected them in a box."]  
+    },{
+      "question": "29. Bill and David want to take a walk after dinner. What do they want to do after dinner?",
+      "answer": 0,
+      "option": ["walk for exercise","walk from the BQQ to class","take a long hike","drill after dinner"]  
+    },{
+      "question": "30. The instructor said, 'I can hardly hear you.\" What did the instructor mean?",
+      "answer": 3,
+      "option": ["You are speaking too loudly.","You are not speaking.","You are speaking roughly.","You are not speaking loud enough."]  
+    },{
+      "question": "31. Can you start a fire with two stones?",
+      "answer": 2,
+      "option": ["Can you heat the stones?","Can you make the fire hotter?","Can you light a fire with the stones?","Can the heat burn the stones?"]  
+    },{
+      "question": "32. They walk through a dense forest. What kind of forest was it?",
+      "answer": 0,
+      "option": ["There were many trees close together.","It was high up in the mountains.","It was far away from everything.","There were few animals living there."]  
+    },{
+      "question": "33. Joe doesn't like to go to the movies alone.",
+      "answer": 2,
+      "option": ["Joe dislikes the movies.","Joe prefers going to the movies by himself.","Joe wants company when he goes to the movies.","Joe doesn't like to go to long movies."]  
+    },{
+      "question": "34. These shoes are worn out. What should I do with them?",
+      "answer": 2,
+      "option": ["polish them","put laces in them","throw them away","get them stretched"]  
+    },{
+      "question": "35. The meat was too rare.",
+      "answer": 2,
+      "option": ["It was very delicious.","It was too tough.","It was not cooked enough.","It was well-cooked."]  
+    },{
+      "question": "36. She will be thirsty when she comes home.",
+      "answer": 2,
+      "option": ["She will want some rest.","She will want a bath.","She will want some water.","She will want some food."]  
+    },{
+      "question": "37. John usually goes to bed at 11 o'clock.",
+      "answer": 0,
+      "option": ["He normally goes to bed at eleven.","He always goes to bed at eleven.","He never goes to bed at eleven.","He seldom goes to bed at eleven."]  
+    },{
+      "question": "38. It takes 15 minutes to record the tape.",
+      "answer": 1,
+      "option": ["The recording will start in 15 minutes.","The recording is 15 minutes long.","The tape speed is 15 feet per minute.","The tape recorder can be used in 15 minutes."]  
+    },{
+      "question": "39. The weather report indicates no precipitation for today.",
+      "answer": 3,
+      "option": ["The sun will not shine.","It will rain today.","There will be no clouds today.","It will not rain today."]  
+    },{
+      "question": "40. Mrs. Conner furnished all the food for the graduation party.",
+      "answer": 3,
+      "option": ["She ate it.","She preserved it.","She saw it.","She provided it."]  
+    },{
+      "question": "41. I saw the man sinking.",
+      "answer": 1,
+      "option": ["I saw him walking.","I saw him going down.","I saw him running.","I saw him drinking."]  
+    },{
+      "question": "42. Today's lecture ought to be heard by everybody.",
+      "answer": 0,
+      "option": ["Everybody should hear today's lecture.","Everybody needn't hear today's lecture.","Everybody has heard the lecture today.","The lecture will be delivered by everybody."]  
+    },{
+      "question": "43. The supermarket is out of fruit.",
+      "answer": 1,
+      "option": ["It is stocked up.","There isn't anymore.","There is a lot of fruit.","It is never empty."]  
+    },{
+      "question": "44. What is the function of this switch?",
+      "answer": 3,
+      "option": ["It's only a very small part.","It's used only once a day.","It's electrical.","It's used to turn on the motor."]  
+    },{
+      "question": "45. The plane is approaching the airport.",
+      "answer": 0,
+      "option": ["It is getting closer to the airport.","It is taking off from the airport.","It is circling the airport.","It is over the airport."]  
+    },{
+      "question": "46. The doctor wants to check John's pulse. What does the doctor want to check?",
+      "answer": 3,
+      "option": ["his fever","his throat","his ears","his heartbeat"]  
+    },{
+      "question": "47. Tom will lend you some money.",
+      "answer": 1,
+      "option": ["Tom needs to borrow some money.","You can borrow money from Tom.","Tom will send for some money.","Tom left his money in the bank."]  
+    },{
+      "question": "48. Mrs. Smith didn't meet the captain.",
+      "answer": 3,
+      "option": ["She doesn't like him.","She doesn't want to see him.","She doesn't want to wait for him.","She doesn't know him."]  
+    },{
+      "question": "49. How long does it take to go from San Antonia to Chicago?",
+      "answer": 3,
+      "option": ["by bus, car, train, or plane","It's about 1100 miles.","It's a long distance between them.","about a day and a half by car."]  
+    },{
+      "question": "50. Be sure you watch carefully before you drive onto the highway.",
+      "answer": 2,
+      "option": ["Be sure to look at your watch.","Be sure to get off the road.","Be sure to look around.","Be sure to take care of the car."]  
+    },{
+      "question": "51. The soldier worked in transportation and supply. What did his job involved?",
+      "answer": 0,
+      "option": ["logistics","personnel","administration","statistics"]  
+    },{
+      "question": "52. Harry was told to attend the class. What did he have to do?",
+      "answer": 0,
+      "option": ["go to class","leave the class","pay attention in class","wait for class to start"]  
+    },{
+      "question": "53. Why did the welder use goggles?",
+      "answer": 3,
+      "option": ["to protect his feet","to protect his hands","to protect his hearing","to protect his sight"]  
+    },{
+      "question": "54. The enemy gave up to the superior forces. What did the enemy do?",
+      "answer": 2,
+      "option": ["defended","attacked","surrendered","counterattacked"]  
+    },{
+      "question": "55. The medicine is for external use.",
+      "answer": 0,
+      "option": ["The medicine is not meant to be eaten.","The medicine is not meant to be used often.","Only a doctor can prescribe the medicine.","The medicine has a bad odor."]  
+    },{
+      "question": "56. Ted said he would have a bit more. How much did he want?",
+      "answer": 3,
+      "option": ["a lot more","no more","a few more","a little more"]  
+    },{
+      "question": "57. W: What did you buy?\nM: Some clothes.\nQ: What did the man buy?",
+      "answer": 1,
+      "option": ["something to eat","something to wear","something to drink","something to smoke"]  
+    },{
+      "question": "58. W: Why are you going away?\nM: For recreation.\nQ: Why is the man going away?",
+      "answer": 0,
+      "option": ["to relax and enjoy himself","to buy a new house","to take care of some business","to look for a job"]  
+    },{
+      "question": "59. W: Are you going to give that book away?\nM: No, I want to sell it.\nQ: What did the man say?",
+      "answer": 3,
+      "option": ["He wants to keep the book.","He wants to give the book to someone.","He wants to return the book.","He wants to get money for the book."]  
+    },{
+      "question": "60. M: Where can I buy a money order?\nW: Down at the post office.\nQ: What did the man want to buy?",
+      "answer": 1,
+      "option": ["letters","a money order","a post office","stamps"]  
+    },{
+      "question": "61. W: What does Billy want?\nM: A blanket.\nQ: Why does Billy want a blanket?",
+      "answer": 2,
+      "option": ["He's hungry","He's thirsty.","He's cold.","He's hurt."]  
+    },{
+      "question": "62. W: George doesn't know when the plane leaves.\nM: Neither do I.\nQ: What does the man say?",
+      "answer": 2,
+      "option": ["He doesn't know George.","He won't leave on the plane.","He doesn't know when it leaves.","He knows when it leaves."]  
+    },{
+      "question": "63. W: What caused the engine to fail?\nM: It fails because of poor maintenance.\n0: What did the man blame the failure on?",
+      "answer": 2,
+      "option": ["low grade fuel","rough roads","improper care","proper lubrication"]  
+    },{
+      "question": "64. M: What do you want to know?\nW: The purpose of all this.\nQ: What does the woman want to know?",
+      "answer": 3,
+      "option": ["She wants to know the cost.","She wants to know the cause.","She wants to know the answer.","She wants to know the reason."]  
+    },{
+      "question": "65. M: Can you meet me at the restaurant, Mary?\nW: Yes. It is a very convenient place.\nQ: Why will they meet at the restaurant?",
+      "answer": 0,
+      "option": ["Mary can go there very easily.","It's a good place to eat.","Not many people go there.","Mary has never been there before."]  
+    },{
+      "question": "66. M: Where is everybody?\nW: Oh, didn't you know? The meeting occurred yesterday.\nQ: What did the woman say about the meeting?",
+      "answer": 0,
+      "option": ["It took place the day before.","It was planned the day before.","It was not cancelled the day before.","It did not end the day before."]
+    }
+  ]
+}

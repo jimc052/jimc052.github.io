@@ -147,8 +147,9 @@ Vue.component('yt-player', {
 			if(Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
 				await this.waiting(5, async ()=>{
 					let answer = this.content.topic[index].answer;
-					await TTX.speak( String.fromCharCode(answer + 97) + ". " +
-						this.content.topic[index].option[answer]);
+					await TTX.speak(String.fromCharCode(answer + 97) + ".", 2);
+					await this.waiting(1)
+					await TTX.speak(this.content.topic[index].option[answer], 2);
 					/* 可以用的，但還沒有用 clearTimout
 					for(let i = 0; i < 4; i++) {
 						await TTX.speak( String.fromCharCode(i + 97) + ". " +
@@ -234,6 +235,7 @@ Vue.component('yt-player', {
 	}
 });
 
+let idSpeak = "";
 class TTX {
 	static initial(){
 		return new Promise(async (resolve, reject) => {
@@ -266,15 +268,31 @@ class TTX {
 	static speak(text, index){
 		// 0 Alex, 1 Fred, 2 Samantha, 女生, 3, 女生
 		return new Promise(async (resolve, reject) => {
-			TTX.stop();
-			TTX.msg.voice = TTX.voices[typeof index == "undefined" ? 0 : index];
-
-			await _speak(text);
+			
+			let arr = text.split("\n");
+			for(let i = 0; i < arr.length; i++) {
+				if(arr.length > 1) {
+					if(arr[i].indexOf("___") > -1) {
+						break;
+					}
+					index = arr[i].indexOf("W: ") > -1 
+						? 2 : 
+						(arr[i].indexOf("Q: ") > -1
+							? 4: 0);
+					arr[i] = arr[i].replace("M: ", " ").replace("W: ", " ").replace("Q: ", " ")
+					await _speak(arr[i], index);
+					await waiting(1)
+				} else {
+					await _speak(arr[i], index);
+				}
+			}
 			resolve();
 		});
 
-		function _speak(text) {
+		function _speak(text, index) {
 			return new Promise((resolve, reject) => {
+				TTX.stop();
+				TTX.msg.voice = TTX.voices[typeof index == "undefined" ? 0 : index];
 				TTX.msg.onstart = function (e) {
 					// console.log("onstart")
 				}
@@ -287,8 +305,15 @@ class TTX {
 				window.speechSynthesis.speak(TTX.msg);
 			});
 		}
+
+		function waiting(sec) {
+			return new Promise((resolve, reject) => {
+				idWait = setTimeout(resolve, sec * 1000);
+			});
+		}
 	}
 	static stop() {
+		clearTimeout(idSpeak)
 		window.speechSynthesis.cancel();
 	}
 }

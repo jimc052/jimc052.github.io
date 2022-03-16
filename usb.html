@@ -59,13 +59,19 @@
       if ("serial" in navigator) {
       // https://juejin.cn/post/6962754264561418277
         document.querySelector('button').addEventListener('click', async () => {
-          await USB.initial();
-          await USB.open();
+          try {
+            if(USB.port == null) {
+              await USB.initial();
+              await USB.open();
+            }
 
-          let s = await USB.write(ta1.value);
-          // USB.port.close();
-          ta2.value = s;
-          console.log(s)
+            let s = await USB.write(ta1.value);
+            // USB.port.close();
+            ta2.value = s;
+            console.log(s)
+          } catch(e) {
+            console.log(e)
+          }
         });
       }
     }
@@ -81,7 +87,7 @@
     }
     
     class USB {
-      static port;
+      static port = null;
       static DLE = 0x10; static STX = 0x02; static ETX = 0x03; static ACK = 0x06; static NAK = 0x15;
 
       static initial(){
@@ -100,7 +106,6 @@
               USB.port = await navigator.serial.requestPort({ filters });
             }
             const { usbProductId, usbVendorId } = USB.port.getInfo();
-            console.log(USB.port)
             success();
 
             navigator.serial.addEventListener("connect", (event) => {
@@ -122,7 +127,7 @@
         return new Promise(async (success, error) => {
           try {
             if(USB.port.readable == null)
-              await USB.port.open(Object.assign({baudRate: 9600 , bufferSize: 400}, json));
+              await USB.port.open(Object.assign({baudRate: 9600, bufferSize: 400}, json));
             /*
             9600 // 聯信
             B115200 // 台新
@@ -142,7 +147,6 @@
       }
 
       static write(txt) {
-        console.log("write")
         return new Promise(async (success, error) => {
           const textEncoder = new TextEncoderStream();
           const writableStreamClosed = textEncoder.readable.pipeTo(USB.port.writable);
@@ -169,36 +173,33 @@
                 }
                 // value 是一个 string.
                 if(value.charCodeAt() < 32){
-                  if(value == USB.ACK) {
+                  if(value.charCodeAt() == USB.ACK) {
                     console.log(i + ": ACK ---------------------------------")
-                  } else if(value == USB.STX) {
-                    start = true;
-                    end = false;
-                    // result = "";
+                  } else if(value.charCodeAt() == USB.STX) {
                     console.log(i + ": STX ---------------------------------")
-                  } else if(value == USB.ETX) {
-                    end = true;
+                  } else if(value.charCodeAt() == USB.ETX) {
                     console.log(i + ": ETX ---------------------------------")
                   }
+                  console.log(i + `: ${value.charCodeAt()} ---------------------------------`)
                 } else {
                   result += value;
-                  if(result.length >= 400) {
+                  if(result.length >= 410) {
                     console.log(result)
                     await writer.write(USB.ACK);
                     await writer.write(USB.ACK);
-                    reader.releaseLock();
+                    await reader.releaseLock();
                     // await reader.cancel();
                     break;
                   }
                 }
-                // await USB.port.close();
               }
+              // await USB.port.close();
               // reader.cancel();
               // await readableStreamClosed.catch(() => { /* Ignore the error */ });
               writer.close();
               await writableStreamClosed;
 
-              // await USB.port.close();
+              await USB.port.close();
               success(result);
               return;
             }
