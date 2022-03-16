@@ -275,6 +275,22 @@
 		Vue.prototype.$smallScreen = function() {
 			return document.body.clientWidth > 600 ? false : true;
 		}
+		Vue.prototype.$queryString = function(key) {
+			let index = location.href.indexOf("?");
+			let s = "";
+			if(index > -1) {
+				let s1 = location.href.substr(index + 1);
+				let arr = s1.split("&");
+				for(let i = 0; i < arr.length; i++) {
+					index = arr[i].indexOf(key + "=");
+					if(index > -1) {
+						s = arr[i].substr(key.length + 1)
+						break;
+					}
+				}
+			}
+			return s;
+		}
 
 		vm = new Vue({
 			el: '#app',

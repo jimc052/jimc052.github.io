@@ -1,5 +1,5 @@
 
-let idAuto, idWait;
+let idAuto, idWait, duration = 10, answer = 3;
 Vue.component('yt-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
@@ -54,12 +54,21 @@ Vue.component('yt-player', {
 	created(){
 	},
 	async mounted () {
+		let _duration = this.$queryString("duration");
+		if(typeof _duration == "string" && _duration.length > 0)
+			duration = parseInt(_duration, 10);
+		let _answer = this.$queryString("answer");
+			if(typeof _answer == "string" && _answer.length > 0)
+				answer = parseInt(_answer, 10);
 		this.smallScreen = this.$smallScreen();
 		await TTX.initial();
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
 		Youtube.stop();
+		if(location.href.toUpperCase().indexOf("TTX=Y") > -1) {
+			this.isTTX = true;
+		}
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -144,8 +153,8 @@ Vue.component('yt-player', {
 				await TTX.speak(this.content.topic[index].question);
 			}
 
-			if(Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
-				await this.waiting(5, async ()=>{
+			if(answer > 0 && Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
+				await this.waiting(answer, async ()=>{
 					let answer = this.content.topic[index].answer;
 					await TTX.speak(String.fromCharCode(answer + 97) + ".", 2);
 					await this.waiting(1)
@@ -166,7 +175,7 @@ Vue.component('yt-player', {
 				if(self.isAuto == true)  {
 					idAuto = setTimeout(() => {
 						self.autoPlay(index + 1)	
-					}, 10 * 1000);
+					}, duration * 1000);
 				}
 			}
     },
