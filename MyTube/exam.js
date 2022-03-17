@@ -44,7 +44,7 @@ Vue.component('yt-exam', {
       </div>
 
 			<div style="position: fixed; right: 20px; bottom: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-				<a id="linkExamYouTube" href="" target="_blank" 
+				<a id="linkExamYouTube" href="" target="_blank" v-if="!$smallScreen()"
 					style="margin-bottom: 10px; justify-content: center; align-items: center;">
 					<Icon type="logo-youtube" size="30" />
 				</a>

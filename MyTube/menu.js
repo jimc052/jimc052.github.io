@@ -1,7 +1,7 @@
 // :style="{width: width + 'px'}" 
 Vue.component('yt-menu', { 
 	template:  `
-    <div id='frameMenu' style="height: 100%; display: flex; flex-direction: column; position: relative;"
+    <div id='frameMenu' style="height: 100%; display: flex; flex-direction: column; "
         :style="{width: width + 'px'}">
       
       <div v-if="smallScreen" id="headerMenu" :style="{background: '#2d8cf0', 
@@ -39,7 +39,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-17 09:00</div>
+        <div  style="flex: 1;">2022-03-18 08:00</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
       <Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 
