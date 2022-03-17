@@ -81,6 +81,7 @@ Vue.component('yt-player', {
 			this.smallScreen = small;
 		},
 		async set(item){
+			console.log(item)
 			this.content = item;
 			this.prev = -1;
 			this.active = -1;

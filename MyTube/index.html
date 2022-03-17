@@ -353,6 +353,7 @@
 						]
 					}
 					this.dialog = "list";
+					this.$refs["player"].set(this.editData);
 				},
         async onSelect(item){
 					// console.log(JSON.stringify(item))
@@ -417,10 +418,12 @@
 										newDiv.style.height = "0px";
 										newDiv.style.width = "0px";
 										let exam = document.getElementById('exam');
-										exam.style.height = clientHeight + "px";
-										exam.style.visibility = "visible";
-										// exam.style.width = myParent.clientWidth + "px";
-										this.$refs["exam"].set(item.id, item.topic)
+										if(exam != null) {
+											exam.style.height = clientHeight + "px";
+											exam.style.visibility = "visible";
+											// exam.style.width = myParent.clientWidth + "px";
+											this.$refs["exam"].set(item.id, item.topic)											
+										}
 									}
 								},
 								'onStateChange': onPlayerStateChange
@@ -498,6 +501,7 @@ https://www.iviewui.com/components/tabs
 https://www.iviewui.com/components/icon
 
 https://developers.google.com/youtube/iframe_api_reference
+https://www.youtube.com/c/ClubJamesStudios/videos
 */
 </script>
 </html>

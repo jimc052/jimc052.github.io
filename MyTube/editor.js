@@ -146,9 +146,10 @@ Vue.component('yt-editor', {
 					this.children = "[\n" + s + "\n]";
 					
 					let minutes = document.getElementById("minutes");
-
-					minutes.innerText = toTimes(obj.children[0].start) + " ~ " + 
-						toTimes(obj.children[obj.children.length - 1].end);
+					if(obj.children.length > 0) {
+						minutes.innerText = toTimes(obj.children[0].start) + " ~ " + 
+							toTimes(obj.children[obj.children.length - 1].end);
+					}
 					delete obj.children;
 				}
 

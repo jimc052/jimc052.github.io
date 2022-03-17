@@ -203,7 +203,9 @@ Vue.component('yt-menu', {
             .collection(project).get();
           snapshot.forEach(async doc => {
             let json = Object.assign({id: doc.id}, doc.data());
-            if(this.$isDebug() || (Array.isArray(json.children) && json.children.length > 0) 
+            if(! this.$isDebug() && json.index <= 40){
+
+            } else if(this.$isDebug() || (Array.isArray(json.children) && json.children.length > 0) 
               || (Array.isArray(json.topic) && json.topic.length > 0))
               menu.push(json);  
           });
