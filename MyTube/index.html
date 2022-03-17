@@ -292,6 +292,9 @@
 			return s;
 		}
 
+		Vue.prototype.$isFlutter = function () {
+			return navigator.userAgent.indexOf("Flutter") > -1 ? true : false;
+		}
 		vm = new Vue({
 			el: '#app',
 			data() {

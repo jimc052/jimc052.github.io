@@ -120,13 +120,20 @@
 					<Icon :type="item.icon"></Icon>{{item}}
 				</Menu-item>
 			</i-menu>
-			<div style="flex: 1;"></div>
+			<div style="flex: 1; position: relative;">
+				<Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 
+					style="cursor: pointer; position: absolute; right: 10px; bottom: 10px; padding: 10px;">
+				</Icon>
+			</div>
 			<div style="text-align: right; color: white; padding: 10px; font-size: 18px; border-top: 1px rgba(255,255,255,.7) solid;">
 				<div id='email' :style="{'cursor': doc.length > 0 ? 'pointer' : 'auto'}"
 					@click.stop='onClickDoc()'	
 				>
 				</div>
-				Jim Chen 2020-11-18 08:00(VOA)
+				
+				<div>
+					Jim Chen 2020-11-18 08:00(VOA)
+				</div>
 			</div>
 		</Drawer>
 		<list :title="title"></list>
@@ -140,6 +147,10 @@
 	var vm = null;
 	window.onload = async function(){
 		FireStore.initial();
+
+		Vue.prototype.$isLogin = function() {
+			return FireStore.login;
+		}
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 		vm = new Vue({
 			el: '#app',
@@ -161,8 +172,7 @@
 				};
 			},
 			created() {
-				iview.lang('zh-TW');
-				
+				iview.lang('zh-TW');				
 			},
 			async mounted(){
 				let self = this;
@@ -210,6 +220,9 @@
 				}
 			},
 			methods: {
+				changeTo(){
+					location.replace('../MyTube/index.html');
+				},
 				onClickDoc(){
 					if(typeof this.doc == "string" && this.doc.length > 0)
 						this.$open(this.doc);
