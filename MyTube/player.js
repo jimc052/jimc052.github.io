@@ -1,5 +1,5 @@
 
-let idAuto, idWait, duration = 10, answer = 3;
+let idAuto, idWait, duration = 10, answerDuration = 3;
 Vue.component('yt-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
@@ -58,8 +58,8 @@ Vue.component('yt-player', {
 		if(typeof _duration == "string" && _duration.length > 0)
 			duration = parseInt(_duration, 10);
 		let _answer = this.$queryString("answer");
-			if(typeof _answer == "string" && _answer.length > 0)
-				answer = parseInt(_answer, 10);
+		if(typeof _answer == "string" && _answer.length > 0)
+			answerDuration = parseInt(_answer, 10);
 		this.smallScreen = this.$smallScreen();
 		await TTX.initial();
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
@@ -136,10 +136,10 @@ Vue.component('yt-player', {
 			if(index > -1 && index < this.rows.length) {
 				this.broadcast.$emit('exam', index);
 				// setTimeout(() => {
-					if(this.isAuto == true){
+					// if(this.isAuto == true){
 						let arr = document.querySelectorAll(".btn")
 						arr[index].focus();
-					}
+					// } 
 				// }, 600);				
 			}
 			this.active = index;
@@ -153,19 +153,19 @@ Vue.component('yt-player', {
 				await TTX.speak(this.content.topic[index].question);
 			}
 
-			if(answer > 0 && Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
-				await this.waiting(answer, async ()=>{
+			if(answerDuration > 0 && Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
+				await this.waiting(answerDuration, async ()=>{
+					// for(let i = 0; i < 4; i++) {
+					// 	await TTX.speak(String.fromCharCode(i + 97) + ".", 2);
+					// 	await this.waiting(1)
+					// 	await TTX.speak(this.content.topic[index].option[i], 2);
+					// 	await this.waiting(5);
+					// }
+
 					let answer = this.content.topic[index].answer;
 					await TTX.speak(String.fromCharCode(answer + 97) + ".", 2);
 					await this.waiting(1)
 					await TTX.speak(this.content.topic[index].option[answer], 2);
-					/* 可以用的，但還沒有用 clearTimout
-					for(let i = 0; i < 4; i++) {
-						await TTX.speak( String.fromCharCode(i + 97) + ". " +
-						this.content.topic[index].option[i]);
-						await this.waiting(5);
-					}
-					*/
 					next();
 				})
 			} else {
@@ -189,20 +189,31 @@ Vue.component('yt-player', {
 			// console.log(o.id)
 			if(this.rows.length == 0 || this.$isDialog() == true) return;
 			if(o.tagName == "INPUT") return;
-			if(event.keyCode == 32) {
+			if(event.keyCode == 32 || event.keyCode == 38 || event.keyCode == 40) {
 				if(this.prev > -1)
 					this.onClickPlay(this.prev)
-				else if(this.active > -1)
-					this.onClickPlay(this.active);
-			} else if(event.keyCode == 37 || event.keyCode == 38) { // left, up
-				if(this.active > 0) {
+				else
+					this.onClickPlay(this.active)
+			} else if(event.keyCode == 37) { // left
+				if(this.prev > -1)
+					this.onClickPlay(this.prev)
+				else if(this.active > 0) {
 					this.onClickPlay(this.active - 1)
 				}
-			} else if(event.keyCode == 39 || event.keyCode == 40) { // right, right
-				if(this.active < this.rows.length - 1) {
+			} else if(event.keyCode == 39) { // right
+				if(this.prev > -1)
+					this.onClickPlay(this.prev)
+				else if(this.active < this.rows.length - 1) {
 					this.onClickPlay(this.active + 1)
 				}
+			} else {
+				return;
 			}
+			// if(b == true) {
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				event.stopPropagation();				
+			// }
 		},
 		onClickList(){
 			if(this.isAuto) this.stop();

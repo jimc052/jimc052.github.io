@@ -39,7 +39,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-16 09:00</div>
+        <div  style="flex: 1;">2022-03-17 09:00</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
     </div>
@@ -102,6 +102,13 @@ Vue.component('yt-menu', {
           this.onClickIcon();
         }
         this.active = index + '';
+        // if(this.menu[index].title.indexOf("Form ") == 0) { // 修改 ALCPT index
+          // console.log(this.menu[index].title + ", index: " + this.menu[index].index);
+        //   console.log(this.menu[index])
+        //   this.menu[index].index = parseInt(this.menu[index].title.replace("Form ", ""), 10);
+        //   // console.log(this.menu[index].title + ", index: " + this.menu[index].index);
+        //   this.upload(Object.assign({}, this.menu[index]))
+        // }
       }
     },
     onClickIcon(){

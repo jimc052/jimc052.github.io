@@ -88,6 +88,8 @@ Vue.component('yt-exam', {
 			let viewer = document.querySelector("#exam");
 			let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;
 
+			// console.log(`offsetTop: ${offsetTop}, offsetBottom: ${offsetBottom}, scrollTop: ${scrollTop}, clientHeight: ${clientHeight}`)
+
 			if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
 			} else {
 				viewer.scrollTop = offsetTop - 60;
@@ -102,7 +104,9 @@ Vue.component('yt-exam', {
       this.topic = [];
 			item.forEach((el, index) => {
 				// el.question = el.question.replace('<br/>&nbsp;&nbsp;&nbsp;', "\n");
-				let json = Object.assign({}, el)
+				let json = Object.assign({}, el);
+				let question = json.question;
+
 				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;');
 				this.topic.push(json);
 			});
