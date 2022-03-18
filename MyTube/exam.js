@@ -11,13 +11,15 @@ Vue.component('yt-exam', {
 			>
         <div v-if="isExam == false" v-html="item.question"
 					:style="{color: item.answer == -1 ? 'red' : (active == index ? '#2d8cf0': ''), 
-						fontSize: '24px',
+						fontSize: $smallScreen() ? '20px' :'24px',
 						fontWeight: active == index ? '700' : '400'
 					}"
 					style="user-select: text !important;"
 				/>
 
-				<div v-else :style="{color: active == index ? '#2d8cf0' : '', fontSize: '24px'}">
+				<div v-else :style="{color: active == index ? '#2d8cf0' : '', 
+					fontSize: $smallScreen() ? '20px' : '24px'}
+				">
 					{{(index + 1) + "."}}
 				</div>
 
@@ -25,7 +27,7 @@ Vue.component('yt-exam', {
 					:name="index + '-' + i" :key="index + '-' + i"
 					style="margin-left: 30px; "
 				>
-					<span style="font-size: 22px;">{{String.fromCharCode(i + 97) + ". "}}</span>
+					<span :style="{fontSize: $smallScreen() ? '18px' : '22px'}">{{String.fromCharCode(i + 97) + ". "}}</span>
 
 					<input type="radio" style="margin: 0px 5px;" :name="'radio' + index"
 						:checked="item.answer == i"
@@ -33,7 +35,7 @@ Vue.component('yt-exam', {
 						v-if="$isDebug() || isExam"
 					/>
 					<span :style="{color: i == item.answer && !isExam ? '#f90' : '', 
-							fontSize: '22px',
+							fontSize:  $smallScreen() ? '18px' : '22px',
 							fontWeight: active == index && i == item.answer && !isExam ? '700' : '400'
 						}" 
 						style="user-select: text !important;"
@@ -117,7 +119,8 @@ Vue.component('yt-exam', {
 				}				
 			}, 600);
 			let link = document.getElementById("linkExamYouTube");
-			link.href = `https://www.youtube.com/watch?v=${id}`;
+			if(link != null)
+				link.href = `https://www.youtube.com/watch?v=${id}`;
     },
 		onClickRadio(index, i) {
 			let data = this.topic[index];

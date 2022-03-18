@@ -11,9 +11,12 @@ Vue.component('yt-menu', {
         }">
         <Icon type="md-arrow-back" size="28" color="white" @click.native="onClickIcon" 
         style="cursor: pointer; margin-left: 10px;"></Icon>
-        
+        <span v-if="project.length > 0" style="color: white; margin-left: 10px; font-size: 20px;">
+          {{project[topic].title}}
+        </span>
       </div>
-      <div style="padding: 10px 10px; z-index: 10;" v-if="!smallScreen && project.length > 0">
+      <div :style="{padding: !smallScreen && project.length > 0 ? '10px' : '0px', zIndex: '10'}" 
+        v-if="!smallScreen && project.length > 0">
         <Dropdown @on-click="onClickProject" v-if="$isDebug()">
           <a href="javascript:void(0)">
               {{project[topic].title}}
@@ -39,7 +42,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-18 08:00</div>
+        <div  style="flex: 1;">2022-03-18 09:00</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
       <Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 
@@ -103,6 +106,7 @@ Vue.component('yt-menu', {
       if(index < this.menu.length) {
         this.$emit('on-select', this.menu[index]);
         let project = this.project[this.topic].id;
+
         window.localStorage["yt-menu-" + project] = this.menu[index].id;
         if(this.smallScreen == true) {
           this.onClickIcon();
