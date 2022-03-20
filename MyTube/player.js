@@ -1,5 +1,5 @@
 
-let idAuto, idWait, duration = 10, answerDuration = 3;
+let idAuto, idWait, duration = 10, secAnswer = 3, secOption = 0, repeat = 0;
 Vue.component('yt-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
@@ -11,21 +11,17 @@ Vue.component('yt-player', {
 				<i-button v-for="(item, index) in rows" :key="index" class="btn"
 					:type="active == index || prev == index ? 'warning' : 'default'"
 					:ghost="prev == index"
-					@click.native="onClickPlay(index)">
+					@click.native="times = 0; onClickPlay(index);">
 					<span v-if="typeof item.title == 'string' ">{{item.title}}</span>
 					<span v-else>{{(index + 1)}}</span>
 				</i-button>
 			</div>
 			<div style="margin: 3px 10px 3px 0px;">
-				<div v-if="$isDebug() && $isLogin() && videoId.length > 0"
+				<div v-if="$isDebug() && $isLogin() && videoId.length > 0 && ! $smallScreen()"
 					style="flex-direction: row; margin-bottom: 5px;"
 				>
-					<i-button type="success"  
-						@click.native="onClickList()" icon="md-create" shape="circle" />
-
-					<i-button type="success"
-						@click.native="onClickEdit()" icon="md-document" shape="circle"
-					/>
+					<i-button type="success" @click.native="onClickList()" icon="md-create" shape="circle" />
+					<i-button type="success" @click.native="onClickEdit()" icon="md-document" shape="circle" />
 				</div>
 				<i-button :type="isAuto ? 'default' : 'primary'" 
 					:icon="isAuto ? 'md-pause' : 'md-walk'"
@@ -49,6 +45,7 @@ Vue.component('yt-player', {
 			isAuto: false,
 			smallScreen: true, 
 			isTTX: false,
+			times: 0
 		};
 	},
 	created(){
@@ -59,7 +56,13 @@ Vue.component('yt-player', {
 			duration = parseInt(_duration, 10);
 		let _answer = this.$queryString("answer");
 		if(typeof _answer == "string" && _answer.length > 0)
-			answerDuration = parseInt(_answer, 10);
+			secAnswer = parseInt(_answer, 10);
+		let _option = this.$queryString("option");
+		if(typeof _option == "string" && _option.length > 0)
+			secOption = parseInt(_option, 10);
+		let _repeat = this.$queryString("repeat");
+		if(typeof _repeat == "string" && _repeat.length > 0)
+			repeat = parseInt(_repeat, 10);
 		this.smallScreen = this.$smallScreen();
 		await TTX.initial();
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
@@ -127,6 +130,10 @@ Vue.component('yt-player', {
 			setTimeout(() => {
 				let el = document.getElementById("btnPlays");
 				el.style.visibility = "visible";
+
+				if(location.href.indexOf("autoPlay=Y") > -1){
+					this.autoExam();
+				}
 			}, 300);
 		},
     async onClickPlay(index) {
@@ -142,6 +149,7 @@ Vue.component('yt-player', {
 					// } 
 				// }, 600);				
 			}
+			this.times = index == this.active ? this.times + 1 : 0;
 			this.active = index;
 			this.prev = -1;
 			if(this.isAuto == false)
@@ -153,14 +161,17 @@ Vue.component('yt-player', {
 				await TTX.speak(this.content.topic[index].question);
 			}
 
-			if(answerDuration > 0 && Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
-				await this.waiting(answerDuration, async ()=>{
-					// for(let i = 0; i < 4; i++) {
-					// 	await TTX.speak(String.fromCharCode(i + 97) + ".", 2);
-					// 	await this.waiting(1)
-					// 	await TTX.speak(this.content.topic[index].option[i], 2);
-					// 	await this.waiting(5);
-					// }
+			if(secAnswer > 0 && Array.isArray(this.content.topic) && this.content.topic.length > 0 && this.content.topic[index].answer > -1) {
+				await this.waiting(secAnswer, async ()=>{
+					if(secOption > 0) {
+						for(let i = 0; i < 4; i++) {
+							await TTX.speak(String.fromCharCode(i + 97) + ".", 2);
+							await this.waiting(1)
+							await TTX.speak(this.content.topic[index].option[i], 2);
+							await this.waiting(secOption);
+						}
+						await this.waiting(secAnswer)
+					}
 
 					let answer = this.content.topic[index].answer;
 					await TTX.speak(String.fromCharCode(answer + 97) + ".", 2);
@@ -172,7 +183,12 @@ Vue.component('yt-player', {
 				next()
 			}
 			function next() {
-				if(self.isAuto == true)  {
+				// console.log(`index: ${index}, repeat: ${repeat}, times: ${self.times}`)
+				if(repeat > 1 && self.times <= repeat - 2) {
+					idAuto = setTimeout(() => {
+						self.onClickPlay(index)	
+					}, duration * 1000);
+				} else if(self.isAuto == true)  {
 					idAuto = setTimeout(() => {
 						self.autoPlay(index + 1)	
 					}, duration * 1000);
@@ -187,6 +203,7 @@ Vue.component('yt-player', {
 			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
 			// console.log(o.id)
+			this.times = 0;
 			if(this.rows.length == 0 || this.$isDialog() == true) return;
 			if(o.tagName == "INPUT") return;
 			if(event.keyCode == 32 || event.keyCode == 38 || event.keyCode == 40) {
