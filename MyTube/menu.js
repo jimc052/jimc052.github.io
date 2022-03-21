@@ -38,10 +38,15 @@ Vue.component('yt-menu', {
               && (typeof item.position == 'undefined' || item.position.length == 0)
               && (typeof item.topic == 'undefined' || item.topic.length == 0)" 
               style="color: red; font-size: 8px;">{{"無"}}</span>
-            <span v-if="$isDebug() && $isLogin() 
+            <span v-else-if="$isDebug() && $isLogin() 
               && (typeof item.position == 'undefined' || item.position.length == 0)
               && (Array.isArray(item.topic) && item.topic.length > 0)" 
               style="color: blue; font-size: 8px;">{{"合"}}</span>
+            <span v-else-if="$isDebug() && $isLogin() 
+              && Array.isArray(item.position)
+              && Array.isArray(item.topic)
+              && item.position.length != item.topic.length" 
+              style="color: green; font-size: 8px;">{{"未"}}</span>
           </menu-item>
         </menu-group>
       </i-menu>
