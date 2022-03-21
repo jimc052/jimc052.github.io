@@ -269,7 +269,7 @@
       "option": ["She thought the ending was good.","She thought the ending was obvious.","She thought the ending was sudden.","She thought the ending was sad."]
     }]
 ,
-  "children": [
+  "position": [
     {"start": 24.5, "end": 29.54},
     {"start": 48.24, "end": 53.27},
     {"start": 71.5, "end": 77.55},

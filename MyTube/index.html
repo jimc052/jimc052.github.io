@@ -349,7 +349,7 @@
 					this.editData = {
 						title: "", 
 						id: "",
-						children: [
+						position: [
 						]
 					}
 					this.dialog = "list";
@@ -395,7 +395,7 @@
 						if(header != null){
 							clientHeight -= header.clientHeight;
 						}
-						if(Array.isArray(item.children)) clientHeight -= this.video == true ? 20 : 10;
+						if(Array.isArray(item.position)) clientHeight -= this.video == true ? 20 : 10;
 
 						videoId = item.id;
 						player = new YT.Player('player', {

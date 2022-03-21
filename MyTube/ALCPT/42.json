@@ -268,7 +268,7 @@
       "answer": 1,
       "option": ["a stamp to mail the letter","the reason why the letter was written","an address for the letter","something with which to seal the letter"]
     }],
-  "children": [
+  "position": [
     {"start": 20, "end": 25},
     {"start": 25.4, "end": 30.5},
     {"start": 30.7, "end": 34.2},

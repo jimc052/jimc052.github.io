@@ -268,7 +268,7 @@
       "answer": 2,
       "option": ["The man gave her on dollar and fifty cents.","The man wants some change back.","The lady received two dollars.","The lady will have to pay him fifty cents."]
     }],
-  "children": [
+  "position": [
     {"start": 19.6, "end": 29.4},
     {"start": 29.5, "end": 35.2},
     {"start": 35.26, "end": 41.1},

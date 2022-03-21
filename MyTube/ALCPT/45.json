@@ -268,7 +268,7 @@
       "answer": 0,
       "option": ["His house is big.","His house is pretty.","His house is old.","His house is modern."]
     }],
-  "children": [
+  "position": [
     {"start": 23.5, "end": 33.57},
     {"start": 51, "end": 57.04},
     {"start": 71.5, "end": 76.53},

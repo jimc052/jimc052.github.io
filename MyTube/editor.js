@@ -15,7 +15,7 @@ Vue.component('yt-editor', {
 
 				<TabPane :closable="false" label="位置" :style="{height: height + 'px'}"  name="2">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
-          v-model="children" />
+          v-model="position" />
         </TabPane>
 
 				<TabPane :closable="false" label="原稿" :style="{height: height + 'px'}"  name="原稿">
@@ -54,7 +54,7 @@ Vue.component('yt-editor', {
 		return {
 			title: "",
 			topic: "",
-			children: "",
+			position: "",
 			height: 0,
 			source: ""
 		};
@@ -77,8 +77,8 @@ Vue.component('yt-editor', {
 		update(){
 			let json = JSON.parse(this.title);
 			try {
-				if(this.children.length > 0)
-					json.children = JSON.parse(this.children);
+				if(this.position.length > 0)
+					json.position = JSON.parse(this.position);
 				if(this.topic.length > 0)
 					json.topic = JSON.parse(this.topic);
 				this.$emit("update", json);
@@ -124,12 +124,12 @@ Vue.component('yt-editor', {
 					delete obj.topic;
 				}
 
-				this.children = "";
-				if(Array.isArray(obj.children)) {
+				this.position = "";
+				if(Array.isArray(obj.position)) {
 					let s = "", cols = ["start", "end"];
-					for(let i = 0; i < obj.children.length; i++) {
+					for(let i = 0; i < obj.position.length; i++) {
 						let s2 = "";
-						let row = obj.children[i];
+						let row = obj.position[i];
 						for(let j = 0; j < cols.length; j++) {
 							let key = cols[j];
 							s2 += (s2.length > 0 ? ", " : "") + `"${key}": ` 
@@ -143,14 +143,14 @@ Vue.component('yt-editor', {
 						}
 						s += (s.length > 0 ? ",\n" : "") + "{"+ s2 + "}";
 					}
-					this.children = "[\n" + s + "\n]";
+					this.position = "[\n" + s + "\n]";
 					
 					let minutes = document.getElementById("minutes");
-					if(obj.children.length > 0) {
-						minutes.innerText = toTimes(obj.children[0].start) + " ~ " + 
-							toTimes(obj.children[obj.children.length - 1].end);
+					if(obj.position.length > 0) {
+						minutes.innerText = toTimes(obj.position[0].start) + " ~ " + 
+							toTimes(obj.position[obj.position.length - 1].end);
 					}
-					delete obj.children;
+					delete obj.position;
 				}
 
 				let s = "";
@@ -171,15 +171,15 @@ Vue.component('yt-editor', {
 						this.source += el + (index == this.topic.length - 1 ? "" : "\n")
 					})
 				}
-				if(this.children.length > 0) {
-					this.source += `,\n  "children": `;
-					this.children.split("\n").forEach((el, index) => {
+				if(this.position.length > 0) {
+					this.source += `,\n  "position": `;
+					this.position.split("\n").forEach((el, index) => {
 						if(el.trim().length == 0) return;
-						if(index == this.children.length - 1) 
+						if(index == this.position.length - 1) 
 							this.source += "  ";
 						else if(index > 0)
 							this.source += "    ";
-						this.source += el + (index == this.children.length - 1 ? "" : "\n")
+						this.source += el + (index == this.position.length - 1 ? "" : "\n")
 					})
 				}
 				this.source += "\n}";
@@ -199,7 +199,7 @@ Vue.component('yt-editor', {
 			} else {
 				this.topic = "";
 				this.title = "";
-				this.children = "";
+				this.position = "";
 				this.source = "";
 			}
 

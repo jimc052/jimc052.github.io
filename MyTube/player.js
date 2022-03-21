@@ -87,7 +87,7 @@ Vue.component('yt-player', {
 			this.content = item;
 			this.prev = -1;
 			this.active = -1;
-      this.rows = Array.isArray(item.children) ? item.children 
+      this.rows = Array.isArray(item.position) ? item.position 
 				: (Array.isArray(item.topic) ? item.topic : []);
 			this.videoId = item.id;
 			let m = window.localStorage["yt-" + this.videoId];
@@ -131,9 +131,9 @@ Vue.component('yt-player', {
 				let el = document.getElementById("btnPlays");
 				el.style.visibility = "visible";
 
-				if(location.href.indexOf("autoPlay=Y") > -1){
-					this.autoExam();
-				}
+				// if(location.href.indexOf("autoPlay=Y") > -1){
+				// 	this.autoExam();
+				// }
 			}, 300);
 		},
     async onClickPlay(index) {

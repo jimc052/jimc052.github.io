@@ -268,7 +268,7 @@
       "answer": 3,
       "option": ["is illegally parked","was stolen in Georgia","is stalled at a light","has its lights on"]
     }],
-  "children": [
+  "position": [
     {"start": 18.5, "end": 25.5},
     {"start": 42.9, "end": 47.91},
     {"start": 64.13, "end": 69.14},

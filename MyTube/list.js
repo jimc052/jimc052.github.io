@@ -75,7 +75,7 @@ Vue.component('dlg-list', {
 				return {
 					id: "",
 					title: "",
-					children: []
+					position: []
 				}
 			}
 		} ,
@@ -251,7 +251,7 @@ Vue.component('dlg-list', {
 		close(){
 			let bTitle = this.title.trim().length > 0 && this.title != this.editdata.title;
 			let bID = this.id.trim().length > 0 && this.id != this.editdata.id;
-			let children = [];
+			let position = [];
 			if(this.dirty == true) {
 				this.rows.forEach(item=>{
 					let bChange = (this.display == "col3" && item.title.trim().length > 0) || this.display == "col2" 
@@ -265,14 +265,14 @@ Vue.component('dlg-list', {
 						if(this.display == "col3") {
 							json.title = item.title;
 						}
-						children.push(json)
+						position.push(json)
 					}
 				})
 			} else if(bTitle == true || bID == true) {
-				children = this.rows;
+				position = this.rows;
 			}
-			if(bTitle == true || bID == true || children.length > 0) {
-				let json = Object.assign(this.editdata, {title: this.title, id: this.id, children})
+			if(bTitle == true || bID == true || position.length > 0) {
+				let json = Object.assign(this.editdata, {title: this.title, id: this.id, position})
 				this.$emit("update", json);
 			}
 			this.reset();
@@ -346,8 +346,8 @@ Vue.component('dlg-list', {
 			this.title = value.title;
 			this.id = value.id;
 			this.rows = [];
-			if(Array.isArray(value.children)){
-				value.children.forEach(el => {
+			if(Array.isArray(value.position)){
+				value.position.forEach(el => {
 					this.rows.push(Object.assign({}, el))
 				});
 			}

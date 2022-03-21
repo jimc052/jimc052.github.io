@@ -35,14 +35,18 @@ Vue.component('yt-menu', {
           <menu-item v-for="(item, index) in menu" :id="'menu' + index" :name="index + ''" :key="index">
             <span>{{item.title}}</span>
             <span v-if="$isDebug() && $isLogin() 
-              && (typeof item.children == 'undefined' || item.children.length == 0)
+              && (typeof item.position == 'undefined' || item.position.length == 0)
               && (typeof item.topic == 'undefined' || item.topic.length == 0)" 
               style="color: red; font-size: 8px;">{{"無"}}</span>
+            <span v-if="$isDebug() && $isLogin() 
+              && (typeof item.position == 'undefined' || item.position.length == 0)
+              && (Array.isArray(item.topic) && item.topic.length > 0)" 
+              style="color: blue; font-size: 8px;">{{"合"}}</span>
           </menu-item>
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-21 07:30</div>
+        <div  style="flex: 1;">2022-03-21 08:20</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
       <Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 
@@ -67,12 +71,12 @@ Vue.component('yt-menu', {
     /*    
       }, {
         title: "", id: "", 
-        children: [
+        position: [
         ]
 
       }, {
         title: "", id: "", 
-        children: [
+        position: [
           {title: "", start: , end: },
         ]
     */
@@ -113,11 +117,18 @@ Vue.component('yt-menu', {
         }
         this.active = index + '';
         // if(this.menu[index].title.indexOf("Form ") == 0) { // 修改 ALCPT index
-          // console.log(this.menu[index].title + ", index: " + this.menu[index].index);
+        //   console.log(this.menu[index].title + ", index: " + this.menu[index].index);
+          
+        //   if(typeof this.menu[index].position == "undefined" && Array.isArray(this.menu[index].children)) {
+        //     this.menu[index].position = this.menu[index].children;
+        //     delete this.menu[index].children;
+        //     this.upload(Object.assign({}, this.menu[index]))
+        //   }
         //   console.log(this.menu[index])
-        //   this.menu[index].index = parseInt(this.menu[index].title.replace("Form ", ""), 10);
+
+        //   // this.menu[index].index = parseInt(this.menu[index].title.replace("Form ", ""), 10);
         //   // console.log(this.menu[index].title + ", index: " + this.menu[index].index);
-        //   this.upload(Object.assign({}, this.menu[index]))
+        //   // 
         // }
       }
     },
@@ -209,7 +220,7 @@ Vue.component('yt-menu', {
             let json = Object.assign({id: doc.id}, doc.data());
             if(! this.$isDebug() && json.index <= 40){
 
-            } else if(this.$isDebug() || (Array.isArray(json.children) && json.children.length > 0) 
+            } else if(this.$isDebug() || (Array.isArray(json.position) && json.position.length > 0) 
               || (Array.isArray(json.topic) && json.topic.length > 0))
               menu.push(json);  
           });
