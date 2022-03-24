@@ -13,7 +13,7 @@ Vue.component('dlg-list', {
 				v-if="cursor == -1"
 				@click.native="close" style="cursor: pointer; color: white;" />
 		</div>
-		<div :style="{height: height + 'px', overflow: 'hidden'}">
+		<div :style="{height: height + 'px', overflow: 'hidden', border: '1px solid rgb(70, 160, 240)'}">
 			<div style="height: 100%; overflow-y: auto; " id="listFrame">
 				<div style="flex: 1; padding: 5px;">
 					<i-input element-id="editTitle" size="large" v-model="title" style="flex: 1;" placeholder="title" />
@@ -29,7 +29,7 @@ Vue.component('dlg-list', {
 					"
 					class="list"
 				>
-					<div v-if="cursor == index" style="" :class="display">
+					<div v-if="cursor == index" style="" :class="display" :id="'list-row-' + index">
 						<div>
 							<i-input v-if="display == 'col3'" size="large" element-id="editName" v-model="name" style="flex: 1; style='height: 100%;' " />
 							<div v-else>{{index + 1}}</div>
@@ -190,7 +190,6 @@ Vue.component('dlg-list', {
 					else { 
 						start = this.isNumber(document.getElementById("editStart").value) 
 							? toNumber(document.getElementById("editStart").value) : x - 3;
-						console.log(start)
 						end = x;
 						this.end = x;
 						start = end - start > 3 ? end - 3 : start;
@@ -247,6 +246,11 @@ Vue.component('dlg-list', {
 			this.rows.push({})
 			this.cursor = this.rows.length - 1;
 			this.name = ""; this.start = ""; this.end = "";
+			setTimeout(() => {
+				let el = document.getElementById("list-row-" + this.cursor);
+				if(el != null)
+					el.scrollIntoView();
+			}, 300);
 		},
 		close(){
 			let bTitle = this.title.trim().length > 0 && this.title != this.editdata.title;
