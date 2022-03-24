@@ -379,7 +379,8 @@
 					newDiv.style.visibility = "hidden";
 
 					var myParent = document.getElementById('playerParent');
-					if(!Array.isArray(item.topic) || location.href.indexOf("video=Y") > -1){
+					if(!Array.isArray(item.topic) || location.href.indexOf("video=Y") > -1 
+						|| (Array.isArray(item.topic) && Array.isArray(item.position) && item.topic.length > item.position.length)){
 						this.video = true;
 						myParent.appendChild(newDiv);
 						newDiv.style.visibility = "visible";
