@@ -26,7 +26,7 @@
     },{
       "question": "6. The weatherman says it will freeze tonight. What does he mean?",
       "answer": 3,
-      "option": ["The humidity will be high.","The wind wil die down.","The weather will become hot.","The weather will become cold."]  
+      "option": ["The humidity will be high.","The wind will die down.","The weather will become hot.","The weather will become cold."]  
     },{
       "question": "7. Joe is at the store. He wants to go back to his room. It's necessary for him to walk 12 blocks. How far is it from the store to Joe's room?",
       "answer": 2,
@@ -64,7 +64,7 @@
       "answer": 0,
       "option": ["space to keep things in","space to cook things in","space to wash things in","space to plant things in"]  
     },{
-      "question": "16. John ate some dessert at noon. What did he do?",
+      "question": "16. John ate some dessert at noon. What did he eat?",
       "answer": 2,
       "option": ["chicken noodle soup","rare roast beef","apple pie","cold meats"]  
     },{
@@ -232,7 +232,7 @@
       "answer": 3,
       "option": ["because he was sleepy","because he want' busy","because he didn't have a party","because he had a party"]  
     },{
-      "question": "58. M: Did John use the interstate?\nW: Yes, he did.\nQ: What was John doing?",
+      "question": "58. M: Did John use the interstate highway?\nW: Yes, he did.\nQ: What was John doing?",
       "answer": 3,
       "option": ["sailing","flying","swimming","driving"]  
     },{
@@ -240,7 +240,7 @@
       "answer": 1,
       "option": ["a movie","a sports contest","a friend","a birthday party"]  
     },{
-      "question": "60. W: How are the patients?\nM: They're doing very well,except for the man in room 12.\nQ: Where did the conversation most likely take place?",
+      "question": "60. W: How are the patients?\nM: They're doing very well, except for the man in room 12.\nQ: Where did the conversation most likely take place?",
       "answer": 1,
       "option": ["in a school","in a hospital","in a barracks","in a hotel"]  
     },{
@@ -256,7 +256,7 @@
       "answer": 3,
       "option": ["He wants to go to bed.","He wants to get cleaned up.","He wants to drink something cold.","He wants to get somewhere fast."]  
     },{
-      "question": "64. W: How did you find out the news?\nM: It was broadcast.\nQ: How did the man find out about the news?",
+      "question": "64. W: How did you find out about the news?\nM: It was broadcast.\nQ: How did the man find out about the news?",
       "answer": 0,
       "option": ["He listened to it on the radio.","He learned about it from a friend.","He read about it in a newspaper.","His brother told him about it."]  
     },{
