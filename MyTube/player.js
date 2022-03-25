@@ -251,7 +251,7 @@ Vue.component('yt-player', {
 			}
 		},
 		async autoPlay(index) {
-			if(index < this.rows.length - 1 && this.isAuto == true) {
+			if(index < this.rows.length && this.isAuto == true) {
 				await this.onClickPlay(index);
 			}	else {
 				this.stop();
