@@ -51,7 +51,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-25 08:20</div>
+        <div  style="flex: 1;">2022-03-25 21:00</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
       <Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 
@@ -225,8 +225,12 @@ Vue.component('yt-menu', {
             let json = Object.assign({id: doc.id}, doc.data());
             if(! this.$isDebug() && json.index <= 40){
 
-            } else if(this.$isDebug() || (Array.isArray(json.position) && json.position.length > 0) 
-              || (Array.isArray(json.topic) && json.topic.length > 0))
+            } else if(this.$isDebug() 
+                || (Array.isArray(json.position) && Array.isArray(json.topic) && json.topic.length ==  json.position.length) 
+                || (Array.isArray(json.topic) && json.topic.length > 0 
+                    && (!Array.isArray(json.position) || json.position.length ==0)
+                )
+              )
               menu.push(json);  
           });
           menu.sort((a, b) => {
