@@ -9,7 +9,7 @@ Vue.component('dlg-list', {
 			<Icon type="md-add" size="22" @click.native="addRow" 
 				v-if="cursor == -1"
 				style="cursor: pointer; color: white; margin-right: 10px;" />
-			<Icon type="md-checkmark" size="22" 
+			<Icon :type="dirty == false ? 'md-close' : 'md-checkmark'" size="22" 
 				v-if="cursor == -1"
 				@click.native="close" style="cursor: pointer; color: white;" />
 		</div>
