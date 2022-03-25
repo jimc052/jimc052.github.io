@@ -13,7 +13,7 @@ Vue.component('dlg-list', {
 				v-if="cursor == -1"
 				@click.native="close" style="cursor: pointer; color: white;" />
 		</div>
-		<div :style="{height: height + 'px', overflow: 'hidden', border: '1px solid rgb(70, 160, 240)'}">
+		<div :style="{height: height + 'px', overflow: 'hidden', border: '1px solid rgb(70, 160, 240)', background: '#eee'}">
 			<div style="height: 100%; overflow-y: auto; " id="listFrame">
 				<div style="flex: 1; padding: 5px;">
 					<i-input element-id="editTitle" size="large" v-model="title" style="flex: 1;" placeholder="title" />
@@ -25,7 +25,7 @@ Vue.component('dlg-list', {
 
 				<div v-for="(item, index) in rows" :key="index" 
 					style="display: flex; flex-direction: row; justify-content: center; align-items: center;
-						padding: 5px 5px; min-height: 44px;	
+						padding: 5px 5px; min-height: 44px;	background: white;
 					"
 					class="list"
 				>
