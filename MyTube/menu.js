@@ -16,8 +16,8 @@ Vue.component('yt-menu', {
         </span>
       </div>
       <div :style="{padding: !smallScreen && project.length > 0 ? '10px' : '0px', zIndex: '10'}" 
-        v-if="!smallScreen && project.length > 0">
-        <Dropdown @on-click="onClickProject" v-if="$isDebug()">
+        v-if="$isDebug() && !smallScreen && project.length > 0">
+        <Dropdown @on-click="onClickProject">
           <a href="javascript:void(0)">
               {{project[topic].title}}
             <Icon type="ios-arrow-down"></Icon>
@@ -51,7 +51,7 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-03-25 21:00</div>
+        <div  style="flex: 1;">2022-03-28 12:30</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
       <Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 

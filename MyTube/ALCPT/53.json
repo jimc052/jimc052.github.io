@@ -41,7 +41,7 @@
       "answer": 1,
       "option": ["He was swimming.","He was sick.","He was eating.","He was alone."]  
     },{
-      "question": "10. Rose Allen broke her mirror. She couldn't",
+      "question": "10. Rose Allen broke her mirror. \nShe couldn't _______.",
       "answer": 2,
       "option": ["talk to anyone","read her book","see herself","tell time"]  
     },{
