@@ -4,7 +4,7 @@ Vue.component('yt-player', {
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
 			<div id="btnPlays"
-				style="padding: 2px 2px 8px 2px; flex: 1;"
+				style="padding: 2px 2px 4px 2px; flex: 1;"
 				:style="{height: rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 
 				(smallScreen ? '120px' : 'auto')}"
 			>
