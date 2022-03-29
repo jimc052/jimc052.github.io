@@ -65,7 +65,7 @@ Vue.component('yt-exam', {
 					<Icon type="logo-youtube" size="30" />
 				</a>
 				<i-button type="success" icon="md-cloud-done" shape="circle" @click.native="update()"  
-					v-if="isDirty && !isExam"
+					v-if="dirty > 0 && !isExam"
 				/>
 			</div>
     </div>
@@ -77,7 +77,7 @@ Vue.component('yt-exam', {
       topic: [],
 			active: -1,
 			isExam: false, // 還沒確定，是否要寫測試模式
-			isDirty: false,
+			dirty: 0,
 			origin: []
 		};
 	},
@@ -144,14 +144,17 @@ Vue.component('yt-exam', {
 			let data = this.topic[index];
 			data.answer = i
 			this.$set(this.topic, index, data);
-			this.isDirty = true;
+			this.dirty++;
+			if(this.dirty >= 5) {
+				this.update();
+			}
 		},
 		update() {
 			this.topic.forEach((el, index) => {
 				this.origin[index].answer = el.answer;
 			})
 			this.$emit("update", this.origin);
-			this.isDirty = false;
+			this.dirty = 0;
 		}
 	},
 	computed: {
