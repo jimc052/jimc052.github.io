@@ -1,49 +1,63 @@
-//; 
 Vue.component('yt-exam', { 
 	template:  `
     <div id="exam" 
 			style="height: 0px; overflow-y: auto; background-color: white; position: relative;"  >
-      <div v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
-				:key="index"
-				:style="{backgroundColor: active == index ? '#f5f5f5' : '', borderRadius: '8px',
-					border: active == index ? '1px solid #ddd' : '', 
-					padding: '5px 10px', marginBottom: '5px', userSelect: 'text !important'}"
-			>
-        <div v-if="isExam == false" v-html="item.question"
-					:style="{color: item.answer == -1 ? 'red' : (active == index ? '#2d8cf0': ''), 
-						fontSize: $smallScreen() ? '20px' :'24px',
-						fontWeight: active == index ? '700' : '400'
-					}"
-					style="user-select: text !important;"
-				/>
-
-				<div v-else :style="{color: active == index ? '#2d8cf0' : '', 
-					fontSize: $smallScreen() ? '20px' : '24px'}
-				">
-					{{(index + 1) + "."}}
-				</div>
-
-				<div v-for="(el, i) in item.option" :id="'option' + index + '-' + i " 
-					:name="index + '-' + i" :key="index + '-' + i"
-					style="margin-left: 30px; "
+			<!-- -->
+			<table id="tblExam" style="width: 100%;" border="0">
+				<tr class="row-exam" v-for="(item, index) in topic" :id="'topic' + index" :name="index + ''" 
+					:key="index" :class="{active: active == index}"
+					:style="{userSelect: 'text !important'}"
 				>
-					<span :style="{fontSize: $smallScreen() ? '18px' : '22px'}">{{String.fromCharCode(i + 97) + ". "}}</span>
-
-					<input type="radio" style="margin: 0px 5px;" :name="'radio' + index"
-						:checked="item.answer == i"
-						@click="onClickRadio(index, i)"
-						v-if="$isDebug() || isExam"
-					/>
-					<span :style="{color: i == item.answer && !isExam ? '#f90' : '', 
-							fontSize:  $smallScreen() ? '18px' : '22px',
-							fontWeight: active == index && i == item.answer && !isExam ? '700' : '400'
-						}" 
-						style="user-select: text !important;"
-					>
-						{{el}}
-					</span>
-				</div>
-      </div>
+					<td>
+						<span :style="{color: item.answer == -1 ? 'red' : (active == index ? '#2d8cf0': ''), 
+							fontSize: $smallScreen() ? '20px' :'24px',
+							fontWeight: active == index ? '700' : '400',
+							paddingRight: '10px'}"
+						>
+							{{(index + 1) + '.'}}
+						</span>
+					</td>
+					<td :style="{fontSize: $smallScreen() ? '20px' :'24px'}">
+						<div v-if="isExam == false" v-html="item.question"
+							:style="{color: item.answer == -1 ? 'red' : (active == index ? '#2d8cf0': ''), 
+								fontSize: $smallScreen() ? '20px' :'24px',
+								fontWeight: active == index ? '700' : '400'
+							}"
+							style="user-select: text !important;"
+						/>
+						<table style="padding-left: 15px; width: 100%;" border="0" cellpadding='0' cellspacing='0'>
+							<tr v-for="(el, i) in item.option" :id="'option' + index + '-' + i " 
+								:name="index + '-' + i" :key="index + '-' + i"
+							>
+								<td style="width: 25px;">
+									<span :style="{fontSize: $smallScreen() ? '18px' : '22px'}">
+										{{String.fromCharCode(i + 97) + ". "}}
+									</span>
+								</td>
+								<td style="width: 25px;" v-if="$isDebug() || isExam">
+									<input type="radio" 
+										:style="{marginTop: $smallScreen() ? '8px' : '12px' }" 
+										:name="'radio' + index"
+										:checked="item.answer == i"
+										@click="onClickRadio(index, i)"
+									/>
+								</td>
+								<td>
+									<span :style="{color: i == item.answer && !isExam ? '#f90' : '', 
+											fontSize:  $smallScreen() ? '18px' : '22px',
+											fontWeight: active == index && i == item.answer && !isExam ? '700' : '400'
+										}" 
+										style="user-select: text !important;"
+									>
+										{{el}}
+									</span>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table
+			<!-- -->
 
 			<div style="position: fixed; right: 20px; bottom: 50%; display: flex; flex-direction: column; justify-content: center; align-items: center;">
 				<a id="linkExamYouTube" href="" target="_blank" v-if="!$smallScreen()"
@@ -109,7 +123,11 @@ Vue.component('yt-exam', {
 				let json = Object.assign({}, el);
 				let question = json.question;
 
-				json.question = json.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;');
+				let _index = question.indexOf(". ");
+				if(_index > -1 && _index < 4)
+					question = question.substr(_index + 2)
+
+				json.question = question.replace(/(?:\r\n|\r|\n)/g, '<br/>');
 				this.topic.push(json);
 			});
 			setTimeout(() => {
