@@ -66,6 +66,8 @@ Vue.component('yt-player', {
 		this.smallScreen = this.$smallScreen();
 		await TTX.initial();
     this.broadcast.$on('onPlayerReady', this.onPlayerReady);
+		this.broadcast.$on('onPlayerClick', this.onClickPlay);
+
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
 		Youtube.stop();
@@ -77,6 +79,7 @@ Vue.component('yt-player', {
 		window.removeEventListener('keydown', this.onKeydown, false);
     this.broadcast.$off('onPlayerReady', this.onPlayerReady);
 		this.broadcast.$off('onResize', this.onResize);
+		this.broadcast.$off('onPlayerClick', this.onClickPlay);
 		this.stop();
   },
 	methods: {

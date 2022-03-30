@@ -13,6 +13,8 @@ Vue.component('yt-exam', {
 							fontSize: $smallScreen() ? '20px' :'24px',
 							fontWeight: active == index ? '700' : '400',
 							paddingRight: '10px'}"
+							style="cursor: pointer;"
+							v-on:click.stop="onClickSerial(index)"
 						>
 							{{(index + 1) + '.'}}
 						</span>
@@ -148,6 +150,9 @@ Vue.component('yt-exam', {
 			if(this.dirty >= 5) {
 				this.update();
 			}
+		},
+		onClickSerial(index) {
+			this.broadcast.$emit('onPlayerClick', index);
 		},
 		update() {
 			this.topic.forEach((el, index) => {
