@@ -113,8 +113,9 @@ Vue.component('yt-player', {
 			el.style.visibility = "hidden";
 			if(this.prev > -1) {
 				setTimeout(() => {
-					let arr = document.querySelectorAll(".btn")
-					arr[this.prev].focus();
+					let arr = document.querySelectorAll(".btn");
+					if(	arr[this.prev] != null )
+						arr[this.prev].focus();
 				}, 600);				
 			}
     },

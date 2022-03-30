@@ -252,7 +252,7 @@ Vue.component('dlg-list', {
 					el.scrollIntoView();
 			}, 300);
 		},
-		close(){
+		update(){
 			let bTitle = this.title.trim().length > 0 && this.title != this.editdata.title;
 			let bID = this.id.trim().length > 0 && this.id != this.editdata.id;
 			let position = [];
@@ -262,7 +262,6 @@ Vue.component('dlg-list', {
 						? true : false;
 					if(bChange == true && ("" + item.start).trim().length > 0 && ("" + item.end).trim().length > 0) {
 						let json = {
-							
 							start: parseFloat(item.start), 
 							end: parseFloat(item.end)
 						}
@@ -279,6 +278,9 @@ Vue.component('dlg-list', {
 				let json = Object.assign(this.editdata, {title: this.title, id: this.id, position})
 				this.$emit("update", json);
 			}
+		},
+		close(){
+			this.update();
 			this.reset();
 			this.$emit("close");
 		},
@@ -402,6 +404,13 @@ Vue.component('dlg-list', {
 				el.removeEventListener('keydown', this.onFocus, false);
 				el.removeEventListener('change', this.onChange, false);
 			}
-		}
+		},
+		// rows(value) {
+		// 	let x = Array.isArray(this.editdata.position) ? this.editdata.position.length : 0;
+		// 	console.log(`editdata.position: ${x}, position: ${value.length}, `)
+		// 	if(x < value.length) {
+		// 		this.update();
+		// 	}
+		// }
 	}
 });
