@@ -123,6 +123,7 @@ Vue.component('yt-player', {
 			}
     },
 		stop(){
+			if(player) player.pauseVideo();
 			Youtube.stop();
 			TTX.stop();
 			this.isAuto = false;
