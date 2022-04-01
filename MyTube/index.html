@@ -478,7 +478,7 @@
 				adjustPlayer(){
 					let h = (!Array.isArray(this.editData.position) || this.editData.position.length == 0) && this.$isDebug() && this.$isLogin() 
 					? '60px' 
-					: (this.$smallScreen() || document.body.clientHeight < 700 ? '120px' : 'auto')
+					: Math.min(document.body.clientWidth, document.body.clientHeight) <= 700 ? '120px' : 'auto';
 					let btnPlays = document.getElementById('btnPlays');
 					btnPlays.style.height = h;
 				},
