@@ -1,3 +1,4 @@
+let idResize;
 Vue.component('yt-exam', { 
 	template:  `
     <div id="exam" 
@@ -91,11 +92,20 @@ Vue.component('yt-exam', {
 		// if(location.href.indexOf("exam=N") > -1) {
 		// 	this.isExam = false;
 		// }
+		this.broadcast.$on('onResize', this.onResize);
+		this.onResize();
 	},
 	destroyed() {	
     this.broadcast.$off('exam', this.exam);
+		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		onResize(){
+			clearTimeout(idResize);
+			idResize = setTimeout(() => {
+				
+			}, 600);
+		},
     exam(index) {
 			this.active = index;
 			let el = document.getElementById("topic" + this.active);

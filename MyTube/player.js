@@ -1,12 +1,12 @@
 
 let idAuto, idWait, duration = 10, secAnswer = 3, secOption = 0, repeat = 0;
+// :style="{height: adjust()}"
 Vue.component('yt-player', { 
 	template:  `
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
 			<div id="btnPlays"
 				style="padding: 2px 2px 4px 2px; flex: 1;"
-				:style="{height: rows.length == 0 && $isDebug() && $isLogin() ? '60px' : 
-				(smallScreen ? '120px' : 'auto')}"
+				
 			>
 				<i-button v-for="(item, index) in rows" :key="index" class="btn"
 					:type="active == index || prev == index ? 'warning' : 'default'"
@@ -69,7 +69,7 @@ Vue.component('yt-player', {
 		this.broadcast.$on('onPlayerClick', this.onClickPlay);
 
 		window.addEventListener('keydown', this.onKeydown, false);
-		this.broadcast.$on('onResize', this.onResize);
+		// this.broadcast.$on('onResize', this.onResize);
 		Youtube.stop();
 		if(location.href.toUpperCase().indexOf("TTX=Y") > -1) {
 			this.isTTX = true;
@@ -78,14 +78,19 @@ Vue.component('yt-player', {
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
     this.broadcast.$off('onPlayerReady', this.onPlayerReady);
-		this.broadcast.$off('onResize', this.onResize);
+		// this.broadcast.$off('onResize', this.onResize);
 		this.broadcast.$off('onPlayerClick', this.onClickPlay);
 		this.stop();
   },
 	methods: {
-		onResize(small){
-			this.smallScreen = small;
-		},
+		// adjust(){
+		// 	return this.rows.length == 0 && this.$isDebug() && this.$isLogin() 
+		// 	? '60px' 
+		// 	: (this.$smallScreen() || document.body.clientHeight < 700 ? '120px' : 'auto')
+		// },
+		// onResize(small){
+		// 	this.smallScreen = small;
+		// },
 		async set(item){
 			this.content = item;
 			this.prev = -1;

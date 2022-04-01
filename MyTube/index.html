@@ -330,6 +330,9 @@
 		Vue.prototype.$isFlutter = function () {
 			return navigator.userAgent.indexOf("Flutter") > -1 ? true : false;
 		}
+		Vue.prototype.$isVideo = function () {
+			return vm.video;
+		}
 		vm = new Vue({
 			el: '#app',
 			data() {
@@ -338,7 +341,7 @@
 					smallScreen: false, 
 					editData: undefined,
 					dialog: "",
-					video: true
+					video: true, 
 				};
 			},
 			created() {
@@ -347,10 +350,21 @@
 			async mounted(){
 				window.onresize = resize;
 
-				let self = this;
+				let self = this, idResize;
 				function resize() {
 					self.smallScreen = document.body.clientWidth > 600 ? false : true;
 					self.broadcast.$emit('onResize', self.smallScreen);
+					if(self.video == false) {
+						clearTimeout(idResize)
+						idResize = setTimeout(() => {
+							self.adjustPlayer();
+							let clientHeight = self.getBodyHeight();
+							let exam = document.getElementById('exam');
+							if(exam != null) {
+								exam.style.height = clientHeight + "px";
+							}
+						}, 600);						
+					}
 				}
 				resize();
 				console.log("debug: " + this.$isDebug())
@@ -425,13 +439,8 @@
 					}
 
 					setTimeout(() => {
-						let btnPlays = document.getElementById('btnPlays');
-						let clientHeight = document.body.clientHeight - btnPlays.clientHeight;
-						let header = document.getElementById('header');
-						if(header != null){
-							clientHeight -= header.clientHeight;
-						}
-						if(Array.isArray(item.position)) clientHeight -= this.video == true ? 20 : 10;
+						this.adjustPlayer()
+						let clientHeight = this.getBodyHeight();
 
 						videoId = item.id;
 						player = new YT.Player('player', {
@@ -457,7 +466,6 @@
 										if(exam != null) {
 											exam.style.height = clientHeight + "px";
 											exam.style.visibility = "visible";
-											// exam.style.width = myParent.clientWidth + "px";
 											this.$refs["exam"].set(item.id, item.topic)											
 										}
 									}
@@ -466,7 +474,24 @@
 							}
 						});						
 					}, 100);
-        }
+        },
+				adjustPlayer(){
+					let h = (!Array.isArray(this.editData.position) || this.editData.position.length == 0) && this.$isDebug() && this.$isLogin() 
+					? '60px' 
+					: (this.$smallScreen() || document.body.clientHeight < 700 ? '120px' : 'auto')
+					let btnPlays = document.getElementById('btnPlays');
+					btnPlays.style.height = h;
+				},
+				getBodyHeight() {
+					let btnPlays = document.getElementById('btnPlays');
+					let clientHeight = document.body.clientHeight - btnPlays.clientHeight;
+					let header = document.getElementById('header');
+					if(header != null){
+						clientHeight -= header.clientHeight;
+					}
+					if(Array.isArray(vm.editData.position)) clientHeight -= vm.video == true ? 20 : 10;
+					return clientHeight;
+				}
 			}
 		})
 	}
