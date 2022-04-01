@@ -352,7 +352,8 @@
 
 				let self = this, idResize;
 				function resize() {
-					self.smallScreen = document.body.clientWidth > 600 ? false : true;
+					// console.log(document.body.clientWidth + "/" + document.body.clientHeight)
+					self.smallScreen = document.body.clientWidth > 800 ? false : true;
 					self.broadcast.$emit('onResize', self.smallScreen);
 					if(self.video == false) {
 						clearTimeout(idResize)
