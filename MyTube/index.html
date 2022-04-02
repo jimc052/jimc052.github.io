@@ -355,16 +355,19 @@
 					// console.log(document.body.clientWidth + "/" + document.body.clientHeight)
 					self.smallScreen = document.body.clientWidth > 800 ? false : true;
 					self.broadcast.$emit('onResize', self.smallScreen);
+					let exam = document.getElementById('exam');
 					if(self.video == false) {
 						clearTimeout(idResize)
 						idResize = setTimeout(() => {
 							self.adjustPlayer();
 							let clientHeight = self.getBodyHeight();
-							let exam = document.getElementById('exam');
 							if(exam != null) {
 								exam.style.height = clientHeight + "px";
 							}
 						}, 600);						
+					} else if(exam != null) {
+						exam.style.height = "0px";
+						exam.style.padding = "0px";
 					}
 				}
 				resize();
@@ -460,15 +463,18 @@
 									player.setPlaybackRate(0.9)
 									// console.log("onPlayerReady.........")
 									this.broadcast.$emit('onPlayerReady');
+									let exam = document.getElementById('exam');
 									if(this.video == false){
 										newDiv.style.height = "0px";
 										newDiv.style.width = "0px";
-										let exam = document.getElementById('exam');
 										if(exam != null) {
 											exam.style.height = clientHeight + "px";
 											exam.style.visibility = "visible";
 											this.$refs["exam"].set(item.id, item.topic)											
 										}
+									} else if(exam != null){
+										exam.style.height = "0px";
+										exam.style.padding = "0px";
 									}
 								},
 								'onStateChange': onPlayerStateChange
