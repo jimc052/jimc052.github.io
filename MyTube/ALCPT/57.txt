@@ -1,0 +1,417 @@
+1. Joe is at the store. He wants to go back to his room. It is necessary for him to walk 12 blocks.
+How far is it from the store to Joe's room?
+a. at the room
+b. very tired
+c. 12 blocks
+d. in the store
+
+2. He had to cut the grass yesterday. Where did he work?
+a. in the mill
+b. in the yard
+c. in the office
+d. in the shop
+
+3. Jackson cooks all our meals for us. What does he do?
+a. He buys the food.
+b. He eats the food.
+c. He sells the food.
+d. He prepares the food.
+
+4. A cowboy travels many miles each day. How does he travel?
+a. on a goat
+b. on a horse
+C. on a cow
+d. on a deer
+
+5. John is a safe driver.
+a. He is a slow driver.
+b. He is a careful driver.
+c. He drives cheerfully.
+d. He drives carelessly.
+
+6. Traffic is heavy in town during the rush hour.
+a. There are many accidents.
+b. There are many people shopping.
+c. There are many cars on the street.
+d. There are few cars on the street.
+
+7. Susan was packing her baggage.
+a. Susan was going on a trip.
+b. Susan was going to the movies.
+c. Susan was going to the office.
+d. Susan was going for a walk.
+
+8. The students were confused by the rules.
+a. They did not understand the rules.
+b. The rules were clear to them.
+c. They didn't like the rules.
+d. They were happy with the rules.
+
+9. He was a passenger on that bus.
+a. He cleaned it.
+b. He worked on it.
+c. He polished it.
+d. He rode on it.
+10. This machine is automatic.
+a. It is operated manually.
+b. It works by itself.
+c. It makes too much noise.
+d. It is a part of a car.
+
+11. That man is a government agent.
+a. That man understands the government.
+b. That man opposes the government.
+c. That man represents the government.
+d. That man pays the government.
+
+12. The bus arrived at exactly 3 o'clock. When did the bus arrive?
+a. approximately 1500 hours
+b. at 1500 hours
+c. about 3:10
+d. 5 minutes before 3 o'clock
+
+13. Which word best describes the sun at noon on a clear day?
+a. bright
+b. small
+C. cold
+d. hidden
+
+14. Did you bother Mr. James when you called?
+a. No, I'm not his sister.
+b. No, I haven't seen him.
+c. No, he's home in the evening.
+d. No, I didn't disturb him.
+
+15. Rhett spent a great deal of time in the south. How much time did he spend there?
+a. none
+b. a little time
+c. a lot of time
+d. very little time
+
+16. The instructor told the class how to reach the laboratory.
+a. The instructor wanted to get to the laboratory early.
+b. The instructor got to the laboratory late.
+c. The instructor told the class how to get there.
+d. The class went directly to the laboratory.
+
+17. The bank is opposite the post office.
+a. The bank is on a different street.
+b. The bank is across the street from the post office.
+c. The bank is just behind the post office.
+d. The bank is next to the post office.
+
+18. She has not seen the doctor yet.
+a. She has already seen him.
+b. She has a prescription.
+c. She is still waiting.
+d. She is already well.
+
+19. David takes part in all kinds of activities.
+a. He practices only certain types of activities.
+b. He participates in many types of activities.
+c. He enjoys keeping away from activities.
+d. He dislikes various kinds of activities.
+
+20. The prisoner will be released from jail today.
+a. He will be let out today.
+b. He will be put in today.
+c. He will stay in jail.
+d. He'll still be in jail in the morning.
+
+21. The rock crashed through the window.
+a. It went through an open window.
+b. It did not go through the window.
+c. It hit and broke the window.
+d. It passed near the window.
+
+22. Robert failed his last examination.
+a. He made a high score.
+b. He missed a few questions.
+c. His score was unsatisfactory.
+d. He received help on the examination.
+
+23. Headquarters is next to the lab building.
+a. It is across from the lab building.
+b. It is beside the lab building.
+c. It is under the lab building.
+d. It is above the lab building.
+
+24. John visited a residential area of town.
+a. He visited a business area.
+b. He visited a university.
+c. He visited a park.
+d. He visited a family housing area.
+
+25. When I called him, he was too occupied to talk.
+a. He was angry.
+b. He was busy.
+c. He was sleepy.
+d. He was sick.
+
+26. Bert has never been absent from class.
+a. He disrupted class.
+b. He always goes to school.
+c. He left school.
+d. He never listens in class.
+
+27. He looked over his notes.
+a. He copied his notes.
+b. He reviewed his notes.
+c. He saw his notes.
+d. He left his notes.
+
+28. What kind of metal is this box made of?
+a. steel
+b. wood
+c. rubber
+d. plastic
+
+29. Can you start a fire with two stones?
+a. Can you heat the stones.
+b. Can you make the fire hotter?
+c. Can you light a fire with the stones?
+d. Can the heat burn the stones?
+
+30. Lt. Jones was told to report to the commander at 1:15 pm. When does he have to be ther
+a. at 0115
+b. at 1315
+c. at 1115
+d. at 0150
+
+31. The clerk will stack the boxes at the corner. What will he do with the boxes?
+a. paint them
+b. ship them out
+c. pile them up
+d. count them
+
+32. There was an abrupt change in the weather. What kind of change was it?
+a. gradual
+b. sudden
+c. normal
+d. slight
+
+33. Dave told us to bring the sports equipments. What did Dave tell us to bring?
+a. the bats and the balls
+b. the tickets for the games
+c. the baseball team
+d. the sports instructor
+
+34. Mr. Brown like the cartoons in the evening newspaper. What did he like?
+a. headlines
+b. drawings
+c. articles
+d. news
+
+35. What is the function of this switch?
+a. It's only a very small part.
+b. It's used only once a day.
+c. It's electrical.
+d. It's used to turn on the motor.
+
+36. Lt. Adams was concerned about the health of his men. How did he feel about their health?
+a. sad
+b. uninterested
+c. worried
+d. satisfied
+
+37. It is convenient for people to shop near their homes.
+a. It's very difficult to buy things near the house.
+b. People don't like to sell their homes.
+c. Shopping is easier when the shops are close by.
+d. It's useful for people to have a shop in their.
+
+38. John enjoyed his visit.
+a. He had a good time.
+b. He made many friends.
+c. He got a lot of rest.
+d. He stayed a long time.
+
+39. This road narrows to one lane after a mile.
+a. The road gets bad after a mile.
+b. The road is not so wide after a mile.
+c. The road gets rough after a mile.
+d. The road is better after a mile.
+
+40. Anna wonders what will happen.
+a. She is curious about what will happen.
+b. She is afraid of what will happen.
+c. She is happy about what will happen.
+d. She doesn't care what will happen.
+
+41. The food began to decay.
+a. It began to burn.
+b. It began to heat up.
+c. It began to spoil.
+d. It began to dry out.
+
+42. The pilot told Lt. Jones to take over the aircraft.
+a. Lt Jones should inspect the plane.
+b. Lt Jones should do it again.
+c. Lt Jones should assume control of the plane.
+d. Lt Jones should leave the plane.
+
+43. We were told to think it over before we decided.
+a. We were told to be aware of it.
+b. We were told to consider it.
+c. We were told to delete it.
+d. We were told to expect it.
+
+44. Ralph is an expert mechanic.
+a. He's a careless mechanic.
+b. He's an honest mechanic.
+c. He's a skilled mechanic.
+d. He's a busy mechanic.
+
+45. Which is a fluid?
+a. fire
+b. water
+c. car
+d. a water pipe
+
+46. John said that Helen might come to visit him. What did John say?
+a. that she would perhaps come to visit him
+b. that she must come to visit him
+c. that she ought to come to visit him
+d. that she'll visit him by all means
+
+47. She has something wrong with her respiratory system. Where is the trouble?
+a. in her heart
+b. in her ribs
+c. in her lungs
+d. In her stomach
+
+48. We must de-emphasize the war. What must we do?
+a. make war less expensive
+b. make war less important
+c. make war less dangerous
+d. make war less destructive
+
+49. Why are some highways made of concrete?
+a. because it is flexible
+b. because it is mobile
+c. because it is wide
+d. because it is durable
+
+50. The soldier worked in transportation and supply. What did his job involve?
+a. logistics
+b. personnel
+c. administration
+d. statistics
+
+51. The enemy gave up to the superior forces. What did the enemy do?
+a. defended
+b. attacked
+c. surrendered
+d. counterattacked
+
+52. We'll have to tear down the engine. What will we have to do?
+replace the engine
+take the engine apart
+run the engine slower
+take the engine out
+
+53. The temperature was around 70 degrees and it was a foggy morning.
+a. You couldn't see the sun.
+b. There was some dust in the air.
+c. The air had a low moisture content.
+d. There was a steady breeze blowing.
+
+54. The chairman will bring up the problem at the next meeting.
+a. He will jot it down.
+b. He will present it.
+c. He will improve it.
+d. He will think about it.
+
+55. Warm air is less dense than the cold air.
+a. It is heavier.
+b. It is clearer.
+c. It is darker.
+d. It is lighter.
+
+56. What caused the car wheel to wobble?
+a. It was balanced.
+b. It was new.
+c. It was unbalanced.
+d. It was stable.
+
+57. M: Have you seen my new dog?
+W: Yes. He's very nice.
+Q: How is the woman feel about the dog?
+a. She is afraid of it.
+b. She likes it.
+c. She wants it.
+d. She dislikes it.
+
+58. W: I hear that Lt. Winters is joining you.
+M: Yes. What kind of person do you think he is?
+Q: What does the man want to know about Lt. Winters?
+a. who his parents are
+b. where he is coming from
+c. if he has good character
+d. when he is expected to arrive
+
+59. M: I'll meet you at 10. Where?
+W: I have to go to the drugstore. Meet me there.
+Q: What does the woman have to do?
+a. store some drugs
+b. see a doctor
+c. buy some medicine
+d. buy vegetables
+
+60. M: Did you see the plane?
+W: Yes. What do you think the altitude was?
+Q: What does the woman want to know?
+a. who was flying the plane
+b. how fast the plane was going
+c. how high the plane was flying
+d. where the plane was going
+
+61. M: Which are the main chapters of the book?
+W: The third and the fourth.
+Q: What do we know about the third and the fourth chapters?
+a. They are the most important.
+b. They are the shortest.
+c. They are the dullest.
+d. They are the most difficult.
+
+62. M: I like doing this.
+W: I know. But what is your goal?
+Q: What does the woman want to know?
+a. how long the man has been there.
+b. where the man comes from
+c. what the man is trying to do
+d. when the man started
+
+63. W: Was Tony hurt in the accident?
+M: No, but the doctor gave some pills to relax him.
+Q: Why did the doctor give Tony the pills?
+a. to keep him awake
+b. to make him less tense
+c. because he is very weak
+d. because he had a headache
+
+64. W: How do they get the oil from the storage tank to the ships?
+M: They use pipes.
+Q: What do they use?
+a. trucks
+b. containers
+c.trains
+d. tubes
+
+65. M: How much do I owe you?
+W: That's a dollar and a half.
+M: Here are two one-dollar bills. Keep the change.
+Q: What has happened?
+a. The man gave her one dollar and fifty cents.
+b. The man wants some change back.
+c. The lady received two dollars.
+d. The lady will have to pay him fifty cents.
+
+66. W: The mess hall will be closed for repairs for six day due to last night's fire. Arrangement
+had been made for military students to eat without charge in their respective clubs for the
+coming week. Please have your identification with you when you enter the club.
+According to the announcement ______.
+a. students will have to eat off base
+b. the mess hall will close for six weeks
+c. students will not have to pay for meals
+d. all students will eat in the Officer's Club
