@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wave</title>
+	<meta  charset="utf-8" http-equiv="Content-Security-Policy" content="
+		object-src http://* * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: blob:;
+		img-src http://* 'self' 'unsafe-inline' data:; 
+		style-src http://* 'self' 'unsafe-inline'; 
+		script-src http://* https://* 'self' 'unsafe-eval' 'unsafe-inline';
+		media-src *">
+  <style type="text/css">
+		body, html, #app {
+			margin: 0px;
+			padding: 2px;
+			height: 100%;
+			overflow: hidden;
+			background: #eeeeee;
+		} 
+		* {
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			box-sizing: border-box;
+			font-size: 20px;
+		}
+		body {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: flex-start;
+		}
+		textarea {
+			flex: 1;
+			width: 100%;
+		}
+		.toolbar {
+			width: 100%;
+			padding: 3px 0 5px 0;
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+		}
+		#divFind {
+			height: 30px;
+			width: 200px;
+			overflow: hidden;
+		}
+		button {
+			padding: 5px;
+			width: 80px;
+			font-size: 14px;
+		}
+		button+button {
+			margin-left: 5px;
+		}
+
+		button:disabled {
+			display: none;
+		}
+		#panel {
+			margin-top: 5px;
+			border-top: 1px solid black;
+			background-color: white;
+		}
+		#footer {
+			border-top: 1px solid black;
+			padding-top: 5px;
+			width: 100%;
+			display: none;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;
+		}
+		#range {
+			font-size: 12px !important;
+		}
+		#period > div {
+			font-size: 12px;
+			text-align: right;
+			color: #3F51B5;
+		}
+		#indicator {
+			display: flex;
+			flex-direction: column;
+			border: 1px black solid;
+			background: #eee;
+			cursor: pointer;
+		}
+		#indicator > div {
+			flex: 1;
+			/* background: white; */
+			display: flex;
+			flex-direction: row;
+
+		}
+		#indicator > div.not, #indicator > div > .not {
+			background: yellow;
+		}
+		#indicator  .pass {
+			background: greenyellow;
+		}
+		#indicator > div > div {
+			flex: 1;
+		}
+		#indicator > div.error, #indicator > div > .error {
+			background: red;
+		}
+		#msg {
+			margin: 0 10px;
+			color: red;
+			cursor: pointer;
+			overflow:hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/wavesurfer.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/plugin/wavesurfer.timeline.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/plugin/wavesurfer.regions.min.js"></script>
+</head>	
+<body id='body'>
+	<div class='toolbar'>
+		<button id='btnStorageSave' disabled>暫存</button>
+		<button id='btnStorageRead' disabled>讀取暫存</button>
+		<button id='btnWave' disabled>Wave 開啟</button>
+		<div id='msg' selectionStart='-1'></div>
+		<div style='flex: 1;'></div>
+	</div>
+	<div style='flex: 1; width: 100%; display: flex; flex-direction: row; align-items: stretch;'>
+		<textarea id='content' style='flex: 1;'></textarea>
+		<div id="indicator" style='width: 20px; display: flex; flex-direction: column; align-items: stretch;'>
+		</div>
+	</div>
+	
+	<div id='panel' style='width: 100%;'>
+		<div id="waveform"></div>
+		<div id="waveform-timeline"></div>		
+	</div>
+	<div id='footer'>
+		<button id='btnPlay'>播放</button>
+		<label style='margin: 0 5px 0 10px; font-size: 12px !important;'>Zoom</label>
+		<input id='slider' type="range" min="1" max="100" value="75" list="tickmarks">
+		<datalist id="tickmarks">
+			<option value="0" label="0%">
+			<option value="10">
+			<option value="20">
+			<option value="30">
+			<option value="40">
+			<option value="50" label="50%">
+			<option value="60">
+			<option value="70">
+			<option value="80">
+			<option value="90">
+			<option value="100" label="100%">
+		</datalist>
+		<div style='flex: 1;'></div>
+		<div id='period'></div>
+	</div>
+	<div id='hidden' style='display: none; overflow: hidden;  height: 0px; width: 0px;'></div>
+</body>
+<script>
+// node /Users/jimc/Documents/nodeJS/index.js
+let content = document.getElementById("content");
+content.value = content.value.replace(/\n/g, "");
+let btnStorageSave = document.getElementById("btnStorageSave")
+let btnStorageRead = document.getElementById("btnStorageRead")
+let btnWave = document.getElementById("btnWave");
+let search = document.getElementById("search");
+let slider = document.getElementById("slider");
+let period = document.getElementById("period");
+let footer = document.getElementById("footer");
+let panel = document.getElementById("panel");
+let indicator = document.getElementById("indicator");
+let msg = document.getElementById("msg");
+let storage = {};
+let offset = 3.35;
+
+window.onunload = function (params) {
+	wavesurfer.pause();
+}
+
+setTimeout(function(){ // 載入暫存
+	storage.mp3 = "form55.mp3";
+	document.title = "Wave - " + storage.mp3;
+	if(typeof localStorage["editHTML"] == "string"){
+		storage = JSON.parse(localStorage["editHTML"]);
+		if(typeof storage.html == "string" && storage.html.length > 0)
+			content.value = storage.html;
+		btnStorageRead.disabled = false;
+		btnStorageSave.disabled = false;
+		createWave();
+	}
+}, 1000);
+
+msg.addEventListener("click", function() { // cursor 移到錯誤的那一列
+	let selectionStart = msg.getAttribute("selectionStart");
+	if(selectionStart != -1){
+		// content.selectionStart = parseInt(selectionStart, 10) + 1;
+		// content.selectionEnd = content.selectionStart + 5;
+		// content.focus();
+		scrollTo(selectionStart);
+	}
+}, false);
+
+content.addEventListener("input", function() {
+}, false);
+
+btnStorageSave.addEventListener("click", function(params) { // 暫存
+	btnStorageRead.disabled = false;
+	storage.html = content.value;
+	localStorage["editHTML"] = JSON.stringify(storage);
+}, false);
+
+btnStorageRead.addEventListener("click", function(params) { // 讀取暫存
+	if(typeof localStorage["editHTML"] == "string"){
+		storage = JSON.parse(localStorage["editHTML"]);
+		// document.title = storage.title;
+		content.value = storage.html;
+	}
+}, false);
+
+function scrollTo(selectionStart){
+	let start = parseInt(selectionStart, 10);
+	let v = content.value;
+	
+	content.value = content.value.substr(0, start);
+	let scrollHeight = content.scrollHeight;
+	content.value = v;
+	if(scrollHeight > content.clientHeight)
+		content.scrollTop = scrollHeight;
+
+	content.selectionStart = start + 1;
+	content.selectionEnd = content.selectionStart + 5;
+	content.focus();
+}
+
+{// ***** key event ***************
+	// window.addEventListener('keypress', keyEvent, false);
+	// window.addEventListener('keydown', keyEvent, false);
+	let timeFind, start;
+	content.addEventListener('click', function(e) {
+		let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+		if(pk == false) return;
+		clearTimeout(timeFind);
+			timeFind = setTimeout(()=>{
+				start = content.selectionStart;
+				keyP(keyG);
+			}, 600);
+	}, false);
+	
+	window.addEventListener('keydown', keyEvent, false);
+	function keyEvent(e){ //
+		let o = document.activeElement;
+		let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+		// console.log(e.key + ": " + e.keyCode + "," + pk)
+		
+		start = content.selectionStart;
+		if(pk == false && (e.keyCode == 40 || e.keyCode == 38) && wavesurfer != null) { // 上下列移動時
+			// next(e.keyCode);
+			// clearTimeout(timeFind);
+			// timeFind = setTimeout(()=>{
+			// 	start = content.selectionStart;
+			// 	keyP(keyG);
+			// }, 600);
+			// e.preventDefault();
+			// e.stopImmediatePropagation();
+			// e.stopPropagation();
+		} else if(pk == true && e.keyCode == 83){ // S, 存檔
+			savePosition();
+		} else if(e.keyCode == 27){ // esc 
+			if(e.target.id != "content"){
+				content.focus();
+			}
+		} else if(e.target.id == "content"){		
+			if(e.keyCode == 13){ // enter, 拆成2行
+				// key13(e);
+			// } else if(pk == true && e.keyCode == 74) { // j, 合併下一筆
+			// 	keyJ();
+			// 	e.preventDefault();
+			// 	e.stopImmediatePropagation();
+			// 	e.stopPropagation();
+			} else if(pk == true && e.keyCode == 73) { // I, insert
+				let start = parseFloat((region.start + offset).toString(2));
+				let end = parseFloat((region.end + offset).toString(2));
+				console.log("region.start: " + start)
+				console.log("region.end: " + end)
+				// let s = ""; 
+				let arr = content.value.split("\n");
+				if(arr[arr.length - 1].indexOf("},") == -1) arr[arr.length - 1] += ",";
+
+				arr.push(`{"start": ${start}, "end": ${end}}`);
+				content.value = arr.join("\n");
+			} else if(pk == true && e.keyCode == 80) { // P, wavesurfer position 
+				keyP();
+			} else if(pk == true && (e.keyCode == 84)) { // T, start, end time
+				keyT();
+			} else if(pk == true && (e.keyCode == 71)) { // Go to play
+				keyG();
+			} else if(pk == true && e.keyCode == 78) { // N, wavesurfer next position 
+				keyN();
+			}
+		} else if(o.tagName == "WEBVIEW" || o.tagName == 'TEXTAREA' || o.tagName == 'INPUT') {
+			console.clear();
+		} else if(pk == true) {
+			if(e.keyCode == 84) { // T, start, end time
+				if(keyT() == true){
+					content.focus();
+				}
+			} else if(e.keyCode == 78) { // N, wavesurfer next position
+				content.focus();
+				keyN();
+			} 
+			// console.log(e.key + ": " + e.keyCode + ": " + o.tagName)
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			e.stopPropagation();			
+		}
+	
+	
+		function keyN(){ // 到下一列
+			wavesurfer.pause();
+
+			let z = content.value.indexOf("\n", start);
+			if(z > -1) start = z;
+			z = -1;
+
+			let s1 = content.value.substr(0, start).trim();
+			let s2 = content.value.substr(start + 1);
+			let arr1 = s1.split("\n");
+			if(arr1[arr1.length - 1].indexOf("<span") > -1){
+				r1 = parseSec(arr1[arr1.length - 1]);
+				if(typeof r1.end == "undefined") return;
+				let arr2 = s2.split("\n");
+				let x = 0; y = 0, english = true, active = -1, len = s1.length + 1;
+				for(let i = 0; i < arr2.length; i++) {
+					let el = arr2[i];
+					let span = el.indexOf("<span");
+					let english2 = el.indexOf("<div class='english'");
+					if(english2 > -1 && span == -1){
+						english = true;
+					} else if(el.indexOf("</div>") > -1 && el.indexOf("</div>") < 10){
+						english = false;
+					} else if(span > -1 && (english == true || english2 > -1)){
+						if(active == -1){
+							active = i;
+							content.selectionStart = len + 4;
+							content.selectionEnd = content.selectionStart + 5;
+
+							let xx = parseSec(arr2[i]);
+							if(typeof xx.start == "number"){
+								x = xx.start;
+								if(typeof xx.end == "number")
+									y = xx.end;
+							} else {
+								break;
+							}
+						} else if(y == 0) {
+							let yy = parseSec(arr2[i]);
+							if(typeof yy.start == "number"){
+								y = yy.start - 0.2;
+							} else {
+								break;
+							}
+						}
+						if(x > 0 && y > 0){
+							break;
+						}
+					}
+					len += el.length + 1;
+				}
+				if(x == 0 || x < r1.end) x = r1.end + 0.15
+				if(y == 0) y = x + 5;
+				if(y - x < 1) y = x + 3;
+ 
+				r1 = {start: x, end: y};
+				region.update(r1);
+				setTimeout(function() {
+					seekAt(r1.start, r1.end);
+				}, 300);
+			} else {
+				return;
+			}
+		}
+
+		function keyT(){ // 寫入 waveform 的位置
+			let arr = content.value.split("\n"), s = "", b = false;
+			for(let i = 0; i < arr.length; i++){
+					//console.log(s.length + " ~ " + (s.length + arr[i].length))
+				if(s.length < start && (s.length + arr[i].length + 1) >= start){
+					if(arr[i].trim().indexOf("<span") > -1){
+						let x = arr[i].indexOf("<span");
+						let y = arr[i].indexOf(">", x);
+						arr[i] = arr[i].substr(0, x + "<span".length) +
+								" start='" + parseFloat(region.start.toString(3)) + "' " +
+								"end='" + parseFloat(region.end.toString(3)) + "'" +
+								arr[i].substr(y);
+						content.value = arr.join("\n")
+						content.selectionStart = s.length + x + 14;
+						content.selectionEnd = content.selectionStart;
+						b = true;
+					}
+					break;
+				} else 
+					s += (s.length > 0 ? "\n" : "") + arr[i];
+			}
+			
+			if(b == true) {
+				setTimeout(function(){
+						keyG();
+				}, 600);				
+			}
+			return b;
+		}
+		function key13(e){ // ok ....
+			let i = content.value.lastIndexOf("\n", start);
+			let j = content.value.indexOf("\n", start);
+			if(i == -1) i = 0;
+			if(j == -1) j = content.value.length;
+			let s = content.value.substr(i, j - i);
+			if(s.indexOf("<span") > -1){
+				let s1 = content.value.substr(0, start);
+				let s2 = content.value.substr(start);
+				content.value = s1 + "</span>\n    <span start='' end=''>" + s2;
+				// start += "</span>\n    <span start=''>".length - 2;
+				// content.selectionStart = start;
+				// content.selectionEnd = start;
+				setTimeout(function(){
+					keyN();
+				}, 600)
+				e.preventDefault();
+				e.stopImmediatePropagation();
+				e.stopPropagation();
+			}
+		}
+
+	}
+	function seekAt(start, end) {
+		let space = ((end - start) / 2) / wavesurfer.getDuration();
+		let rate = (start / wavesurfer.getDuration());
+		// console.log("start: " + start + ", duration: " + wavesurfer.getDuration() + ", rate: " + rate)
+		wavesurfer.seekAndCenter(rate + space);
+		// wavesurfer.seekTo(rate);
+	}
+
+	function keyG(){ // 播放
+		wavesurfer.pause();
+		let arr = content.value.split("\n"), s = "";
+		for(let i = 0; i < arr.length; i++){
+			if(s.length < start && (s.length + arr[i].length + 1) >= start){
+				if(arr[i].trim().indexOf("<span") > -1){
+					let r1 = parseSec(arr[i]);
+					if(typeof r1.start != "undefined"){
+						let t = 0;
+							savePosition();
+							t = 1000;
+						setTimeout(function(params) {
+						}, t);
+					}
+				}
+				break;
+			} else 
+				s += (s.length > 0 ? "\n" : "") + arr[i];
+		}
+	}
+	function keyP(callback){ // 位置
+		if(wavesurfer != null) wavesurfer.pause();
+		let arr = content.value.split("\n"), s = "";
+		
+		for(let i = 0; i < arr.length; i++){
+			if(s.length < start && (s.length + arr[i].length + 1) >= start){
+				if(arr[i].trim().length > 0){
+					let r1 = parseSec(arr[i]);
+					if(typeof r1.start != "undefined"){
+						region.update(r1);
+						if(typeof callback == "function") callback();
+						setTimeout(function() {
+							seekAt(r1.start, r1.end);
+						}, 300)									
+					}
+				}
+				break;
+			} else 
+				s += (s.length > 0 ? "\n" : "") + arr[i];
+		}
+	}
+	function parseSec(s){
+		let result = {}
+		let x = s.indexOf("}");
+		if(x > 0) {
+			result = JSON.parse(s.substr(0, x + 1));
+			result.start -= offset;
+			result.end -= offset;
+		}
+		return result;
+	}
+	function next(keyCode){ // 上下鍵, 38, 40
+		start = content.selectionStart;
+		let arr = content.value.split("\n"), s = "", x = -1, y = -1, z = -1;
+		let i38 = 0, i40 = 0, istart = 0;
+		// console.log("keyCode: " + keyCode + ", start: " + content.selectionStart + ", arr: " + arr.length + " ----------------------")
+
+		for(let i = 0; i < arr.length; i++){
+			let sx = arr[i] + "\n";
+			let b1 = s.length <= start;
+			let b2 = s.length + sx.length >= start;
+			
+			if(b1 == true && b2 == true){
+				istart = (start - s.length) + 1;
+				s += sx;
+				if(keyCode == 38) break;
+			} else {
+				if(keyCode == 38 && arr[i].indexOf("<span") > -1) {
+					i38 = i;
+				} else if(keyCode == 40 && (s.length + sx.length + 1) > start && arr[i].indexOf("<span") > -1){ //    
+					i40 = i;
+					break;
+				} else {
+					// console.log("length: " + (s.length + sx.length + 1))
+				}
+				s += sx;
+			}
+		}
+		s = "";
+		for(let i = 0; i < arr.length; i++){
+			if(keyCode == 38 && i == i38) {
+				start = s.length + istart;
+				break;
+			} else if(keyCode == 40 && i == i40){
+				start = s.length + istart;
+				break;
+			}
+			s += (s.length > 0 ? "\n" : "") + arr[i];
+		}
+		content.selectionStart = start;
+		content.selectionEnd = start;
+	}
+
+}
+function savePosition() {
+	btnStorageRead.disabled = false;
+	storage.html = content.value;
+	localStorage["editHTML"] = JSON.stringify(storage);
+}
+// ---- wavesurfer -----------------
+let wavesurfer = null, region = null;
+function createWave(){
+	if(typeof storage.mp3 == "undefined" || storage.mp3.length == 0) return;
+
+	wavesurfer = WaveSurfer.create({
+		container: '#waveform',
+		waveColor: 'hsl(124, 43%, 78%)', //'#D2EDD4', //'#9494b8', //
+		progressColor: 'hsl(124, 44%, 45%)', //'#46B54D',
+		scrollParent: true,
+		hideScrollbar: false,
+		height: 120,
+		interact: false,
+		loopSelection: true,
+	});
+	wavesurfer.load(storage.mp3);
+	wavesurfer.on('region-updated', function (obj) { // -end
+		regionChange()
+	});
+	wavesurfer.on('ready', function () {
+		btnWave.disabled = false;
+		btnWave.innerText = "Wave 關閉"
+		
+		var timeline = Object.create(WaveSurfer.Timeline);
+		timeline.init({
+			wavesurfer: wavesurfer,
+			container: '#waveform-timeline',
+		});
+		
+		region = wavesurfer.addRegion({
+			start: typeof storage.region == "object" ? storage.region.start : 0, // time in seconds
+			end: typeof storage.region == "object" ? storage.region.end : 5, // time in seconds
+			resize: true,
+			drag: true,
+			loop: true,
+			color: 'hsla(100, 100%, 30%, 0.2)'
+		});
+		regionChange();
+		let footer = document.getElementById("footer");
+		footer.style.display = "flex";
+		if(typeof storage.zoom != "undefined") slider.value = storage.zoom;
+		wavesurfer.zoom(slider.value);
+	});
+	// region.update({end: 21}); // ok
+
+	slider.addEventListener("input", function(params) {
+		wavesurfer.zoom(slider.value);
+		storage.zoom = slider.value;
+		// console.log(slider.value)
+		localStorage["editHTML"] = JSON.stringify(storage);
+	}, false);
+	
+}
+
+function regionChange(){
+	period.innerHTML = "<div>" + region.start.toString(3) + "</div>" +
+		"<div>" + region.end.toString(3) + "</div>";	
+	if(region.start != 0){
+		storage.region = {
+			start: region.start,
+			end: region.end
+		}
+		localStorage["editHTML"] = JSON.stringify(storage);
+		//console.log(localStorage["editHTML"])
+	}		
+}
+
+WaveSurfer.keydown = function(event){ // 還沒用到
+	// event.metaKey 是 command key; ctrlKey
+	if(region == null) return;
+	var value = 0.2;
+	if(event.which == 40 && event.shiftKey == true) // left arrow
+		region.update({end: region.end - value}); // 縮小
+	else if(event.which == 38 && event.shiftKey == true) // right arrow
+		region.update({end: region.end + value}); // 放大
+	else if(event.which == 37 && event.shiftKey == true) // left arrow
+		region.update({start: region.start - value, end: region.end - value}); // 左移
+	else if(event.which == 39 && event.shiftKey == true) // right arrow
+		region.update({start: region.start + value, end: region.end + value}) // 右移
+	else
+		return;
+	wavesurfer.backend.scheduledPause = region.end + 0.02; // 不然，resize 時無法 loop
+	if(wavesurfer.isPlaying() == false) 
+		region.play();
+	if(event.which == 37 || event.which == 39  || event.which == 38 || event.which == 40)
+		event.preventDefault();
+}
+
+let btnPlay = document.getElementById("btnPlay")
+btnPlay.addEventListener("click", function() {
+	btnPlay.innerText = wavesurfer.isPlaying() ? "播放" : "暫停";
+	if(wavesurfer.isPlaying()){
+		wavesurfer.pause();
+	} else {
+		wavesurfer.play(region.start);
+	}
+		
+}, false);
+btnWave.addEventListener("click", function() {
+	let open = btnWave.innerText.indexOf("開") > -1 ? true : false;
+	btnWave.innerText = "Wave " + (open == true ? "關閉" : "開啟");
+	footer.style.display = open ? "flex" : "none";
+	panel.style.display = open ? "block" : "none";
+	if(wavesurfer == null){
+		createWave();
+	}
+}, false);
+
+Number.prototype.toString = function (radius) {
+    radius = typeof radius === "undefined" ? 0 : radius;
+    if (radius > 20)
+        radius = 20; // 小數位數不得大於 20
+    let s = this.toFixed(radius) + '';
+    let x = s.split('.');
+    let x1 = x[0];
+    let x2 = x.length > 1 ? '.' + x[1] : '';
+    let rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
+    return x1 + x2;
+};
+</script>
+</html>
