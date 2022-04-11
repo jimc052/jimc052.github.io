@@ -78,40 +78,6 @@
 			text-align: right;
 			color: #3F51B5;
 		}
-		#indicator {
-			display: flex;
-			flex-direction: column;
-			border: 1px black solid;
-			background: #eee;
-			cursor: pointer;
-		}
-		#indicator > div {
-			flex: 1;
-			/* background: white; */
-			display: flex;
-			flex-direction: row;
-
-		}
-		#indicator > div.not, #indicator > div > .not {
-			background: yellow;
-		}
-		#indicator  .pass {
-			background: greenyellow;
-		}
-		#indicator > div > div {
-			flex: 1;
-		}
-		#indicator > div.error, #indicator > div > .error {
-			background: red;
-		}
-		#msg {
-			margin: 0 10px;
-			color: red;
-			cursor: pointer;
-			overflow:hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-		}
 	</style>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/wavesurfer.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/plugin/wavesurfer.timeline.min.js"></script>
@@ -122,12 +88,12 @@
 		<button id='btnStorageSave' disabled>暫存</button>
 		<button id='btnStorageRead' disabled>讀取暫存</button>
 		<button id='btnWave' disabled>Wave 開啟</button>
-		<div id='msg' selectionStart='-1'></div>
+		<button id='btnReset'>重置</button>
 		<div style='flex: 1;'></div>
+		offset: &nbsp;<input value="0" size="6" id="offset">
 	</div>
 	<div style='flex: 1; width: 100%; display: flex; flex-direction: row; align-items: stretch;'>
 		<textarea id='content' style='flex: 1;'></textarea>
-		<div id="indicator" style='width: 20px; display: flex; flex-direction: column; align-items: stretch;'>
 		</div>
 	</div>
 	
@@ -164,44 +130,48 @@ content.value = content.value.replace(/\n/g, "");
 let btnStorageSave = document.getElementById("btnStorageSave")
 let btnStorageRead = document.getElementById("btnStorageRead")
 let btnWave = document.getElementById("btnWave");
+let btnReset = document.getElementById("btnReset");
 let search = document.getElementById("search");
 let slider = document.getElementById("slider");
 let period = document.getElementById("period");
 let footer = document.getElementById("footer");
 let panel = document.getElementById("panel");
-let indicator = document.getElementById("indicator");
-let msg = document.getElementById("msg");
+let inputOffset = document.getElementById("offset");
 let storage = {};
-let offset = 3.35;
+let offset = 0;
 
 window.onunload = function (params) {
 	wavesurfer.pause();
 }
 
 setTimeout(function(){ // 載入暫存
-	storage.mp3 = "form55.mp3";
+	storage.mp3 = "form58.mp3";
 	document.title = "Wave - " + storage.mp3;
 	if(typeof localStorage["editHTML"] == "string"){
 		storage = JSON.parse(localStorage["editHTML"]);
-		if(typeof storage.html == "string" && storage.html.length > 0)
-			content.value = storage.html;
-		btnStorageRead.disabled = false;
-		btnStorageSave.disabled = false;
-		createWave();
 	}
+	if(typeof storage.zoom == "undefined") storage.zoom = 20; 
+	if(typeof storage.html == "string" && storage.html.length > 0)
+		content.value = storage.html;
+	if(typeof storage.offset == "number") offset = storage.offset;
+		inputOffset.value = offset;
+
+	btnStorageRead.disabled = false;
+	btnStorageSave.disabled = false;
+	createWave();
 }, 1000);
 
-msg.addEventListener("click", function() { // cursor 移到錯誤的那一列
-	let selectionStart = msg.getAttribute("selectionStart");
-	if(selectionStart != -1){
-		// content.selectionStart = parseInt(selectionStart, 10) + 1;
-		// content.selectionEnd = content.selectionStart + 5;
-		// content.focus();
-		scrollTo(selectionStart);
+inputOffset.addEventListener("change", function() {
+	var pattern = /^\d+\.?\d*$/;
+  let x = pattern.test(inputOffset.value);  // returns a boolean
+	if(x == true) {
+		offset = parseFloat(inputOffset.value);
+		storage.offset = offset
+		localStorage["editHTML"] = JSON.stringify(storage);
+	} else {
+		inputOffset.value = offset;
+		alert("數字有誤!!")
 	}
-}, false);
-
-content.addEventListener("input", function() {
 }, false);
 
 btnStorageSave.addEventListener("click", function(params) { // 暫存
@@ -209,6 +179,12 @@ btnStorageSave.addEventListener("click", function(params) { // 暫存
 	storage.html = content.value;
 	localStorage["editHTML"] = JSON.stringify(storage);
 }, false);
+
+btnReset.addEventListener("click", function() {
+	delete localStorage["editHTML"];
+	location.reload();
+}, false);
+
 
 btnStorageRead.addEventListener("click", function(params) { // 讀取暫存
 	if(typeof localStorage["editHTML"] == "string"){
@@ -237,21 +213,24 @@ function scrollTo(selectionStart){
 	// window.addEventListener('keypress', keyEvent, false);
 	// window.addEventListener('keydown', keyEvent, false);
 	let timeFind, start;
+	content.addEventListener("change", function() {
+		savePosition();
+	});
 	content.addEventListener('click', function(e) {
-		let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+		let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? e.metaKey : e.ctrlKey;
 		if(pk == false) return;
 		clearTimeout(timeFind);
-			timeFind = setTimeout(()=>{
-				start = content.selectionStart;
-				keyP(keyG);
-			}, 600);
+		timeFind = setTimeout(()=>{
+			start = content.selectionStart;
+			keyP(play);
+		}, 600);
 	}, false);
 	
 	window.addEventListener('keydown', keyEvent, false);
 	function keyEvent(e){ //
 		let o = document.activeElement;
-		let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
-		// console.log(e.key + ": " + e.keyCode + "," + pk)
+		let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? e.metaKey : e.ctrlKey;
+		console.log(e.key + ": " + e.keyCode + "," + pk)
 		
 		start = content.selectionStart;
 		if(pk == false && (e.keyCode == 40 || e.keyCode == 38) && wavesurfer != null) { // 上下列移動時
@@ -259,17 +238,21 @@ function scrollTo(selectionStart){
 			// clearTimeout(timeFind);
 			// timeFind = setTimeout(()=>{
 			// 	start = content.selectionStart;
-			// 	keyP(keyG);
+			// 	keyP(play);
 			// }, 600);
 			// e.preventDefault();
 			// e.stopImmediatePropagation();
 			// e.stopPropagation();
 		} else if(pk == true && e.keyCode == 83){ // S, 存檔
-			savePosition();
+			// savePosition();
 		} else if(e.keyCode == 27){ // esc 
 			if(e.target.id != "content"){
 				content.focus();
 			}
+		} else if(pk == true && e.keyCode == 73) { // I, add new
+			add();			
+		} else if(pk == true && (e.keyCode == 71)) { // Go to play
+			play();		
 		} else if(e.target.id == "content"){		
 			if(e.keyCode == 13){ // enter, 拆成2行
 				// key13(e);
@@ -278,23 +261,11 @@ function scrollTo(selectionStart){
 			// 	e.preventDefault();
 			// 	e.stopImmediatePropagation();
 			// 	e.stopPropagation();
-			} else if(pk == true && e.keyCode == 73) { // I, insert
-				let start = parseFloat((region.start + offset).toString(2));
-				let end = parseFloat((region.end + offset).toString(2));
-				console.log("region.start: " + start)
-				console.log("region.end: " + end)
-				// let s = ""; 
-				let arr = content.value.split("\n");
-				if(arr[arr.length - 1].indexOf("},") == -1) arr[arr.length - 1] += ",";
 
-				arr.push(`{"start": ${start}, "end": ${end}}`);
-				content.value = arr.join("\n");
 			} else if(pk == true && e.keyCode == 80) { // P, wavesurfer position 
 				keyP();
 			} else if(pk == true && (e.keyCode == 84)) { // T, start, end time
 				keyT();
-			} else if(pk == true && (e.keyCode == 71)) { // Go to play
-				keyG();
 			} else if(pk == true && e.keyCode == 78) { // N, wavesurfer next position 
 				keyN();
 			}
@@ -314,7 +285,6 @@ function scrollTo(selectionStart){
 			e.stopImmediatePropagation();
 			e.stopPropagation();			
 		}
-	
 	
 		function keyN(){ // 到下一列
 			wavesurfer.pause();
@@ -405,7 +375,7 @@ function scrollTo(selectionStart){
 			
 			if(b == true) {
 				setTimeout(function(){
-						keyG();
+						play();
 				}, 600);				
 			}
 			return b;
@@ -431,7 +401,23 @@ function scrollTo(selectionStart){
 				e.stopPropagation();
 			}
 		}
+	}
 
+	function add() {
+		let start = parseFloat((region.start + offset).toString(2).replace(",", ""));
+		let end = parseFloat((region.end + offset).toString(2).replace(",", ""));
+		// console.log("region.start: " + start)
+		// console.log("region.end: " + end)
+		// let s = ""; 
+		let arr = content.value.trim().length == 0 ? [] : content.value.split("\n");
+		for(let i = arr.length - 1; i >= 0; i--) {
+			if(arr[i].trim().length == 0) arr.splice(i, 1)
+		}
+		if(arr.length > 0 && arr[arr.length - 1].indexOf("},") == -1) arr[arr.length - 1] += ",";
+
+		arr.push(`{"start": ${start}, "end": ${end}}`);
+		content.value = arr.join("\n");
+		savePosition();
 	}
 	function seekAt(start, end) {
 		let space = ((end - start) / 2) / wavesurfer.getDuration();
@@ -441,26 +427,6 @@ function scrollTo(selectionStart){
 		// wavesurfer.seekTo(rate);
 	}
 
-	function keyG(){ // 播放
-		wavesurfer.pause();
-		let arr = content.value.split("\n"), s = "";
-		for(let i = 0; i < arr.length; i++){
-			if(s.length < start && (s.length + arr[i].length + 1) >= start){
-				if(arr[i].trim().indexOf("<span") > -1){
-					let r1 = parseSec(arr[i]);
-					if(typeof r1.start != "undefined"){
-						let t = 0;
-							savePosition();
-							t = 1000;
-						setTimeout(function(params) {
-						}, t);
-					}
-				}
-				break;
-			} else 
-				s += (s.length > 0 ? "\n" : "") + arr[i];
-		}
-	}
 	function keyP(callback){ // 位置
 		if(wavesurfer != null) wavesurfer.pause();
 		let arr = content.value.split("\n"), s = "";
@@ -471,9 +437,14 @@ function scrollTo(selectionStart){
 					let r1 = parseSec(arr[i]);
 					if(typeof r1.start != "undefined"){
 						region.update(r1);
-						if(typeof callback == "function") callback();
+						
 						setTimeout(function() {
 							seekAt(r1.start, r1.end);
+							if(typeof callback == "function") {
+								setTimeout(() => {
+									callback();
+								}, 300);
+							}
 						}, 300)									
 					}
 				}
@@ -540,6 +511,7 @@ function savePosition() {
 	storage.html = content.value;
 	localStorage["editHTML"] = JSON.stringify(storage);
 }
+
 // ---- wavesurfer -----------------
 let wavesurfer = null, region = null;
 function createWave(){
@@ -557,6 +529,7 @@ function createWave(){
 	});
 	wavesurfer.load(storage.mp3);
 	wavesurfer.on('region-updated', function (obj) { // -end
+		if(wavesurfer != null) wavesurfer.pause();
 		regionChange()
 	});
 	wavesurfer.on('ready', function () {
@@ -603,41 +576,46 @@ function regionChange(){
 			end: region.end
 		}
 		localStorage["editHTML"] = JSON.stringify(storage);
-		//console.log(localStorage["editHTML"])
 	}		
 }
 
-WaveSurfer.keydown = function(event){ // 還沒用到
-	// event.metaKey 是 command key; ctrlKey
+WaveSurfer.keydown = function(e){
+	// e.metaKey 是 command key; ctrlKey
 	if(region == null) return;
+	let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? e.metaKey : e.ctrlKey;
 	var value = 0.2;
-	if(event.which == 40 && event.shiftKey == true) // left arrow
+	if(e.which == 40 && e.shiftKey == true) // left arrow
 		region.update({end: region.end - value}); // 縮小
-	else if(event.which == 38 && event.shiftKey == true) // right arrow
+	else if(e.which == 38 && e.shiftKey == true) // right arrow
 		region.update({end: region.end + value}); // 放大
-	else if(event.which == 37 && event.shiftKey == true) // left arrow
+	else if(e.which == 37 && e.shiftKey == true) // left arrow
 		region.update({start: region.start - value, end: region.end - value}); // 左移
-	else if(event.which == 39 && event.shiftKey == true) // right arrow
+	else if(e.which == 39 && e.shiftKey == true) // right arrow
 		region.update({start: region.start + value, end: region.end + value}) // 右移
+	else if(pk == true && e.keyCode == 73) // I, add new
+		add();			
+	else if(pk == true && (e.keyCode == 71)) // Go to play
+		play();	
 	else
 		return;
 	wavesurfer.backend.scheduledPause = region.end + 0.02; // 不然，resize 時無法 loop
 	if(wavesurfer.isPlaying() == false) 
 		region.play();
-	if(event.which == 37 || event.which == 39  || event.which == 38 || event.which == 40)
-		event.preventDefault();
+	if(e.which == 37 || e.which == 39  || e.which == 38 || e.which == 40)
+		e.preventDefault();
 }
 
 let btnPlay = document.getElementById("btnPlay")
-btnPlay.addEventListener("click", function() {
+btnPlay.addEventListener("click", play, false);
+
+function play() {
 	btnPlay.innerText = wavesurfer.isPlaying() ? "播放" : "暫停";
 	if(wavesurfer.isPlaying()){
 		wavesurfer.pause();
 	} else {
 		wavesurfer.play(region.start);
-	}
-		
-}, false);
+	}	
+}
 btnWave.addEventListener("click", function() {
 	let open = btnWave.innerText.indexOf("開") > -1 ? true : false;
 	btnWave.innerText = "Wave " + (open == true ? "關閉" : "開啟");

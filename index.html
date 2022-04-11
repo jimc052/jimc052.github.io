@@ -40,7 +40,8 @@
 		arr.forEach(item=> {
 			item.addEventListener("click", (e)=> {
 				let data = e.target.getAttribute("data")
-				location.href = `./${data}/index.html`
+				location.href = `./${data}/index.html` +
+					(data == "MyTube" ? "?duration=5&repeat=2&answer=0" : "")
 			})			
 		})
 	}

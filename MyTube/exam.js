@@ -39,6 +39,8 @@ Vue.component('yt-exam', {
 								</td>
 								<td style="width: 25px;" v-if="$isDebug() || isExam">
 									<input type="radio" 
+										:id="'radio_' + index + '_' + i"
+										style="cursor: pointer;"
 										:style="{marginTop: $smallScreen() ? '8px' : '12px' }" 
 										:name="'radio' + index"
 										:checked="item.answer == i"
@@ -157,7 +159,7 @@ Vue.component('yt-exam', {
 			data.answer = i
 			this.$set(this.topic, index, data);
 			this.dirty++;
-			if(this.dirty >= 5) {
+			if(this.dirty >= 5 || index == this.topic.length - 1) {
 				this.update();
 			}
 		},

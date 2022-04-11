@@ -1,0 +1,341 @@
+{
+  "id": "4Ua-lgPV7mo",
+  "index": 58,
+  "modifyDate": 1645828197211,
+  "title": "Form 58",
+  "topic": [
+    {
+      "question": "1. Most people like California's climate. What do they like?",
+      "answer": 2,
+      "option": ["the highways","the food","the weather","the cities"]  
+    },{
+      "question": "2. Joe wanted something to cover his head. What did he want?",
+      "answer": 3,
+      "option": ["a jacket","shoes","gloves","a hat"]  
+    },{
+      "question": "3. What did you think of the music?",
+      "answer": 2,
+      "option": ["It was cooked just long enough.","It was just the right size.","It had a very pleasing melody.","It had an interesting shape."]  
+    },{
+      "question": "4. Thad's feeling pretty good. How does he feel?",
+      "answer": 3,
+      "option": ["sleepy","hungry","hot","fine"]  
+    },{
+      "question": "5. Edmund made a mistake.",
+      "answer": 3,
+      "option": ["He said something good.","He found something new.","He read something funny.","He did something wrong."]  
+    },{
+      "question": "6. Mr. Miller knows what the population of New York is.",
+      "answer": 3,
+      "option": ["He knows where New York is.","He knows how to get to New York.","He knows how many miles away New York is.","He knows how many people live in New York."]  
+    },{
+      "question": "7. Our enemies are invisible.",
+      "answer": 1,
+      "option": ["We can't defeat them.","We can't see them.","They are bigger than we are.","They are horrible to look at."]  
+    },{
+      "question": "8. The little girl had a problem when she tried to tie her shoes.",
+      "answer": 1,
+      "option": ["It was easy for her to tie her shoes.","It was difficult for her to tie her shoes.","She liked to tie her shoes.","She disliked tying her shoes."]  
+    },{
+      "question": "9. You can store food in a refrigerator.",
+      "answer": 1,
+      "option": ["Food may be bought in a store.","Food may be kept in a refrigerator.","Food stores buy refrigerators.","You can buy it at the food store."]  
+    },{
+      "question": "10. Jane selected a book.",
+      "answer": 3,
+      "option": ["She read a book.","She found a book.","She sold a book.","She chose a book."]  
+    },{
+      "question": "11. How many hands do you have?",
+      "answer": 2,
+      "option": ["I have big hands.","I have dirty hands.","I have two hands.","I have strong hands."]  
+    },{
+      "question": "12. If the men need aid, they should go to Sgt. Carson. When should the men go to Sgt. Carson?",
+      "answer": 3,
+      "option": ["when they want food","when they need a comb","when they need tools","when they want help"]  
+    },{
+      "question": "13. How were you able to cross the Atlantic Ocean in such a short time?",
+      "answer": 3,
+      "option": ["for $250.00","in the month of May","less than 10 hours","by jet plane"]  
+    },{
+      "question": "14. Tom arrived at the airport at 6. The plane took off at 7. When did Tom arrive at the airport?",
+      "answer": 3,
+      "option": ["too late to see the plane take off","seven hours before the plane took off","after the plane took off","an hour before the plane took off"]  
+    },{
+      "question": "15. Do you always drive so fast?",
+      "answer": 1,
+      "option": ["No, I have never driven slowly.","No, only when I am in a hurry.","Yes, I would like to drive very much.","Yes, or we will be late."]  
+    },{
+      "question": "16. Pilots must read their instruments accurately. How must they read them?",
+      "answer": 2,
+      "option": ["alone","with others","correctly","quickly"]  
+    },{
+      "question": "17. Defense was their main concern. What was their main concern?",
+      "answer": 0,
+      "option": ["protection","recreation","information","transformation"]  
+    },{
+      "question": "18. The student said, \"I want to cash a check.\" What did he want to do?",
+      "answer": 1,
+      "option": ["put the money in the bank","get some money","open an account","get a traveler's check"]  
+    },{
+      "question": "19. Joe's friend said, \"I have an extra room.\"",
+      "answer": 0,
+      "option": ["Joe's friend has a spare room.","Joe's friend has no room.","Joe's friend has a large room.","Joe's friend has only once room."]  
+    },{
+      "question": "20. We eat a variety of vegetables every day.",
+      "answer": 0,
+      "option": ["We eat different kinds of vegetables daily.","We always eat the same vegetables.","We eat a vegetable with out meat every day.","We only eat one vegetable every day."]  
+    },{
+      "question": "21. Carol said, \"Let's go in. I am freezing \" Laura said, \"I am too. Let's go",
+      "answer": 2,
+      "option": ["Carol wants to go outside.","The weather is warm.","The weather is very cold.","Laura is feeling warm."]  
+    },{
+      "question": "22. Trudy must concentrate on her lessons or she will fail.",
+      "answer": 3,
+      "option": ["She must go to class until next fall.","She must study unconsciously.","She must not study too much.","She must pay close attention to her lessons."]  
+    },{
+      "question": "23. We must hurry with this job.",
+      "answer": 1,
+      "option": ["We must work very quietly.","We must work very quickly.","We must work a very long time.","We must work very carefully."]  
+    },{
+      "question": "24. After the storm, the electricity was shut off for about an hour.",
+      "answer": 3,
+      "option": ["It was turned on.","It was kept open.","It kept flowing for an hour.","It was turned off."]  
+    },{
+      "question": "25. The cat must stay out.",
+      "answer": 1,
+      "option": ["The cat cannot come down.","The cat cannot come in.","The cat cannot come across.","The cat cannot come around."]  
+    },{
+      "question": "26. Why did some women wear perfume?\nIt ______ good.",
+      "answer": 2,
+      "option": ["looks","tastes","smells","sounds"]  
+    },{
+      "question": "27. Ralph owes a bank a lot of money.\nRalph is in ______.",
+      "answer": 1,
+      "option": ["movies","debt","class","transit"]  
+    },{
+      "question": "28. Jerry recognized his old friend at the concert.",
+      "answer": 3,
+      "option": ["He needed his friend.","He made friends.","He changed friends.","He remembered his friend."]  
+    },{
+      "question": "29. John said, \"Bill might go to town.\" What did John say?",
+      "answer": 3,
+      "option": ["Bill is definitely going to town.","Bill went to town.","Bill isn't going to town.","Bill may go to town."]  
+    },{
+      "question": "30. The clock is attached to the wall. Where is the clock?",
+      "answer": 1,
+      "option": ["a, away from the wall","hanging on the wall","inside the wall","on top of the wall"]  
+    },{
+      "question": "31. The football player was hurt on impact. How did he get hurt?",
+      "answer": 2,
+      "option": ["sitting on the bench","missing the play","hitting the ground","staying in bed"]  
+    },{
+      "question": "32. As Mr. Carson was driving his car, he heard a noise in the back of the car. He stopped to see what it was. When did he hear a noise?",
+      "answer": 3,
+      "option": ["in the back of the car","while getting in his car","after he stopped his car","while driving"]  
+    },{
+      "question": "33. The accident was caused by the pilot's blurred vision. What caused the accident?",
+      "answer": 0,
+      "option": ["poor eyesight","black smoke","a thick fog","a television tower"]  
+    },{
+      "question": "34. The tail of the plane was damaged. What part of the plane was damaged?",
+      "answer": 0,
+      "option": ["the rear","the left side","the front","the top"]  
+    },{
+      "question": "35. All systems in an automobile are designed to do a specific job.",
+      "answer": 1,
+      "option": ["Each system is the specific job of an engineer.","Each system is planned to do a particular job.","Each system must have several functions.","Designing the system is a particular job."]  
+    },{
+      "question": "36. The weather report indicated no precipitation for today.",
+      "answer": 3,
+      "option": ["The sun will not shine.","It will rain today.","There will be no clouds today.","It will not rain today."]  
+    },{
+      "question": "37. The soldiers rescued the trapped lieutenant.",
+      "answer": 1,
+      "option": ["They surrounded him.","They saved him.","They located him.","They captured him."]  
+    },{
+      "question": "38. Emily's first impression of the city was good.",
+      "answer": 1,
+      "option": ["Her first question about the city was answered.","Her first thoughts of the city were favorable","Her first trip to the city wasn't that nice.","Her first duty in the city was fine."]  
+    },{
+      "question": "39. Except for Charles, everyone was present.",
+      "answer": 3,
+      "option": ["Everyone was present, even Charles.","Everyone was present because of Charles.","Everyone was present according to Charles.","Everyone was present but Charles"]  
+    },{
+      "question": "40. Two lesser-known petroleum products are plastic and insecticides.",
+      "answer": 2,
+      "option": ["Petroleum is made of plastic.","Insecticides produce petroleum.","Plastic is made from petroleum.","Plastic produces petroleum."]  
+    },{
+      "question": "41. Joe dropped out of Judo class.",
+      "answer": 2,
+      "option": ["He continued to attend class.","He wanted to start class.","He stopped attending class.","He was late for class."]  
+    },{
+      "question": "42. If she sat next to me on the bus, where did she sit?",
+      "answer": 2,
+      "option": ["in front of me","behind me","beside me","across from me"]  
+    },{
+      "question": "43. Which is a fluid?",
+      "answer": 1,
+      "option": ["fire","water","a car","a water pipe"]  
+    },{
+      "question": "44. My grandmother needs to take a snooze.",
+      "answer": 2,
+      "option": ["She'll go shopping.","She'll go to town.","She'll go to sleep.","She'll go walking."]  
+    },{
+      "question": "45. There is a shortage of food.\nThere's ______ food.",
+      "answer": 0,
+      "option": ["very little","delicious","greasy","d.abundant"]  
+    },{
+      "question": "46. The car lost the right front tire. What did the car lose?",
+      "answer": 1,
+      "option": ["a bolt from the right wheel","the rubber around the wheel","the right front window","the right front light"]  
+    },{
+      "question": "47. What is lead?",
+      "answer": 3,
+      "option": ["something to wear","something to eat","a machine","a metal"]  
+    },{
+      "question": "48. Ted said he would have a bit more. How much did he want?",
+      "answer": 3,
+      "option": ["a lot more","no more","a few more","a little more"]  
+    },{
+      "question": "49. Why did the welder use goggles?",
+      "answer": 3,
+      "option": ["to protect his feet","to protect his hands","to protect his hearing","to protect his sight"]  
+    },{
+      "question": "50. The work didn't require much effort.",
+      "answer": 1,
+      "option": ["It was loose.","It was easy.","It was broken.","It was hard."]  
+    },{
+      "question": "51. Warm air is less dense than cold air.",
+      "answer": 3,
+      "option": ["It is heavier.","It is clearer.","It is darker.","It is lighter."]  
+    },{
+      "question": "52. That plane is tremendous.\nIt is ______.",
+      "answer": 3,
+      "option": ["shaking","falling","ugly","huge"]  
+    },{
+      "question": "53. Yesterday the wind came from the south and it was warm. Today it is from the north and it is cold. Why is it cold today?",
+      "answer": 0,
+      "option": ["because the wind shifted","because the weather is mild","because the wind died down","because a storm is coming"]  
+    },{
+      "question": "54. We regret that you had the accident.",
+      "answer": 3,
+      "option": ["We are pleased.","We feel better.","We are nervous.","We feel sad."]  
+    },{
+      "question": "55. Belinda can't stand her supervisor.\nShe can't ______ him.",
+      "answer": 1,
+      "option": ["understand","tolerate","satisfy","influence"]  
+    },{
+      "question": "56. ",
+      "answer": 3,
+      "option": ["a rental car","in good condition","brand new","in poor condition"]  
+    },{
+      "question": "57. M: What is the price of a bus ticket to Houston?\nW: Nineteen-fifty.\nQ: What did the woman say?",
+      "answer": 1,
+      "option": ["The bus will leave at 1950.","The cost is nineteen dollars and fifty cents.","The bus will arrive in Houston at 1950.","Houston is 1,950 miles away."]  
+    },{
+      "question": "58. W: Are you ready?\nM: I can't wait to try those potatoes.\nQ: What are the man and the woman ready to do?",
+      "answer": 0,
+      "option": ["start eating","start dancing","start dressing","start driving"]  
+    },{
+      "question": "59. W: How can we carry the packages from a car?\nM: We can separate the heavy ones from the light ones.\nQ: What did the man say?",
+      "answer": 2,
+      "option": ["There are too many packages to carry.","The car was too small.","They could put the packages in two groups.","They would leave some packages in the car."]  
+    },{
+      "question": "60. W: Why can't you let me in?\nM: I forgot the key.\nQ: Why can't the man and the woman go in?",
+      "answer": 1,
+      "option": ["The man won't let her.","The door is locked.","No one is there.","She has forgotten how."]  
+    },{
+      "question": "61. M: What is the prime reason for coming here?\nW: I don't know the prime reason.\nQ: What is it that the woman didn't know?",
+      "answer": 3,
+      "option": ["who had the reason","the number of reasons","the longest reason","the most important reason"]  
+    },{
+      "question": "62. W: Did you move the books?\nM: Yes, I thought they would fall.\nQ: What did the man think the books would do?",
+      "answer": 0,
+      "option": ["drop down","pile up","roll around","push through"]  
+    },{
+      "question": "63. W: What are your duties, Lt. Parks?\nM: My field is telegraphy.\nQ: What does Lt. Parks do?",
+      "answer": 2,
+      "option": ["He observes and directs artillery fire.","He builds military roads and bridges.","He sends coded messages over wire.","He guides planes in the right direction."]  
+    },{
+      "question": "64. W: I need a used car.\nM: I can show you this one for only fifteen hundred dollars.\nW: May I try it out?\nQ: What does the woman want to do?",
+      "answer": 0,
+      "option": ["She wants to drive the car.","She wants to look at the car.","She wants to buy the car.","She wants to talk about the car."]  
+    },{
+      "question": "65. W: Where should we meet tomorrow? I think the corner will be goc\nM: I was going to say the post office. But now I think we'd better r\nQ: Where will the man and the woman probably meet?",
+      "answer": 2,
+      "option": ["on the base","at the office","on the corner","at the post office"]  
+    },{
+      "question": "66. W: He collects rocks from all parts of the world.\nM: That's nice. But do they have any value?\nQ: What does the man want to know?",
+      "answer": 3,
+      "option": ["Are the rocks unusual?","Are they different shapes?","Are they hard to find?","Are they worth anything?"]
+    }]
+,
+  "position": [
+    {"start": 25.85, "end": 30.85},
+    {"start": 43.3, "end": 47.85},
+    {"start": 60.85, "end": 63.65},
+    {"start": 78.5, "end": 82.8},
+    {"start": 92.8, "end": 95.6},
+    {"start": 111.15, "end": 115.95},
+    {"start": 135.4, "end": 138.75},
+    {"start": 155.5, "end": 160.1},
+    {"start": 181.6, "end": 185.45},
+    {"start": 203.7, "end": 206.7},
+    {"start": 221.1, "end": 224.1},
+    {"start": 239.7, "end": 247.2},
+    {"start": 263.4, "end": 268.75},
+    {"start": 288.25, "end": 296.5},
+    {"start": 314.2, "end": 318.35},
+    {"start": 336.2, "end": 343.25},
+    {"start": 358, "end": 363.65},
+    {"start": 375.15, "end": 381.3},
+    {"start": 398.4, "end": 403.45},
+    {"start": 419.4, "end": 423.55},
+    {"start": 444.4, "end": 451.5},
+    {"start": 468.5, "end": 473.45},
+    {"start": 492, "end": 495.45},
+    {"start": 514.8, "end": 520},
+    {"start": 537.25, "end": 540.55},
+    {"start": 557.4, "end": 561.35},
+    {"start": 578.4, "end": 582.35},
+    {"start": 597.6, "end": 602.1},
+    {"start": 616.5, "end": 622.2},
+    {"start": 638.9, "end": 644.1},
+    {"start": 661.25, "end": 666.45},
+    {"start": 681.85, "end": 692},
+    {"start": 708.9, "end": 715.9},
+    {"start": 731.75, "end": 737.7},
+    {"start": 752.8, "end": 758.75},
+    {"start": 778.85, "end": 784.2},
+    {"start": 801.15, "end": 805.55},
+    {"start": 818.8, "end": 823.2},
+    {"start": 842.3, "end": 846.45},
+    {"start": 863.65, "end": 870},
+    {"start": 890.75, "end": 894.5},
+    {"start": 911.1, "end": 916.1},
+    {"start": 931.4, "end": 934},
+    {"start": 948.45, "end": 952.3},
+    {"start": 967.4, "end": 970.4},
+    {"start": 985.34, "end": 990.84},
+    {"start": 1008.44, "end": 1011.19},
+    {"start": 1025.59, "end": 1030.39},
+    {"start": 1045.34, "end": 1049.19},
+    {"start": 1063.34, "end": 1066.69},
+    {"start": 1082.19, "end": 1086.14},
+    {"start": 1101.69, "end": 1105.19},
+    {"start": 1119.69, "end": 1130.19},
+    {"start": 1147.79, "end": 1151.69},
+    {"start": 1166.39, "end": 1170.49},
+    {"start": 1184.89, "end": 1188.99},
+    {"start": 1220.89, "end": 1228.24},
+    {"start": 1246.54, "end": 1253.89},
+    {"start": 1269.64, "end": 1278.64},
+    {"start": 1297.34, "end": 1304.19},
+    {"start": 1322.84, "end": 1332.14},
+    {"start": 1348.94, "end": 1356.74},
+    {"start": 1369.29, "end": 1377.34},
+    {"start": 1396.09, "end": 1406.49},
+    {"start": 1424.29, "end": 1437.94},
+    {"start": 1453.29, "end": 1462.39}
+  ]
+}

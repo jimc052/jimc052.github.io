@@ -1,0 +1,341 @@
+{
+  "id": "ZH1gbTnvwqY",
+  "index": 57,
+  "modifyDate": 1645828197211,
+  "title": "Form 57",
+  "topic": [
+    {
+      "question": "1. Joe is at the store. He wants to go back to his room. It is necessary for him to walk 12 blocks. How far is it from the store to Joe's room?",
+      "answer": 2,
+      "option": ["at the room","very tired","12 blocks","in the store"]  
+    },{
+      "question": "2. He had to cut the grass yesterday. Where did he work?",
+      "answer": 1,
+      "option": ["in the mill","in the yard","in the office","in the shop"]  
+    },{
+      "question": "3. Jackson cooks all our meals for us. What does he do?",
+      "answer": 3,
+      "option": ["He buys the food.","He eats the food.","He sells the food.","He prepares the food."]  
+    },{
+      "question": "4. A cowboy travels many miles each day. How does he travel?",
+      "answer": 1,
+      "option": ["on a goat","on a horse","C. on a cow","on a deer"]  
+    },{
+      "question": "5. John is a safe driver.",
+      "answer": 1,
+      "option": ["He is a slow driver.","He is a careful driver.","He drives cheerfully.","He drives carelessly."]  
+    },{
+      "question": "6. Traffic is heavy in town during the rush hour.",
+      "answer": 2,
+      "option": ["There are many accidents.","There are many people shopping.","There are many cars on the street.","There are few cars on the street."]  
+    },{
+      "question": "7. Susan was packing her baggage.",
+      "answer": 0,
+      "option": ["Susan was going on a trip.","Susan was going to the movies.","Susan was going to the office.","Susan was going for a walk."]  
+    },{
+      "question": "8. The students were confused by the rules.",
+      "answer": 0,
+      "option": ["They did not understand the rules.","The rules were clear to them.","They didn't like the rules.","They were happy with the rules."]  
+    },{
+      "question": "9. He was a passenger on that bus.",
+      "answer": 3,
+      "option": ["He cleaned it.","He worked on it.","He polished it.","He rode on it."]  
+    },{
+      "question": "10. This machine is automatic.",
+      "answer": 1,
+      "option": ["It is operated manually.","It works by itself.","It makes too much noise.","It is a part of a car."]  
+    },{
+      "question": "11. That man is a government agent.",
+      "answer": 2,
+      "option": ["That man understands the government.","That man opposes the government.","That man represents the government.","That man pays the government."]  
+    },{
+      "question": "12. The bus arrived at exactly 3 o'clock. When did the bus arrive?",
+      "answer": 1,
+      "option": ["approximately 1500 hours","at 1500 hours","about 3:10","5 minutes before 3 o'clock"]  
+    },{
+      "question": "13. Which word best describes the sun at noon on a clear day?",
+      "answer": 0,
+      "option": ["bright","small","C. cold","hidden"]  
+    },{
+      "question": "14. Did you bother Mr. James when you called?",
+      "answer": 3,
+      "option": ["No, I'm not his sister.","No, I haven't seen him.","No, he's home in the evening.","No, I didn't disturb him."]  
+    },{
+      "question": "15. Rhett spent a great deal of time in the south. How much time did he spend there?",
+      "answer": 2,
+      "option": ["none","a little time","a lot of time","very little time"]  
+    },{
+      "question": "16. The instructor told the class how to reach the laboratory.",
+      "answer": 2,
+      "option": ["The instructor wanted to get to the laboratory early.","The instructor got to the laboratory late.","The instructor told the class how to get there.","The class went directly to the laboratory."]  
+    },{
+      "question": "17. The bank is opposite the post office.",
+      "answer": 1,
+      "option": ["The bank is on a different street.","The bank is across the street from the post office.","The bank is just behind the post office.","The bank is next to the post office."]  
+    },{
+      "question": "18. She has not seen the doctor yet.",
+      "answer": 2,
+      "option": ["She has already seen him.","She has a prescription.","She is still waiting.","She is already well."]  
+    },{
+      "question": "19. David takes part in all kinds of activities.",
+      "answer": 1,
+      "option": ["He practices only certain types of activities.","He participates in many types of activities.","He enjoys keeping away from activities.","He dislikes various kinds of activities."]  
+    },{
+      "question": "20. The prisoner will be released from jail today.",
+      "answer": 0,
+      "option": ["He will be let out today.","He will be put in today.","He will stay in jail.","He'll still be in jail in the morning."]  
+    },{
+      "question": "21. The rock crashed through the window.",
+      "answer": 2,
+      "option": ["It went through an open window.","It did not go through the window.","It hit and broke the window.","It passed near the window."]  
+    },{
+      "question": "22. Robert failed his last examination.",
+      "answer": 2,
+      "option": ["He made a high score.","He missed a few questions.","His score was unsatisfactory.","He received help on the examination."]  
+    },{
+      "question": "23. Headquarters is next to the lab building.",
+      "answer": 1,
+      "option": ["It is across from the lab building.","It is beside the lab building.","It is under the lab building.","It is above the lab building."]  
+    },{
+      "question": "24. John visited a residential area of town.",
+      "answer": 3,
+      "option": ["He visited a business area.","He visited a university.","He visited a park.","He visited a family housing area."]  
+    },{
+      "question": "25. When I called him, he was too occupied to talk.",
+      "answer": 1,
+      "option": ["He was angry.","He was busy.","He was sleepy.","He was sick."]  
+    },{
+      "question": "26. Bert has never been absent from class.",
+      "answer": 1,
+      "option": ["He disrupted class.","He always goes to school.","He left school.","He never listens in class."]  
+    },{
+      "question": "27. He looked over his notes.",
+      "answer": 1,
+      "option": ["He copied his notes.","He reviewed his notes.","He saw his notes.","He left his notes."]  
+    },{
+      "question": "28. What kind of metal is this box made of?",
+      "answer": 0,
+      "option": ["steel","wood","rubber","plastic"]  
+    },{
+      "question": "29. Can you start a fire with two stones?",
+      "answer": 2,
+      "option": ["Can you heat the stones.","Can you make the fire hotter?","Can you light a fire with the stones?","Can the heat burn the stones?"]  
+    },{
+      "question": "30. Lt. Jones was told to report to the commander at 1:15 pm. When does he have to be ther",
+      "answer": 1,
+      "option": ["at 0115","at 1315","at 1115","at 0150"]  
+    },{
+      "question": "31. The clerk will stack the boxes at the corner. What will he do with the boxes?",
+      "answer": 2,
+      "option": ["paint them","ship them out","pile them up","count them"]  
+    },{
+      "question": "32. There was an abrupt change in the weather. What kind of change was it?",
+      "answer": 1,
+      "option": ["gradual","sudden","normal","slight"]  
+    },{
+      "question": "33. Dave told us to bring the sports equipments. What did Dave tell us to bring?",
+      "answer": 0,
+      "option": ["the bats and the balls","the tickets for the games","the baseball team","the sports instructor"]  
+    },{
+      "question": "34. Mr. Brown like the cartoons in the evening newspaper. What did he like?",
+      "answer": 1,
+      "option": ["headlines","drawings","articles","news"]  
+    },{
+      "question": "35. What is the function of this switch?",
+      "answer": 3,
+      "option": ["It's only a very small part.","It's used only once a day.","It's electrical.","It's used to turn on the motor."]  
+    },{
+      "question": "36. Lt. Adams was concerned about the health of his men. How did he feel about their health?",
+      "answer": 2,
+      "option": ["sad","uninterested","worried","satisfied"]  
+    },{
+      "question": "37. It is convenient for people to shop near their homes.",
+      "answer": 2,
+      "option": ["It's very difficult to buy things near the house.","People don't like to sell their homes.","Shopping is easier when the shops are close by.","It's useful for people to have a shop in their."]  
+    },{
+      "question": "38. John enjoyed his visit.",
+      "answer": 0,
+      "option": ["He had a good time.","He made many friends.","He got a lot of rest.","He stayed a long time."]  
+    },{
+      "question": "39. This road narrows to one lane after a mile.",
+      "answer": 1,
+      "option": ["The road gets bad after a mile.","The road is not so wide after a mile.","The road gets rough after a mile.","The road is better after a mile."]  
+    },{
+      "question": "40. Anna wonders what will happen.",
+      "answer": 0,
+      "option": ["She is curious about what will happen.","She is afraid of what will happen.","She is happy about what will happen.","She doesn't care what will happen."]  
+    },{
+      "question": "41. The food began to decay.",
+      "answer": 2,
+      "option": ["It began to burn.","It began to heat up.","It began to spoil.","It began to dry out."]  
+    },{
+      "question": "42. The pilot told Lt. Jones to take over the aircraft.",
+      "answer": 2,
+      "option": ["Lt Jones should inspect the plane.","Lt Jones should do it again.","Lt Jones should assume control of the plane.","Lt Jones should leave the plane."]  
+    },{
+      "question": "43. We were told to think it over before we decided.",
+      "answer": 1,
+      "option": ["We were told to be aware of it.","We were told to consider it.","We were told to delete it.","We were told to expect it."]  
+    },{
+      "question": "44. Ralph is an expert mechanic.",
+      "answer": 2,
+      "option": ["He's a careless mechanic.","He's an honest mechanic.","He's a skilled mechanic.","He's a busy mechanic."]  
+    },{
+      "question": "45. Which is a fluid?",
+      "answer": 1,
+      "option": ["fire","water","car","a water pipe"]  
+    },{
+      "question": "46. John said that Helen might come to visit him. What did John say?",
+      "answer": 0,
+      "option": ["that she would perhaps come to visit him","that she must come to visit him","that she ought to come to visit him","that she'll visit him by all means"]  
+    },{
+      "question": "47. She has something wrong with her respiratory system. Where is the trouble?",
+      "answer": 2,
+      "option": ["in her heart","in her ribs","in her lungs","In her stomach"]  
+    },{
+      "question": "48. We must de-emphasize the war. What must we do?",
+      "answer": 1,
+      "option": ["make war less expensive","make war less important","make war less dangerous","make war less destructive"]  
+    },{
+      "question": "49. Why are some highways made of concrete?",
+      "answer": 3,
+      "option": ["because it is flexible","because it is mobile","because it is wide","because it is durable"]  
+    },{
+      "question": "50. The soldier worked in transportation and supply. What did his job involve?",
+      "answer": 0,
+      "option": ["logistics","personnel","administration","statistics"]  
+    },{
+      "question": "51. The enemy gave up to the superior forces. What did the enemy do?",
+      "answer": 2,
+      "option": ["defended","attacked","surrendered","counterattacked"]  
+    },{
+      "question": "52. We'll have to tear down the engine. What will we have to do?",
+      "answer": 1,
+      "option": ["replace the engine","take the engine apart","run the engine slower","take the engine out"]  
+    },{
+      "question": "53. The temperature was around 70 degrees and it was a foggy morning.",
+      "answer": 0,
+      "option": ["You couldn't see the sun.","There was some dust in the air.","The air had a low moisture content.","There was a steady breeze blowing."]  
+    },{
+      "question": "54. The chairman will bring up the problem at the next meeting.",
+      "answer": 1,
+      "option": ["He will jot it down.","He will present it.","He will improve it.","He will think about it."]  
+    },{
+      "question": "55. Warm air is less dense than the cold air.",
+      "answer": 3,
+      "option": ["It is heavier.","It is clearer.","It is darker.","It is lighter."]  
+    },{
+      "question": "56. What caused the car wheel to wobble?",
+      "answer": 2,
+      "option": ["It was balanced.","It was new.","It was unbalanced.","It was stable."]  
+    },{
+      "question": "57. M: Have you seen my new dog?\nW: Yes. He's very nice.\nQ: How is the woman feel about the dog?",
+      "answer": 1,
+      "option": ["She is afraid of it.","She likes it.","She wants it.","She dislikes it."]  
+    },{
+      "question": "58. W: I hear that Lt. Winters is joining you.\nM: Yes. What kind of person do you think he is?\nQ: What does the man want to know about Lt. Winters?",
+      "answer": 2,
+      "option": ["who his parents are","where he is coming from","if he has good character","when he is expected to arrive"]  
+    },{
+      "question": "59. M: I'll meet you at 10. Where?\nW: I have to go to the drugstore. Meet me there.\nQ: What does the woman have to do?",
+      "answer": 2,
+      "option": ["store some drugs","see a doctor","buy some medicine","buy vegetables"]  
+    },{
+      "question": "60. M: Did you see the plane?\nW: Yes. What do you think the altitude was?\nQ: What does the woman want to know?",
+      "answer": 2,
+      "option": ["who was flying the plane","how fast the plane was going","how high the plane was flying","where the plane was going"]  
+    },{
+      "question": "61. M: Which are the main chapters of the book?\nW: The third and the fourth.\nQ: What do we know about the third and the fourth chapters?",
+      "answer": 0,
+      "option": ["They are the most important.","They are the shortest.","They are the dullest.","They are the most difficult."]  
+    },{
+      "question": "62. M: I like doing this.\nW: I know. But what is your goal?\nQ: What does the woman want to know?",
+      "answer": 2,
+      "option": ["how long the man has been there.","where the man comes from","what the man is trying to do","when the man started"]  
+    },{
+      "question": "63. W: Was Tony hurt in the accident?\nM: No, but the doctor gave some pills to relax him.\nQ: Why did the doctor give Tony the pills?",
+      "answer": 1,
+      "option": ["to keep him awake","to make him less tense","because he is very weak","because he had a headache"]  
+    },{
+      "question": "64. W: How do they get the oil from the storage tank to the ships?\nM: They use pipes.\nQ: What do they use?",
+      "answer": 3,
+      "option": ["trucks","containers","c.trains","tubes"]  
+    },{
+      "question": "65. M: How much do I owe you?\nW: That's a dollar and a half.\nM: Here are two one-dollar bills. Keep the change.\nQ: What has happened?",
+      "answer": 2,
+      "option": ["The man gave her one dollar and fifty cents.","The man wants some change back.","The lady received two dollars.","The lady will have to pay him fifty cents."]  
+    },{
+      "question": "66. W: The mess hall will be closed for repairs for six day due to last night's fire. Arrangement\nhad been made for military students to eat without charge in their respective clubs for the\ncoming week. Please have your identification with you when you enter the club.\nAccording to the announcement ______.",
+      "answer": 2,
+      "option": ["students will have to eat off base","the mess hall will close for six weeks","students will not have to pay for meals","all students will eat in the Officer's Club"]
+    }]
+,
+  "position": [
+    {"start": 27, "end": 38.55},
+    {"start": 53.85, "end": 58.75},
+    {"start": 74.5, "end": 79.4},
+    {"start": 94.05, "end": 99.85},
+    {"start": 114.85, "end": 118.7},
+    {"start": 135.35, "end": 139.65},
+    {"start": 158.4, "end": 161.4},
+    {"start": 178.65, "end": 182.25},
+    {"start": 199.8, "end": 203.4},
+    {"start": 217.75, "end": 221},
+    {"start": 240.4, "end": 243.65},
+    {"start": 260.5, "end": 265.75},
+    {"start": 282.1, "end": 287.35},
+    {"start": 298.2, "end": 302.55},
+    {"start": 319.05, "end": 325.2},
+    {"start": 340.8, "end": 346.2},
+    {"start": 367.65, "end": 371.75},
+    {"start": 393.2, "end": 396.65},
+    {"start": 415.95, "end": 420.65},
+    {"start": 438.75, "end": 442.95},
+    {"start": 463.2, "end": 467},
+    {"start": 486.25, "end": 490.25},
+    {"start": 507.15, "end": 511.15},
+    {"start": 528.85, "end": 533.55},
+    {"start": 550.35, "end": 555.05},
+    {"start": 570.85, "end": 574.9},
+    {"start": 591.75, "end": 594.95},
+    {"start": 609.2, "end": 613.7},
+    {"start": 626.05, "end": 630.1},
+    {"start": 649.7, "end": 657.7},
+    {"start": 671.45, "end": 677.75},
+    {"start": 690.9, "end": 697.2},
+    {"start": 708.8, "end": 715.25},
+    {"start": 732.3, "end": 737.85},
+    {"start": 748.6, "end": 752.35},
+    {"start": 771.4, "end": 778.5},
+    {"start": 789.45, "end": 794.35},
+    {"start": 815.8, "end": 819.25},
+    {"start": 836.5, "end": 840.95},
+    {"start": 862.5, "end": 865.95},
+    {"start": 888.2, "end": 891.65},
+    {"start": 908.6, "end": 913.35},
+    {"start": 932.25, "end": 937},
+    {"start": 955.35, "end": 959.1},
+    {"start": 974.2, "end": 977.25},
+    {"start": 992.3, "end": 998.05},
+    {"start": 1017.35, "end": 1023.65},
+    {"start": 1038.65, "end": 1044.25},
+    {"start": 1059.6, "end": 1063.55},
+    {"start": 1078.55, "end": 1084.85},
+    {"start": 1096.3, "end": 1102.6},
+    {"start": 1113.5, "end": 1118.85},
+    {"start": 1133.85, "end": 1139.6},
+    {"start": 1158.6, "end": 1163.45},
+    {"start": 1180.8, "end": 1185.25},
+    {"start": 1200.7, "end": 1204.7},
+    {"start": 1237.51, "end": 1244.37},
+    {"start": 1262.37, "end": 1272.79},
+    {"start": 1291.26, "end": 1301.06},
+    {"start": 1315.79, "end": 1324.15},
+    {"start": 1341.45, "end": 1351.76},
+    {"start": 1368.98, "end": 1377.31},
+    {"start": 1397.76, "end": 1407.56},
+    {"start": 1425.2, "end": 1433.9},
+    {"start": 1446.31, "end": 1456.34},
+    {"start": 1477.67, "end": 1495.84}
+  ]
+}
