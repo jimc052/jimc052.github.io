@@ -11,6 +11,7 @@ Vue.component('yt-player', {
 				<i-button v-for="(item, index) in rows" :key="index" class="btn"
 					:type="active == index || prev == index ? 'warning' : 'default'"
 					:ghost="prev == index"
+					:id="'btn' + (index + 1)"
 					@click.native="times = 0; onClickPlay(index);">
 					<span v-if="typeof item.title == 'string' ">{{item.title}}</span>
 					<span v-else>{{(index + 1)}}</span>
@@ -122,9 +123,25 @@ Vue.component('yt-player', {
 			if(this.prev > -1) {
 				setTimeout(() => {
 					let arr = document.querySelectorAll(".btn");
-					if(	arr[this.prev] != null )
+					if(	arr[this.prev] != null ) {
 						arr[this.prev].focus();
-				}, 600);				
+						setTimeout(() => {
+							scrollTo(el, arr[this.prev]);
+						}, 600);
+					}
+				}, 600);
+			}
+
+			function scrollTo(parent, el) {
+				if(el == null || parent.scrollHeight == parent.clientHeight ) return;
+				let offsetTop = el.offsetTop - parent.offsetTop;
+				let offsetBottom = offsetTop + el.clientHeight;
+				let scrollTop = parent.scrollTop, clientHeight = parent.clientHeight;
+
+				if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
+				} else {
+					parent.scrollTop = offsetTop - 35;
+				}
 			}
     },
 		stop(){

@@ -117,9 +117,7 @@ Vue.component('yt-exam', {
 
 			let viewer = document.querySelector("#exam");
 			let scrollTop = viewer.scrollTop, clientHeight = viewer.clientHeight;
-
 			// console.log(`offsetTop: ${offsetTop}, offsetBottom: ${offsetBottom}, scrollTop: ${scrollTop}, clientHeight: ${clientHeight}`)
-
 			if(offsetTop >= scrollTop && offsetBottom < scrollTop + clientHeight){
 			} else {
 				viewer.scrollTop = offsetTop - 60;
