@@ -51,13 +51,16 @@ Vue.component('yt-menu', {
         </menu-group>
       </i-menu>
       <div style="display: flex; flex-direction: row; align-items: center;" id="version">
-        <div  style="flex: 1;">2022-04-02 13:30</div>
+        <i-button v-if="$isLogin()" type="success"  @click.native="onClickDocument()"  icon="md-document" shape="circle" style="margin: 0px 5px; "></i-button>
+        <div  style="flex: 1;">2022-04-13 09:30</div>
         <i-button v-if="$isDebug() && $isLogin()" type="success"  @click.native="onClickAdd()"  icon="md-add" shape="circle" style="margin: 0px 5px; "></i-button>
       </div>
       <Icon v-if="$isFlutter()" type="logo-youtube" size="28" color="red" @click.native="changeTo()" 
 				style="cursor: pointer; position: absolute; right: 20px; bottom: 50px; padding: 10px;">
       </Icon>
+      <yt-document :menu="document" @on-close="document = [];" ></yt-document>
     </div>
+    
   `,
 	props: {
 	},
@@ -70,6 +73,7 @@ Vue.component('yt-menu', {
       project: [
       ], // https://www.youtube.com/c/ClubJamesStudios/videos
       menu: [],
+      document: []
 		}; // 
 	},
 	created(){
@@ -94,6 +98,9 @@ Vue.component('yt-menu', {
     this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+    onClickDocument(){
+      this.document = this.menu;
+    },
     changeTo() {
       location.replace('../VOA/index.html');
     },

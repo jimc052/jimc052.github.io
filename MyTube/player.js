@@ -84,14 +84,6 @@ Vue.component('yt-player', {
 		this.stop();
   },
 	methods: {
-		// adjust(){
-		// 	return this.rows.length == 0 && this.$isDebug() && this.$isLogin() 
-		// 	? '60px' 
-		// 	: (this.$smallScreen() || document.body.clientHeight < 700 ? '120px' : 'auto')
-		// },
-		// onResize(small){
-		// 	this.smallScreen = small;
-		// },
 		async set(item){
 			this.content = item;
 			this.prev = -1;
