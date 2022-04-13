@@ -5,6 +5,8 @@ Vue.component('yt-document', {
         fullscreen style="overflow: hidden;" id="dlgDocument">
       <div id="divDocument" v-html="html" style="width: 100%; height: 100%; user-select: text !important;" />
       <div slot="footer">
+        <a id="linkMP3" href="https://docs.google.com/document/d/1DYSFuPRX7RnqAGBtVv1tKQ6bFLUBmcOerrRPpfTw1e8/edit#" 
+          target="_blank" style="margin: 0px 10px;">Google Document</a>
         <Button @click="copy"  type="success">Copy</Button>
 				<Button @click="close">關閉</Button>
       </div>
@@ -41,13 +43,19 @@ Vue.component('yt-document', {
 			this.$emit('on-close');
 		},
     copy() {
-      var content = document.getElementById('divDocument').innerHTML;
-      navigator.clipboard.writeText(content)
-      .then(() => {
-          alert("Text copied to clipboard...")
-      }).catch(err => {
-          console.log('Something went wrong', err);
-      })
+      let id = "divDocument";
+      if (document.selection) {
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById(id));
+        range.select().createTextRange();
+        document.execCommand("copy");
+      } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(id));
+        window.getSelection().addRange(range);
+        document.execCommand("copy");
+        alert("Text has been copied, now paste in the text-area")
+      }
     }
 	},
 	computed: {
@@ -63,13 +71,22 @@ Vue.component('yt-document', {
           let row = value[i];
           if(Array.isArray(row.topic) ){
             this.html += (this.html.length > 0 ? "<br />" : "") +
-              `<h3 style="page-break-after:always; user-select: text !important;">${row.title}</h3>`;
+              `<h3 style="font-size: 22px;  user-select: text !important;">${row.title}</h3>`;
 
             let topics = row.topic;
             for(let j = 0; j < topics.length; j++) {
               let topic = topics[j];
-              topic.question = topic.question.replace(/(?:\r\n|\r|\n)/g, '<br/>&nbsp;&nbsp;&nbsp;');
-              this.html += `<div style="user-select: text !important;">${topic.question}</div>`;
+
+              let question = topic.question;
+              let _index = question.indexOf(". ");
+              if(_index > -1 && _index < 4)
+                question = question.substr(_index + 2)
+              question = question.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+              
+              this.html += `<div style="font-size: 20px; user-select: text !important; display: flex; flex-direction: row;">`
+                + `<span style="color: grey; font-size: 20px; user-select: text !important;">${(j + 1) + '.&nbsp;'}</span>` 
+                + `<span style="font-size: 20px; user-select: text !important; flex: 1; ">${question}</span>`
+                + `</div>`;
             }
           }
         }

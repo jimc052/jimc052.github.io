@@ -131,7 +131,6 @@ Vue.component('yt-exam', {
 			el.style.scrollBehavior = "smooth";
       this.topic = [];
 			item.forEach((el, index) => {
-				// el.question = el.question.replace('<br/>&nbsp;&nbsp;&nbsp;', "\n");
 				let json = Object.assign({}, el);
 				let question = json.question;
 
