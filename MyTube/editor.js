@@ -193,6 +193,7 @@ Vue.component('yt-editor', {
 
 				let link = document.getElementById("linkMP3");
 				link.href = `https://www.yout.com/watch?v=${obj.id}`;
+				console.log(link.href)
 
 				link = document.getElementById("linkYouTube");
 				link.href = `https://www.youtube.com/watch?v=${obj.id}`;

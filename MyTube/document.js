@@ -5,7 +5,7 @@ Vue.component('yt-document', {
         fullscreen style="overflow: hidden;" id="dlgDocument">
       <div id="divDocument" v-html="html" style="width: 100%; height: 100%; user-select: text !important;" />
       <div slot="footer">
-        <a id="linkMP3" href="https://docs.google.com/document/d/1DYSFuPRX7RnqAGBtVv1tKQ6bFLUBmcOerrRPpfTw1e8/edit#" 
+        <a href="https://docs.google.com/document/d/1DYSFuPRX7RnqAGBtVv1tKQ6bFLUBmcOerrRPpfTw1e8/edit#" 
           target="_blank" style="margin: 0px 10px;">Google Document</a>
         <Button @click="copy"  type="success">Copy</Button>
 				<Button @click="close">關閉</Button>
@@ -70,24 +70,34 @@ Vue.component('yt-document', {
         for(let i = 0; i < value.length; i++) {
           let row = value[i];
           if(Array.isArray(row.topic) ){
+            // console.log(row.title)
             this.html += (this.html.length > 0 ? "<br />" : "") +
               `<h3 style="font-size: 22px;  user-select: text !important;">${row.title}</h3>`;
-
+            this.html += `<ul style="padding-left: 20px; list-style-type: decimal; ">`;
             let topics = row.topic;
             for(let j = 0; j < topics.length; j++) {
               let topic = topics[j];
+              // if(j >= 60) {
+              //   console.log(topic.question)
+              // }
 
               let question = topic.question;
               let _index = question.indexOf(". ");
               if(_index > -1 && _index < 4)
                 question = question.substr(_index + 2)
               question = question.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-              
-              this.html += `<div style="font-size: 20px; user-select: text !important; display: flex; flex-direction: row;">`
-                + `<span style="color: grey; font-size: 20px; user-select: text !important;">${(j + 1) + '.&nbsp;'}</span>` 
-                + `<span style="font-size: 20px; user-select: text !important; flex: 1; ">${question}</span>`
-                + `</div>`;
+              this.html += `<li style="font-size: 20px; user-select: text !important;">${question}`;
+              this.html += `<ul style="padding-left: 20px; list-style-type: lower-alpha; ">`;
+              for(let k = 0; k < topic.option.length; k++) {
+                this.html += `<li style="font-size: 20px; user-select: text !important;">
+                  <span style="font-size: 20px; user-select: text !important;
+                  ${topic.answer == k ? "color: orange;" : ""}">${topic.option[k]}</span>
+                </li>`;
+              }
+              this.html += `</ul>`;
+              this.html += `</li>`;
             }
+            this.html += `</ul>`;
           }
         }
       }
