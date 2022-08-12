@@ -56,6 +56,67 @@ Vue.component('yt-document', {
         document.execCommand("copy");
         alert("Text has been copied, now paste in the text-area")
       }
+    },
+    trim1(){ // 全部課文
+      let fontSize = "font-size: 20px; ";
+      for(let i = 0; i < this.menu.length; i++) {
+        let row = this.menu[i];
+        if(Array.isArray(row.topic) ){
+          // console.log(row.title)
+          this.html += (this.html.length > 0 ? "<br />" : "") +
+            `<h3 style="font-size: 22px;  user-select: text !important;">${row.title}</h3>`;
+          this.html += `<ul style="padding-left: 20px; list-style-type: decimal; ">`;
+          let topics = row.topic;
+          for(let j = 0; j < topics.length; j++) {
+            let topic = topics[j];
+            // if(j >= 60) {
+            //   console.log(topic.question)
+            // }
+
+            let question = topic.question;
+            let _index = question.indexOf(". ");
+            if(_index > -1 && _index < 4)
+              question = question.substr(_index + 2)
+            question = question.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+            this.html += `<li style="${fontSize} user-select: text !important;">${question}`;
+            this.html += `<ul style="padding-left: 20px; list-style-type: lower-alpha; ">`;
+            for(let k = 0; k < topic.option.length; k++) {
+              this.html += `<li style="${fontSize} user-select: text !important;">
+                <span style="${fontSize} user-select: text !important;
+                ${topic.answer == k ? "color: orange;" : ""}">${topic.option[k]}</span>
+              </li>`;
+            }
+            this.html += `</ul>`;
+            this.html += `</li>`;
+          }
+          this.html += `</ul>`;
+        }
+      }
+    }, 
+    trim2(){ // 全部單字
+      let result = [];
+      for(let i = 0; i < this.menu.length; i++) {
+        let row = this.menu[i], text = "";
+        if(Array.isArray(row.topic) ){
+          let topics = row.topic;
+          for(let j = 0; j < topics.length; j++) {
+            let topic = topics[j];
+            let question = topic.question;
+            let _index = question.indexOf(". ");
+            if(_index > -1 && _index < 4)
+              question = question.substr(_index + 2)
+            // question = question.replace(/(?:\r\n|\r|\n)/g, ' ');
+            // console.log(question);
+
+            let option = topic.option.join(" ");
+            // console.log(option)
+            text += (text.length > 0 ? "\n" : "") + question + " " + option
+          }
+        }
+        text = text.replace(/(?:\?|\"|\.)/g, ' '); // \r\n|\r|\n|
+        console.log(text)
+        break;
+      }
     }
 	},
 	computed: {
@@ -67,39 +128,7 @@ Vue.component('yt-document', {
         this.visible = false;
       } else {
         this.visible = true;
-        for(let i = 0; i < value.length; i++) {
-          let row = value[i];
-          if(Array.isArray(row.topic) ){
-            // console.log(row.title)
-            this.html += (this.html.length > 0 ? "<br />" : "") +
-              `<h3 style="font-size: 22px;  user-select: text !important;">${row.title}</h3>`;
-            this.html += `<ul style="padding-left: 20px; list-style-type: decimal; ">`;
-            let topics = row.topic;
-            for(let j = 0; j < topics.length; j++) {
-              let topic = topics[j];
-              // if(j >= 60) {
-              //   console.log(topic.question)
-              // }
-
-              let question = topic.question;
-              let _index = question.indexOf(". ");
-              if(_index > -1 && _index < 4)
-                question = question.substr(_index + 2)
-              question = question.replace(/(?:\r\n|\r|\n)/g, '<br/>');
-              this.html += `<li style="font-size: 20px; user-select: text !important;">${question}`;
-              this.html += `<ul style="padding-left: 20px; list-style-type: lower-alpha; ">`;
-              for(let k = 0; k < topic.option.length; k++) {
-                this.html += `<li style="font-size: 20px; user-select: text !important;">
-                  <span style="font-size: 20px; user-select: text !important;
-                  ${topic.answer == k ? "color: orange;" : ""}">${topic.option[k]}</span>
-                </li>`;
-              }
-              this.html += `</ul>`;
-              this.html += `</li>`;
-            }
-            this.html += `</ul>`;
-          }
-        }
+        this.trim2()
       }
     }
 	}

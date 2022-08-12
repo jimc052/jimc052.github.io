@@ -107,11 +107,11 @@ Vue.component('calendar', {
 			this.preload = JSON.parse(s);
 		}
 		if(this.$isDebug()){
-			this.today = new Date(2021, 11, 9, 12)
-			this.preload = {
-				"2021-12-09":{"上班":"10:00","下班":"19:00"},
-				"2021-12-21":{"上班":"11:00","下班":"19:00"}, 
-			};
+			// this.today = new Date(2022, 4, 1, 8, 52)
+			// this.preload = {
+				// "2022-08-12":{"上班":"08:00","下班":"19:00"},
+				// "2021-12-21":{"上班":"11:00","下班":"19:00"}, 
+			// };
 		}
 	
 		let arr = [];
@@ -121,13 +121,22 @@ Vue.component('calendar', {
 				arr.push(key)
 			}
 		}
+		if(typeof this.preload[today] == "object") {
+			let now = (new Date()).toString("hh:MM");
+			for(let key in this.preload[today]) {
+				if(now >= this.preload[today][key]) {
+					delete this.preload[today][key];
+					window.localStorage["schedule=proload"] = JSON.stringify(this.preload);
+				}
+			}
+		}
 		if(arr.length > 0) {
 			arr.forEach(item =>{
 				delete this.preload[item]
 			})
 			window.localStorage["schedule=proload"] = JSON.stringify(this.preload);
 		}
-		// console.log(JSON.stringify(this.preload))
+		console.log(JSON.stringify(this.preload))
 
 		this.alarm = this.$storage("alarm");
 		this.retrieve();

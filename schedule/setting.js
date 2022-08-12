@@ -76,6 +76,7 @@ Vue.component('setting', {
 				this.date = new Date("2020-02-16T" + this.$storage("morning"));
 				// this.date2 = this.date;
 				this.periodInMinutes = parseInt(this.$storage("periodInMinutes"), 10);
+				this.date1 = (new Date()).toString("yyyy-mm-dd")
 			}
 		},
 		onOK(){
