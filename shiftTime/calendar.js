@@ -1,19 +1,29 @@
 /*
-					<!-- 國定假日 -->
-					<div v-if="typeof day.holiday == 'string'" style="height: 100%;">
-						<div style="text-align: center;">{{day.day}}</div>
-						<div style="text-align: center; background-color: green; color: white;">
+<!-- 非當月 -->
+					<div v-if="day.available == false" style="height: 100%; display: flex; flex-direction: column;">
+						<div style="text-align: center; color: #D3D3D3;">{{day.day}}</div>
+						<div v-if="typeof day.holiday == 'string'" 
+							style="text-align: center; color: rgba(0,0,0, 0.3);  background-color: rgba(0, 255, 0, 0.2);">
 							{{day.holiday}}
 						</div>
+            <div style="text-align: center;">{{day.shift}}</div>
 					</div>
-					<!-- 工作日 workday： 1 今天以前，2 今天，3 今天以後 -->
-					<div v-else-if="day.workday > 0" style="height: 100%; display: flex; flex-direction: column;">
-						<div style="text-align: center;">{{day.day}}</div>
-					</div>
-					<!-- 周末，周日 -->
-					<div v-else :style="{height: '100%'}">
-						<div :style="{'text-align': 'center', color: '#FF8C00'}">{{day.day}}</div>
-					</div>
+          <div v-else style="height: 100%; display: flex; flex-direction: column;" v-on:click="onClickCell(index1, index2, day)">
+            <!-- 國定假日 -->
+            <div v-if="typeof day.holiday == 'string'" style="flex: 1;">
+              <div style="text-align: center;">{{day.day}}</div>
+              <div style="text-align: center; background-color: green; color: white;">
+                {{day.holiday}}
+              </div>
+            </div>
+            <!-- 周末，周日 -->
+            <div v-else-if="index2 >= 5" style="flex: 1; text-align: center; color: #FF8C00;">
+              {{day.day}}
+            </div>
+            <div v-else style="flex: 1; text-align: center;">{{day.day}}</div>
+
+            <div style="text-align: center;">{{day.shift}}</div>
+          </div>
 */
 Vue.component('calendar', {
 	template:  `<div id="calendar" style="display: flex; flex-direction: column; height: 100%; width: 100%;">
@@ -41,44 +51,35 @@ Vue.component('calendar', {
 			</div>
 		</div>
 
-		<div style="flex: 1; display: flex; flex-direction: column;">
+		<div style="flex: 1; display: flex; flex-direction: column;" class="cls1">
 			<div class="row" v-for="(weeks, index1) in schedule" style="flex: 1; display: flex; flex-direction: row;">
-				<div class="col" v-for="(day, index2) in weeks" 
+				<div class="col" v-for="(day, index2) in weeks"
+					v-on:click="onClickCell(index1, index2, day)"
+
 					:style="{flex: '1', height: '100%', padding: '5px', 
 						backgroundColor: day.available ? (day.workday == 2 ? 'rgba(45, 140, 250, 0.2)' : 'white') : '#F8F8F8',
 					}">
-					<!-- 非當月 -->
-					<div v-if="day.available == false" style="height: 100%; display: flex; flex-direction: column;">
-						<div style="text-align: center; color: #D3D3D3;">{{day.day}}</div>
-						<div v-if="typeof day.holiday == 'string'" 
-							style="text-align: center; color: rgba(0,0,0, 0.3);  background-color: rgba(0, 255, 0, 0.2);">
-							{{day.holiday}}
-						</div>
-            <div style="text-align: center;">{{day.shift}}</div>
-					</div>
-          <div v-else style="height: 100%; display: flex; flex-direction: column;" v-on:click="onClickCell(index1, index2, day)">
-            <!-- 國定假日 -->
-            <div v-if="typeof day.holiday == 'string'" style="flex: 1;">
-              <div style="text-align: center;">{{day.day}}</div>
-              <div style="text-align: center; background-color: green; color: white;">
-                {{day.holiday}}
-              </div>
-            </div>
-            <!-- 周末，周日 -->
-            <div v-else-if="index2 >= 5" style="flex: 1; text-align: center; color: #FF8C00;">
-              {{day.day}}
-            </div>
-            <div v-else style="flex: 1; text-align: center;">{{day.day}}</div>
 
-            <div style="text-align: center;">{{day.shift}}</div>
+					<div class="date" :class="{inavailable: day.available == false, weekend: day.available == true && index2 >= 5}">
+            {{day.day}}
           </div>
+					<div v-if="typeof day.holiday == 'string'" 
+						style="text-align: center; " :class="{holiday0: !day.available, holiday1: day.available,}">
+						{{day.holiday}}
+					</div>
+
+					<div style="flex: 1" />
+
+					<div >
+						{{day.workday}}
+					</div>
 				</div>
 			</div>
 		</div>
 
     <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; padding: 10px;" >
 			<div style="flex: 1" />
-			<RadioGroup v-model="mode" type="button" button-style="solid" size="large">
+			<RadioGroup v-model="mode" type="button" button-style="solid" size="large" @on-change="onRadioChange">
 					<Radio label="早班"></Radio>
 					<Radio label="晚班"></Radio>
 					<Radio label="休假"></Radio>
@@ -119,6 +120,9 @@ Vue.component('calendar', {
 	destroyed() {
   },
 	methods: {
+		onRadioChange(value) {
+			console.log(value)
+		},
 		onClickCell(x, y, data){
 			console.log(x, y, JSON.stringify(data));
 			// this.$refs["setting"].visible = true;
