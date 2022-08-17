@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>輪班表</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+
+	<link rel="stylesheet" href="https://unpkg.com/iview@3.5.4/dist/styles/iview.css">
+	<script src="https://unpkg.com/iview@3.5.4/dist/iview.min.js"></script>
+	<script src="https://unpkg.com/iview@3.5.4/dist/locale/zh-TW.js"></script>
+	
+	<script src="https://unpkg.com/marked@0.3.6"></script>
+	<script src="https://unpkg.com/lodash@4.16.0"></script>
+
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-storage.js"></script>
+	<script src="../VOA/system/fireStore.js"></script>
+	<script src="../schedule/system/system.js"></script>
+
+	<script src="../schedule/days.js"></script>
+
+	<script src="./calendar.js"></script>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			font-family: 'Times New Roman', 'Georgia, serif', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			color: rgb(0, 0, 0);
+			overflow: hidden;
+		}
+		html, body, #app {
+			min-height: 100% !important;
+			height: 100%;
+			width: 100%;
+		}
+		#app {
+			display: flex; 
+			flex-direction: row;
+
+		}
+		.row {
+			border-top: 1px solid #dadce0;
+		}
+		.col + .col {
+			border-left: 1px solid #dadce0;
+		}
+		.pointer, input[type=radio], label{
+			cursor: pointer;
+		}
+		label {
+			font-size: 20px;
+		}
+	</style>
+</head>
+<body>
+  <div id="app" style="">
+		<calendar></calendar>
+	</div>
+</body>
+<script>
+	var vm = null;
+	window.onload = async function(){
+		let email =  window.localStorage["email"];
+		let password =  window.localStorage["password"];
+		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
+			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
+			let s = location.href.substr(location.href.indexOf(key) + key.length)
+			let arr = s.split("&");
+			s = arr[0].replace(key, "");
+			s = atob(s)
+			arr = s.split("\t")
+			email = arr[0];
+			password = arr[1];
+		}
+		if(typeof email == "string" && email.length > 0 ) {
+			try {
+				FireStore.initial();
+				await FireStore.signIn(email, password)
+				// console.log("FireStore.mail: " + FireStore.mail())
+			} catch(e) {
+				console.log(e)
+				alert(e.message)
+			}
+		}
+
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+		Vue.prototype.$isDebug = function() {
+			return (location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 
+				|| location.href.indexOf("debug=Y") > -1)
+				&& location.href.indexOf("anonymous=") == -1
+				? true : false;
+		}
+
+		Vue.prototype.$isLogin = function() {
+			return FireStore.login;
+		}
+
+		Vue.prototype.$isDialog = function() {
+			return vm.dialog == "" ? false : true;
+		}
+		Vue.prototype.$smallScreen = function() {
+			return document.body.clientWidth > 600 ? false : true;
+		}
+		Vue.prototype.$queryString = function(key) {
+			let index = location.href.indexOf("?");
+			let s = "";
+			if(index > -1) {
+				let s1 = location.href.substr(index + 1);
+				let arr = s1.split("&");
+				for(let i = 0; i < arr.length; i++) {
+					index = arr[i].indexOf(key + "=");
+					if(index > -1) {
+						s = arr[i].substr(key.length + 1)
+						break;
+					}
+				}
+			}
+			return s;
+		}
+
+		Vue.prototype.$storage = function (key, value) {
+			if(typeof key == "string" && typeof value == "undefined"){
+				let s = window.localStorage[key];
+				if(typeof s == "undefined"){
+					if(key == "morning") // records
+						s = "08:50";
+					else if(key == "periodInMinutes") // records
+						s = "3";
+					else if(key.indexOf("schedule=") > -1)
+						return null;
+					else
+						s = "";
+				}
+
+				if(key.indexOf("schedule=") > -1)
+					s = JSON.parse(s);
+				return s;
+			} else {
+				if(value == null)
+					delete window.localStorage[key];
+				else
+					window.localStorage[key] = typeof value == "object" ? JSON.stringify(value) : value;
+			}
+		}
+
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					index: -1,
+					smallScreen: false, 
+					editData: undefined,
+					dialog: "",
+					video: true, 
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				window.onresize = resize;
+
+				let self = this, idResize;
+				function resize() {
+					// console.log(document.body.clientWidth + "/" + document.body.clientHeight)
+					self.smallScreen = document.body.clientWidth > 800 ? false : true;
+					self.broadcast.$emit('onResize', self.smallScreen);
+					let exam = document.getElementById('exam');
+					if(self.video == false) {
+						clearTimeout(idResize)
+						idResize = setTimeout(() => {
+							self.adjustPlayer();
+							let clientHeight = self.getBodyHeight();
+							if(exam != null) {
+								exam.style.height = clientHeight + "px";
+							}
+						}, 600);						
+					} else if(exam != null) {
+						exam.style.height = "0px";
+						exam.style.padding = "0px";
+					}
+				}
+				resize();
+			},
+			methods: {
+      }
+		})
+	}
+
+/* 	
+https://www.iviewui.com/components/menu
+https://www.iviewui.com/components/modal
+https://www.iviewui.com/components/tabs
+https://www.iviewui.com/components/icon
+
+https://developers.google.com/youtube/iframe_api_reference
+https://www.youtube.com/c/ClubJamesStudios/videos
+*/
+</script>
+</html>
