@@ -8,7 +8,7 @@ Vue.component('calendar', {
 			<div style="flex: 1;"></div>
 			<Icon type="ios-arrow-back" size="28" @click.native="onClickIcon(-1)" 
 			style="cursor: pointer; margin-right: 10px;"/>
-			<div style="font-size: 30px;">{{month.toString("yyyy-mm")}}</div>
+			<div class="title" >{{month.toString("yyyy-mm")}}</div>
 			<Icon type="ios-arrow-forward" size="28" @click.native="onClickIcon(1)" 
 			style="cursor: pointer; margin-left: 10px;" />
 			<div style="flex: 1; text-align: right;">
