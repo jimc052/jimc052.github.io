@@ -72,11 +72,12 @@ Vue.component('calendar', {
 			<div style="flex: 1" />
 
 			<Button v-if="edit == false" size="large" icon="md-create" type="primary" @click="onClickIconEdit" />
+			<ButtonGroup>
+				<Button v-if="$isLogin() && dirty == true && edit == true" size="large"
+					icon="md-cloud-upload" type="success" @click="onClickIconSave" />
 
-			<Button v-if="$isLogin() && dirty == true && edit == true" size="large" style="margin-right: 3px;"
-				icon="md-cloud-upload" type="success" @click="onClickIconSave" />
-
-			<Button v-if="edit == true" size="large" icon="md-close" type="primary" @click="onClickIconClose" />			
+				<Button v-if="edit == true" size="large" icon="md-close" type="primary" @click="onClickIconClose" />			
+			</ButtonGroup>
     </div>
 	</div>`,
 	props: {
@@ -179,11 +180,12 @@ Vue.component('calendar', {
 				y++;
 			}
 			this.month = new Date(y, m,  1);
-      this.visible = this.month.toString("yyyy-mm") >= this.today.toString("yyyy-mm") ? true : false;
-      console.log(this.month.toString("yyyy-mm") + "/" + this.today.toString("yyyy-mm"))
+      // this.visible = this.month.toString("yyyy-mm") >= this.today.toString("yyyy-mm") ? true : false;
+      // console.log(this.month.toString("yyyy-mm") + "/" + this.today.toString("yyyy-mm"))
 			this.retrieve()
 		},
 		async retrieve() {
+			this.onClickIconClose();
 			let y = this.month.getFullYear(), m = this.month.getMonth();
 			let d1 = new Date(y, m,  1);
 			let month = d1.toString("yyyy-mm");
@@ -246,6 +248,5 @@ Vue.component('calendar', {
 		}
 	},
 	watch: {
-		
 	}
 });
