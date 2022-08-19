@@ -48,10 +48,14 @@
 		#app {
 			display: flex; 
 			flex-direction: row;
-
 		}
 		.row {
 			border-top: 1px solid #dadce0;
+		}
+		.col {
+			display: flex; 
+			flex-direction: column;
+			overflow: hidden;
 		}
 		.col + .col {
 			border-left: 1px solid #dadce0;
@@ -63,21 +67,55 @@
 			font-size: 20px;
 		}
 		.date {
-			text-align: center; 
+			/* text-align: center;  */
+			font-size: 20px;
 		}
 		.inavailable {
 			color: #D3D3D3;
 		}
 		.weekend {
-			color: #FF8C00;
+			color: rgb(255,165,0);
 		}
-		.holiday0 {
+		.inavailable.weekend{
+			color: rgba(255,165,0, 0.3);
+		}
+
+		.holiday {
+			background-color: green; 
+			color: white;
+			border-radius: 5px;
+			padding: 5px 0px;
+		}
+		.inavailable.holiday {
 			color: rgba(0,0,0, 0.3);  
 			background-color: rgba(0, 255, 0, 0.2);
 		}
-		.holiday1 {
-			background-color: green; 
+		.text {
+			text-align: center; 
+		}
+		.shift {
+			font-size: 16px;
 			color: white;
+			border-radius: 5px;
+			padding: 5px 0px;
+		}
+		.am {
+			background-color: rgb(45, 140, 240);
+		}
+		.inavailable.am {
+			background-color: rgba(45, 140, 240, 0.3);
+		}
+		.pm {
+			background-color: rgb(192, 25, 33);
+		}
+		.inavailable.pm {
+			background-color: rgba(192, 25, 33, 0.3);
+		}
+		.break {
+			background-color: rgb(255,165,0);
+		}
+		.inavailable.break {
+			background-color: rgba(255,165,0, 0.3);
 		}
 
 	</style>
@@ -91,7 +129,7 @@
 	var vm = null;
 	window.onload = async function(){
 		let email =  window.localStorage["email"];
-		let password =  window.localStorage["password"];
+		let password = window.localStorage["password"];
 		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
 			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
 			let s = location.href.substr(location.href.indexOf(key) + key.length)
@@ -106,8 +144,8 @@
 			try {
 				FireStore.initial();
 				await FireStore.signIn(email, password)
-				// console.log("FireStore.mail: " + FireStore.mail())
 			} catch(e) {
+				email = "";
 				console.log(e)
 				alert(e.message)
 			}
@@ -122,7 +160,7 @@
 		}
 
 		Vue.prototype.$isLogin = function() {
-			return FireStore.login;
+			return typeof email == "string" && email.length > 0;
 		}
 
 		Vue.prototype.$isDialog = function() {
@@ -222,6 +260,7 @@ http://v4.iviewui.com/components/menu
 http://v4.iviewui.com/components/modal
 http://v4.iviewui.com/components/tabs
 http://v4.iviewui.com/components/icon
+http://v4.iviewui.com/components/button
 
 https://developers.google.com/youtube/iframe_api_reference
 https://www.youtube.com/c/ClubJamesStudios/videos
