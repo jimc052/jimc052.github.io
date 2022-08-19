@@ -1,5 +1,6 @@
 Vue.component('calendar', {
 	template:  `<div id="calendar" style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+	<Spin size="large" fix v-if="spinShow"></Spin>
 		<div :style="{background: '#2d8cf0', 
 			'display': 'flex', 'flex-direction': 'row', 'justify-content': 'flex-start',
 			'align-items': 'center', color: 'white' }"
@@ -90,7 +91,8 @@ Vue.component('calendar', {
 			visible: false, 
       shift: "早班", 
 			edit: false,
-			dirty: false
+			dirty: false,
+			spinShow: false
 		};
 	},
 	created(){	
@@ -98,7 +100,6 @@ Vue.component('calendar', {
 	},
 	async mounted () {
 		this.retrieve();
-		this.onClickIconSave()
 	},
 	destroyed() {
   },
@@ -123,7 +124,7 @@ Vue.component('calendar', {
 					}
 				}
 				this.$storage("shiftTime=" + this.month.toString("yyyy-mm"), json);
-				console.log(this.$storage("shiftTime=" + this.month.toString("yyyy-mm")))
+				// console.log(this.$storage("shiftTime=" + this.month.toString("yyyy-mm")))
 				this.dirty = true;
 			}
 			// this.$refs["setting"].visible = true;
@@ -136,24 +137,24 @@ Vue.component('calendar', {
 			this.edit = false;
 		},
 		async onClickIconSave() {
+			this.spinShow = true;
 			let key = this.month.toString("yyyy-mm");
 			try {
 				let ref = FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("ShiftTime").doc(key);
-
-				let myRecords = this.$storage("shiftTime=" + key)
-				if(typeof myRecords == "string" && myRecords.length > 0) {
-					myRecords = JSON.parse(myRecords)
-				} else {
-					myRecords = {};
+				let myRecords = {};
+				let s = this.$storage("shiftTime=" + key)
+				if(typeof s == "string" && s.length > 0) {
+					myRecords = JSON.parse(s)
 				}
-
-				let x = await ref.set(myRecords, {merge: true});
-				console.log(x)
+				let x = await ref.set(myRecords);
 			} catch(e) {
 				console.log(e)
+			} finally {
+				setTimeout(() => {
+					this.spinShow = false;
+				}, 600);
 			}
-
 			this.dirty = false;
 			this.edit = false;
 		},
@@ -182,23 +183,33 @@ Vue.component('calendar', {
       console.log(this.month.toString("yyyy-mm") + "/" + this.today.toString("yyyy-mm"))
 			this.retrieve()
 		},
-		retrieve() {
+		async retrieve() {
 			let y = this.month.getFullYear(), m = this.month.getMonth();
-			let {schedule, recorder} = this.parseSchedule(y, m);
-			this.recorder = recorder;
-			this.schedule = schedule;
-		},
-    parseSchedule(y, m) {
 			let d1 = new Date(y, m,  1);
 			let month = d1.toString("yyyy-mm");
 			let days = d1.getDay() * -1;
-			let myRecords = this.$storage("shiftTime=" + month);
 			let mySchedule = [];
-			console.log(myRecords)
-			if(typeof myRecords == "string" && myRecords.length > 0) {
-				myRecords = JSON.parse(myRecords)
+			let myRecords = {}; 
+			if(this.$isLogin()) {
+				this.spinShow = true;
+				try {
+					let snapshot1 = await FireStore.db.collection("users").doc(FireStore.uid())
+								.collection("ShiftTime").doc(month).get();
+					let data = snapshot1.data();
+					if(typeof data == "object")
+						myRecords = data;
+				} catch(e) {
+
+				} finally {
+					setTimeout(() => {
+						this.spinShow = false;
+					}, 600);
+				}
 			} else {
-				myRecords = {};
+				let s = this.$storage("shiftTime=" + month);
+				if(typeof s == "string" && s.length > 0) {
+					myRecords = JSON.parse(s)
+				}
 			}
 
 			d1.addDays(days + (days == 0 ? -6 : 1));
@@ -230,8 +241,9 @@ Vue.component('calendar', {
 				mySchedule.push(arr);
 				if(d1.toString("yyyy-mm") > month) break;
 			}
-			return {schedule: mySchedule};
-		},
+
+			this.schedule = mySchedule;
+		}
 	},
 	watch: {
 		
