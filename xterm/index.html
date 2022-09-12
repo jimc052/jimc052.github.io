@@ -15,8 +15,7 @@
     }
     body {
       margin: 0px;
-      
-      padding: 0px 0px;
+      padding: 3px 3px;
       /* color: rgb(0, 0, 0); */
       overflow: hidden;
     }
@@ -26,13 +25,16 @@
       width: 100%;
       background-color: rgb(0, 0, 0);
     }
+    
   </style>
 </head>
 <body>
 <div id="terminal"></div>
 <script>
+  // // terminal: runNode
+  let curr_line = "", term;
   window.onload = async function(){
-    const term = new Terminal({
+    term = new Terminal({
       fontFamily: 'Courier New',
       fontSize: 16,
       // rows: _this.rows, //行数
@@ -55,36 +57,45 @@
     term.open(document.getElementById('terminal'));
     fitAddon.fit();
     
-    term.write('Hello from \x1B[1;3;31mxterm.js\x1B[0m $ ');
+    term.write(title()); // 
 
     term.prompt = _ => {
-      term.write("\r\n\x1b[33m$\x1b[0m ")
+      term.write((typeof _ == "boolean" && _ == false ? "" : "\r\n") + "\x1b[33m$\x1b[0m ")
     }
-    term.prompt()
+    term.prompt();
 
-    term.onKey(e => {
-      const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey
+    const keyboard = term.onKey(e => {
+      const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
       if (e.domEvent.keyCode === 13) {
-        term.prompt()
+        if(curr_line == "clear") {
+          term.clear();
+          term.prompt()
+        } else {
+          term.write("\r\n");
+          sendMessage({cmd: curr_line})
+        }
+        curr_line = '';
       } else if (e.domEvent.keyCode === 8) { // back 删除的情况
         if (term._core.buffer.x > 2) {
+          curr_line = curr_line.slice(0, -1);
           term.write('\b \b')
         }
       } else if (printable) {
+        curr_line += e.key;
         term.write(e.key)
       }
       console.log(1,'print', e.key)
-			
     })
     term.onData(key => {  // 粘贴的情况
       if(key.length > 1) term.write(key)
     })
 
 		setTimeout(() => {
-			// term.clear();
-			// console.log(term.buffer)
-		}, 10 * 1000);
-
+      term.focus();
+		// 	// term.clear();
+		// 	// console.log(term.buffer)
+		}, 1 * 1000);
+    
     window.addEventListener("resize", resizeScreen);
     function resizeScreen() {
       try { // 窗口大小改变时，触发xterm的resize方法使自适应
@@ -93,6 +104,30 @@
         console.log("e", e.message)
       }
     }
+
+    window.addEventListener('keydown', (event) => {
+      let o = document.activeElement;
+			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+			let ck = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let ok = navigator.userAgent.indexOf('Macintosh') > -1  ? event.altKey : false;
+      sendMessage({
+        metaKey: event.metaKey,
+        altKey: event.altKey,
+        shiftKey: event.shiftKey,
+        ctrlKey: event.ctrlKey,
+        keyCode: event.keyCode,
+      })
+    }, false);
+  }
+
+  function title() {
+    return (location.href.indexOf("localhost") > -1 || location.href.indexOf("Documents") > -1 ? "localhost " : "") +
+        '\x1B[1;3;31mxterm.js\x1B[0m $ ';
+  }
+
+  function sendMessage(params) {
+    if(window.ReactNativeWebView)
+      window.ReactNativeWebView.postMessage(JSON.stringify(params));
   }
 
 /*
