@@ -50,7 +50,7 @@
 		<!-- <Input v-model="value" placeholder="請輸入條碼，enter" style="font-size: 20px; width: 300px; padding: 5px; margin-left: 10px; margin-top: 10px;" size="large"
 		clearable />  -->
 		<div>
-			<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" />
+			<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
 		</div>
 	</div>
 </body>
@@ -90,8 +90,9 @@
 			},
 			async mounted(){
 				let self = this;
-				document.body.style.visibility = "visible";
-
+				setTimeout(() => {
+					document.body.style.visibility = "visible";	
+				}, 600);
 				window.onresize = () => {
 					return (() => {
 							// self.screenWidth = document.body.clientWidth;
