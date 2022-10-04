@@ -1,7 +1,7 @@
 Vue.component('vue-item', { 
   template:  `<div style="display: inline-block">
       <canvas :id="barcode"></canvas>
-      <div class="text">{{item.text + "-" + item.value}}</div>
+      <div class="text">{{item.text}}</div>
     </div>
   `,
 	props: {
