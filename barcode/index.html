@@ -13,7 +13,7 @@
 	<script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/locale/zh-TW.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/jsbarcode/3.5.1/JsBarcode.all.min.js"></script>
 	<script src="./item.js"></script>
-	<script src="./editor.js"></script>
+	<script src="./table.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -43,21 +43,30 @@
 			font-size: 14px;
 			color: crimson;
 		}
-		
+		#editor .ivu-modal-body, #colList .ivu-modal-body{
+			padding: 0px;
+			margin: 0px;
+			overflow: hidden;
+		}
 	</style>
 </head>
 <body style="overflow: hidden;">
-	
 	<div id="app" style="display: flex; flex-direction: column;">
 		<!-- <Input v-model="value" placeholder="請輸入條碼，enter" style="font-size: 20px; width: 300px; padding: 5px; margin-left: 10px; margin-top: 10px;" size="large"
 		clearable />  -->
-		<div style="flex: 1; overflow: auto; ">
-			<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
-		</div>
-		<Icon type="md-create" size="30" @click.native="onOpenEditor" 
-			style="cursor: pointer; border: 1px solid #2d8cf0; border-radius: 20px; width: 40px; height: 40px;" />
-		
-		<editor ref="editor" :modal="modalEditor" @onClose="onCloseEditor" />
+		<!-- <Icon type="md-create" size="30" @click.native="onOpenEditor" 
+			style="cursor: pointer; border: 1px solid #2d8cf0; border-radius: 20px; width: 40px; height: 40px; position: absolute;"></Icon> -->
+
+		<Split v-model="spliteRate" min="500"  style="flex: 1;">
+			<div slot="left" class="split-pane">
+				<vue-table ref="tbl" :datas="list" @onRowClick="onRowClick" @onBtnClick="onBtnClick" />
+			</div>
+			<div slot="right" class="split-pane">
+				<div style="flex: 1; overflow: auto; ">
+					<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
+				</div>
+			</div>
+		</Split>
 	</div>
 </body>
 <script>
@@ -87,7 +96,8 @@
 				return {
 					value: undefined,
 					list: [],
-					modalEditor: true
+					spliteRate: 0.2,
+					datas: []
 				};
 			},
 			created() {
@@ -109,13 +119,12 @@
 				}
 			},
 			methods: {
-				onOpenEditor() {
-					this.modalEditor = true;
-					console.log(this.modalEditor)
+				onRowClick(row) {
+					this.row = row;
+			// this.modalDetail = true;
 				},
-        onCloseEditor(result) {
-					this.modalEditor = false;
-				},
+				onBtnClick(e){
+				}
 			}
 		});
 	}
