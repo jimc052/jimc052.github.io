@@ -13,6 +13,7 @@
 	<script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/locale/zh-TW.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/jsbarcode/3.5.1/JsBarcode.all.min.js"></script>
 	<script src="./item.js"></script>
+	<script src="./editor.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -34,30 +35,34 @@
 			height: 100%;
 		}
 		.canvas {
-			margin: 10px;
+			margin: 20px;
 		}
 		.text {
 			text-align: center;
 			/* border: 1px solid red; */
-			font-size: 12px;
+			font-size: 14px;
 			color: crimson;
 		}
 		
 	</style>
 </head>
 <body style="overflow: hidden;">
-	<div id="app">
+	
+	<div id="app" style="display: flex; flex-direction: column;">
 		<!-- <Input v-model="value" placeholder="請輸入條碼，enter" style="font-size: 20px; width: 300px; padding: 5px; margin-left: 10px; margin-top: 10px;" size="large"
 		clearable />  -->
-		<div>
+		<div style="flex: 1; overflow: auto; ">
 			<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
 		</div>
+		<Icon type="md-create" size="30" @click.native="onOpenEditor" 
+			style="cursor: pointer; border: 1px solid #2d8cf0; border-radius: 20px; width: 40px; height: 40px;" />
+		
+		<editor ref="editor" :modal="modalEditor" @onClose="onCloseEditor" />
 	</div>
 </body>
 <script>
 	var vm = null;
 	window.onload = async function(){
-		
 		Vue.prototype.$storage = function (key, value) {
 			if(typeof key == "string" && typeof value == "undefined"){
 				let s = window.localStorage[key];
@@ -80,9 +85,9 @@
 			el: '#app',
 			data() {
 				return {
-					modal: false,
 					value: undefined,
-					list: []
+					list: [],
+					modalEditor: true
 				};
 			},
 			created() {
@@ -104,7 +109,13 @@
 				}
 			},
 			methods: {
-        
+				onOpenEditor() {
+					this.modalEditor = true;
+					console.log(this.modalEditor)
+				},
+        onCloseEditor(result) {
+					this.modalEditor = false;
+				},
 			}
 		});
 	}

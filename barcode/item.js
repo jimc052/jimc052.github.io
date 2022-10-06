@@ -24,6 +24,7 @@ Vue.component('vue-item', {
       if(typeof this.item == "object" && typeof this.item.value == "string") {
         // console.log(this.item.value)
         JsBarcode("#" + this.barcode, this.item.value, {
+          // textMargin: 0,
           // displayValue: false,
           // fontSize: 40,
           // background: "#4b8b7f",
