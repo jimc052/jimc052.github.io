@@ -1,22 +1,21 @@
 Vue.component('vue-table', { 
 	template:  `<div style="height: 100%; overflow: auto; display: flex; flex-direction: column;">
-		<div ref="frame" style="flex: 1;">
-			<Table :id="id" highlight-row :height="height" border :columns="columns" :data="datas2"
-				@on-column-width-resize="onColumnResize"
-			></Table>
-		</div>
-		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
-			<div style="flex: 1; back">
-				<Button type="primary" icon="md-document" size="small"  @click="onClick('document')" />
-				<Button type="primary" icon="md-swap" size="small"  @click="onClick('swap')" v-if="id != 'unknown'" />
-				<Button type="primary" icon="md-grid" size="small"  @click="onClickGrid"  v-if="columns.length > 0" />
-			</div>
-			<Page v-if="datas.length > opts[0]" :total="datas.length" 
-				:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
-				style="" 
-				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
-		</div>
-	</div>`,
+	<div ref="header" style="height: 50px;">
+
+	</div>
+	<div ref="frame" style="flex: 1;">
+		<Table :id="id" highlight-row  border :columns="columns" :data="datas2"
+			@on-column-width-resize="onColumnResize"
+			@on-cell-click="onCellClick"
+		></Table>
+	</div>
+	<div ref="footer" style="display: flex; flex-direction: row; padding: 5px 10px;">
+		<Page v-if="datas.length > opts[0]" :total="datas.length" 
+			:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
+			style="" 
+			@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
+	</div>
+</div>`,
 	props: {
 		datas: {
 			type: Array,
@@ -31,17 +30,75 @@ Vue.component('vue-table', {
 	},
 	data() {
 		return {
-			columns: [],
+			columns: [{
+					type: 'index',
+					align: 'center',
+					fixed: "left",
+					className: "index",
+					indexMethod: (row)=>{
+						return row._index + ((this.currentPage-1) * this.pageSize) + 1;
+					}
+				},{ 
+					title: "條碼",
+					key: "value",
+					resizable: true,
+					width: 150,
+				}, { 
+					title: "品名",
+					key: "text",
+					resizable: true,
+					width: 250,
+					render(h, p){
+						let key = p.column.key;
+						if(this.currendIndex === p.index) {
+							if(this.cell == key) {
+								setTimeout(() => {
+									let obj = document.querySelector("#column_list_inp_" + this.cell + "_" + this.currendIndex);
+									if(obj) {
+										obj.focus();
+									}
+								}, 400);					
+							}
+							return h('input', {
+								style: {
+									width: '100%',
+									padding: '2px 2px',
+									borderRadius: '4px',
+									border: '1px solid #e9eaec',
+									textAlign: typeof p.column.textAlign == "string" ? p.column.textAlign : "left", // 'right'
+								},
+								attrs: {
+									id: "column_list_inp_" + key + "_" + this.currendIndex,
+									maxlength: p.column.maxlength, 
+									type: typeof p.column.type == "string" ? p.column.type : "text", //  "number"
+								},
+								domProps: {
+									value: p.row[key]
+								},
+								on: {
+									input: (event) => {
+										let obj = {};
+										obj[key] = event.target.value;
+										this.$set(this.list, p.index, Object.assign(p.row, obj));
+										this.dirty = true;
+									}
+								}
+							});
+						} else
+							return h('span', p.row[key]);
+					},
+				}],
 			height: 0,
 			opts: [15, 20, 30, 40],
-			pageSize: 15,
+			pageSize: 30,
 			datas2: [],
 			row: {},
-			currentPage: 0
+			currentPage: 0,
+			currendIndex: 0
 		};
 	},
 	created(){
-		let s = window.localStorage["JSON-tbl-pageSize-" + this.id];
+		let s = window.localStorage["barcode-tbl-pageSize"];
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
 		}		
@@ -49,7 +106,6 @@ Vue.component('vue-table', {
 	async mounted () {
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
-		this.createColumns();
 	},
 	destroyed() {
 		// this.removeEventListener("click", this.onRowClick);
@@ -61,10 +117,14 @@ Vue.component('vue-table', {
 			// console.log(col)
 		},
 		onResize(){
-			let viewer = this.$refs["frame"];
-			if(typeof viewer == "object") {
-				this.height = viewer.clientHeight;
-				viewer.style.height = this.height + "px";
+			let leftPane = document.querySelector("#leftPane");
+			let header = this.$refs["header"];
+			let frame = this.$refs["frame"];
+			let footer = this.$refs["footer"];
+			let fh = header.clientHeight + footer.clientHeight;
+			if(typeof frame == "object") {
+				this.height = leftPane.clientHeight - fh;
+				frame.style.height = this.height + "px";
 			}
 		},
 		onChangePage(e) {
@@ -83,7 +143,7 @@ Vue.component('vue-table', {
 			}, 600)
 		},
 		eventListener(opt){
-			let arr = document.querySelectorAll("#" + this.id + " div.ivu-table-fixed-body table td:first-child")
+			let arr = document.querySelectorAll(" div.ivu-table-fixed-body table td:first-child");
 			for(let i = 0; i < arr.length; i++) {
 				if(opt == 0) {
 					arr[i].setAttribute("row", i);
@@ -96,7 +156,7 @@ Vue.component('vue-table', {
 			this.currentPage = 0;
 			this.pageSize = e;
 			this.onChangePage(1);
-			window.localStorage["JSON-tbl-pageSize-" + this.id] = e;
+			window.localStorage["barcode-tbl-pageSize"] = e;
 		},
 		onRowClick(e) {
 			let el = e.target;
@@ -106,55 +166,10 @@ Vue.component('vue-table', {
 			let row = el.getAttribute("row")
 			let index = parseInt(row, 10);
 			this.$emit("onRowClick", this.datas2[index]);
+			console.log(e)
 		},
-		createColumns(arg){
-			this.columns = [];
-			
-			if(this.datas.length > 0) {
-				this.columns.push({
-					type: 'index',
-					width: 40,
-					align: 'center',
-					fixed: "left",
-					className: "index",
-					indexMethod: (row)=>{
-						return row._index + ((this.currentPage-1) * this.pageSize) + 1;
-					}
-				});
-				let arr = typeof arg == "object" ? arg : [];
-				if(arr.length == 0) {
-					let s = window.localStorage["JSON-Cols-" + this.id];
-					if(typeof s == "string" && s.length > 0) 
-						arr = JSON.parse(s);
-				}
-
-				if(arr.length > 0)  {
-					arr.forEach(el => {
-						if(typeof el.visible == "undefined" || el.visible == true){
-							this.columns.push(el)
-						}
-					});
-				} else {
-					let div = document.createElement("div");
-					div.style.display = "inline-block";
-					div.style.position = "absolute";
-					div.style.visibility = "hidden";
-		
-					document.body.insertAdjacentElement('beforebegin', div);
-					for(let key in this.datas[0]) {
-						div.innerHTML = key;
-						this.columns.push({ 
-							title: key,
-							key: key,
-							resizable: true,
-							width: div.clientWidth + 20,
-						})
-					}
-					let parent = div.parentNode;
-					parent.removeChild(div);					
-				}
-				this.onChangePage(1);
-			}
+		onCellClick(row, column, data, event) {
+			console.log(data)
 		},
 		reset() {
 			this.columns = [];
@@ -170,7 +185,6 @@ Vue.component('vue-table', {
 	watch: {
 		datas(value) {
 			this.currentPage = 0;
-			if(this.columns.length == 0) this.createColumns();
 			this.height = 0;
 			setTimeout(() => {
 				this.onResize();

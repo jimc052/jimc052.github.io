@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>BAR Code</title>
+	<title>Bar Code</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
@@ -43,30 +43,42 @@
 			font-size: 14px;
 			color: crimson;
 		}
-		#editor .ivu-modal-body, #colList .ivu-modal-body{
+
+		.ivu-table-header thead tr th, .ivu-table-fixed-header thead tr th{
 			padding: 0px;
-			margin: 0px;
-			overflow: hidden;
+		}
+		.ivu-table-cell {
+			padding-left: 5px !important;
+			padding-right: 5px !important;
+		}
+		.ivu-table td, .ivu-table th {
+			height: 35px  !important;
+		}
+		.ivu-table th, .ivu-table th .ivu-table-cell {
+			text-align: center !important;
+		}
+		.ivu-table td:first-child {
+			cursor: pointer;
+			background-color: #f8f8f9;
+
 		}
 	</style>
 </head>
 <body style="overflow: hidden;">
-	<div id="app" style="display: flex; flex-direction: column;">
+	<div id="app" style="display: flex; flex-direction: row;">
 		<!-- <Input v-model="value" placeholder="請輸入條碼，enter" style="font-size: 20px; width: 300px; padding: 5px; margin-left: 10px; margin-top: 10px;" size="large"
 		clearable />  -->
 		<!-- <Icon type="md-create" size="30" @click.native="onOpenEditor" 
 			style="cursor: pointer; border: 1px solid #2d8cf0; border-radius: 20px; width: 40px; height: 40px; position: absolute;"></Icon> -->
 
-		<Split v-model="spliteRate" min="500"  style="flex: 1;">
-			<div slot="left" class="split-pane">
-				<vue-table ref="tbl" :datas="list" @onRowClick="onRowClick" @onBtnClick="onBtnClick" />
+			<div id="leftPane" style="height: 100%; width: 450px; display: flex; flex-direction: column;">
+				
+				<vue-table ref="tbl" :datas="list" @onRowClick="onRowClick" @onBtnClick="onBtnClick" style="flex: 1;" />
+
 			</div>
-			<div slot="right" class="split-pane">
-				<div style="flex: 1; overflow: auto; ">
-					<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
-				</div>
+			<div style="flex: 1; overflow: auto; ">
+				<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
 			</div>
-		</Split>
 	</div>
 </body>
 <script>
@@ -96,7 +108,6 @@
 				return {
 					value: undefined,
 					list: [],
-					spliteRate: 0.2,
 					datas: []
 				};
 			},
@@ -121,9 +132,11 @@
 			methods: {
 				onRowClick(row) {
 					this.row = row;
-			// this.modalDetail = true;
 				},
 				onBtnClick(e){
+				},
+				splitMove() {
+					this.broadcast.$emit('onResize');	
 				}
 			}
 		});
@@ -132,6 +145,8 @@
 	// https://www.iviewui.com/components/menu
 	// https://www.iviewui.com/components/modal
 	// https://www.iviewui.com/components/icon
+	https://www.iviewui.com/view-ui-plus/component/form/table
+	https://www.iviewui.com/view-ui-plus/component/layout/split
 
 	*/
 </script>
