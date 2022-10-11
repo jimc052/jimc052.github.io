@@ -1,15 +1,29 @@
 Vue.component('vue-table', { 
 	template:  `<div style="height: 100%; overflow: auto; display: flex; flex-direction: column;">
-	<div ref="header" style="height: 50px;">
+	<div ref="header" style="height: 50px; display: flex; flex-direction: row; align-items: center; ">
+		<Select v-if="groupEditMode == ''" v-model="group" style="flex: 1; margin: 0px 5px; " size="large"
+			@on-select="onSelect"
+		>
+			<Option v-for="item in groups" :value="item" :key="item">{{ item }}</Option>
+		</Select>
 
+		<Input v-else v-model="groupEditValue" placeholder="請輸入類別" style="flex: 1; font-size: 20px; padding: 5px; margin: 0px 5px; " size="large"
+			clearable />
+
+		<Button v-if="groupEditMode == ''" @click="onClickAddGroup" icon="md-add" type="primary" shape="circle"></Button>
+		<Button v-else @click="onClickSaveGroup" icon="md-document" type="primary" shape="circle"></Button>
 	</div>
 	<div ref="frame" style="flex: 1;">
-		<Table :id="id" highlight-row  border :columns="columns" :data="datas2"
+		<Table highlight-row  border :columns="columns" :data="dataPage"
 			@on-column-width-resize="onColumnResize"
 			@on-cell-click="onCellClick"
 		></Table>
 	</div>
-	<div ref="footer" style="display: flex; flex-direction: row; padding: 5px 10px;">
+	<div ref="footer" style="display: flex; flex-direction: column; padding: 5px 10px;">
+		<div style="display: flex; flex-direction: row; margin-bottom: 5px;">
+			<Button v-if="group.length > 0" @click="onClickAddRow" icon="md-add" type="primary"></Button>
+			<Button v-if="currentRow > -1" @click="onClickDelRow" icon="md-trash" type="primary" style="margin-left: 5px;"></Button>
+		</div>
 		<Page v-if="datas.length > opts[0]" :total="datas.length" 
 			:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
 			style="" 
@@ -17,102 +31,177 @@ Vue.component('vue-table', {
 	</div>
 </div>`,
 	props: {
-		datas: {
-			type: Array,
-			// require: true, 
-			default: [] // 
-		},
-		id: {
-			type: String,
-			// require: true, 
-			default: "unknown" // 
-		},
+		// datas: {
+		// 	type: Array,
+		// 	// require: true, 
+		// 	default: [] // 
+		// },
 	},
 	data() {
 		return {
 			columns: [{
-					type: 'index',
-					align: 'center',
-					fixed: "left",
-					className: "index",
-					indexMethod: (row)=>{
-						return row._index + ((this.currentPage-1) * this.pageSize) + 1;
-					}
-				},{ 
-					title: "條碼",
-					key: "value",
-					resizable: true,
-					width: 150,
-				}, { 
-					title: "品名",
-					key: "text",
-					resizable: true,
-					width: 250,
-					render(h, p){
-						let key = p.column.key;
-						if(this.currendIndex === p.index) {
-							if(this.cell == key) {
-								setTimeout(() => {
-									let obj = document.querySelector("#column_list_inp_" + this.cell + "_" + this.currendIndex);
-									if(obj) {
-										obj.focus();
-									}
-								}, 400);					
-							}
-							return h('input', {
-								style: {
-									width: '100%',
-									padding: '2px 2px',
-									borderRadius: '4px',
-									border: '1px solid #e9eaec',
-									textAlign: typeof p.column.textAlign == "string" ? p.column.textAlign : "left", // 'right'
-								},
-								attrs: {
-									id: "column_list_inp_" + key + "_" + this.currendIndex,
-									maxlength: p.column.maxlength, 
-									type: typeof p.column.type == "string" ? p.column.type : "text", //  "number"
-								},
-								domProps: {
-									value: p.row[key]
-								},
-								on: {
-									input: (event) => {
-										let obj = {};
-										obj[key] = event.target.value;
-										this.$set(this.list, p.index, Object.assign(p.row, obj));
-										this.dirty = true;
-									}
-								}
-							});
-						} else
-							return h('span', p.row[key]);
-					},
-				}],
+				type: 'index',
+				align: 'center',
+				fixed: "left",
+				className: "index",
+				indexMethod: (row)=>{
+					return row._index + ((this.currentPage-1) * this.pageSize) + 1;
+				}
+			},{ 
+				title: "條碼",
+				key: "value",
+				// resizable: true,
+				width: 150,
+				render: this.render
+			}, { 
+				title: "品名",
+				key: "text",
+				// resizable: true,
+				width: 250,
+				render: this.render
+			}],
 			height: 0,
 			opts: [15, 20, 30, 40],
 			pageSize: 30,
-			datas2: [],
+			dataPage: [],
+			datas: [],
 			row: {},
 			currentPage: 0,
-			currendIndex: 0
+			currentRow: -1,
+			currentColumn: -1,
+			groups: [],
+			group: "",
+			groupEditMode: "",
+			groupEditValue: ""
 		};
 	},
 	created(){
 		let s = window.localStorage["barcode-tbl-pageSize"];
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
-		}		
+		}
+
+		let group = window.localStorage["barcode-group"];
+		if(typeof group != "undefined") {
+			this.group = group;
+		}
+
+		let groups = window.localStorage["barcode-groups"];
+		if(typeof groups != "undefined") {
+			this.groups = JSON.parse(groups);
+		}
 	},
 	async mounted () {
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
+		this.retrieve();
 	},
 	destroyed() {
 		// this.removeEventListener("click", this.onRowClick);
-		if(this.datas2.length > 0) this.eventListener(1);
+		if(this.dataPage.length > 0) this.eventListener(1);
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		save() {
+			localStorage["barcode-" + this.group] = JSON.stringify(this.datas);
+		},
+		render(h, p) {
+			let key = p.column.key;
+			if(this.currentRow == p.index) {
+				setTimeout(() => {
+					let obj = document.querySelector("#input_" + this.currentColumn + "_" + this.currentRow);
+					if(obj) {
+						obj.focus();
+					}
+				}, 400);	
+				return h('input', {
+					style: {
+						width: '100%',
+						padding: '2px 2px',
+						borderRadius: '4px',
+						border: '1px solid #e9eaec',
+						fontSize: "18px",
+						textAlign: typeof p.column.textAlign == "string" ? p.column.textAlign : "left", // 'right'
+					},
+					attrs: {
+						id: "input_" + key + "_" + p.index,
+						// maxlength: p.column.maxlength, 
+						// type: typeof p.column.type == "string" ? p.column.type : "text", //  "number"
+					},
+					domProps: {
+						value: p.row[key],
+						// _data: p.index,
+						// key: key
+					},
+					on: {
+						input: (event) => {
+							let obj = {};
+							obj[key] = event.target.value;
+							let json = Object.assign(p.row, obj);
+							this.$set(this.dataPage, p.index, json);
+
+							let index = ((this.currentPage - 1) * this.pageSize) + p.index;
+							this.datas[index][key] = event.target.value;
+							this.save();
+
+							this.dirty = true;
+							this.$emit("child-edit", p.index, obj);
+						}, 
+						keyup: (e) => {
+							let o = document.activeElement;
+							let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? e.metaKey : e.ctrlKey;
+							let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? e.ctrlKey : e.altKey;
+							let sk = e.shiftKey, keyCode = e.keyCode;
+							let id = o.id.split("_");
+							let col = id[1], index = id[2]
+							// console.log(o.id)
+							if(e.keyCode == 13) {
+								if(col == "value") {
+									let obj = document.querySelector("#input_text_" + this.currentRow);
+									if(obj) {
+										obj.focus();
+									}
+								} else if(this.currentRow + 1 < this.dataPage.length){
+									this.moveNext(this.currentRow + 1, "value")
+								}
+							} else if(e.keyCode == 38) { // up
+								if(this.currentRow - 1 >= 0){
+									this.moveNext(this.currentRow - 1, this.currentColumn)
+								}
+							} else if(e.keyCode == 40) { // down
+								if(this.currentRow + 1 < this.dataPage.length){
+									this.moveNext(this.currentRow + 1, this.currentColumn)
+								}
+							} else {
+								return false;
+							}
+							// if(b == true) {
+								e.preventDefault();
+								e.stopImmediatePropagation();
+								e.stopPropagation();				
+							// }
+						
+						}
+					}
+				});
+			} else 
+				return h('span', p.row[key]);
+		},
+		onSelect(e) {
+			// console.log(e.label)
+			this.group = e.label;
+			this.retrieve();
+			window.localStorage["barcode-group"] = this.group
+		},
+		retrieve() {
+			this.currentRow = -1;
+			this.currentPage = 0;
+			if(typeof localStorage["barcode-" + this.group] == "string") {
+				this.datas = JSON.parse(localStorage["barcode-" + this.group]);
+			} else 
+				this.datas = [];
+			this.onChangePage(1);
+		},
 		onColumnResize(width, start, col) { // 還沒寫...............
 			// console.log(col)
 		},
@@ -130,14 +219,15 @@ Vue.component('vue-table', {
 		onChangePage(e) {
 			if(this.currentPage == e) return;
 			this.currentPage = e;
-			if(this.datas2.length > 0) this.eventListener(1);
-			this.datas2 = [];
+			if(this.dataPage.length > 0) this.eventListener(1);
+			this.dataPage = [];
 			let start = (e - 1) * this.pageSize, end = start + this.pageSize;
 			if(end > this.datas.length) end = this.datas.length;
 			for(let i = start; i < end; i++) {
-				this.datas2.push(this.datas[i]);
+				this.dataPage.push(Object.assign({index: i}, this.datas[i]));
 			}
 
+			this.$emit("child-retrieve", this.dataPage);
 			setTimeout(()=>{
 				this.eventListener(0);
 			}, 600)
@@ -165,32 +255,60 @@ Vue.component('vue-table', {
 			}
 			let row = el.getAttribute("row")
 			let index = parseInt(row, 10);
-			this.$emit("onRowClick", this.datas2[index]);
-			console.log(e)
+			this.$emit("onRowClick", this.dataPage[index]);
+			// console.log(e)
 		},
 		onCellClick(row, column, data, event) {
-			console.log(data)
+			this.moveNext(row._index, typeof column.key == "string" ? column.key : "value")
+		},
+		moveNext(index, col) {
+			this.currentRow = index;
+			this.currentColumn = col;
+			this.$set(this.dataPage, index, this.dataPage[index]);
 		},
 		reset() {
-			this.columns = [];
-			this.datas2 = [];
+			this.dataPage = [];
 		},
-		onClick(e){
-			this.$emit("onBtnClick", e);
+		onClickAddGroup() {
+			this.groupEditValue = "";
+			this.groupEditMode = "add"
 		},
-		onClickGrid(){
-			this.$emit("onBtnClick", {id: this.id, columns: this.columns});
+		onClickAddRow() {
+			this.dataPage.push({index: this.datas.length, text: "", value: ""})
+			this.datas.push({text: "", value: ""});
+			this.currentRow = this.dataPage.length - 1;
+			this.currentColumn = "value";
+		},
+		onClickDelRow() {
+			let row = this.dataPage[this.currentRow];
+			this.datas.splice(row.index, 1)
+			this.save();
+			this.dataPage.splice(this.currentRow, 1);
+			if(this.dataPage.length == 0 && this.currentPage > 1) {
+				this.onChangePage(this.currentPage - 1);
+			}
+		},
+		onClickSaveGroup() {
+			if(this.groupEditValue.trim().length == 0) {
+				alert("請輸入類別")
+				return;
+			}
+			let exists = this.groups.some(el => {
+				return el == this.groupEditValue;
+			})
+			if(exists == false) {
+				this.group = this.groupEditValue;
+				this.groupEditMode = "";
+				this.groupEditValue = "";
+				this.groups.push(this.group)
+				window.localStorage["barcode-group"] = this.group
+				window.localStorage["barcode-groups"] = JSON.stringify(this.groups);
+			} else {
+				alert(`「${this.groupEditValue}」類別已存在!`)
+			}
 		}
 	},
 	watch: {
-		datas(value) {
-			this.currentPage = 0;
-			this.height = 0;
-			setTimeout(() => {
-				this.onResize();
-				this.onChangePage(1);
-			}, 600);
-		}
 	}
 });
 /*

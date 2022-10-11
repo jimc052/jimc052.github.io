@@ -66,15 +66,8 @@
 </head>
 <body style="overflow: hidden;">
 	<div id="app" style="display: flex; flex-direction: row;">
-		<!-- <Input v-model="value" placeholder="請輸入條碼，enter" style="font-size: 20px; width: 300px; padding: 5px; margin-left: 10px; margin-top: 10px;" size="large"
-		clearable />  -->
-		<!-- <Icon type="md-create" size="30" @click.native="onOpenEditor" 
-			style="cursor: pointer; border: 1px solid #2d8cf0; border-radius: 20px; width: 40px; height: 40px; position: absolute;"></Icon> -->
-
 			<div id="leftPane" style="height: 100%; width: 450px; display: flex; flex-direction: column;">
-				
-				<vue-table ref="tbl" :datas="list" @onRowClick="onRowClick" @onBtnClick="onBtnClick" style="flex: 1;" />
-
+				<vue-table ref="tbl" @child-retrieve="onRetrieve" @child-edit="onEdit" style="flex: 1;" />
 			</div>
 			<div style="flex: 1; overflow: auto; ">
 				<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
@@ -125,19 +118,18 @@
 							self.broadcast.$emit('onResize');
 					})()
 				}
-				if(typeof localStorage["barcode"] == "string") {
-					this.list = JSON.parse(localStorage["barcode"]);
-				}
+				// if(typeof localStorage["barcode"] == "string") {
+				// 	this.list = JSON.parse(localStorage["barcode"]);
+				// }
 			},
 			methods: {
-				onRowClick(row) {
-					this.row = row;
+				onRetrieve(e){
+					this.list = e;
 				},
-				onBtnClick(e){
+				onEdit(index, data){
+					let json = Object.assign(this.list[index], data)
+					this.$set(this.list, index, json);
 				},
-				splitMove() {
-					this.broadcast.$emit('onResize');	
-				}
 			}
 		});
 	}

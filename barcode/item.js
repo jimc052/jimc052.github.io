@@ -1,7 +1,7 @@
 Vue.component('vue-item', { 
   template:  `<div style="display: inline-block">
       <canvas :id="barcode"></canvas>
-      <div class="text">{{item.text}}</div>
+      <div class="text">{{(index + 1) + ": " + item.text}}</div>
     </div>
   `,
 	props: {
@@ -16,7 +16,6 @@ Vue.component('vue-item', {
 		};
 	},
 	created(){
-		
 	},
 	async mounted () {
     this.barcode = "_" + this.index;
@@ -24,6 +23,7 @@ Vue.component('vue-item', {
       if(typeof this.item == "object" && typeof this.item.value == "string") {
         // console.log(this.item.value)
         JsBarcode("#" + this.barcode, this.item.value, {
+          height: 60,
           // textMargin: 0,
           // displayValue: false,
           // fontSize: 40,
@@ -38,18 +38,24 @@ Vue.component('vue-item', {
 	destroyed() {
   },
 	methods: {
-		onClick(){
-      
-    }
   },
   computed: {
-   
   },
 	watch: {
     item(value) {
       console.log(value)
+      JsBarcode("#" + this.barcode, this.item.value, {
+        height: 60,
+        // textMargin: 0,
+        // displayValue: false,
+        // fontSize: 40,
+        // background: "#4b8b7f",
+        // lineColor: "#ffffff",
+        // margin: 40,
+        // marginLeft: 80
+      });
+      
     }, 
-    
 	}
 });
 /*
