@@ -77,7 +77,7 @@ Vue.component('vue-table', {
 				render: this.render
 			}],
 			height: 0,
-			opts: [15, 20, 30, 40],
+			opts: [15, 20, 30, 50, 75, 100],
 			pageSize: 30,
 			dataPage: [],
 			datas: [],
@@ -98,14 +98,19 @@ Vue.component('vue-table', {
 			this.pageSize = parseInt(s, 10);
 		}
 
-		let group = window.localStorage["barcode-group"];
-		if(typeof group != "undefined") {
-			this.group = group;
-		}
-
-		let selectGroups = window.localStorage["barcode-groups"];
-		if(typeof selectGroups != "undefined") {
-			this.selectGroups = JSON.parse(selectGroups);
+		let mode = this.$queryString("mode");
+		if(mode.length > 0) {
+			this.group = mode;
+			this.selectGroups.push(mode)
+		} else {
+			let group = window.localStorage["barcode-group"];
+			if(typeof group != "undefined") {
+				this.group = group;
+			}
+			let selectGroups = window.localStorage["barcode-groups"];
+			if(typeof selectGroups != "undefined") {
+				this.selectGroups = JSON.parse(selectGroups);
+			}
 		}
 	},
 	async mounted () {
