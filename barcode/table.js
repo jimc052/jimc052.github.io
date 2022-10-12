@@ -55,7 +55,10 @@ Vue.component('vue-table', {
 				className: "index",
 				indexMethod: (row)=>{
 					return row._index + ((this.currentPage-1) * this.pageSize) + 1;
-				}
+				},
+				// render(h, p) {
+				// 	return h('span', p.index + 1);
+				// }
 			},{ 
 				title: "條碼",
 				key: "value",
