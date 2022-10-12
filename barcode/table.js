@@ -60,9 +60,6 @@ Vue.component('vue-table', {
 				indexMethod: (row)=>{
 					return row._index + ((this.currentPage-1) * this.pageSize) + 1;
 				},
-				// render(h, p) {
-				// 	return h('span', p.index + 1);
-				// }
 			},{ 
 				title: "條碼",
 				key: "value",
@@ -100,8 +97,8 @@ Vue.component('vue-table', {
 
 		let mode = this.$queryString("mode");
 		if(mode.length > 0) {
-			this.group = mode;
-			this.selectGroups.push(mode)
+			this.group = mode == "COUPON" ? "優惠券" : mode;
+			this.selectGroups.push(this.group)
 		} else {
 			let group = window.localStorage["barcode-group"];
 			if(typeof group != "undefined") {
@@ -132,7 +129,7 @@ Vue.component('vue-table', {
 		},
 		render(h, p) {
 			let key = p.column.key;
-			if(this.currentRow == p.index) {
+			if(this.isEditable == true && this.currentRow == p.index) {
 				setTimeout(() => {
 					let obj = document.querySelector("#input_" + this.currentColumn + "_" + this.currentRow);
 					if(obj) {
@@ -230,19 +227,12 @@ Vue.component('vue-table', {
 			let STORE = this.$queryString("STORE")
 			let ID_NO = this.$queryString("ID_NO")
 			if(this.group == "優惠券" && SITE.length > 0 && STORE.length > 0 && ID_NO.length > 0){
+				try {
 				let result = await this.coupons(SITE, STORE, ID_NO);
-				result = result.sort((a, b) => {
-					if(a.pcName > b.pcName)
-						return -1;
-					else if(a.pcName < b.pcName)
-						return 1;
-					return 0;
-				});
-				let arr = [];
-				result.forEach(el => {
-					arr.push({text: el.pcName, value: el.cpnNo})
-				})
-				this.datas = arr;
+				this.datas = result;
+				} catch (e) {
+
+				}
 				this.isEditable = false;
 			} else if(typeof localStorage["barcode-" + this.group] == "string") {
 				this.datas = JSON.parse(localStorage["barcode-" + this.group]);
@@ -432,7 +422,19 @@ Vue.component('vue-table', {
 								if(typeof json.data == "undefined") json.data = {};
 								json.data.code = json.code;
 								json.data.msg = json.msg;
-								success(json.data.coupons);
+
+								let arr = [];
+								let result = json.data.coupons.sort((a, b) => {
+									if(a.pcName > b.pcName)
+										return -1;
+									else if(a.pcName < b.pcName)
+										return 1;
+									return 0;
+								});
+								result.forEach(el => {
+									arr.push({text: el.pcName, value: "bccCpn_" + el.cpnNo})
+								})
+								success(arr);
 						} else {
 							throw json;
 						}
@@ -450,7 +452,6 @@ Vue.component('vue-table', {
 	},
 	watch: {
 	},
-
 });
 /*
 https://www.iviewui.com/components/table
