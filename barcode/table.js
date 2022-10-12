@@ -210,7 +210,6 @@ Vue.component('vue-table', {
 		retrieve() {
 			this.currentRow = -1;
 			this.currentPage = 0;
-			console.log("barcode-" + this.group)
 			if(typeof localStorage["barcode-" + this.group] == "string") {
 				this.datas = JSON.parse(localStorage["barcode-" + this.group]);
 			} else 

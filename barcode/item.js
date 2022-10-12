@@ -20,10 +20,10 @@ Vue.component('vue-item', {
 	async mounted () {
     this.barcode = "_" + this.index;
     setTimeout(() => {
-      if(typeof this.item == "object" && typeof this.item.value == "string") {
+      if(typeof this.item == "object" && typeof this.item.value != "undefined") {
         this.render();
       }    
-    }, 300);
+    }, 200);
 	},
 	destroyed() {
   },
