@@ -1,17 +1,26 @@
 Vue.component('vue-table', { 
-	template:  `<div style="height: 100%; overflow: auto; display: flex; flex-direction: column;">
+	template:  `<div style="height: 100%; width: 450px; overflow: auto; display: flex; flex-direction: column;">
 	<div ref="header" style="height: 50px; display: flex; flex-direction: row; align-items: center; ">
-		<Select v-if="groupEditMode == ''" v-model="group" style="flex: 1; margin: 0px 5px; " size="large"
+		<Select v-if="editModeGroup == ''" v-model="group" style="flex: 1; margin: 0px 5px; " size="large"
 			@on-select="onSelect"
 		>
-			<Option v-for="item in groups" :value="item" :key="item">{{ item }}</Option>
+			<Option v-for="item in selectGroups" :value="item" :key="item">{{ item }}</Option>
 		</Select>
 
-		<Input v-else v-model="groupEditValue" placeholder="請輸入類別" style="flex: 1; font-size: 20px; padding: 5px; margin: 0px 5px; " size="large"
-			clearable />
-
-		<Button v-if="groupEditMode == ''" @click="onClickAddGroup" icon="md-add" type="primary" shape="circle"></Button>
-		<Button v-else @click="onClickSaveGroup" icon="md-document" type="primary" shape="circle"></Button>
+		<Input ref="input" v-else v-model="editValueGroup" placeholder="請輸入類別" 
+			style="flex: 1; font-size: 20px; padding: 5px; margin: 0px 5px; " size="large" clearable />
+		<div v-if="editModeGroup == ''">
+			<Button @click="onClickAddGroup" icon="md-add" type="primary" shape="circle"></Button>
+			<Button v-if="group.length > 0" @click="onClickDelGroup" icon="md-trash" type="primary" shape="circle"></Button>
+		</div>
+		<div v-else>
+			<Button v-if="editValueGroup.length > 0" @click="onClickSaveGroup" icon="md-document" type="primary" shape="circle"></Button>
+			<Button @click="onClickCloseGroup" icon="md-close" type="primary" shape="circle"></Button>
+		</div>
+		<!--
+		<Button @click="onClickCloseGroup" icon="md-arrow-back" type="primary" shape="circle"></Button>
+		<Button @click="onClickCloseGroup" icon="md-arrow-forward" type="primary" shape="circle"></Button>
+		-->
 	</div>
 	<div ref="frame" style="flex: 1;">
 		<Table highlight-row  border :columns="columns" :data="dataPage"
@@ -69,10 +78,10 @@ Vue.component('vue-table', {
 			currentPage: 0,
 			currentRow: -1,
 			currentColumn: -1,
-			groups: [],
+			selectGroups: [],
 			group: "",
-			groupEditMode: "",
-			groupEditValue: ""
+			editModeGroup: "",
+			editValueGroup: ""
 		};
 	},
 	created(){
@@ -86,9 +95,9 @@ Vue.component('vue-table', {
 			this.group = group;
 		}
 
-		let groups = window.localStorage["barcode-groups"];
-		if(typeof groups != "undefined") {
-			this.groups = JSON.parse(groups);
+		let selectGroups = window.localStorage["barcode-groups"];
+		if(typeof selectGroups != "undefined") {
+			this.selectGroups = JSON.parse(selectGroups);
 		}
 	},
 	async mounted () {
@@ -103,7 +112,10 @@ Vue.component('vue-table', {
   },
 	methods: {
 		save() {
-			localStorage["barcode-" + this.group] = JSON.stringify(this.datas);
+			if(this.datas.length == 0)
+				delete localStorage["barcode-" + this.group];
+			else
+				localStorage["barcode-" + this.group] = JSON.stringify(this.datas);
 		},
 		render(h, p) {
 			let key = p.column.key;
@@ -137,6 +149,8 @@ Vue.component('vue-table', {
 						input: (event) => {
 							let obj = {};
 							obj[key] = event.target.value;
+							this.$emit("child-edit", p.index, obj);
+
 							let json = Object.assign(p.row, obj);
 							this.$set(this.dataPage, p.index, json);
 
@@ -145,7 +159,7 @@ Vue.component('vue-table', {
 							this.save();
 
 							this.dirty = true;
-							this.$emit("child-edit", p.index, obj);
+							
 						}, 
 						keyup: (e) => {
 							let o = document.activeElement;
@@ -195,7 +209,7 @@ Vue.component('vue-table', {
 		},
 		retrieve() {
 			this.currentRow = -1;
-			this.currentPage = 0;
+			this.currentPage = 1;
 			if(typeof localStorage["barcode-" + this.group] == "string") {
 				this.datas = JSON.parse(localStorage["barcode-" + this.group]);
 			} else 
@@ -243,7 +257,6 @@ Vue.component('vue-table', {
 			}
 		},
 		onPageSizeChange(e) {
-			this.currentPage = 0;
 			this.pageSize = e;
 			this.onChangePage(1);
 			window.localStorage["barcode-tbl-pageSize"] = e;
@@ -268,16 +281,18 @@ Vue.component('vue-table', {
 		},
 		reset() {
 			this.dataPage = [];
-		},
-		onClickAddGroup() {
-			this.groupEditValue = "";
-			this.groupEditMode = "add"
+			this.currentRow = -1;
+			this.onChangePage(1);
+			this.editValueGroup = "";
+			this.editModeGroup = "";
+			this.$emit("child-retrieve", this.dataPage);
 		},
 		onClickAddRow() {
 			this.dataPage.push({index: this.datas.length, text: "", value: ""})
 			this.datas.push({text: "", value: ""});
 			this.currentRow = this.dataPage.length - 1;
 			this.currentColumn = "value";
+			this.$emit("child-retrieve", this.dataPage);
 		},
 		onClickDelRow() {
 			let row = this.dataPage[this.currentRow];
@@ -287,25 +302,59 @@ Vue.component('vue-table', {
 			if(this.dataPage.length == 0 && this.currentPage > 1) {
 				this.onChangePage(this.currentPage - 1);
 			}
+			this.currentRow = -1;
+		},
+		onClickAddGroup() {
+			this.editValueGroup = "";
+			this.editModeGroup = "add";
+			setTimeout(() => {
+				let input = this.$refs["input"];
+				if(input) {
+					input.focus();
+				}				
+			}, 300);
+		},
+		onClickDelGroup() {
+			delete window.localStorage["barcode-" + this.group];
+
+			for(let i = 0; i < this.selectGroups.length; i++) {
+				if(this.selectGroups[i] == this.group) {
+					this.selectGroups.splice(i, 1);
+					break;
+				}
+			}
+			if(this.selectGroups.length > 0)
+				window.localStorage["barcode-groups"] = JSON.stringify(this.selectGroups);
+			else {
+				delete window.localStorage["barcode-groups"];
+			}
+
+			delete window.localStorage["barcode-group"];
+			this.datas = [];
+			this.reset();
+			location.reload();
 		},
 		onClickSaveGroup() {
-			if(this.groupEditValue.trim().length == 0) {
+			if(this.editValueGroup.trim().length == 0) {
 				alert("請輸入類別")
 				return;
 			}
-			let exists = this.groups.some(el => {
-				return el == this.groupEditValue;
+			let exists = this.selectGroups.some(el => {
+				return el == this.editValueGroup;
 			})
 			if(exists == false) {
-				this.group = this.groupEditValue;
-				this.groupEditMode = "";
-				this.groupEditValue = "";
-				this.groups.push(this.group)
+				this.group = this.editValueGroup;
+				this.selectGroups.push(this.group)
 				window.localStorage["barcode-group"] = this.group
-				window.localStorage["barcode-groups"] = JSON.stringify(this.groups);
+				window.localStorage["barcode-groups"] = JSON.stringify(this.selectGroups);
+				this.reset();
 			} else {
-				alert(`「${this.groupEditValue}」類別已存在!`)
+				alert(`「${this.editValueGroup}」類別已存在!`)
 			}
+		},
+		onClickCloseGroup() {
+			this.editValueGroup = "";
+			this.editModeGroup = "";
 		}
 	},
 	watch: {

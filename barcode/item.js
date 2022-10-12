@@ -21,29 +21,14 @@ Vue.component('vue-item', {
     this.barcode = "_" + this.index;
     setTimeout(() => {
       if(typeof this.item == "object" && typeof this.item.value == "string") {
-        // console.log(this.item.value)
-        JsBarcode("#" + this.barcode, this.item.value, {
-          height: 60,
-          // textMargin: 0,
-          // displayValue: false,
-          // fontSize: 40,
-          // background: "#4b8b7f",
-          // lineColor: "#ffffff",
-          // margin: 40,
-          // marginLeft: 80
-        });
+        this.render();
       }    
-    }, 600);
+    }, 300);
 	},
 	destroyed() {
   },
 	methods: {
-  },
-  computed: {
-  },
-	watch: {
-    item(value) {
-      console.log(value)
+    render() {
       JsBarcode("#" + this.barcode, this.item.value, {
         height: 60,
         // textMargin: 0,
@@ -54,7 +39,13 @@ Vue.component('vue-item', {
         // margin: 40,
         // marginLeft: 80
       });
-      
+    }
+  },
+  computed: {
+  },
+	watch: {
+    item(value) {
+      this.render();
     }, 
 	}
 });
