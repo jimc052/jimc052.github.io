@@ -209,7 +209,8 @@ Vue.component('vue-table', {
 		},
 		retrieve() {
 			this.currentRow = -1;
-			this.currentPage = 1;
+			this.currentPage = 0;
+			console.log("barcode-" + this.group)
 			if(typeof localStorage["barcode-" + this.group] == "string") {
 				this.datas = JSON.parse(localStorage["barcode-" + this.group]);
 			} else 
@@ -282,6 +283,7 @@ Vue.component('vue-table', {
 		reset() {
 			this.dataPage = [];
 			this.currentRow = -1;
+			this.currentPage = 0;
 			this.onChangePage(1);
 			this.editValueGroup = "";
 			this.editModeGroup = "";
