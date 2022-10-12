@@ -11,7 +11,7 @@ Vue.component('vue-table', {
 			style="flex: 1; font-size: 20px; padding: 5px; margin: 0px 5px; " size="large" clearable />
 		<div v-if="editModeGroup == ''">
 			<Button @click="onClickAddGroup" icon="md-add" type="primary" shape="circle"></Button>
-			<Button v-if="group.length > 0" @click="onClickDelGroup" icon="md-trash" type="primary" shape="circle"></Button>
+			<Button v-if="isEditable == true && group.length > 0" @click="onClickDelGroup" icon="md-trash" type="primary" shape="circle"></Button>
 		</div>
 		<div v-else>
 			<Button v-if="editValueGroup.length > 0" @click="onClickSaveGroup" icon="md-document" type="primary" shape="circle"></Button>
@@ -23,20 +23,24 @@ Vue.component('vue-table', {
 		-->
 	</div>
 	<div ref="frame" style="flex: 1;">
-		<Table highlight-row  border :columns="columns" :data="dataPage"
+		<Table :height="height" highlight-row  border :columns="columns" :data="dataPage"
 			@on-column-width-resize="onColumnResize"
 			@on-cell-click="onCellClick"
 		></Table>
 	</div>
 	<div ref="footer" style="display: flex; flex-direction: column; padding: 5px 10px;">
-		<div style="display: flex; flex-direction: row; margin-bottom: 5px;">
+		<div v-if="isEditable == true" style="display: flex; flex-direction: row; margin-bottom: 5px;">
 			<Button v-if="group.length > 0" @click="onClickAddRow" icon="md-add" type="primary"></Button>
 			<Button v-if="currentRow > -1" @click="onClickDelRow" icon="md-trash" type="primary" style="margin-left: 5px;"></Button>
 		</div>
+		<div v-else style="display: flex; flex-direction: row; margin-bottom: 5px;">
+			<Button  @click="onClickRefresh" icon="md-refresh" type="primary"></Button>
+		</div>
+
 		<Page v-if="datas.length > opts[0]" :total="datas.length" 
 			:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
 			style="" 
-			@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
+			@on-change="onChangePage" @on-page-size-change="onChangePageSize" />
 	</div>
 </div>`,
 	props: {
@@ -84,7 +88,8 @@ Vue.component('vue-table', {
 			selectGroups: [],
 			group: "",
 			editModeGroup: "",
-			editValueGroup: ""
+			editValueGroup: "",
+			isEditable: true,
 		};
 	},
 	created(){
@@ -210,10 +215,31 @@ Vue.component('vue-table', {
 			this.retrieve();
 			window.localStorage["barcode-group"] = this.group
 		},
-		retrieve() {
+		async retrieve() {
 			this.currentRow = -1;
 			this.currentPage = 0;
-			if(typeof localStorage["barcode-" + this.group] == "string") {
+			this.dataPage = [];
+			this.datas = [];
+			this.isEditable = true;
+			let SITE = this.$queryString("SITE")
+			let STORE = this.$queryString("STORE")
+			let ID_NO = this.$queryString("ID_NO")
+			if(this.group == "優惠券" && SITE.length > 0 && STORE.length > 0 && ID_NO.length > 0){
+				let result = await this.coupons(SITE, STORE, ID_NO);
+				result = result.sort((a, b) => {
+					if(a.pcName > b.pcName)
+						return -1;
+					else if(a.pcName < b.pcName)
+						return 1;
+					return 0;
+				});
+				let arr = [];
+				result.forEach(el => {
+					arr.push({text: el.pcName, value: el.cpnNo})
+				})
+				this.datas = arr;
+				this.isEditable = false;
+			} else if(typeof localStorage["barcode-" + this.group] == "string") {
 				this.datas = JSON.parse(localStorage["barcode-" + this.group]);
 			} else 
 				this.datas = [];
@@ -227,7 +253,7 @@ Vue.component('vue-table', {
 			let header = this.$refs["header"];
 			let frame = this.$refs["frame"];
 			let footer = this.$refs["footer"];
-			let fh = header.clientHeight + footer.clientHeight;
+			let fh = header.clientHeight + 80; // footer.clientHeight;
 			if(typeof frame == "object") {
 				this.height = leftPane.clientHeight - fh;
 				frame.style.height = this.height + "px";
@@ -259,7 +285,10 @@ Vue.component('vue-table', {
 					arr[i].removeEventListener("click", this.onRowClick, true);
 			}
 		},
-		onPageSizeChange(e) {
+		onChangePageSize(e) {
+			this.currentRow = -1;
+			this.currentPage = 0;
+			this.dataPage = [];
 			this.pageSize = e;
 			this.onChangePage(1);
 			window.localStorage["barcode-tbl-pageSize"] = e;
@@ -359,11 +388,66 @@ Vue.component('vue-table', {
 		onClickCloseGroup() {
 			this.editValueGroup = "";
 			this.editModeGroup = "";
+		},
+		onClickRefresh() {
+			// location.reload();
+			this.retrieve()
+		},
+		coupons(SITE, STORE, ID_NO) {
+			// ?SITE=BSMS000032&STORE=000000&ID_NO=20249
+			let url = `https://rd.jabezpos.com/api/member-group/dev/v1/sites/${SITE}/stores/${STORE}/members/${ID_NO}/coupons`;
+			let json = {"method":"GET",
+				"headers":{
+					"content-type":"application/x-www-form-urlencoded",
+					"x-debug":1,
+					"x-dev-token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJwb3NAa3ltY28iLCJpc3MiOiJqYWJlenBvczp5YW5hQGJldGhlbC5jb20udHciLCJzdWIiOiI1YTA5NjFlNi1lODg4LTRkZjctOTFhMS0wMmM5OGRlMmIxMTgiLCJpYXQiOjE2NDg0MzkwMDc5MjcsImFjdGl2ZSI6dHJ1ZX0.EvmHpkgt8K8ZJQ54ZyZeDnqLQb6HaTH0EPrdZvJ1G4E"
+				},
+				"timeout":6,
+				// "body":""
+			};
+			return new Promise( (success, error) => {
+				fetch(url, json)
+				.then((response) => {
+					setTimeout(() => null, 0);
+					return response.text();
+				})
+				.then((responseText) => {
+					// console.log(responseText)
+					if(responseText.indexOf("<html") > -1 && responseText.indexOf("<body") > -1){
+						let i = responseText.indexOf("<body");
+						let j = responseText.indexOf("</body>");
+						let s = responseText.substr(i, (j - i) + "</body>".length)
+						throw s;
+					} else if(responseText.trim().indexOf("{") != 0){
+						throw responseText;
+					} else {
+						let json = JSON.parse(responseText);
+						if(typeof json.code == "undefined") json.code = json.msgCode;
+						if(json.code  === "00" || json.code === "000"){
+								if(typeof json.data == "undefined") json.data = {};
+								json.data.code = json.code;
+								json.data.msg = json.msg;
+								success(json.data.coupons);
+						} else {
+							throw json;
+						}
+					}
+					// console.log(`success: ${new Date()}, 時間：${(((new Date()).getTime()- d1) / 1000)}`);
+				})
+				.catch((err) => {
+					console.log(err)
+					alert(err)
+				})
+				.finally(() =>{
+				});
+			});
 		}
 	},
 	watch: {
-	}
+	},
+
 });
 /*
 https://www.iviewui.com/components/table
+https://www.iviewui.com/view-ui-plus/component/base/icon
 */

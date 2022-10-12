@@ -46,6 +46,9 @@
 				let para = (data == "MyTube" ? "?duration=5&repeat=2&answer=0" 
 					: (data == "shiftTime" ? "?anonymous=amltY2hlbjUzNDJAZ21haWwuY29tCTUzNDJKaW1DaGVu" : "")
 					)
+				if(data == "barcode" && location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1) {
+					para = "?SITE=BSMS000032&STORE=000000&ID_NO=20249";
+				}
 				location.href = `./${data}/index.html` + para;
 			})			
 		})
