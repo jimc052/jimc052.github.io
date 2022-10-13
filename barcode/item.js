@@ -31,6 +31,7 @@ Vue.component('vue-item', {
     render() {
       JsBarcode("#" + this.barcode, this.item.value, {
         height: 60,
+        width: 1,
         // textMargin: 0,
         // displayValue: false,
         // fontSize: 40,

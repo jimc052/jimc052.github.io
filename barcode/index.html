@@ -14,6 +14,7 @@
 	<script src="https://cdn.jsdelivr.net/jsbarcode/3.5.1/JsBarcode.all.min.js"></script>
 	<script src="./item.js"></script>
 	<script src="./table.js"></script>
+	<script src="./editor.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -33,6 +34,13 @@
 		html, body, #app {
 			min-height: 100% !important;
 			height: 100%;
+		}
+		.ivu-modal-body {
+			overflow: hidden !important;
+		}
+		#editor .ivu-modal-body{
+			padding: 0px;
+			margin: 0px;
 		}
 		.canvas {
 			margin: 20px;
@@ -66,19 +74,37 @@
 			color: #C0C0C0;
 			font-weight: 700;
 		}
+		button.arrow {
+  		background: linear-gradient(45deg, rgba(34,34,34,1), rgba(34,34,34,1), rgba(34,34,34,1));
+			border-color: #222;
+		}
+		#bar {
+			border-left: 1px #C0C0C0 solid;
+			border-right: 1px #C0C0C0 solid;
+		}
+		.ivu-modal-footer {
+			/* padding: 5px 10px !important; */
+		}
 	</style>
 </head>
 <body style="overflow: hidden;">
 	<div id="app" style="display: flex; flex-direction: row;">
-			<div id="leftPane" style="height: 100%; display: flex; flex-direction: column;">
-				<vue-table ref="tbl" @child-retrieve="onRetrieve" @child-edit="onEdit" style="flex: 1;" />
-			</div>
-			<div style="flex: 1; overflow: auto; ">
-				<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
-			</div>
+		<div id="leftPane" style="height: 100%; display: flex; flex-direction: column;"
+			:style="{width: width + 'px'}"
+		>
+			<vue-table ref="tbl" @child-retrieve="onRetrieve" @child-edit="onEdit" style="flex: 1;" />
+		</div>
+		<div id="bar" v-if="list.length > 0" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+			<Icon v-if="width > 0" type="md-arrow-back" size="14" @click.native="width = 0" style="cursor: pointer;"></Icon>
+			<Icon v-if="width == 0" type="md-arrow-forward" size="14" @click.native="width = 460" style="cursor: pointer; "></Icon>
+		</div>
+		<div style="flex: 1; overflow: auto; ">
+			<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
+		</div>
 	</div>
 </body>
 <script>
+	// @click.native="onClickIcon" 
 	var vm = null;
 	window.onload = async function(){
 		Vue.prototype.$storage = function (key, value) {
@@ -121,11 +147,14 @@
 				return {
 					value: undefined,
 					list: [],
-					datas: []
+					datas: [],
+					width: 460
 				};
 			},
 			created() {
 				iview.lang('zh-TW');
+				let SITE = this.$queryString("SITE")
+				if(SITE == "BSMS000032") this.width = 0;
 			},
 			async mounted(){
 				let self = this;

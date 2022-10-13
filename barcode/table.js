@@ -1,26 +1,31 @@
 Vue.component('vue-table', { 
-	template:  `<div style="height: 100%; width: 450px; overflow: auto; display: flex; flex-direction: column;">
-	<div ref="header" style="height: 50px; display: flex; flex-direction: row; align-items: center; ">
-		<Select v-if="editModeGroup == ''" v-model="group" style="flex: 1; margin: 0px 5px; " size="large"
-			@on-select="onSelect"
-		>
-			<Option v-for="item in selectGroups" :value="item" :key="item">{{ item }}</Option>
-		</Select>
+	template:  `<div style="height: 100%; overflow: auto; display: flex; flex-direction: column;">
+	<div ref="header" style="height: 50px; display: flex; flex-direction: row; align-items: center; padding: 0px 5px;">
+		<div v-if="isEditable == true" style="flex: 1; display: flex; flex-direction: row; align-items: center; ">
+			<Select v-if="editModeGroup == ''" v-model="group" style="flex: 1;" size="large"
+				@on-select="onSelect"
+			>
+				<Option v-for="item in selectGroups" :value="item" :key="item">{{ item }}</Option>
+			</Select>
 
-		<Input ref="input" v-else v-model="editValueGroup" placeholder="請輸入類別" 
-			style="flex: 1; font-size: 20px; padding: 5px; margin: 0px 5px; " size="large" clearable />
-		<div v-if="editModeGroup == ''">
-			<Button @click="onClickAddGroup" icon="md-add" type="primary" shape="circle"></Button>
-			<Button v-if="isEditable == true && group.length > 0" @click="onClickDelGroup" icon="md-trash" type="primary" shape="circle"></Button>
+			<Input ref="input" v-else v-model="editValueGroup" placeholder="請輸入類別" 
+				style="flex: 1; font-size: 20px; padding: 5px;" size="large" clearable />
+			<div v-if="editModeGroup == ''" style="margin-left: 5px;">
+				<Button @click="onClickAddGroup" icon="md-add" type="primary" shape="circle"></Button>
+				<Button v-if="isEditable == true && group.length > 0" @click="onClickDelGroup" icon="md-trash" type="primary" shape="circle"></Button>
+			</div>
+			<div v-else  style="margin-left: 5px;">
+				<Button v-if="editValueGroup.length > 0" @click="onClickSaveGroup" icon="md-document" type="primary" shape="circle"></Button>
+				<Button @click="onClickCloseGroup" icon="md-close" type="primary" shape="circle"></Button>
+			</div>
 		</div>
-		<div v-else>
-			<Button v-if="editValueGroup.length > 0" @click="onClickSaveGroup" icon="md-document" type="primary" shape="circle"></Button>
-			<Button @click="onClickCloseGroup" icon="md-close" type="primary" shape="circle"></Button>
+		<div v-else style="flex: 1; display: flex; flex-direction: row; ">
+			<div style="flex: 1; font-size: 20px; color: #2d8cf0; ">{{group}}</div>
+			<Button @click="onClickRefresh" icon="md-refresh" type="primary"></Button>
+			<!--
+				<Button icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
+			-->
 		</div>
-		<!--
-		<Button @click="onClickCloseGroup" icon="md-arrow-back" type="primary" shape="circle"></Button>
-		<Button @click="onClickCloseGroup" icon="md-arrow-forward" type="primary" shape="circle"></Button>
-		-->
 	</div>
 	<div ref="frame" style="flex: 1;">
 		<Table :height="height" highlight-row  border :columns="columns" :data="dataPage"
@@ -32,9 +37,9 @@ Vue.component('vue-table', {
 		<div v-if="isEditable == true" style="display: flex; flex-direction: row; margin-bottom: 5px;">
 			<Button v-if="group.length > 0" @click="onClickAddRow" icon="md-add" type="primary"></Button>
 			<Button v-if="currentRow > -1" @click="onClickDelRow" icon="md-trash" type="primary" style="margin-left: 5px;"></Button>
-		</div>
-		<div v-else style="display: flex; flex-direction: row; margin-bottom: 5px;">
-			<Button  @click="onClickRefresh" icon="md-refresh" type="primary"></Button>
+
+			<div style="flex: 1;"></div>
+			<Button icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
 		</div>
 
 		<Page v-if="datas.length > opts[0]" :total="datas.length" 
@@ -42,6 +47,7 @@ Vue.component('vue-table', {
 			style="" 
 			@on-change="onChangePage" @on-page-size-change="onChangePageSize" />
 	</div>
+	<editor ref="editor" :modal="modalEditor" :datas="datas" @onClose="onCloseEditor" />
 </div>`,
 	props: {
 		// datas: {
@@ -57,6 +63,7 @@ Vue.component('vue-table', {
 				align: 'center',
 				fixed: "left",
 				className: "index",
+				width: 40,
 				indexMethod: (row)=>{
 					return row._index + ((this.currentPage-1) * this.pageSize) + 1;
 				},
@@ -87,6 +94,7 @@ Vue.component('vue-table', {
 			editModeGroup: "",
 			editValueGroup: "",
 			isEditable: true,
+			modalEditor: false
 		};
 	},
 	created(){
@@ -248,7 +256,9 @@ Vue.component('vue-table', {
 			let header = this.$refs["header"];
 			let frame = this.$refs["frame"];
 			let footer = this.$refs["footer"];
-			let fh = header.clientHeight + 80; // footer.clientHeight;
+			let mode = this.$queryString("mode");
+		
+			let fh = header.clientHeight + (mode.length > 0 ? 45 : 80) ; // footer.clientHeight;
 			if(typeof frame == "object") {
 				this.height = leftPane.clientHeight - fh;
 				frame.style.height = this.height + "px";
@@ -375,7 +385,7 @@ Vue.component('vue-table', {
 				this.selectGroups.push(this.group)
 				window.localStorage["barcode-group"] = this.group
 				window.localStorage["barcode-groups"] = JSON.stringify(this.selectGroups);
-				this.reset();
+				this.retrieve();
 			} else {
 				alert(`「${this.editValueGroup}」類別已存在!`)
 			}
@@ -448,6 +458,16 @@ Vue.component('vue-table', {
 				.finally(() =>{
 				});
 			});
+		},
+		onCloseEditor(result) {
+			this.modalEditor = false;
+			if(typeof result == "string") {
+				if(result.length > 0)
+					localStorage["barcode-" + this.group] = result;
+				else 
+					delete localStorage["barcode-" + this.group]
+			}
+			this.retrieve();
 		}
 	},
 	watch: {
