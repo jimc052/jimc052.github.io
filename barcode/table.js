@@ -23,7 +23,7 @@ Vue.component('vue-table', {
 			<div style="flex: 1; font-size: 20px; color: #2d8cf0; ">{{group}}</div>
 			<Button @click="onClickRefresh" icon="md-refresh" type="primary"></Button>
 			<!--
-				<Button icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
+				<Button v-if="datas.length > 0" icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
 			-->
 		</div>
 	</div>
@@ -39,7 +39,7 @@ Vue.component('vue-table', {
 			<Button v-if="currentRow > -1" @click="onClickDelRow" icon="md-trash" type="primary" style="margin-left: 5px;"></Button>
 
 			<div style="flex: 1;"></div>
-			<Button icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
+			<Button v-if="datas.length > 0" icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
 		</div>
 
 		<Page v-if="datas.length > opts[0]" :total="datas.length" 
@@ -115,6 +115,8 @@ Vue.component('vue-table', {
 			let selectGroups = window.localStorage["barcode-groups"];
 			if(typeof selectGroups != "undefined") {
 				this.selectGroups = JSON.parse(selectGroups);
+				if(this.group.length == 0 && this.selectGroups.length > 0)
+				this.group = this.selectGroups[0]
 			}
 		}
 	},
@@ -385,7 +387,10 @@ Vue.component('vue-table', {
 				this.selectGroups.push(this.group)
 				window.localStorage["barcode-group"] = this.group
 				window.localStorage["barcode-groups"] = JSON.stringify(this.selectGroups);
-				this.retrieve();
+				this.reset();
+				setTimeout(() => {
+					this.retrieve();	
+				}, 300);
 			} else {
 				alert(`「${this.editValueGroup}」類別已存在!`)
 			}
