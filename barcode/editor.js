@@ -10,8 +10,8 @@ Vue.component('editor', {
 		<div slot="footer" style="display: flex; padding: 0px;">
 			<div style="flex: 1;" />
 			<Button type="default" size="large"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button v-if="source.length > 0" type="warning" size="large"  @click="clear" style="width: 100px;">清除</Button>
-			<Button type="primary" size="large"  @click="ok" style="width: 100px;">確定</Button>
+			<Button v-if="editable && source.length > 0" type="warning" size="large"  @click="clear" style="width: 100px;">清除</Button>
+			<Button v-if="editable" type="primary" size="large"  @click="ok" style="width: 100px;">確定</Button>
 		</div>
 	</modal>`,
 	props: {
@@ -24,6 +24,11 @@ Vue.component('editor', {
 			type: Array,
 			require: true, 
 			default: []
+		},
+		editable: {
+			type: Boolean,
+			require: true, 
+			default: true
 		},
 	},
 	data() {
@@ -42,7 +47,7 @@ Vue.component('editor', {
 	methods: {
 		onMessage(e) {
 			let json = JSON.parse(e.data);
-			console.log(json.action)
+			// console.log(json.action)
 			if(typeof json.data == "string")
 				this.source = json.data;
 			if(typeof json.action == "string"){

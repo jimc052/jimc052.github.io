@@ -22,9 +22,7 @@ Vue.component('vue-table', {
 		<div v-else style="flex: 1; display: flex; flex-direction: row; ">
 			<div style="flex: 1; font-size: 20px; color: #2d8cf0; ">{{group}}</div>
 			<Button @click="onClickRefresh" icon="md-refresh" type="primary"></Button>
-			<!--
-				<Button v-if="datas.length > 0" icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
-			-->
+			<Button v-if="datas.length > 0" icon="md-archive" @click="modalEditor = true" type="primary" style="margin-left: 5px;"></Button>
 		</div>
 	</div>
 	<div ref="frame" style="flex: 1;">
@@ -47,7 +45,7 @@ Vue.component('vue-table', {
 			style="" 
 			@on-change="onChangePage" @on-page-size-change="onChangePageSize" />
 	</div>
-	<editor ref="editor" :modal="modalEditor" :datas="datas" @onClose="onCloseEditor" />
+	<editor ref="editor" :modal="modalEditor" :datas="datas" :editable="isEditable" @onClose="onCloseEditor" />
 </div>`,
 	props: {
 		// datas: {

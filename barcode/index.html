@@ -82,9 +82,9 @@
 			border-left: 1px #C0C0C0 solid;
 			border-right: 1px #C0C0C0 solid;
 		}
-		.ivu-modal-footer {
-			/* padding: 5px 10px !important; */
-		}
+		/* .ivu-modal-footer {
+			padding: 5px 10px !important; 
+		} */
 	</style>
 </head>
 <body style="overflow: hidden;">
@@ -96,7 +96,7 @@
 		</div>
 		<div id="bar" v-if="list.length > 0" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
 			<Icon v-if="width > 0" type="md-arrow-back" size="14" @click.native="width = 0" style="cursor: pointer;"></Icon>
-			<Icon v-if="width == 0" type="md-arrow-forward" size="14" @click.native="width = 460" style="cursor: pointer; "></Icon>
+			<Icon v-if="width == 0" type="md-arrow-forward" size="20" @click.native="width = 460" style="cursor: pointer; color: red;"></Icon>
 		</div>
 		<div style="flex: 1; overflow: auto; ">
 			<vue-item class="canvas" v-for="(item, index) in list" :key="index" :item="item" :index="index" />
@@ -153,8 +153,7 @@
 			},
 			created() {
 				iview.lang('zh-TW');
-				let SITE = this.$queryString("SITE")
-				if(SITE == "BSMS000032") this.width = 0;
+				if(this.$queryString("SITE") == "BSMS000032") this.width = 0;
 			},
 			async mounted(){
 				let self = this;
