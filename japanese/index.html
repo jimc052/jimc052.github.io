@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>日文</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<script src="https://unpkg.com/vue@2.6.11/dist/vue.js"></script>
+
+	<link href="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/styles/iview.min.css" rel="stylesheet">
+	<script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/iview.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/view-design/4.3.2/locale/zh-TW.min.js"></script>
+	<script src="./pronounce.js"></script>
+	<script src="./vocabulary.js"></script>
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			/* user-select: none; */
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			/* margin: 10px; */
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			visibility: hidden;
+			color: rgb(0, 0, 0);
+		}
+		html, body, #app {
+			min-height: 100% !important;
+			height: 100%;
+		}
+
+		@media screen and (min-width: 400px) {
+			#tbl50 td {
+				font-size: 24px;
+			}
+
+			#tbl50 td > div {
+				font-size: 20px;
+			}
+
+			#tbl50 tr:first-child td, #tbl50 td:first-child {
+				font-size: 24px !important;
+			}
+		}
+
+		@media screen and (min-width: 800px) {
+			#tbl50 td {
+				font-size: 30px;
+			}
+
+			#tbl50 td > div {
+				font-size: 24px;
+			}
+
+			#tbl50 tr:first-child td, #tbl50 td:first-child {
+				font-size: 24px !important;
+			}
+
+			label {
+				font-size: 20px !important;
+				line-height: 40px !important;
+				height: 40px  !important;
+			}
+		}
+
+		#tbl50 {
+      /* margin: 10px; */
+    }
+
+    #tbl50 td {
+      font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+      border: 1px solid black;
+      text-align: center;
+    }
+
+    #tbl50 tr:first-child td, #tbl50 td:first-child {
+      color: blue;
+      /* padding: 5px 0px; */
+    }
+
+    #tbl50 td:first-child {
+      width: 10%;
+    }
+
+    #tbl50 td.cell {
+      width: 18%;
+      cursor: pointer;
+    }
+		#tbl50 td.active {
+      color: white;
+			background-color: orangered;
+    }
+
+		.ivu-table-header thead tr th, .ivu-table-fixed-header thead tr th{
+			padding: 0px;
+		}
+		.ivu-table-cell {
+			padding-left: 5px !important;
+			padding-right: 5px !important;
+		}
+		.ivu-table td, .ivu-table th {
+			height: 35px  !important;
+		}
+		.ivu-table th, .ivu-table th .ivu-table-cell {
+			text-align: center !important;
+		}
+		.ivu-table td:first-child {
+			cursor: pointer;
+			background-color: #f8f8f9;
+		}
+		.ivu-table-row-highlight td:first-child {
+			background-color: #ebf7ff;
+			color: #C0C0C0;
+			font-weight: 700;
+		}
+	</style>
+</head>
+<body style="overflow: hidden;">
+	<div id="app" style="display: flex; flex-direction: row;">
+			<!-- <pronounce /> -->
+			<vocabulary />
+	</div>
+</body>
+<script>
+	// open -a Google\ Chrome "index.html"
+	var vm = null;
+	window.onload = async function(){
+		Vue.prototype.$storage = function (key, value) {
+			if(typeof key == "string" && typeof value == "undefined"){
+				let s = window.localStorage[key];
+				if(typeof s == "undefined"){
+					return {};
+				}
+				return JSON.parse(s);
+			} 
+			else {
+				if(value == null)
+					delete window.localStorage[key];
+				else
+					window.localStorage[key] = typeof value == "object" ? JSON.stringify(value) : value;
+			}
+		}
+
+		Vue.prototype.$queryString = function(key) {
+			let index = location.href.indexOf("?");
+			let s = "";
+			if(index > -1) {
+				let s1 = location.href.substr(index + 1);
+				let arr = s1.split("&");
+				for(let i = 0; i < arr.length; i++) {
+					index = arr[i].indexOf(key + "=");
+					if(index > -1) {
+						s = arr[i].substr(key.length + 1)
+						break;
+					}
+				}
+			}
+			return decodeURI(s);
+		}
+		Vue.prototype.broadcast = new Vue(); // 廣播用元件
+
+		vm = new Vue({
+			el: '#app',
+			data() {
+				return {
+					
+				};
+			},
+			created() {
+				iview.lang('zh-TW');
+			},
+			async mounted(){
+				let self = this;
+				setTimeout(() => {
+					document.body.style.visibility = "visible";	
+				}, 600);
+				window.onresize = () => {
+					return (() => {
+							// self.screenWidth = document.body.clientWidth;
+							self.broadcast.$emit('onResize');
+					})()
+				}
+				// if(typeof localStorage["barcode"] == "string") {
+				// 	this.list = JSON.parse(localStorage["barcode"]);
+				// }
+			},
+			methods: {
+				
+			}
+		});
+	}
+/* 	
+	// https://www.iviewui.com/components/menu
+	// https://www.iviewui.com/components/modal
+	// https://www.iviewui.com/components/icon
+	https://www.iviewui.com/view-ui-plus/component/form/table
+	https://www.iviewui.com/view-ui-plus/component/layout/split
+
+	*/
+</script>
+</html>
