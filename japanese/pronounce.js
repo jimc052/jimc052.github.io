@@ -34,8 +34,6 @@ Vue.component('pronounce', {
 			</tr>
 		</table>
 </div>`,
-/*
-*/
 	props: {
 		// datas: {
 		// 	type: Array,

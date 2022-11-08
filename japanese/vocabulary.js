@@ -2,6 +2,11 @@
 Vue.component('vocabulary', { 
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
+			<RadioGroup v-model="level" type="button" @on-change="onChangeLevel">
+				<Radio v-for="(item1, index1) in ['1','2','3','4']" :key="index1" :label="item1" >
+					{{item1}}
+				</Radio>
+			</RadioGroup>
 			<div style="flex: 1; back" />
 			<Input ref="input" v-model="search" search style="width: 200px; font-size: 20px; padding: 5px;" size="large"
 			@on-search="onSearch" 
@@ -10,6 +15,7 @@ Vue.component('vocabulary', {
 		<div ref="frame" style="flex: 1;">
 			<Table id="table" highlight-row :height="height" border :columns="columns" :data="data2"
 				@on-column-width-resize="onColumnResize"
+				@on-cell-click="onCellClick"
 			></Table>
 		</div>
 		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
@@ -21,8 +27,6 @@ Vue.component('vocabulary', {
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 		</div>
 	</div>`,
-/*
-*/
 	props: {
 		// datas: {
 		// 	type: Array,
@@ -32,6 +36,7 @@ Vue.component('vocabulary', {
 	},
 	data() {
 		return {
+			level: "0",
 			search: "",
 			columns: [],
 			height: 0,
@@ -67,30 +72,20 @@ Vue.component('vocabulary', {
 		});
 		let cols = `語	級別	舊	漢字・原文	備註	發音	中文意思`.split("\t");
 		cols.forEach(el => {
-			let json = {title: el, key: el};
-			if(el == "級別" || el == "發音") 
+			let json = {title: el, key: el, ellipsis: true};
+			if(el == "級別" || el == "發音") {
+				json.align = 'center';
 				json.width = 60;
+			}
+				
+			else if(el == "備註")
+				json.width = 150;
 			else if(el == "舊") {
 				return;
 			}
-
 			this.columns.push(json)
 		});
-
-		// arr = words.split("\n");
-		// arr.forEach((el1, index1) => {
-		// 	let row = el1.split("\t");
-		// 	if(index1 < 1000) {
-		// 		let json = {_index: index1};
-		// 		row.forEach((el2, index2) => {
-		// 			json[cols[index2]] = el2;
-		// 		});
-		// 		this.data2.push(json)
-		// 		// console.log(row);
-		// 	}
-
-
-		// })
+		TTX.initial();
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
@@ -149,6 +144,7 @@ Vue.component('vocabulary', {
 			window.localStorage["japanese-vocabulary-pageSize"] = e;
 		},
 		onSearch() {
+			this.level = "0";
 			this.datas = []; this.data2 = [];
 			this.currentPage = -1;
 			let cols = `語	級別	舊	漢字・原文	備註	發音	中文意思`.split("\t");
@@ -158,18 +154,125 @@ Vue.component('vocabulary', {
 				if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
 					let json = {};
 					row.forEach((el2, index2) => {
-						json[cols[index2]] = el2;
+						if(cols[index2] != "舊") json[cols[index2]] = el2;
 					});
 					this.datas.push(json)
 				}
 			});
 			// console.log(this.datas)
 			this.onChangePage(1)
+		},
+		onChangeLevel() {
+			this.search = "";
+			this.datas = []; this.data2 = [];
+			this.currentPage = -1;
+			let cols = `語	級別	舊	漢字・原文	備註	發音	中文意思`.split("\t");
+			let arr = words.split("\n");
+			arr.forEach((el1, index1) => { // 0， 3， 6
+				let row = el1.split("\t");
+				if(row[1] == this.level) {
+					let json = {};
+					row.forEach((el2, index2) => {
+						if(cols[index2] != "舊") json[cols[index2]] = el2;
+					});
+					this.datas.push(json)
+				}
+			});
+			// console.log(this.datas)
+			this.onChangePage(1)
+		},
+		onCellClick(row, column, data, event) {
+			console.log(row["語"])
+
+			TTX.speak(row["語"])
 		}
 	},
 	watch: {
 	},
 });
+
+let idSpeak = "";
+class TTX {
+	static initial(){
+		return new Promise(async (resolve, reject) => {
+			TTX.msg = new SpeechSynthesisUtterance();
+			TTX.msg.rate = 0.9;
+			TTX.msg.lang = "ja-JP"; 
+			// TTX.msg.lang = "en-US";
+			TTX.voices = (await TTX.getVoices()).filter(el =>{
+				// if(el.lang == TTX.msg.lang){
+				// 	console.log(el.name)
+				// }
+				return el.lang == TTX.msg.lang;
+			});
+
+			resolve();
+		});
+	}
+
+	static getVoices() {
+		return new Promise((resolve, reject) => {
+			let timer = setInterval(() => {
+				if(window.speechSynthesis.getVoices().length !== 0) {
+					resolve(window.speechSynthesis.getVoices());
+					clearInterval(timer);
+				}
+			}, 10);
+		})
+	}
+
+	static speak(text, index){
+		// 0 Alex, 1 Fred, 2 Samantha, 女生, 3, 女生
+		return new Promise(async (resolve, reject) => {
+			
+			let arr = text.split("\n");
+			for(let i = 0; i < arr.length; i++) {
+				if(arr.length > 1) {
+					if(arr[i].indexOf("___") > -1) {
+						break;
+					}
+					index = arr[i].indexOf("W: ") > -1 
+						? 2 : 
+						(arr[i].indexOf("Q: ") > -1
+							? 4: 0);
+					arr[i] = arr[i].replace("M: ", " ").replace("W: ", " ").replace("Q: ", " ")
+					await _speak(arr[i], index);
+					await waiting(1)
+				} else {
+					await _speak(arr[i], index);
+				}
+			}
+			resolve();
+		});
+
+		function _speak(text, index) {
+			return new Promise((resolve, reject) => {
+				TTX.stop();
+				TTX.msg.voice = TTX.voices[typeof index == "undefined" ? 0 : index];
+				TTX.msg.onstart = function (e) {
+					// console.log("onstart")
+				}
+
+				TTX.msg.onend = function (e) {
+					// console.log("onend")
+					resolve();
+				}
+				TTX.msg.text = text;
+				window.speechSynthesis.speak(TTX.msg);
+			});
+		}
+
+		function waiting(sec) {
+			return new Promise((resolve, reject) => {
+				idWait = setTimeout(resolve, sec * 1000);
+			});
+		}
+	}
+	static stop() {
+		clearTimeout(idSpeak)
+		window.speechSynthesis.cancel();
+	}
+}
 // 語	級別	舊	漢字・原文	備註	發音	中文意思
 let words = `あ	3		あ	感動詞	1	喂、哎
 あ	2		亜〜			亞〜
