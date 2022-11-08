@@ -33,21 +33,27 @@
   <button data='VOA'>VOA</button>
 	<button data='gym'>健身</button>
 	<button data='MyTube'>MyTube</button>
-	<button data='shiftTime'>輪值表</button>
+	<button data='shiftTime'>輪班表</button>
 	<button data='barcode'>barcode</button>
 	<button data='VUE-JSON'>VUE-JSON</button>
+	<button data='japanese' data-mode="pronounce">五十音</button>
+	<button data='japanese' >日文字典</button>
 </body>
 <script>
 	window.onload = async function(){
+		let local = location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1;
 		let arr = document.querySelectorAll("button");
 		arr.forEach(item=> {
 			item.addEventListener("click", (e)=> {
 				let data = e.target.getAttribute("data");
+				let mode = e.target.getAttribute("data-mode");
 				let para = (data == "MyTube" ? "?duration=5&repeat=2&answer=0" 
-					: (data == "shiftTime" ? "?anonymous=amltY2hlbjUzNDJAZ21haWwuY29tCTUzNDJKaW1DaGVu" : "")
+					: (data == "shiftTime"  && local == true ? "?anonymous=amltY2hlbjUzNDJAZ21haWwuY29tCTUzNDJKaW1DaGVu" : "")
 					)
-				if(data == "barcode" && location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1) {
+				if(data == "barcode" && local == true) {
 					para = "?mode=COUPON&SITE=BSMS000032&STORE=000000&ID_NO=20249";
+				} else if(typeof mode == "string" && mode.length > 0) {
+					para = "?mode=" + mode;
 				}
 				location.href = `./${data}/index.html` + para;
 			})			
