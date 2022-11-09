@@ -2,7 +2,7 @@ let token = Date.now
 // open -a Google\ Chrome "index.html"
 Vue.component('pronounce', { 
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
-		<div style="display: flex; flex-direction: row; margin: 5px;">
+		<div style="display: flex; flex-direction: row; margin: 5px; ">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
@@ -229,54 +229,7 @@ Vue.component('pronounce', {
 	},
 });
 
-class Player {
-	static url = "https://riyutool.com/50yintuceshi/";
-	static mode = "";
-	constructor() {
-	}
 
-	static play(mp3) {
-		return new Promise(async (resolve, reject) => {
-			let audio = new Audio();
-			audio.src = Player.url + mp3 + ".mp3";
-			audio.autoplay = false;
-			audio.addEventListener("loadstart", () => {
-				Player.mode = "start";
-				// console.log("loadstart")
-			}, true);
-			audio.addEventListener("loadeddata", () => {
-				// console.log("loadeddata")
-			}, true);
-			audio.addEventListener("canplay", () => {
-				Player.mode = "playing";
-				audio.play();
-				// console.log("canplay")
-			}, true);
-			audio.addEventListener("durationchange", () => {
-				// console.log("durationchange")
-			}, true);
-			audio.addEventListener("timeupdate", () => {
-				
-			}, true);
-			audio.addEventListener("ended", () => {
-				// console.log("ended")
-				setTimeout(() => {
-					Player.mode = "";
-					resolve();
-				}, 1000);
-    }, true);
-
-		});
-	}
-
-	static wait(sec) {
-		return new Promise(async (resolve, reject) => {
-			setTimeout(() => {
-				resolve()
-			}, 1000 * sec);
-		});
-	}
-}
 /*
 https://www.iviewui.com/components/table
 https://www.iviewui.com/view-ui-plus/component/base/icon
