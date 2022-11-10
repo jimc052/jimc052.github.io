@@ -196,12 +196,12 @@
 			el: '#app',
 			data() {
 				return {
-					page: "五十音"
+					page: "筆順練習"
 				};
 			},
 			created() {
 				iview.lang('zh-TW');
-				console.log(typeof(this.$queryString('mode')) + ", " + this.$queryString('mode').length)
+				// console.log(typeof(this.$queryString('mode')) + ", " + this.$queryString('mode').length)
 			},
 			async mounted(){
 				let self = this;

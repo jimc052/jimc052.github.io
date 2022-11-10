@@ -25,7 +25,6 @@ class Player {
 				// console.log("durationchange")
 			}, true);
 			audio.addEventListener("timeupdate", () => {
-				
 			}, true);
 			audio.addEventListener("ended", () => {
 				// console.log("ended")
