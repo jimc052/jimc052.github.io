@@ -2,7 +2,7 @@ let ctx, canvas, letter;
 
 Vue.component('letter', { 
 	template:  `<div id="frame" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
-		<div id="header" style="display: flex; flex-direction: row; margin: 5px;">
+		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
@@ -20,8 +20,8 @@ Vue.component('letter', {
 			</div>
 		</div>
 		<div style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;">
-			<Icon type="ios-arrow-back" size="30" style="cursor: pointer; color: #2d8cf0;" @click="goto(37)"></Icon>
-			<Icon type="ios-arrow-forward" size="30" style="cursor: pointer; color: #2d8cf0;"  @click="goto(39)"></Icon>
+			<Icon type="ios-arrow-back" size="30" style="z-index: 10;cursor: pointer; color: #2d8cf0;" @click="goto(37)"></Icon>
+			<Icon type="ios-arrow-forward" size="30" style="z-index: 10; cursor: pointer; color: #2d8cf0;"  @click="goto(39)"></Icon>
 		</div>
 		<div style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;"">
 			<span style="font-size: 16px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
@@ -95,7 +95,7 @@ Vue.component('letter', {
 		draw() {
 			let height = canvas.height, width = canvas.width;
 			// ctx.fillStyle = 'orange';
-			ctx.strokeStyle = '#2d8cf0';
+			// ctx.strokeStyle = '#2d8cf0';
       let j = 4;
       let x = width / j + 1;
       for (let i = 0; i < j + 1; i++) {
@@ -111,7 +111,6 @@ Vue.component('letter', {
         ctx.lineTo(width, y * (i + 1));
         ctx.stroke();
       }
-			
 			// font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 		},
 		onKeydown(event){
