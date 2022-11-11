@@ -127,26 +127,37 @@
 			cursor: pointer;
 			font-size: 20px;
 			padding: 10px;
+			border-right: 1px solid white;
 		}
 		.ivu-menu-item + .ivu-menu-item {
 			/* margin-top: 0px; */
 		}
 		.ivu-menu-item-active {
 			color: #2d8cf0; 
-			background: #f0faff; 
+			background: #f0faff;
+			border-right: 1px solid #2d8cf0;
 		}
 	</style>
 </head>
 <body style="overflow: hidden;">
 	<div id="app" style="display: flex; flex-direction: row;">
-		<ul class="ivu-menu" style="height: 100%; width: 180px; padding: 10px 0px 10px 5px; background-color: white; margin-right: 5px;">
-			<li v-for="(item1, index1) in ['五十音', '筆順練習','字典']" :key="index1" class="ivu-menu-item"
-				:class="{'ivu-menu-item-active': item1 == page}"
-				@click="page = item1"
-			>
-				{{item1}}
-			</li>
-		</ul>
+		<div :style="{width: width + 'px'}" style="height: 100%; padding: 0px; background-color: white; margin-right: 5px; display: flex; flex-direction: column; align-items: stretch; justify-content: center;">
+			<div style="background: #2d8cf0; padding: 5px 0px; display: flex; flex-direction: column;  justify-content: center;" 
+					:style="{height: width > 30 ? null : '100%', alignItems: width > 30 ? 'flex-end' : 'center'} ">
+				<Icon v-if="width > 30" type="ios-arrow-back" size="30" style="cursor: pointer; color: white;"
+					@click="width = 30"
+				></Icon>
+				<Icon v-else type="ios-arrow-forward" size="30" style="cursor: pointer; color: white;" @click="width = 180"></Icon>
+			</div>
+			<ul v-if="width > 30" class="ivu-menu" style="flex: 1;">
+				<li v-for="(item1, index1) in ['五十音', '筆順練習','字典']" :key="index1" class="ivu-menu-item"
+					:class="{'ivu-menu-item-active': item1 == page}"
+					@click="page = item1"
+				>
+					{{item1}}
+				</li>
+			</ul>
+		</div>
 		<div style="flex: 1;">
 			<pronounce v-if="page == '五十音'"></pronounce>
 			<letter v-else-if="page == '筆順練習'"></letter>
@@ -155,7 +166,7 @@
 	</div>
 </body>
 <script>
-	// open -a Google\ Chrome "index.html"
+	// 
 	var vm = null;
 	window.onload = async function(){
 		Vue.prototype.$storage = function (key, value) {
@@ -196,7 +207,8 @@
 			el: '#app',
 			data() {
 				return {
-					page: "筆順練習"
+					page: "筆順練習",
+					width: 180,
 				};
 			},
 			created() {
@@ -232,4 +244,7 @@
 <!-- 
 https://www.iviewui.com/view-ui-plus/component/form/table
 https://www.iviewui.com/view-ui-plus/component/layout/split
+
+open -a Google\ Chrome "index.html"
+
  -->

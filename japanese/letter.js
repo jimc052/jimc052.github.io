@@ -14,14 +14,19 @@ Vue.component('letter', {
 			</RadioGroup>
 		</div>
 		<div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-			<canvas id="canvas" style="background: white;"></canvas>
-			<span id="letter" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+			<canvas id="canvas" style="z-index: 10; background: transparent; cursor: pointer;" @click="play()"></canvas>
+			<div id="letter" style="z-index: 0; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" @click="play()">
 				{{datas[index][row][col][word]}}
-			</span>
+			</div>
 		</div>
-		<div style="margin-top: 10px;">
-			<span style="font-size: 16px; color: blue;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
-			<span style="font-size: 20px; color: blue; margin-left: 10px;">{{datas[index][row][col]['mp3']}}</span>
+		<div style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;">
+			<Icon type="ios-arrow-back" size="30" style="cursor: pointer; color: #2d8cf0;" @click="goto(37)"></Icon>
+			<Icon type="ios-arrow-forward" size="30" style="cursor: pointer; color: #2d8cf0;"  @click="goto(39)"></Icon>
+		</div>
+		<div style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;"">
+			<span style="font-size: 16px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
+			<div style="flex: 1" />
+			<span style="font-size: 26px; color: #2d8cf0; margin-left: 10px;">{{datas[index][row][col]['mp3']}}</span>
 		</div>
   </div>`,
 	// 
@@ -43,15 +48,22 @@ Vue.component('letter', {
 	created(){
 	},
 	async mounted () {
+		let size = 350;
+		let children = document.querySelectorAll("#frame > div");
+		for(let i = 0; i < children.length; i++) {
+			children[i].style.width = size + "px";
+		}
+		// console.log(children)
+
 		canvas = document.getElementById("canvas");
 		ctx = canvas.getContext('2d');
-		let size = 350;
+		
 		let header = document.getElementById("header");
-		header.style.width = size + "px";
+		
 		canvas.style.width = size + "px";
 		canvas.style.height = size + "px";
 		letter = document.getElementById("letter");
-		// letter.style.width = size + "px";
+		letter.style.width = size + "px";
 		letter.style.height = size + "px";
 		letter.style.marginTop = (size * -1) + "px";
 		letter.style.fontSize = (size - 20) + "px";
@@ -60,9 +72,9 @@ Vue.component('letter', {
 		this.draw();
 
 		window.addEventListener('keydown', this.onKeydown, false);
-		setTimeout(() => {
-			this.play(0, 0);	
-		}, 3000);
+		// setTimeout(() => {
+		// 	this.play();	
+		// }, 3000);
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -74,7 +86,7 @@ Vue.component('letter', {
 			if(this.index != "0") {
 				this.word = "平"
 			}
-			this.play(this.row, this.col)
+			this.play()
 		},
 		onChangeWord() {
 			let o = document.activeElement;
@@ -82,6 +94,8 @@ Vue.component('letter', {
 		},
 		draw() {
 			let height = canvas.height, width = canvas.width;
+			// ctx.fillStyle = 'orange';
+			ctx.strokeStyle = '#2d8cf0';
       let j = 4;
       let x = width / j + 1;
       for (let i = 0; i < j + 1; i++) {
@@ -108,20 +122,63 @@ Vue.component('letter', {
 			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
 			if(o.tagName == "INPUT") return;
+			this.goto(event.keyCode, pk)
+			// if(b == true) {
+				event.preventDefault();
+				event.stopImmediatePropagation();
+				event.stopPropagation();				
+			// }
+		},
+		async play() {
+			if(Player.mode != "") await Player.wait(1);
+			let data = this.datas[this.index];
+			if(data[this.row][this.col] != null) {
+				await Player.play(data[this.row][this.col].mp3);
+			}
+			window.focus();
+		},
+		goto(keyCode, pk) {
 			let rowX = this.row, colX = this.col;
 			let datas = this.datas[this.index];
-		
-			if(event.keyCode == 37) { // left
+			if(pk == true) {
+				if(keyCode == 37)
+					colX = 0;
+				else if(keyCode == 39) {
+					colX = datas[rowX].length - 1;
+					do {
+						if(datas[rowX][colX] != null) {
+							break;
+						}
+						colX--;
+					} while(colX > 0)
+				} else if(keyCode == 38){
+					rowX = 0;
+				} else if(keyCode == 40){
+					rowX = datas.length - 1;
+					do {
+						if(datas[rowX][colX] != null) {
+							break;
+						}
+						rowX--;
+					} while(rowX > 0)
+				} else {
+					return;
+				}
+			} else if(keyCode == 37) { // left
 				do {
 					colX--;
 					if(colX == -1) {
-						return;
+						if(rowX > 0){
+							rowX--;
+							colX = datas[rowX].length -1;
+						} else 
+							return;
 					}
 					if(datas[rowX][colX] != null) {
 						break;
 					}
 				} while(colX > -1)
-			} else if(event.keyCode == 38) { // up
+			} else if(keyCode == 38) { // up
 				do {
 					rowX--;
 					if(rowX == -1) {
@@ -131,7 +188,7 @@ Vue.component('letter', {
 						break;
 					}
 				} while(rowX > -1)				
-			} else if(event.keyCode == 39) { // right
+			} else if(keyCode == 39) { // right
 				do {
 					colX++;
 					if(colX >= datas[rowX].length) {
@@ -146,7 +203,7 @@ Vue.component('letter', {
 						break;
 					}
 				} while(colX < datas[rowX].length)
-			} else if(event.keyCode == 40) { // down
+			} else if(keyCode == 40) { // down
 				do {
 					rowX++;
 					if(rowX >= datas.length) {
@@ -160,22 +217,8 @@ Vue.component('letter', {
 				return;
 			}
 			this.row = rowX; this.col = colX;
-			this.play(rowX, colX);
-			
-			// if(b == true) {
-				event.preventDefault();
-				event.stopImmediatePropagation();
-				event.stopPropagation();				
-			// }
-		},
-		async play(row, col) {
-			if(Player.mode != "") await Player.wait(1);
-			let data = this.datas[this.index];
-			if(data[row][col] != null) {
-				await Player.play(data[row][col].mp3);
-			}
-			window.focus();
-		},
+			this.play();
+		}
 	},
 	watch: {
 	},
