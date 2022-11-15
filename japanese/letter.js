@@ -1,5 +1,3 @@
-let ctx, canvas, letter;
-
 Vue.component('letter', { 
 	template:  `<div id="frame" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
 		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
@@ -13,27 +11,24 @@ Vue.component('letter', {
 				<Radio label="片"  v-if="index == 0">片假</Radio>
 			</RadioGroup>
 		</div>
-		<div style="margin-top: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-			<canvas id="canvas" style="z-index: 10; background: transparent; cursor: pointer;" @click="play()"></canvas>
-			<div id="letter" style="z-index: 0; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;" @click="play()">
-				{{datas[index][row][col][word]}}
-			</div>
-		</div>
+		<vm-canvas v-if="size > 0"  style="margin-top: 20px;"
+			:size="size"  :char="datas[index][row][col][word]"
+		></vm-canvas>
 		<div style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;">
-			<Icon type="ios-arrow-back" size="30" style="z-index: 10;cursor: pointer; color: #2d8cf0;" @click="goto(37)"></Icon>
-			<Icon type="ios-arrow-forward" size="30" style="z-index: 10; cursor: pointer; color: #2d8cf0;"  @click="goto(39)"></Icon>
+			<Icon type="ios-arrow-back" size="40" style="z-index: 10;cursor: pointer; color: #2d8cf0;" @click="goto(37)"></Icon>
+			<Icon type="ios-arrow-forward" size="40" style="z-index: 10; cursor: pointer; color: #2d8cf0;"  @click="goto(39)"></Icon>
 		</div>
 		<div style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;"">
-			<span style="font-size: 16px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
+			<span style="font-size: 18px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
 			<div style="flex: 1" />
 			<span style="font-size: 26px; color: #2d8cf0; margin-left: 10px;">{{datas[index][row][col]['mp3']}}</span>
 		</div>
   </div>`,
-	// 
 	props: {
 	},
 	data() {
 		return {
+			size: 0,
 			index: "0",
 			word: "平",
 			row: 0,
@@ -48,29 +43,14 @@ Vue.component('letter', {
 	created(){
 	},
 	async mounted () {
-		let size = 350;
+		let size = 300;
 		let children = document.querySelectorAll("#frame > div");
 		for(let i = 0; i < children.length; i++) {
 			children[i].style.width = size + "px";
 		}
 		// console.log(children)
-
-		canvas = document.getElementById("canvas");
-		ctx = canvas.getContext('2d');
+		this.size = size;
 		
-		let header = document.getElementById("header");
-		
-		canvas.style.width = size + "px";
-		canvas.style.height = size + "px";
-		letter = document.getElementById("letter");
-		letter.style.width = size + "px";
-		letter.style.height = size + "px";
-		letter.style.marginTop = (size * -1) + "px";
-		letter.style.fontSize = (size - 20) + "px";
-		letter.style.fontFamily = "メイリオ";
-		// font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
-		this.draw();
-
 		window.addEventListener('keydown', this.onKeydown, false);
 		// setTimeout(() => {
 		// 	this.play();	
@@ -91,27 +71,6 @@ Vue.component('letter', {
 		onChangeWord() {
 			let o = document.activeElement;
 			o.blur();
-		},
-		draw() {
-			let height = canvas.height, width = canvas.width;
-			// ctx.fillStyle = 'orange';
-			// ctx.strokeStyle = '#2d8cf0';
-      let j = 4;
-      let x = width / j + 1;
-      for (let i = 0; i < j + 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(x * (i + 1), 0);
-        ctx.lineTo(x * (i + 1), height);
-        ctx.stroke();
-      }
-			let y = height / j + 1;
-      for (let i = 0; i < j + 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(0, y * (i + 1));
-        ctx.lineTo(width, y * (i + 1));
-        ctx.stroke();
-      }
-			// font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
 		},
 		onKeydown(event){
 			let o = document.activeElement;

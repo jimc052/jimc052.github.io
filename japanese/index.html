@@ -16,6 +16,7 @@
 	<script src="./pronounce.js"></script>
 	<script src="./letter.js"></script>
 	<script src="./vocabulary.js"></script>
+	<script src="./canvas.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -208,7 +209,7 @@
 			data() {
 				return {
 					page: "筆順練習",
-					width: 180,
+					width: document.body.clientWidth < 400 ? 30: 180,
 				};
 			},
 			created() {
@@ -242,6 +243,7 @@
 </script>
 </html>
 <!-- 
+https://www.iviewui.com/view-ui-plus/component/base/icon
 https://www.iviewui.com/view-ui-plus/component/form/table
 https://www.iviewui.com/view-ui-plus/component/layout/split
 
