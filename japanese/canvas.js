@@ -43,7 +43,7 @@ Vue.component('vm-canvas', {
 			letter.style.marginTop = (this.size * -1) + "px";
 			letter.style.fontSize = (this.size - 20) + "px";
 			letter.style.fontFamily = "メイリオ";
-			// letter.style.color = "#eee";
+			letter.style.color = "#c4c4c4";
 			
 			let width = canvas.width, height = canvas.height;
 			if (window.devicePixelRatio) {
@@ -133,10 +133,10 @@ Vue.component('vm-canvas', {
 			let canvas = this.$refs["canvas"];
 			let ctx = canvas.getContext('2d');
 			let height = canvas.height, width = canvas.width;
-			ctx.lineWidth = 3;
+			ctx.lineWidth = 2;
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 			// ctx.fillStyle = 'orange';
-			// ctx.strokeStyle = '#2d8cf0';
+			ctx.strokeStyle = '#DCDCDC';
       let j = 4;
       let x = width / j + 1;
       for (let i = 0; i < j + 1; i++) {
