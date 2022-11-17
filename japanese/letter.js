@@ -1,6 +1,6 @@
 Vue.component('letter', { 
 	template:  `<div id="frame" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
-		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
+		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: size + 'px'}">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
@@ -11,14 +11,21 @@ Vue.component('letter', {
 				<Radio label="片"  v-if="index == 0">片假</Radio>
 			</RadioGroup>
 		</div>
-		<vm-canvas v-if="size > 0"  style="margin-top: 20px;"
-			:size="size"  :char="datas[index][row][col][word]"
-		></vm-canvas>
-		<div style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;">
+
+		<vm-canvas ref="canvas" v-if="size > 0" style="margin-top: 20px;" :size="size" :char="datas[index][row][col][word]" 
+			:style="{width: size + 'px'}"
+		>
+		</vm-canvas>
+
+		<div style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;" :style="{width: size + 'px'}">
 			<Icon type="ios-arrow-back" size="40" style="z-index: 10;cursor: pointer; color: #2d8cf0;" @click="goto(37)"></Icon>
+			<Icon type="md-volume-up" size="40" style="z-index: 10;cursor: pointer; color: #2d8cf0;" @click="reset()" />
 			<Icon type="ios-arrow-forward" size="40" style="z-index: 10; cursor: pointer; color: #2d8cf0;"  @click="goto(39)"></Icon>
 		</div>
-		<div style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;"">
+
+		<div style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;""
+			:style="{width: size + 'px'}"
+		>
 			<span style="font-size: 18px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
 			<div style="flex: 1" />
 			<span style="font-size: 26px; color: #2d8cf0; margin-left: 10px;">{{datas[index][row][col]['mp3']}}</span>
@@ -43,18 +50,19 @@ Vue.component('letter', {
 	created(){
 	},
 	async mounted () {
-		let size = 300;
-		let children = document.querySelectorAll("#frame > div");
-		for(let i = 0; i < children.length; i++) {
-			children[i].style.width = size + "px";
+		this.size = 300;
+		let pos = window.localStorage["japanese-letter-position"];
+		if(typeof pos == "string" && pos.length > 0) {
+			pos = pos.split(",");
+			if(pos.length == 3) {
+				this.index = pos[0];
+				this.row = pos[1];
+				this.col = pos[2];
+			}
+			// console.log(pos)
 		}
-		// console.log(children)
-		this.size = size;
 		
 		window.addEventListener('keydown', this.onKeydown, false);
-		// setTimeout(() => {
-		// 	this.play();	
-		// }, 3000);
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -66,6 +74,8 @@ Vue.component('letter', {
 			if(this.index != "0") {
 				this.word = "平"
 			}
+			this.row = 0;
+			this.col = 0;
 			this.play()
 		},
 		onChangeWord() {
@@ -91,6 +101,7 @@ Vue.component('letter', {
 			if(Player.mode != "") await Player.wait(1);
 			let data = this.datas[this.index];
 			if(data[this.row][this.col] != null) {
+				window.localStorage["japanese-letter-position"] = this.index + "," + this.row + "," + this.col;
 				await Player.play(data[this.row][this.col].mp3);
 			}
 			window.focus();
@@ -175,6 +186,11 @@ Vue.component('letter', {
 				return;
 			}
 			this.row = rowX; this.col = colX;
+			this.play();
+		},
+		reset() {
+			let canvas = this.$refs["canvas"];
+			canvas.clear();
 			this.play();
 		}
 	},

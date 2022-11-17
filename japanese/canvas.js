@@ -1,10 +1,14 @@
 Vue.component('vm-canvas', { 
-	template:  `<div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-		<canvas :width="size" :height="size" ref="canvas" style="z-index: 10; background: transparent;"></canvas>
-		<div ref="letter" style="z-index: 0; background: white; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+	template:  `<div style="position: relative; z-index: 0;" :style="{width: size + 'px', height: size + 'px'}">
+		<canvas ref="background" :width="size" :height="size" style="position: absolute;  z-index: 0; background: white;"></canvas>
+		<div ref="letter" style="position: absolute; z-index: 0; top: 0px; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center;"
+		  :style="{width: size + 'px', height: size + 'px'}">
 			{{char}}
 		</div>
+		<canvas ref="canvas" :width="size" :height="size" style="position: absolute;  z-index: 100; background: transparent;"></canvas>
   </div>`,
+	/*
+	*/
 	props: {
 		size: {
 			type: Number,
@@ -35,20 +39,20 @@ Vue.component('vm-canvas', {
 			let lineWidth = 10, color = "black";
 			// letter.style.cursor = "pointer";
 
-			canvas.style.width = this.size + "px";
-			canvas.style.height = this.size + "px";
+			// canvas.style.width = this.size + "px";
+			// canvas.style.height = this.size + "px";
 			
-			letter.style.width = this.size + "px";
-			letter.style.height = this.size + "px";
-			letter.style.marginTop = (this.size * -1) + "px";
+			// letter.style.width = this.size + "px";
+			// letter.style.height = this.size + "px";
+			// letter.style.marginTop = (this.size * -1) + "px";
 			letter.style.fontSize = (this.size - 20) + "px";
 			letter.style.fontFamily = "メイリオ";
 			letter.style.color = "#c4c4c4";
 			
 			let width = canvas.width, height = canvas.height;
 			if (window.devicePixelRatio) {
-				canvas.style.width = width + "px";
-				canvas.style.height = height + "px";
+				// canvas.style.width = width + "px";
+				// canvas.style.height = height + "px";
 				canvas.height = height * window.devicePixelRatio;
 				canvas.width = width * window.devicePixelRatio;
 				ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
@@ -129,13 +133,17 @@ Vue.component('vm-canvas', {
 				canvas.removeEventListener('touchmove', touchMove, false);
 			}, false);
 		},
-		draw() {
+		clear() {
 			let canvas = this.$refs["canvas"];
+			let ctx = canvas.getContext('2d');
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		},
+		draw() {
+			let canvas = this.$refs["background"];
 			let ctx = canvas.getContext('2d');
 			let height = canvas.height, width = canvas.width;
 			ctx.lineWidth = 2;
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
-			// ctx.fillStyle = 'orange';
+
 			ctx.strokeStyle = '#DCDCDC';
       let j = 4;
       let x = width / j + 1;
@@ -158,11 +166,11 @@ Vue.component('vm-canvas', {
 	},
 	watch: {
 		size(value) {
-			console.log(value)
+			// console.log(value)
 		},
 		char(value) {
-			this.draw();
-			console.log(value)
+			this.clear();
+			// console.log(value)
 		}
 	},
 });
