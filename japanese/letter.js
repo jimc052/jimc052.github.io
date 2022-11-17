@@ -55,9 +55,9 @@ Vue.component('letter', {
 		if(typeof pos == "string" && pos.length > 0) {
 			pos = pos.split(",");
 			if(pos.length == 3) {
-				this.index = pos[0];
-				this.row = pos[1];
-				this.col = pos[2];
+				this.index = parseInt(pos[0], 10);
+				this.row = parseInt(pos[1], 10);
+				this.col = parseInt(pos[2], 10);
 			}
 			// console.log(pos)
 		}
