@@ -218,7 +218,7 @@ Vue.component('letter', {
 					if(x == -1) {
 						max--;
 						history += (history.length == 0 ? "" : "\n") + `'${row}-${col}'`
-						console.log((history.split("\n").length + ": ") + `row: ${row}, col: ${col}` + ( datas[row][col] == null ? "" : `, ${datas[row][col][this.word]}`))
+						// console.log((history.split("\n").length + ": ") + `row: ${row}, col: ${col}` + ( datas[row][col] == null ? "" : `, ${datas[row][col][this.word]}`))
 						if(datas[row][col] != null) {
 							this.row = row; this.col = col;
 							this.play();
@@ -233,13 +233,14 @@ Vue.component('letter', {
 				} while(i < 10 && max >= 0);
 				// console.log(history)
 				if(max == 0) {
-					alert("Game Over!!")
+					alert("Game Over!!");
+					this.isTest = false;
 					return;
 				}
 				idTime = setTimeout(() => {
 					if(this.isTest == true)
 						cycle();
-				}, 3 * 1000);
+				}, 10 * 1000);
 			}
 
 			let getRandom = (min,max) => {
