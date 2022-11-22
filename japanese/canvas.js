@@ -27,6 +27,7 @@ Vue.component('vm-canvas', {
 	created(){
 	},
 	async mounted () {
+		this.drawGrid();
 		this.render();
 	},
 	destroyed() {
@@ -59,7 +60,7 @@ Vue.component('vm-canvas', {
 			}
 
 			// font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
-			this.draw();
+			
 
 			// mouse
 			function getMousePos(canvas, evt) {
@@ -138,7 +139,7 @@ Vue.component('vm-canvas', {
 			let ctx = canvas.getContext('2d');
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 		},
-		draw() {
+		drawGrid() {
 			let canvas = this.$refs["background"];
 			let ctx = canvas.getContext('2d');
 			let height = canvas.height, width = canvas.width;
