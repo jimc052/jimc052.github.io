@@ -224,7 +224,7 @@
 			el: '#app',
 			data() {
 				return {
-					page: "筆順練習",
+					page: typeof(this.$queryString('mode')) == "string" ? this.$queryString('mode') : "筆順練習",
 					width: document.body.clientWidth < 400 ? 30: 180,
 				};
 			},
