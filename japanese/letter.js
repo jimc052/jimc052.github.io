@@ -1,16 +1,20 @@
 let idTime;
 Vue.component('letter', { 
 	template:  `<div id="frame" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
-		<div id="header" v-if="!isTest" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: size + 'px'}">
-			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
+		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: size + 'px'}">
+			<RadioGroup v-if="!isTest" v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
 			</RadioGroup>
+			<div v-else style="color: #2d8cf0; font-size: 20px">{{index == 0 ? "清音" : (index == 1 ? "濁音" : "") }}</div>
+
 			<div style="flex: 1"></div>
-			<RadioGroup v-model="word" type="button" @on-change="onChangeWord">
+
+			<RadioGroup v-if="!isTest" v-model="word" type="button" @on-change="onChangeWord">
 				<Radio label="平">平假</Radio>
-				<Radio label="片"  v-if="index == 0">片假</Radio>
+				<Radio label="片" v-if="index == 0">片假</Radio>
 			</RadioGroup>
+			<div v-else style="color: #2d8cf0; font-size: 20px">{{word + "假"}}</div>
 		</div>
 
 		<vm-canvas ref="canvas" v-if="size > 0" style="margin-top: 20px;" :size="size" :char="datas[index][row][col][word]" 
@@ -29,7 +33,7 @@ Vue.component('letter', {
 		</div>
 		<div v-else style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="{width: size + 'px'}">
 			<div class="button"><Icon type="md-square" size="20" @click="isTest = !isTest" /></div>
-			
+			<div style="color: #2d8cf0; font-size: 26px">{{datas[index][row][col]['mp3']}}</div>
 			<div style="color: #2d8cf0; font-size: 26px">{{question}}</div>
 		</div>
 
@@ -37,9 +41,9 @@ Vue.component('letter', {
 			style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;""
 			:style="{width: size + 'px'}"
 		>
-			<span style="font-size: 18px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
+			<span style="font-size: 20px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
 			<div style="flex: 1" />
-			<span style="font-size: 26px; color: #2d8cf0; margin-left: 10px;">{{datas[index][row][col]['mp3']}}</span>
+			<span style="font-size: 26px; color: #2d8cf0;">{{datas[index][row][col]['mp3']}}</span>
 		</div>
   </div>`,
 	props: {
