@@ -138,14 +138,21 @@
 			background: #f0faff;
 			border-right: 1px solid #2d8cf0;
 		}
-
 		.button {
-			z-index: 10;
-			cursor: pointer; 
-			color: #2d8cf0;
-			border-radius: 3px;
-			border: 1px #2d8cf0 solid;
-			background-color: white;
+			width: 40px; 
+			height: 40px; 
+			z-index: 10; 
+			cursor: pointer;  
+			color: #2d8cf0; 
+			border-radius: 3px; 
+			border: 1px #2d8cf0 solid; 
+			background-color: white; 
+			display: flex; 
+			flex-direction: column; 
+			justify-content: center;
+		}
+		.button + .button {
+			margin-left: 5px;
 		}
 	</style>
 </head>
