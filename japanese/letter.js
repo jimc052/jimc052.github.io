@@ -108,6 +108,11 @@ Vue.component('letter', {
 			// console.log(pos)
 		}
 		
+		let options = window.localStorage["japanese-letter-options"] //  = JSON.stringify(this.options)
+		if(typeof options == "string" && options.length > 0){
+			this.options = JSON.parse(options)
+		}
+
 		window.addEventListener('keydown', this.onKeydown, false);
 	},
 	destroyed() {
@@ -126,6 +131,7 @@ Vue.component('letter', {
 				this.row = -1;
 				this.test();				
 			}
+			window.localStorage["japanese-letter-options"] = JSON.stringify(this.options)
 		},
 		onChangeIndex() {
 			let o = document.activeElement;
