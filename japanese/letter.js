@@ -17,33 +17,57 @@ Vue.component('letter', {
 			<div v-else style="color: #2d8cf0; font-size: 20px">{{word + "假"}}</div>
 		</div>
 
-		<vm-canvas ref="canvas" v-if="size > 0" style="margin-top: 20px;" :size="size" :char="datas[index][row][col][word]" 
+		<vm-canvas ref="canvas" v-if="size > 0" style="margin-top: 20px;" :size="size" 
+			:char="row > -1 ? datas[index][row][col][word] : '' " 
 			:style="{width: size + 'px'}"
 		>
 		</vm-canvas>
 
-		<div v-if="!isTest" style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;" :style="{width: size + 'px'}">
+		<div v-if="row > -1 && isTest == false" style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between;" :style="{width: size + 'px'}">
 			<div class="button"><Icon type="md-volume-up" size="25" @click="reset()" /></div>
-			<div class="button"><Icon type="md-sync" size="25" @click="test()" /></div>
+			<div class="button"><Icon type="md-sync" size="25" @click="showOption()" /></div>
 
 			<div style="flex: 1;"></div>
 
 			<div class="button"><Icon type="ios-arrow-back" size="30" @click="goto(37)" /></div>
 			<div class="button"><Icon type="ios-arrow-forward" size="30" @click="goto(39)" /></div>
 		</div>
-		<div v-else style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="{width: size + 'px'}">
-			<div class="button"><Icon type="md-square" size="20" @click="isTest = !isTest" /></div>
-			<div style="color: #2d8cf0; font-size: 26px">{{datas[index][row][col]['mp3']}}</div>
-			<div style="color: #2d8cf0; font-size: 26px">{{question}}</div>
-		</div>
 
-		<div v-if="!isTest" 
+		<div v-if="row > -1 && isTest == false" 
 			style="margin-top: 10px; display: flex; flex-direction: row; padding: 10px; align-items: center; justify-content: center;""
 			:style="{width: size + 'px'}"
 		>
 			<span style="font-size: 20px; color: #2d8cf0;">{{(row + 1) + '列 / ' + (col+1) + '行'}}</span>
 			<div style="flex: 1" />
-			<span style="font-size: 26px; color: #2d8cf0;">{{datas[index][row][col]['mp3']}}</span>
+			<span style="font-size: 26px; color: #2d8cf0;">{{row > -1 ? datas[index][row][col]['mp3'] : "" }}</span>
+		</div>
+
+		<div v-if="row == -1 || isTest == true " style="margin-top: 10px; display: flex; flex-direction: row; justify-content: space-between; align-items: center;" :style="{width: size + 'px'}">
+			<div class="button">
+				<Icon :type=" isTest == true ? 'md-square' : 'md-play' " size="20" @click="test()" />
+			</div>
+			<div style="color: #2d8cf0; font-size: 26px">{{row > -1 ? datas[index][row][col]['mp3'] : ""}}</div>
+			<div style="color: #2d8cf0; font-size: 26px">{{question}}</div>
+		</div>
+
+		<div v-if="row == -1 || isTest == true " style="margin-top: 10px; min-height: 20px;" :style="{width: size + 'px'}">
+			<div style="display: flex; flex-direction: row; justify-content: flex-start;">
+				<span v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1"
+					class="button" :class="{active: options.indexOf(index1) > -1}"
+					style="cursor: pointer; font-size: 22px;"
+					@click="onClickOptions(index1)"
+				>
+					{{item1}}
+				</span>
+			</div>
+			<div style="display: flex; flex-direction: row; justify-content: flex-start; margin-top: 5px;">
+				<span v-for="(item1, index1) in datas[index]" :key="index1"
+					class="button" :class="{active: options.indexOf(item1[0][word]) > -1}"
+					style="font-size: 20px;" @click="onClickOptions(item1[0][word])"
+				>
+					{{item1[0][word]}}
+				</span>
+			</div>
 		</div>
   </div>`,
 	props: {
@@ -61,7 +85,8 @@ Vue.component('letter', {
 				[[{"平":"が","mp3":"ga"},{"平":"ぎ","mp3":"gi"},{"平":"ぐ","mp3":"gu"},{"平":"げ","mp3":"ge"},{"平":"ご","mp3":"go"}],[{"平":"ざ","mp3":"za"},{"平":"じ","mp3":"zi"},{"平":"ず","mp3":"zu"},{"平":"ぜ","mp3":"ze"},{"平":"ぞ","mp3":"zo"}],[{"平":"だ","mp3":"da"},{"平":"ぢ","mp3":"di"},{"平":"づ","mp3":"du"},{"平":"で","mp3":"de"},{"平":"ど","mp3":"do"}],[{"平":"ば","mp3":"ba"},{"平":"び","mp3":"bi"},{"平":"ぶ","mp3":"bu"},{"平":"べ","mp3":"be"},{"平":"ぼ","mp3":"bo"}],[{"平":"ぱ","mp3":"pa"},{"平":"ぴ","mp3":"pi"},{"平":"ぷ","mp3":"pu"},{"平":"ぺ","mp3":"pe"},{"平":"ぽ","mp3":"po"}]],
 				[[{"平":"きゃ","mp3":"kya"},null,{"平":"きゅ","mp3":"kyu"},null,{"平":"きょ","mp3":"kyo"}],[{"平":"しゃ","mp3":"sya"},null,{"平":"しゅ","mp3":"syu"},null,{"平":"しょ","mp3":"syo"}],[{"平":"ちゃ","mp3":"cya"},null,{"平":"ちゅ","mp3":"cyu"},null,{"平":"ちょ","mp3":"cyo"}],[{"平":"にゃ","mp3":"nya"},null,{"平":"にゅ","mp3":"nyu"},null,{"平":"にょ","mp3":"nyo"}],[{"平":"ひゃ","mp3":"hya"},null,{"平":"ひゅ","mp3":"hyu"},null,{"平":"ひょ","mp3":"hyo"}],[{"平":"みゃ","mp3":"mya"},null,{"平":"みゅ","mp3":"myu"},null,{"平":"みょ","mp3":"myo"}],[{"平":"りゃ","mp3":"rya"},null,{"平":"りゅ","mp3":"ryu"},null,{"平":"りょ","mp3":"ryo"}],[{"平":"ぎゃ","mp3":"gya"},null,{"平":"ぎゅ","mp3":"gyu"},null,{"平":"ぎょ","mp3":"gyo"}],[{"平":"じゃ","mp3":"zya"},null,{"平":"じゅ","mp3":"zyu"},null,{"平":"じょ","mp3":"zyo"}],[{"平":"びゃ","mp3":"bya"},null,{"平":"びゅ","mp3":"byu"},null,{"平":"びょ","mp3":"byo"}],[{"平":"ぴゃ","mp3":"pya"},null,{"平":"ぴゅ","mp3":"pyu"},null,{"平":"ぴょ","mp3":"pyo"}]]
 			],
-			isTest: false
+			isTest: false,
+			options: ""
 		};
 	},
 	created(){
@@ -85,6 +110,14 @@ Vue.component('letter', {
 		window.removeEventListener('keydown', this.onKeydown, false);
   },
 	methods: {
+		onClickOptions(data) {
+			if(this.options.indexOf(data) > -1) {
+				this.options.replace(data, "")
+			} else {
+				this.options += data + "";
+			}
+
+		},
 		onChangeIndex() {
 			let o = document.activeElement;
 			o.blur();
@@ -211,9 +244,17 @@ Vue.component('letter', {
 			canvas.clear();
 			this.play();
 		}, 
+		showOption() {
+			this.row = -1;
+		},
 		test() {
+			this.isTest = !this.isTest;
+			if(this.isTest == false) {
+				clearTimeout(idTime);
+				return;
+			}
+
 			let sample = [], sec = 10 * 1000;
-			this.isTest = true;
 			let datas = this.datas[this.index];
 			datas.forEach((el1, row) => {
 				el1.forEach((el2, col) => {

@@ -150,9 +150,14 @@
 			display: flex; 
 			flex-direction: column; 
 			justify-content: center;
+			align-items: center;
+		}
+		.button.active {
+			color: white; 
+			background-color: #2d8cf0; 
 		}
 		.button + .button {
-			margin-left: 5px;
+			margin-left: 3px;
 		}
 	</style>
 </head>
@@ -169,7 +174,7 @@
 			<ul v-if="width > 30" class="ivu-menu" style="flex: 1;">
 				<li v-for="(item1, index1) in ['五十音', '筆順練習','字典']" :key="index1" class="ivu-menu-item"
 					:class="{'ivu-menu-item-active': item1 == page}"
-					@click="page = item1"
+					@click="onClick(item1);"
 				>
 					{{item1}}
 				</li>
@@ -177,8 +182,8 @@
 		</div>
 		<div style="flex: 1;">
 			<pronounce v-if="page == '五十音'"></pronounce>
-			<letter v-else-if="page == '筆順練習'"></letter>
-			<vocabulary v-else></vocabulary>
+			<vocabulary v-else-if="page == '字典'"></vocabulary>
+			<letter v-else></letter>
 		</div>
 	</div>
 </body>
@@ -224,7 +229,7 @@
 			el: '#app',
 			data() {
 				return {
-					page: typeof(this.$queryString('mode')) == "string" ? this.$queryString('mode') : "筆順練習",
+					page: "筆順練習",
 					width: document.body.clientWidth < 400 ? 30: 180,
 				};
 			},
@@ -243,12 +248,26 @@
 							self.broadcast.$emit('onResize');
 					})()
 				}
+				let mode = this.$queryString('mode');
+				if(typeof mode == "string" && mode.length > 0)
+					this.page = this.$queryString('mode')
+				else {
+					let page = window.localStorage["japanese-page"];
+					if(typeof page == "string" )
+						this.page = page;
+				}
+					
 				// if(typeof localStorage["barcode"] == "string") {
 				// 	this.list = JSON.parse(localStorage["barcode"]);
 				// }
 			},
 			methods: {
-				
+				onClick(page) {
+					this.page = page;
+					window.localStorage["japanese-page"] = page;
+					if(document.body.clientWidth < 400)
+						this.width = 30;
+				}
 			}
 		});
 	}
