@@ -122,6 +122,10 @@ Vue.component('letter', {
 				data = this.options[tag] + (data + "");
 			}
 			this.$set(this.options, tag, data);
+			if(this.isTest == true) {
+				this.row = -1;
+				this.test();				
+			}
 		},
 		onChangeIndex() {
 			let o = document.activeElement;
