@@ -52,7 +52,6 @@ Vue.component('letter', {
 
 		<div v-if="row == -1 || isTest == true " style="margin-top: 10px; min-height: 20px;" :style="{width: size + 'px'}">
 			<div style="display: flex; flex-direction: row; justify-content: flex-start;">
-			<span>{{options.col}}</span>
 				<span v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1"
 					class="button" :class="{active: options.col.indexOf(index1) > -1}"
 					style="cursor: pointer; font-size: 22px;"
