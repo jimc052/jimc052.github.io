@@ -52,18 +52,19 @@ Vue.component('letter', {
 
 		<div v-if="row == -1 || isTest == true " style="margin-top: 10px; min-height: 20px;" :style="{width: size + 'px'}">
 			<div style="display: flex; flex-direction: row; justify-content: flex-start;">
+			<span>{{options.col}}</span>
 				<span v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1"
-					class="button" :class="{active: options.indexOf(index1) > -1}"
+					class="button" :class="{active: options.col.indexOf(index1) > -1}"
 					style="cursor: pointer; font-size: 22px;"
-					@click="onClickOptions(index1)"
+					@click="onClickOptions('col', index1)"
 				>
 					{{item1}}
 				</span>
 			</div>
 			<div style="display: flex; flex-direction: row; justify-content: flex-start; margin-top: 5px;">
 				<span v-for="(item1, index1) in datas[index]" :key="index1"
-					class="button" :class="{active: options.indexOf(item1[0][word]) > -1}"
-					style="font-size: 20px;" @click="onClickOptions(item1[0][word])"
+					class="button" :class="{active: options.row.indexOf(item1[0][word]) > -1}"
+					style="font-size: 20px;" @click="onClickOptions('row', item1[0][word])"
 				>
 					{{item1[0][word]}}
 				</span>
@@ -86,7 +87,10 @@ Vue.component('letter', {
 				[[{"平":"きゃ","mp3":"kya"},null,{"平":"きゅ","mp3":"kyu"},null,{"平":"きょ","mp3":"kyo"}],[{"平":"しゃ","mp3":"sya"},null,{"平":"しゅ","mp3":"syu"},null,{"平":"しょ","mp3":"syo"}],[{"平":"ちゃ","mp3":"cya"},null,{"平":"ちゅ","mp3":"cyu"},null,{"平":"ちょ","mp3":"cyo"}],[{"平":"にゃ","mp3":"nya"},null,{"平":"にゅ","mp3":"nyu"},null,{"平":"にょ","mp3":"nyo"}],[{"平":"ひゃ","mp3":"hya"},null,{"平":"ひゅ","mp3":"hyu"},null,{"平":"ひょ","mp3":"hyo"}],[{"平":"みゃ","mp3":"mya"},null,{"平":"みゅ","mp3":"myu"},null,{"平":"みょ","mp3":"myo"}],[{"平":"りゃ","mp3":"rya"},null,{"平":"りゅ","mp3":"ryu"},null,{"平":"りょ","mp3":"ryo"}],[{"平":"ぎゃ","mp3":"gya"},null,{"平":"ぎゅ","mp3":"gyu"},null,{"平":"ぎょ","mp3":"gyo"}],[{"平":"じゃ","mp3":"zya"},null,{"平":"じゅ","mp3":"zyu"},null,{"平":"じょ","mp3":"zyo"}],[{"平":"びゃ","mp3":"bya"},null,{"平":"びゅ","mp3":"byu"},null,{"平":"びょ","mp3":"byo"}],[{"平":"ぴゃ","mp3":"pya"},null,{"平":"ぴゅ","mp3":"pyu"},null,{"平":"ぴょ","mp3":"pyo"}]]
 			],
 			isTest: false,
-			options: ""
+			options: {
+				col: "",
+				row: ""
+			}
 		};
 	},
 	created(){
@@ -110,13 +114,14 @@ Vue.component('letter', {
 		window.removeEventListener('keydown', this.onKeydown, false);
   },
 	methods: {
-		onClickOptions(data) {
-			if(this.options.indexOf(data) > -1) {
-				this.options.replace(data, "")
+		onClickOptions(tag, data) {
+			data = "" + data;
+			if(this.options[tag].indexOf(data) > -1) {
+				data = this.options[tag].replace(data, "")
 			} else {
-				this.options += data + "";
+				data = this.options[tag] + (data + "");
 			}
-
+			this.$set(this.options, tag, data);
 		},
 		onChangeIndex() {
 			let o = document.activeElement;
@@ -257,11 +262,13 @@ Vue.component('letter', {
 			let sample = [], sec = 10 * 1000;
 			let datas = this.datas[this.index];
 			datas.forEach((el1, row) => {
-				el1.forEach((el2, col) => {
-					if(el2 != null){
-						sample.push({row, col});
-					}
-				});
+				if(this.options["row"].length == 0 || this.options["row"].indexOf(el1[0][this.word]) > -1){
+					el1.forEach((el2, col) => {
+						if(el2 != null && (this.options["col"].length == 0 || this.options["col"].indexOf(col) > -1)){
+							sample.push({row, col});
+						}
+					});
+				}
 			});
 
 			let max = sample.length;
