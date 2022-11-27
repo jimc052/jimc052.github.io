@@ -54,16 +54,16 @@ Vue.component('letter', {
 			<div style="display: flex; flex-direction: row; justify-content: flex-start;">
 				<span v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1"
 					class="button" :class="{active: options.col.indexOf(index1) > -1}"
-					style="cursor: pointer; font-size: 22px;"
+					style="cursor: pointer; font-size: 22px; margin: 0px;"
 					@click="onClickOptions('col', index1)"
 				>
 					{{item1}}
 				</span>
 			</div>
-			<div style="display: flex; flex-direction: row; justify-content: flex-start; margin-top: 5px;">
+			<div style="display: flex; flex-direction: row; justify-content: flex-start; flex-wrap: wrap; height: 85px; margin-top: 5px;">
 				<span v-for="(item1, index1) in datas[index]" :key="index1"
 					class="button" :class="{active: options.row.indexOf(item1[0][word]) > -1}"
-					style="font-size: 20px;" @click="onClickOptions('row', item1[0][word])"
+					style="font-size: 20px; margin: 0px;" @click="onClickOptions('row', item1[0][word])"
 				>
 					{{item1[0][word]}}
 				</span>
