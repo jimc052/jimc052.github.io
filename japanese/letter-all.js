@@ -1,5 +1,5 @@
 Vue.component('letter-all', { 
-	template:  `<div id="frame" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+	template:  `<div id="frame" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
 		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
 			<RadioGroup  v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
@@ -13,8 +13,7 @@ Vue.component('letter-all', {
 				<Radio label="片" v-if="index == 0">片假</Radio>
 			</RadioGroup>
 		</div>
-		<div style="flex: 1; overflow: auto; ">
-
+		<div style="flex: 1; overflow: auto; width: 100%; ">
 			<div v-for="(item1, index1) in datas[index]" :key="index1" style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;"
 				:style="{'margin-top': index1 > 0 ? '10px' : '' }"
 			>
