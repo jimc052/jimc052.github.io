@@ -7,8 +7,6 @@ Vue.component('vm-canvas', {
 		</div>
 		<canvas ref="canvas" :width="size" :height="size" style="position: absolute;  z-index: 100; background: transparent;"></canvas>
   </div>`,
-	/*
-	*/
 	props: {
 		size: {
 			type: Number,
@@ -27,8 +25,15 @@ Vue.component('vm-canvas', {
 	created(){
 	},
 	async mounted () {
-		this.drawGrid();
-		this.render();
+		if(this.char.length > 0) {
+			this.drawGrid();
+			this.render();			
+		} else {
+			["background", "canvas", "letter"].forEach(el =>{
+				let ref = this.$refs[el];
+				if(ref != null) ref.style.display = "none";
+			});
+		}
 	},
 	destroyed() {
   },
