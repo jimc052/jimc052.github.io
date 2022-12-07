@@ -31,7 +31,7 @@ Vue.component('letter-all', {
 	},
 	data() {
 		return {
-			size: 0,
+			size: 180,
 			index: "0",
 			word: "平",
 			row: 0,
@@ -47,14 +47,11 @@ Vue.component('letter-all', {
 				30: '30',
 			},
 			datas: this.$japanese(),
-			
 		};
 	},
 	created(){
 	},
 	async mounted () {
-		this.size = 160;
-		
 	},
 	destroyed() {
   },

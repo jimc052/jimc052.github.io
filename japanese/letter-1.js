@@ -12,7 +12,7 @@ Vue.component('letter-1', {
 
 			<RadioGroup v-if="!isTest" v-model="word" type="button" @on-change="onChangeWord">
 				<Radio label="平">平假</Radio>
-				<Radio label="片" v-if="index == 0">片假</Radio>
+				<Radio label="片" v-if="index <= 1">片假</Radio>
 			</RadioGroup>
 			<div v-else style="color: #2d8cf0; font-size: 20px">{{word + "假"}}</div>
 		</div>
