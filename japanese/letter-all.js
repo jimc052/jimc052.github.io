@@ -10,7 +10,7 @@ Vue.component('letter-all', {
 
 			<RadioGroup  v-model="word" type="button" @on-change="onChangeWord">
 				<Radio label="平">平假</Radio>
-				<Radio label="片" v-if="index == 0">片假</Radio>
+				<Radio label="片">片假</Radio>
 			</RadioGroup>
 		</div>
 		<div style="flex: 1; overflow: auto; width: 100%; ">
