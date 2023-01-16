@@ -39,12 +39,7 @@ Vue.component('list', {
 					
 				</div>
 			</div>
-			<i-button v-if="$isLogin()" type="primary" shape="circle" icon="md-add" 
-				circle @click.native="onAdd" size="large"
-			style="position: absolute; bottom: 10px; right: 10px;"
-		></i-button>
 		</div>
-		
 	`,
 	props: {
 		// editable: {
@@ -78,8 +73,8 @@ Vue.component('list', {
             reader.onload = (event) => {
               // let json = JSON.parse(event.target.result);
               if (file.name.indexOf(".csv") > -1 ) {
-                console.log(event.target.result);
-                
+                // console.log(event.target.result);
+								this.onAdd(event.target.result)
               }
             };
             reader.readAsText(file);
@@ -92,61 +87,65 @@ Vue.component('list', {
       e.preventDefault();
     }
 		
-
-
 		await  this.fetch();
-		// // await this.onSave()
 	},
 	destroyed() {
   },
 	methods: {
-		onClickIcon(index) {
+		async onClickIcon(index) {
+			this.datas = [];
+			let arr = this.yymm.split("-");
+			arr[1] = parseInt(arr[1], 10) + index;
+			if(arr[1] == 0) {
+				arr[0] = parseInt(arr[0], 10) - 1;
+				arr[1] = 12;
+			} if(arr[1] == 13) {
+				arr[0] = parseInt(arr[0], 10) + 1
+				arr[1] = 1;
+			}
 
+			this.yymm = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1]
+			await this.fetch();
 		},
-		onAdd() {
-			let arr = `2023-01-08 6:38	128	99	95
-2023-01-08 19:49	134	92	89
-2023-01-09 6:37	123	94	89
-2023-01-09 19:14	125	91	80
-2023-01-10 6:12	118	88	82
-2023-01-10 20:20	132	89	81
-2023-01-11 5:54	126	87	79
-2023-01-11 20:22	129	87	85
-2023-01-12 5:25	129	92	72
-2023-01-12 20:07	129	85	84
-2023-01-13 6:12	127	86	77
-2023-01-13 23:02	128	85	95
-2023-01-14 7:18	131	89	92
-2023-01-14 20:00	117	81	102
-2023-01-15 6:16	121	83	90
-2023-01-15 21:04	119	83	92
-2023-01-16 5:59	111	82	80`.split("\n");
-			console.log(arr)
+		async onAdd(result) {
+			let arr = result.split("\n"), count = 0;
+			// console.log(arr)
 			let json = {};
 			arr.forEach((el, index) => {
-				// console.log(el)
-				let row = el.split("\t");
-				let arr2 = row[0].split(" ")
-				let key = arr2[0].substr(8);
-				if(arr2[1].length == 4) arr2[1] = "0" + arr2[1];
-				if(typeof json[key] == "undefined") json[key] = {};
-				json[key][arr2[1]] = row[1] + "/" + row[2] + "/" + row[3]
+				if(el.indexOf("測量日期") == -1 && el.trim().length > 0 && el.indexOf(this.yymm) == 0) {
+					// console.log(el)
+					let row = el.split(",");
+					if(row.length >=5 && parseInt(row[4], 10) > 65) {
+						let arr2 = row[0].split(" ")
+						let key = arr2[0].substr(8);
+						if(arr2[1].length == 4) arr2[1] = "0" + arr2[1];
+						if(typeof json[key] == "undefined") json[key] = {};
+						json[key][arr2[1]] = row[2] + "/" + row[3] + "/" + row[4];
+						count++;
+					}
+				}
 			});
-			console.log(json)
-			this.onSave(json)
+			console.log(JSON.stringify(json))
+			if(count > 0) {
+				await this.onSave(json);
+				this.retrieve();
+			}
+			alert(this.yymm + "\n轉入 " + count + " 筆資料")
 		},
 		async fetch() {
-			this.ref = FireStore.db.collection("users").doc(FireStore.uid())
+			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("blood").doc(this.yymm)
 			if(this.$isLogin()) {
 				this.spinShow = true;
 				try {
-					let snapshot1 = await this.ref.get();
+					let snapshot1 = await ref.get();
 					// console.log(snapshot1)
 					let data = snapshot1.data();
 					// console.log(data)
 					if(typeof data == "object") {
 						this.firebaseData = data;
+					} else {
+						this.firebaseData = {};
 					}
 					this.retrieve();
 				} catch(e) {
@@ -159,9 +158,12 @@ Vue.component('list', {
 			}
 		},
 		async onSave(myRecords) {
+			this.firebaseData = Object.assign(this.firebaseData, myRecords);
+			let ref = FireStore.db.collection("users").doc(FireStore.uid())
+					.collection("blood").doc(this.yymm)
 			this.spinShow = true;
 			try {
-				let x = await this.ref.set(myRecords);
+				let x = await ref.set(this.firebaseData);
 			} catch(e) {
 				console.log(e)
 			} finally {
