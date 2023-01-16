@@ -19,7 +19,7 @@ Vue.component('list', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
 
-					<div style="color: rgb(45, 140, 240); font-size: 20px; margin-right: 15px;">
+					<div style="color: rgb(45, 140, 240); font-size: 20px; margin-right: 10px;">
 						<span style="font-size: 20px;">{{item.key}}</span>
 						<span style="font-size: 12px;">{{"(" + item.days + ")"}}</span>
 					</div>
@@ -32,12 +32,12 @@ Vue.component('list', {
 						</div>
 						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 							<div v-for="(item3, index3) in item2.split('/')">
-								<span v-if="! (index3 == 0)">{{"/"}}</span>
-								<span v-if="(index3 == 0)" style="font-size: 20px;"
+								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
+								<span v-if="(index3 == 0)" style="font-size: 18px;"
 									:style="{color: item3 > 120 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
-								<span v-if="(index3 == 1)"  style="font-size: 20px;"
+								<span v-if="(index3 == 1)"  style="font-size: 18px;"
 									:style="{color: item3 > 80 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
-								<span v-if="index3 == 2"  style="font-size: 20px;">{{item3}}</span>
+								<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
 							</div>
 						</div>
 					</div>
