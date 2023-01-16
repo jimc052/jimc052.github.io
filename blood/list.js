@@ -19,13 +19,22 @@ Vue.component('list', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
 
-					<div style="color: rgb(45, 140, 240); font-size: 24px; margin-right: 15px;">{{item.key}}</div>
+					<div style="color: rgb(45, 140, 240); font-size: 20px; margin-right: 15px;">{{item.key}}</div>
 
 					<div v-for="(item2, index2) in item.data" 
 						style="flex: 1; display: flex; flex-direction: row; 
 							justify-content: flex-start; align-items: center; ">
-						<div style="font-size: 20px; margin-right: 10px;">{{index2}}</div>
-						<div style="font-size: 20px;">{{item2}}</div>
+						<div style="font-size: 16px; margin-right: 10px;">{{index2}}</div>
+						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+							<div v-for="(item3, index3) in item2.split('/')">
+								<span v-if="! (index3 == 0)">{{"/"}}</span>
+								<span v-if="(index3 == 0)" style="font-size: 20px;"
+									:style="{color: item3 > 120 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+								<span v-if="(index3 == 1)"  style="font-size: 20px;"
+									:style="{color: item3 > 80 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+								<span v-if="index3 == 2"  style="font-size: 20px;">{{item3}}</span>
+							</div>
+						</div>
 					</div>
 					
 				</div>
@@ -55,8 +64,38 @@ Vue.component('list', {
 	created(){
 	},
 	async mounted () {
+		window.ondrop = (e) => {
+			e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer.items) {
+        const data = e.dataTransfer.items;
+        for (var i = 0; i < data.length; i++) {
+          console.log(data[i]);
+          if (data[i].kind === "file") {
+            var file = data[i].getAsFile();
+            // console.log('file[' + i + '].name = ' + file.name);
+            let reader = new FileReader();
+            reader.onload = (event) => {
+              // let json = JSON.parse(event.target.result);
+              if (file.name.indexOf(".csv") > -1 ) {
+                console.log(event.target.result);
+                
+              }
+            };
+            reader.readAsText(file);
+          }
+        }
+      }
+    };
+
+		window.ondragover = (e) =>{
+      e.preventDefault();
+    }
+		
+
+
 		await  this.fetch();
-		// await this.onSave()
+		// // await this.onSave()
 	},
 	destroyed() {
   },

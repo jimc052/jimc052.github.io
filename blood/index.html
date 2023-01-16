@@ -56,9 +56,6 @@
 	window.onload = async function(){
 		let email =  window.localStorage["email"];
 		let password = window.localStorage["password"];
-		// jimc@bethel.com.tw jimc052 
-		// amltY0BiZXRoZWwuY29tLnR3CWppbWMwNTI=
-
 		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
 			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
 			let s = location.href.substr(location.href.indexOf(key) + key.length)
@@ -142,7 +139,11 @@
 				
 			}
 		});
+
+
 	}
+
+
 /* 	
 	// https://www.iviewui.com/components/menu
 	// https://www.iviewui.com/components/modal
