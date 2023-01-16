@@ -19,12 +19,17 @@ Vue.component('list', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
 
-					<div style="color: rgb(45, 140, 240); font-size: 20px; margin-right: 15px;">{{item.key}}</div>
+					<div style="color: rgb(45, 140, 240); font-size: 20px; margin-right: 15px;">
+						<span style="font-size: 20px;">{{item.key}}</span>
+						<span style="font-size: 12px;">{{"(" + item.days + ")"}}</span>
+					</div>
 
 					<div v-for="(item2, index2) in item.data" 
 						style="flex: 1; display: flex; flex-direction: row; 
 							justify-content: flex-start; align-items: center; ">
-						<div style="font-size: 16px; margin-right: 10px;">{{index2}}</div>
+						<div style="font-size: 16px; margin-right: 10px;">
+						{{index2}}
+						</div>
 						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)">{{"/"}}</span>
@@ -173,9 +178,11 @@ Vue.component('list', {
 			}
 		},
 		retrieve() {
+			let days = ["日", "一", "二", "三", "四", "五", "六"]
 			this.datas = [];
 			for(let key in this.firebaseData) {
-				let json = {key, data: this.firebaseData[key]};
+				let d = new Date(this.yymm + "-" + key)
+				let json = {key, data: this.firebaseData[key], days: days[d.getDay()]};
 				this.datas.push(json)
 			}
 			this.datas.sort(function(a, b){
