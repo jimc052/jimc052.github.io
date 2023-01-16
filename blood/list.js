@@ -2,11 +2,32 @@ Vue.component('list', {
 	template:  `
 		<div style="height: 100%; display: flex; flex-direction: column;">
 			<Spin size="large" fix v-if="spinShow"></Spin>
-			<div id="header" style="background: rgb(45, 140, 240); color: white; text-align: center; ">{{yymm}}</div>
-			<div style="flex: 1; overflow-y: auto;">
-				<div v-for="(item, index) in firebaseData">
-					<div>{{index}}</div>
-					<div>{{item}}</div>
+			<div id="header" style="background: rgb(45, 140, 240); color: white;  font-size: 30px;
+				display: flex; flex-direction: row; align-items: center;
+				justify-content: center;">
+				<div style="flex: 1;" />
+				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
+					style="cursor: pointer; margin-right: 10px;"/>
+				{{yymm}}
+				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
+					style="cursor: pointer; margin-left: 10px;"/>
+				<div style="flex: 1;" />
+			</div>
+			<div style="flex: 1; overflow-y: auto; background: white;">
+				<div v-for="(item, index) in datas" 
+					style="padding: 5px 10px;
+						display: flex; flex-direction: row; align-items: center; justify-content: center;"
+					:style="{'border-bottom': '1px solid #eee'}">
+
+					<div style="color: rgb(45, 140, 240); font-size: 24px; margin-right: 15px;">{{item.key}}</div>
+
+					<div v-for="(item2, index2) in item.data" 
+						style="flex: 1; display: flex; flex-direction: row; 
+							justify-content: flex-start; align-items: center; ">
+						<div style="font-size: 20px; margin-right: 10px;">{{index2}}</div>
+						<div style="font-size: 20px;">{{item2}}</div>
+					</div>
+					
 				</div>
 			</div>
 			<i-button v-if="$isLogin()" type="primary" shape="circle" icon="md-add" 
@@ -34,12 +55,15 @@ Vue.component('list', {
 	created(){
 	},
 	async mounted () {
-		await  this.retrieve();
+		await  this.fetch();
 		// await this.onSave()
 	},
 	destroyed() {
   },
 	methods: {
+		onClickIcon(index) {
+
+		},
 		onAdd() {
 			let arr = `2023-01-08 6:38	128	99	95
 2023-01-08 19:49	134	92	89
@@ -72,19 +96,20 @@ Vue.component('list', {
 			console.log(json)
 			this.onSave(json)
 		},
-		async retrieve() {
-			console.log(this.yymm)
+		async fetch() {
 			this.ref = FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("blood").doc(this.yymm)
 			if(this.$isLogin()) {
 				this.spinShow = true;
 				try {
 					let snapshot1 = await this.ref.get();
-					console.log(snapshot1)
+					// console.log(snapshot1)
 					let data = snapshot1.data();
-					console.log(data)
-					if(typeof data == "object")
+					// console.log(data)
+					if(typeof data == "object") {
 						this.firebaseData = data;
+					}
+					this.retrieve();
 				} catch(e) {
 
 				} finally {
@@ -106,6 +131,17 @@ Vue.component('list', {
 				}, 600);
 			}
 		},
+		retrieve() {
+			this.datas = [];
+			for(let key in this.firebaseData) {
+				let json = {key, data: this.firebaseData[key]};
+				this.datas.push(json)
+			}
+			this.datas.sort(function(a, b){
+				return a.key < b.key ? 1 : -1;
+			});
+			// console.log(this.datas)
+		}
 	},
 	watch: {
 	},

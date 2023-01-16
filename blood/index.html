@@ -43,20 +43,6 @@
 			height: 100%;
 			font-size: 30px;
 		}
-		#header{
-				font-size: 24px;
-				padding: 5px 0px;
-		}
-		@media screen and (max-width: 500px){
-			#header{
-					font-size: 14px;
-					padding: 2px 0px;
-			}
-		}
-
-		.ivu-modal-body {
-			overflow: hidden !important;
-		}
 		
 	</style>
 </head>
@@ -70,7 +56,9 @@
 	window.onload = async function(){
 		let email =  window.localStorage["email"];
 		let password = window.localStorage["password"];
-		// jimc@bethel.com.tw jimc052
+		// jimc@bethel.com.tw jimc052 
+		// amltY0BiZXRoZWwuY29tLnR3CWppbWMwNTI=
+
 		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
 			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
 			let s = location.href.substr(location.href.indexOf(key) + key.length)
