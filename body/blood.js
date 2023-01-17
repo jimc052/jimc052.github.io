@@ -11,9 +11,10 @@ Vue.component('blood', {
 				{{yymm}}
 				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
-				<div style="flex: 1;" />
-				<Icon type="md-swap" size="32" @click.native="$emit('change-page', 'pee')" 
-					style="cursor: pointer; margin: 0px 10px;"/>
+				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
+					<Icon type="md-swap" size="32" @click.native="$emit('change-page', 'pee')" 
+						style="cursor: pointer; margin: 0px 10px;"/>
+				</div>
 			</div>
 			<div style="flex: 1; overflow-y: auto; background: white;">
 				<div v-for="(item, index) in datas" 

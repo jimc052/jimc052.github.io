@@ -146,6 +146,11 @@
 			}
 		});
 	}
+Date.prototype.addDays = function(days) {
+	var date = new Date(this.valueOf());
+	date.setDate(date.getDate() + days);
+	return date;
+}
 /* 	
 	// https://www.iviewui.com/components/menu
 	// https://www.iviewui.com/components/modal
