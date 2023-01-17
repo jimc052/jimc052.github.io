@@ -22,7 +22,10 @@ Vue.component('pee', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
 					<div style="font-size: 25px; margin-right: 10px;">{{(datas.length - index) + "."}}</div>
-					<div style="flex: 1; font-size: 25px; ">{{item}}</div>
+					<div style="flex: 1; font-size: 25px; text-align: center">{{item}}</div>
+					<div style="font-size: 25px; width: 120px; text-align: right;">
+						{{different(index)}}
+					</div>
 				</div>
 			</div>
 			<i-button type="primary" shape="circle" icon="md-add" 
@@ -98,7 +101,21 @@ Vue.component('pee', {
 					}, 600);
 				}
 			}
+		},
+		different(index) {
+			let diff = "";
+			if(index < this.datas.length - 1) {
+				let arr1 = this.datas[index + 1].split(":");
+				let arr2 = this.datas[index].split(":");
+				let h = (arr2[0] - arr1[0]) * 60;
+				let m = arr2[1] - arr1[1];
+				diff = (h + m) + "分";
+			}
+			return  diff;
 		}
+	},
+	computed: {
+		
 	},
 	watch: {
 	},
