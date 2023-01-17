@@ -1,6 +1,6 @@
-Vue.component('list', { 
+Vue.component('pee', { 
 	template:  `
-		<div style="height: 100%; display: flex; flex-direction: column;">
+		<div style="height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden;">
 			<Spin size="large" fix v-if="spinShow"></Spin>
 			<div id="header" style="background: rgb(45, 140, 240); color: white;  font-size: 30px;
 				display: flex; flex-direction: row; align-items: center;
@@ -8,10 +8,12 @@ Vue.component('list', {
 				<div style="flex: 1;" />
 				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
-				{{yymm}}
+				{{yymmdd}}
 				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
 				<div style="flex: 1;" />
+				<Icon type="md-swap" size="32" @click.native="$emit('change-page', 'blood')" 
+					style="cursor: pointer; margin: 0px 10px;"/>
 			</div>
 			<div style="flex: 1; overflow-y: auto; background: white;">
 				<div v-for="(item, index) in datas" 
@@ -19,31 +21,11 @@ Vue.component('list', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
 
-					<div style="color: rgb(45, 140, 240); font-size: 20px; margin-right: 10px;">
-						<span style="font-size: 20px;">{{item.key}}</span>
-						<span style="font-size: 12px;">{{"(" + item.days + ")"}}</span>
-					</div>
-
-					<div v-for="(item2, index2) in item.data" 
-						style="flex: 1; display: flex; flex-direction: row; 
-							justify-content: flex-start; align-items: center; ">
-						<div style="font-size: 16px; margin-right: 10px;">
-						{{index2}}
-						</div>
-						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-							<div v-for="(item3, index3) in item2.split('/')">
-								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
-								<span v-if="(index3 == 0)" style="font-size: 18px;"
-									:style="{color: item3 > 120 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
-								<span v-if="(index3 == 1)"  style="font-size: 18px;"
-									:style="{color: item3 > 80 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
-								<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
-							</div>
-						</div>
-					</div>
-					
 				</div>
 			</div>
+			<i-button type="primary" shape="circle" icon="md-add" circle @click.native="onAdd" size="large"
+				style="position: absolute; bottom: 50px; right: 50px;"
+			></i-button>
 		</div>
 	`,
 	props: {
@@ -55,7 +37,7 @@ Vue.component('list', {
 	},
 	data() {
 		return {
-			yymm: (new Date()).toString("yyyy-mm"),
+			yymmdd: (new Date()).toString("yyyy-mm-dd"),
 			spinShow: false, 
 			datas: [],
 			firebaseData: {}
@@ -64,42 +46,15 @@ Vue.component('list', {
 	created(){
 	},
 	async mounted () {
-		window.ondrop = (e) => {
-			e.preventDefault();
-      e.stopPropagation();
-      if (e.dataTransfer.items) {
-        const data = e.dataTransfer.items;
-        for (var i = 0; i < data.length; i++) {
-          console.log(data[i]);
-          if (data[i].kind === "file") {
-            var file = data[i].getAsFile();
-            // console.log('file[' + i + '].name = ' + file.name);
-            let reader = new FileReader();
-            reader.onload = (event) => {
-              // let json = JSON.parse(event.target.result);
-              if (file.name.indexOf(".csv") > -1 ) {
-                // console.log(event.target.result);
-								this.onAdd(event.target.result)
-              }
-            };
-            reader.readAsText(file);
-          }
-        }
-      }
-    };
-
-		window.ondragover = (e) =>{
-      e.preventDefault();
-    }
-		
-		await  this.fetch();
+		document.title = "解尿記錄";
+		// await  this.fetch();
 	},
 	destroyed() {
   },
 	methods: {
 		async onClickIcon(index) {
 			this.datas = [];
-			let arr = this.yymm.split("-");
+			let arr = this.yymmdd.split("-");
 			arr[1] = parseInt(arr[1], 10) + index;
 			if(arr[1] == 0) {
 				arr[0] = parseInt(arr[0], 10) - 1;
@@ -109,7 +64,7 @@ Vue.component('list', {
 				arr[1] = 1;
 			}
 
-			this.yymm = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1]
+			this.yymmdd = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1]
 			await this.fetch();
 		},
 		async onAdd(result) {
@@ -117,7 +72,7 @@ Vue.component('list', {
 			// console.log(arr)
 			let json = {};
 			arr.forEach((el, index) => {
-				if(el.indexOf("測量日期") == -1 && el.trim().length > 0 && el.indexOf(this.yymm) == 0) {
+				if(el.indexOf("測量日期") == -1 && el.trim().length > 0 && el.indexOf(this.yymmdd) == 0) {
 					// console.log(el)
 					let row = el.split(",");
 					if(row.length >=5 && parseInt(row[4], 10) > 65) {
@@ -135,11 +90,11 @@ Vue.component('list', {
 				await this.onSave(json);
 				this.retrieve();
 			}
-			alert(this.yymm + "\n轉入 " + count + " 筆資料")
+			alert(this.yymmdd + "\n轉入 " + count + " 筆資料")
 		},
 		async fetch() {
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-					.collection("blood").doc(this.yymm)
+					.collection("pee").doc(this.yymmdd)
 			if(this.$isLogin()) {
 				this.spinShow = true;
 				try {
@@ -165,7 +120,7 @@ Vue.component('list', {
 		async onSave(myRecords) {
 			this.firebaseData = Object.assign(this.firebaseData, myRecords);
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-					.collection("blood").doc(this.yymm)
+					.collection("pee").doc(this.yymmdd)
 			this.spinShow = true;
 			try {
 				let x = await ref.set(this.firebaseData);
@@ -181,7 +136,7 @@ Vue.component('list', {
 			let days = ["日", "一", "二", "三", "四", "五", "六"]
 			this.datas = [];
 			for(let key in this.firebaseData) {
-				let d = new Date(this.yymm + "-" + key)
+				let d = new Date(this.yymmdd + "-" + key)
 				let json = {key, data: this.firebaseData[key], days: days[d.getDay()]};
 				this.datas.push(json)
 			}

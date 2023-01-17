@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>血壓記錄</title>
+	<title>健康記錄</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
@@ -19,9 +19,8 @@
 
 	<script src="../VOA/system/fireStore.js"></script>
 	<script src="../VOA/system/system.js"></script>
-
-	<script src="./editor.js"></script>
-	<script src="./list.js"></script>
+	<script src="./blood.js"></script>
+	<script src="./pee.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -48,7 +47,8 @@
 </head>
 <body style="overflow: hidden; ">
 	<div id="app">
-		<list></list>
+		<blood v-if="page == 'blood'" @change-page="changePage"></blood>
+		<pee v-else @change-page="changePage"></pee>
 	</div>
 </body>
 <script>
@@ -118,7 +118,7 @@
 			el: '#app',
 			data() {
 				return {
-					
+					page: "blood"
 				};
 			},
 			created() {
@@ -126,6 +126,9 @@
 			},
 			async mounted(){
 				let self = this;
+				if(typeof localStorage["body-page"] == "string" && localStorage["body-page"] != "blood")
+					this.page = localStorage["body-page"];
+
 				setTimeout(() => {
 					document.body.style.visibility = "visible";	
 				}, 600);
@@ -136,14 +139,13 @@
 				}
 			},
 			methods: {
-				
+				changePage(e) {
+					localStorage["body-page"] = e;
+					this.page = e;
+				}
 			}
 		});
-
-
 	}
-
-
 /* 	
 	// https://www.iviewui.com/components/menu
 	// https://www.iviewui.com/components/modal
