@@ -107,9 +107,11 @@ Vue.component('pee', {
 			if(index < this.datas.length - 1) {
 				let arr1 = this.datas[index + 1].split(":");
 				let arr2 = this.datas[index].split(":");
-				let h = (arr2[0] - arr1[0]) * 60;
-				let m = arr2[1] - arr1[1];
-				diff = (h + m) + "分";
+				let xx = ((parseInt(arr2[0], 10) - parseInt(arr1[0], 10)) * 60) 
+					+ (parseInt(arr2[1], 10) - parseInt(arr1[1], 10));
+				let h = Math.floor(xx / 60);
+				let m = xx % 60;
+				diff = (h + ":" + (m < 10 ? "0" : "") + m);
 			}
 			return  diff;
 		}
