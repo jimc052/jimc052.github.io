@@ -21,9 +21,11 @@ Vue.component('pee', {
 					style="padding: 5px 10px; 
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
-					<div style="font-size: 25px; margin-right: 10px;">{{(datas.length - index) + "."}}</div>
+					<div style="font-size: 25px; margin-right: 10px; width: 80px; ">{{(datas.length - index) + "."}}</div>
 					<div style="flex: 1; font-size: 25px; text-align: center">{{item}}</div>
-					<div style="font-size: 25px; width: 120px; text-align: right;">
+					<div style="font-size: 25px; width: 80px; text-align: right;"
+						:style="{color: different(index) < '1:30' ? 'red' : ''}"
+					>
 						{{different(index)}}
 					</div>
 				</div>
