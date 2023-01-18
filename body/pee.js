@@ -30,11 +30,11 @@ Vue.component('pee', {
 					</div>
 				</div>
 			</div>
-			<i-button v-if="datas.length > 0" type="warning" shape="circle" icon="md-clock" 
+			<i-button v-if="datas.length > 0 && isToday()" type="warning" shape="circle" icon="md-clock" 
 				circle @click.native="onTimer" size="large"
 				style="position: absolute; bottom: 10px; left: 10px;"
 			></i-button>
-			<i-button type="primary" shape="circle" icon="md-add" 
+			<i-button v-if="isToday()" type="primary" shape="circle" icon="md-add" 
 				circle @click.native="onAdd" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
@@ -150,8 +150,10 @@ Vue.component('pee', {
 				if(h < 10) h = "0" + h;
 				next = "\n\n建議在 " + h + ":" + arr[1] + "進行"
 			}
-
 			alert("時間跨距：" + span + next)
+		}, 
+		isToday() {
+			return (new Date()).toString("yyyy-mm-dd") == this.yymmdd;
 		}
 	},
 	computed: {
