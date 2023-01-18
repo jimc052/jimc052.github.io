@@ -67,42 +67,59 @@ Vue.component('pee', {
 			await this.fetch();
 		},
 		async onAdd() {
-			this.datas.unshift((new Date()).toString("hh:MM"));
-			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-					.collection("pee").doc(this.yymmdd)
-			this.spinShow = true;
-			try {
-				let x = await ref.set({pee: this.datas.join(",")});
-			} catch(e) {
-				console.log(e)
-			} finally {
-				setTimeout(() => {
-					this.spinShow = false;
-				}, 600);
+			let execute = () => {
+				return new Promise(async (success, error) => { 
+					this.datas.unshift((new Date()).toString("hh:MM"));
+					let ref = FireStore.db.collection("users").doc(FireStore.uid())
+							.collection("pee").doc(this.yymmdd)
+					this.spinShow = true;
+					try {
+						let x = await ref.set({pee: this.datas.join(",")});
+					} catch(e) {
+						console.log(e)
+					} finally {
+						setTimeout(() => {
+							this.spinShow = false;
+							success();
+						}, 600);
+					}
+				});
 			}
+
+			let today = (new Date()).toString("yyyy-mm-dd");
+			if(today != this.yymmdd) {
+				this.yymmdd = today;
+				await this.fetch();
+			}
+			await execute();
 		},
 		async fetch() {
-			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-					.collection("pee").doc(this.yymmdd)
-			if(this.$isLogin()) {
-				this.spinShow = true;
-				try {
-					let snapshot1 = await ref.get();
-					let data = snapshot1.data();
-					// console.log(data)
-					if(typeof data == "object" && typeof data.pee == "string") {
-						this.datas = data.pee.split(",")
-					} else {
-						this.datas = [];
-					}
-				} catch(e) {
+			return new Promise(async (success, error) => { 
+				let ref = FireStore.db.collection("users").doc(FireStore.uid())
+						.collection("pee").doc(this.yymmdd)
+				if(this.$isLogin()) {
+					this.spinShow = true;
+					try {
+						let snapshot1 = await ref.get();
+						let data = snapshot1.data();
+						// console.log(data)
+						if(typeof data == "object" && typeof data.pee == "string") {
+							this.datas = data.pee.split(",")
+						} else {
+							this.datas = [];
+						}
+					} catch(e) {
 
-				} finally {
-					setTimeout(() => {
-						this.spinShow = false;
-					}, 600);
+					} finally {
+						setTimeout(() => {
+							this.spinShow = false;
+							success();
+						}, 600);
+					}
+				} else {
+					success();
 				}
-			}
+			});
 		},
 		different(index) {
 			let diff = "";
@@ -119,7 +136,6 @@ Vue.component('pee', {
 		}
 	},
 	computed: {
-		
 	},
 	watch: {
 	},
