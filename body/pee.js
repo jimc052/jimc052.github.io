@@ -24,16 +24,20 @@ Vue.component('pee', {
 					<div style="font-size: 25px; margin-right: 10px; width: 80px; ">{{(datas.length - index) + "."}}</div>
 					<div style="flex: 1; font-size: 25px; text-align: center">{{item}}</div>
 					<div style="font-size: 25px; width: 80px; text-align: right;"
-						:style="{color: different(index) < '1:30' ? 'red' : ''}"
+						:style="{color: timeSpan(index) < '1:30' ? 'red' : ''}"
 					>
-						{{different(index)}}
+						{{timeSpan(index)}}
 					</div>
 				</div>
 			</div>
+			<i-button v-if="datas.length > 0" type="warning" shape="circle" icon="md-clock" 
+				circle @click.native="onTimer" size="large"
+				style="position: absolute; bottom: 10px; left: 10px;"
+			></i-button>
 			<i-button type="primary" shape="circle" icon="md-add" 
-			circle @click.native="onAdd" size="large"
-			style="position: absolute; bottom: 10px; right: 10px;"
-		></i-button>
+				circle @click.native="onAdd" size="large"
+				style="position: absolute; bottom: 10px; right: 10px;"
+			></i-button>
 		</div>
 	`,
 	props: {
@@ -48,7 +52,7 @@ Vue.component('pee', {
 			yymmdd: (new Date()).toString("yyyy-mm-dd"),
 			spinShow: false, 
 			datas: [],
-			days: ["日", "一", "二", "三", "四", "五", "六"]
+			// days: ["日", "一", "二", "三", "四", "五", "六"]
 		};
 	},
 	created(){
@@ -121,18 +125,33 @@ Vue.component('pee', {
 				}
 			});
 		},
-		different(index) {
+		timeSpan(index) {
 			let diff = "";
 			if(index < this.datas.length - 1) {
-				let arr1 = this.datas[index + 1].split(":");
-				let arr2 = this.datas[index].split(":");
-				let xx = ((parseInt(arr2[0], 10) - parseInt(arr1[0], 10)) * 60) 
-					+ (parseInt(arr2[1], 10) - parseInt(arr1[1], 10));
-				let h = Math.floor(xx / 60);
-				let m = xx % 60;
-				diff = (h + ":" + (m < 10 ? "0" : "") + m);
+				diff = this.compare(this.datas[index + 1], this.datas[index])
 			}
 			return  diff;
+		},
+		compare(t1, t2) {
+			let arr1 = t1.split(":");
+			let arr2 = t2.split(":");
+			let xx = ((parseInt(arr2[0], 10) - parseInt(arr1[0], 10)) * 60) 
+				+ (parseInt(arr2[1], 10) - parseInt(arr1[1], 10));
+			let h = Math.floor(xx / 60);
+			let m = xx % 60;
+			return (h + ":" + (m < 10 ? "0" : "") + m);
+		},
+		onTimer() {
+			let span = this.compare(this.datas[0], (new Date()).toString("hh:MM"));
+			let next = "";
+			if(span < "1:30") {
+				let arr = this.datas[0].split(":");
+				let h = parseInt(arr[0], 10) + 2;
+				if(h < 10) h = "0" + h;
+				next = "\n\n建議在 " + h + ":" + arr[1] + "進行"
+			}
+
+			alert("時間跨距：" + span + next)
 		}
 	},
 	computed: {
