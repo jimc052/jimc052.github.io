@@ -16,7 +16,7 @@ Vue.component('blood', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div style="flex: 1; overflow-y: auto; background: white;">
+			<div v-if="mode == 'list'" style="flex: 1; overflow-y: auto; background: white;">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
@@ -47,9 +47,25 @@ Vue.component('blood', {
 							</div>
 						</div>
 					</div>
-					
 				</div>
 			</div>
+			<div v-else style="flex: 1; overflow-y: auto; background: white;">
+				<table style="border-collapse: collapse; width: 100%;" >
+					<tr v-for="(item, index) in table" style="cursor: pointer;"
+						:style="{background: item[6] == 'Y' ? '#eee' : 'white'}"
+					>
+						<td :id="'td_' + index + '_' + index2" v-for="(item2, index2) in item" @click.stop="onChange(index)"
+							style="font-size: 20px;"
+						>
+							{{item2}}
+						</td>
+					</tr>
+				</table>
+			</div>
+			<i-button v-if="table.length > 0" type="error" shape="circle" icon="md-checkmark" 
+				circle @click.native="onSave" size="large"
+				style="position: absolute; bottom: 10px; right: 10px;"
+			></i-button>
 		</div>
 	`,
 	props: {
@@ -64,7 +80,10 @@ Vue.component('blood', {
 			yymm: (new Date()).toString("yyyy-mm"),
 			spinShow: false, 
 			datas: [],
-			firebaseData: {}
+			datas: [],
+			firebaseData: {},
+			mode: "list",
+			table: [],
 		};
 	},
 	created(){
@@ -78,7 +97,7 @@ Vue.component('blood', {
       if (e.dataTransfer.items) {
         const data = e.dataTransfer.items;
         for (var i = 0; i < data.length; i++) {
-          console.log(data[i]);
+          // console.log(data[i]);
           if (data[i].kind === "file") {
             var file = data[i].getAsFile();
             // console.log('file[' + i + '].name = ' + file.name);
@@ -87,10 +106,12 @@ Vue.component('blood', {
               // let json = JSON.parse(event.target.result);
               if (file.name.indexOf(".csv") > -1 ) {
                 // console.log(event.target.result);
+								localStorage["blood-table-drop"] = event.target.result;
 								this.onAdd(event.target.result)
               }
             };
             reader.readAsText(file);
+						break;
           }
         }
       }
@@ -100,12 +121,31 @@ Vue.component('blood', {
       e.preventDefault();
     }
 		await  this.fetch();
+
+		if(typeof localStorage["blood-table-drop"] == "string") {
+			this.onAdd(localStorage["blood-table-drop"]);
+		} else if(typeof localStorage["blood-table-array"] == "string") {
+			this.table = JSON.parse(localStorage["blood-table-array"]);
+			this.mode = "table";
+			setTimeout(() => {
+				this.beautify();
+			}, 600);
+		}
 	},
 	destroyed() {
 		window.ondrop = null;
 		window.ondragover = null;
   },
 	methods: {
+		onChange(index){
+			if(index > 0){
+				let item = this.table[index]
+				item[6] = item[6] == "Y" ? "N" : "Y";
+				this.$set(this.table, index, item);
+				delete localStorage["blood-table-drop"];
+				localStorage["blood-table-array"] = JSON.stringify(this.table);
+			}
+		},
 		async onClickIcon(index) {
 			this.datas = [];
 			let arr = this.yymm.split("-");
@@ -124,27 +164,19 @@ Vue.component('blood', {
 		async onAdd(result) {
 			let arr = result.split("\n"), count = 0;
 			// console.log(arr)
-			let json = {};
+			this.table = [];
 			arr.forEach((el, index) => {
-				if(el.indexOf("測量日期") == -1 && el.trim().length > 0 && el.indexOf(this.yymm) == 0) {
-					// console.log(el)
+				if(el.trim().length > 0 && (el.indexOf("測量日期") > -1 || el.indexOf(this.yymm) == 0)) {
 					let row = el.split(",");
-					if(row.length >=5 && parseInt(row[4], 10) > 65) {
-						let arr2 = row[0].split(" ")
-						let key = arr2[0].substr(8);
-						if(arr2[1].length == 4) arr2[1] = "0" + arr2[1];
-						if(typeof json[key] == "undefined") json[key] = {};
-						json[key][arr2[1]] = row[2] + "/" + row[3] + "/" + row[4];
-						count++;
-					}
+					let col6 = el.indexOf("測量日期") > -1 ? "刪除" : (row[4] < 65 ? "Y" : "N")
+					row.push(col6)
+					this.table.push(row)
 				}
 			});
-			console.log(JSON.stringify(json))
-			if(count > 0) {
-				await this.onSave(json);
-				this.retrieve();
-			}
-			alert(this.yymm + "\n轉入 " + count + " 筆資料")
+			this.mode = "table";
+			setTimeout(() => {
+				this.beautify();
+			}, 600);
 		},
 		async fetch() {
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
@@ -171,13 +203,30 @@ Vue.component('blood', {
 				}
 			}
 		},
-		async onSave(myRecords) {
-			this.firebaseData = Object.assign(this.firebaseData, myRecords);
+		async onSave() {
+			let json = {};
+			for(let i = 1; i < this.table.length; i++){
+				let row = this.table[i];
+				if(row[6] == "Y") continue;
+				let arr2 = row[0].split(" ")
+				let key = arr2[0].substr(8);
+				if(arr2[1].length == 4) arr2[1] = "0" + arr2[1];
+				if(typeof json[key] == "undefined") json[key] = {};
+				json[key][arr2[1]] = row[2] + "/" + row[3] + "/" + row[4];
+			}
+			
+			
+			this.firebaseData = Object.assign(this.firebaseData, json);
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-					.collection("blood").doc(this.yymm)
+					.collection("blood").doc(this.yymm);
+			this.mode = "list";
 			this.spinShow = true;
 			try {
 				let x = await ref.set(this.firebaseData);
+				this.retrieve();
+
+				delete localStorage["blood-table-drop"];
+				delete localStorage["blood-table-array"];
 			} catch(e) {
 				console.log(e)
 			} finally {
@@ -198,6 +247,22 @@ Vue.component('blood', {
 				return a.key < b.key ? 1 : -1;
 			});
 			// console.log(this.datas)
+		},
+		beautify(){
+			for(let i = 1; i < this.table.length; i++) {
+				let date = new Date(this.table[i][0]);
+				let td1 = document.getElementById(`td_${i}_0`)
+				if(date.getHours() < 12) td1.style.color = "orange";
+
+				let td3 = document.getElementById(`td_${i}_2`)
+				if(this.table[i][2] > 120) td3.style.color = "red";
+
+				let td4 = document.getElementById(`td_${i}_3`)
+				if(this.table[i][3] > 80) td4.style.color = "red";
+
+				let td5 = document.getElementById(`td_${i}_4`)
+				if(this.table[i][4] < 70) td5.style.color = "red";
+			}
 		}
 	},
 	watch: {
