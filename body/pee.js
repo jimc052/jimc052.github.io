@@ -16,6 +16,11 @@ Vue.component('pee', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
+			<div style="color: #c01921; font-size: 24px; text-align: center;"
+				:style="{margin: (nextTime.length > 0 ? '5px ' : '') + ' 0px'}"
+			>
+				{{'預計：' + nextTime}}
+			</div>
 			<div style="flex: 1; overflow-y: auto; background: white;">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px; 
@@ -52,6 +57,7 @@ Vue.component('pee', {
 			yymmdd: (new Date()).toString("yyyy-mm-dd"),
 			spinShow: false, 
 			datas: [],
+			nextTime: "",
 			// days: ["日", "一", "二", "三", "四", "五", "六"]
 		};
 	},
@@ -74,6 +80,7 @@ Vue.component('pee', {
 			let execute = () => {
 				return new Promise(async (success, error) => { 
 					this.datas.unshift((new Date()).toString("hh:MM"));
+					this.showNextTime();
 					let ref = FireStore.db.collection("users").doc(FireStore.uid())
 							.collection("pee").doc(this.yymmdd)
 					this.spinShow = true;
@@ -112,6 +119,7 @@ Vue.component('pee', {
 						} else {
 							this.datas = [];
 						}
+						this.showNextTime();
 					} catch(e) {
 
 					} finally {
@@ -154,7 +162,21 @@ Vue.component('pee', {
 		}, 
 		isToday() {
 			return (new Date()).toString("yyyy-mm-dd") == this.yymmdd;
+		},
+		showNextTime() {
+			let nextTime = "";
+			if(this.datas.length > 0){
+				let time = this.datas[0];
+				if(time > "06:00" && time < "22:00") {
+					let arr1 = time.split(":");
+					let h = parseInt(arr1[0], 10) + 2;
+					if(h < 10) h = "0" + h;
+					nextTime = h + ":" + arr1[1];
+				}
+			}
+			this.nextTime = nextTime;
 		}
+
 	},
 	computed: {
 	},
