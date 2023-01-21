@@ -16,10 +16,10 @@ Vue.component('pee', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div style="color: #c01921; font-size: 24px; text-align: center;"
+			<div v-if="nextTime.length > 0" style="color: #c01921; font-size: 24px; text-align: center;"
 				:style="{margin: (nextTime.length > 0 ? '5px ' : '') + ' 0px'}"
 			>
-				{{'預計：' + nextTime}}
+				{{nextTime}}
 			</div>
 			<div style="flex: 1; overflow-y: auto; background: white;">
 				<div v-for="(item, index) in datas" 
@@ -165,18 +165,28 @@ Vue.component('pee', {
 		},
 		showNextTime() {
 			let nextTime = "";
-			if(this.datas.length > 0){
+			if(this.datas.length > 1 && this.isToday() == true){
 				let time = this.datas[0];
 				if(time > "06:00" && time < "22:00") {
 					let arr1 = time.split(":");
 					let h = parseInt(arr1[0], 10) + 2;
 					if(h < 10) h = "0" + h;
-					nextTime = h + ":" + arr1[1];
+					let h2 = (new Date()).toString("hh");
+					let m2 = (new Date()).toString("MM");
+					if(h2 + ":" + m2 < h + ":" + arr1[1])
+						nextTime = '預計：' + h + ":" + arr1[1];
+					else {
+						h = parseInt(h, 10);
+						let m = parseInt(arr1[1], 10);
+						h2 = parseInt(h2, 10);
+						m2 = parseInt(m2, 10);
+						let minutes = ((h2 * 60) + m2) - ((h * 60) + m);
+						nextTime = '逾時：' + minutes + " 分" 
+					}
 				}
 			}
 			this.nextTime = nextTime;
 		}
-
 	},
 	computed: {
 	},
