@@ -40,9 +40,9 @@ Vue.component('blood', {
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
 								<span v-if="(index3 == 0)" style="font-size: 18px;"
-									:style="{color: item3 > 120 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+									:style="{color: item3 >= 130 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
-									:style="{color: item3 > 80 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+									:style="{color: item3 >= 90 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
 								<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
 							</div>
 						</div>

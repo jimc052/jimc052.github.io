@@ -167,7 +167,7 @@ Vue.component('pee', {
 			let nextTime = "";
 			if(this.datas.length > 1 && this.isToday() == true){
 				let time = this.datas[0];
-				if(time > "06:00" && time < "22:00") {
+				if(time > "06:00" && time < "21:00") {
 					let arr1 = time.split(":");
 					let h = parseInt(arr1[0], 10) + 2;
 					if(h < 10) h = "0" + h;
