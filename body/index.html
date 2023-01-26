@@ -58,8 +58,12 @@
     table td {
       border: 1px solid black;
       padding: 3px 5px;
+			height: 28px;
     }
-		table td:nth-child(3), table td:nth-child(4), table td:nth-child(5) {
+		table td > div, table td > div > span {
+			font-size: 18px;
+    }
+		table td:nth-child(3), table td:nth-child(4), table td:nth-child(5), table td:nth-child(8) {
 			text-align: right;
 		}
 		table td:nth-child(2), table td:nth-child(6) {

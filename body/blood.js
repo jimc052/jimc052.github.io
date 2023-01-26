@@ -53,16 +53,36 @@ Vue.component('blood', {
 				<table style="border-collapse: collapse; width: 100%;" >
 					<tr v-for="(item, index) in table" style="cursor: pointer;"
 						:style="{background: item[6] == 'Y' ? '#eee' : 'white'}"
+						v-if="index == 0 || (filter == true && item[6] == 'N') ||  filter == false"
 					>
 						<td :id="'td_' + index + '_' + index2" v-for="(item2, index2) in item" @click.stop="onChange(index)"
-							style="font-size: 20px;"
 						>
-							{{item2}}
+							<div v-if="index > 0 && index2 == 0">
+								<Icon :type="item[0].substr(10).trim() <= '12' ? 'ios-sunny' : 'ios-moon' " 
+									:size="item[0].substr(10).trim() <= '12' ? 20 : 16"
+									:style="{color: item[0].substr(10).trim() <= '12' ? '#c01921' : 'dimgray'}"
+								>
+								</Icon>
+								<span :style="{color: item[0].substr(10).trim() <= '12' ? '#c01921' : 'dimgray'}">{{item2}}</span>
+							</div>
+							<Icon v-else-if="index > 0 && index2 == 6 && item2 == 'Y' " 
+								type="ios-trash" size="16" color='#c01921'> </Icon>
+							<div v-else>
+								{{item2}}
+							</div>
+
 						</td>
 					</tr>
 				</table>
 			</div>
-			<i-button v-if="table.length > 0" type="error" shape="circle" icon="md-checkmark" 
+			<i-button v-if="mode == 'table' && table.length > 0"  shape="circle"
+				:type="filter == false ? 'primary' : 'warning'" 
+				:icon="filter == false ? 'md-color-filter' : 'md-close'" 
+				circle @click.native="filter = !filter" size="large"
+				style="position: absolute; bottom: 60px; right: 10px;"
+			></i-button>
+
+			<i-button v-if="mode == 'table' && table.length > 0" type="error" shape="circle" icon="md-checkmark" 
 				circle @click.native="onSave" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
@@ -84,6 +104,7 @@ Vue.component('blood', {
 			firebaseData: {},
 			mode: "list",
 			table: [],
+			filter: false
 		};
 	},
 	created(){
@@ -163,16 +184,24 @@ Vue.component('blood', {
 		},
 		async onAdd(result) {
 			let arr = result.split("\n"), count = 0;
-			// console.log(arr)
+			console.log(arr)
 			this.table = [];
 			arr.forEach((el, index) => {
 				if(el.trim().length > 0 && (el.indexOf("測量日期") > -1 || el.indexOf(this.yymm) == 0)) {
 					let row = el.split(",");
-					let col6 = el.indexOf("測量日期") > -1 ? "刪除" : (row[4] < 65 ? "Y" : "N")
-					row.push(col6)
-					this.table.push(row)
+					if(el.indexOf("測量日期") == -1){
+						let date = new Date(row[0]);
+						row[0] = date.toString("yyyy-mm-dd hh:MM");
+					} 
+					
+					if(el.indexOf("測量日期") == 0 || (el.indexOf("測量日期") == -1 && row[4] >= 70 )){ //  
+						let col6 = el.indexOf("測量日期") > -1 ? "刪除" : (row[4] < 65 ? "Y" : "N");
+						row.push(col6);
+						this.table.push(row)						
+					}
 				}
 			});
+			console.log(this.table)
 			this.mode = "table";
 			setTimeout(() => {
 				this.beautify();
@@ -214,12 +243,11 @@ Vue.component('blood', {
 				if(typeof json[key] == "undefined") json[key] = {};
 				json[key][arr2[1]] = row[2] + "/" + row[3] + "/" + row[4];
 			}
-			
-			
 			this.firebaseData = Object.assign(this.firebaseData, json);
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("blood").doc(this.yymm);
 			this.mode = "list";
+			this.table = [];
 			this.spinShow = true;
 			try {
 				let x = await ref.set(this.firebaseData);
@@ -250,18 +278,15 @@ Vue.component('blood', {
 		},
 		beautify(){
 			for(let i = 1; i < this.table.length; i++) {
-				let date = new Date(this.table[i][0]);
-				let td1 = document.getElementById(`td_${i}_0`)
-				if(date.getHours() < 12) td1.style.color = "orange";
-
+				// let date = new Date(this.table[i][0]);
 				let td3 = document.getElementById(`td_${i}_2`)
-				if(this.table[i][2] > 120) td3.style.color = "red";
+				if(this.table[i][2] >= 130) td3.style.color = "#c01921";
 
 				let td4 = document.getElementById(`td_${i}_3`)
-				if(this.table[i][3] > 80) td4.style.color = "red";
+				if(this.table[i][3] >= 90) td4.style.color = "#c01921";
 
 				let td5 = document.getElementById(`td_${i}_4`)
-				if(this.table[i][4] < 70) td5.style.color = "red";
+				if(this.table[i][4] < 70) td5.style.color = "#c01921";
 			}
 		}
 	},
