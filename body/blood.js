@@ -5,7 +5,12 @@ Vue.component('blood', {
 			<div id="header" style="background: #c01921; color: white;  font-size: 30px;
 				display: flex; flex-direction: row; align-items: center;
 				justify-content: center;">
-				<div style="flex: 1;" />
+				<div style="flex: 1; margin: 0 10px;">
+					<Radio-group v-model="switch1" type="button" size="small" @on-change="onSwitch">
+						<Radio label="130"></Radio>
+						<Radio label="120"></Radio>
+					</Radio-group>
+				</div>
 				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
 				{{yymm}}
@@ -40,9 +45,9 @@ Vue.component('blood', {
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
 								<span v-if="(index3 == 0)" style="font-size: 18px;"
-									:style="{color: item3 >= 130 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+									:style="{color: item3 >= switch1 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
-									:style="{color: item3 >= 90 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+									:style="{color: item3 >= (switch1 == 130 ? 90 : 80) ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
 								<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
 							</div>
 						</div>
@@ -104,7 +109,8 @@ Vue.component('blood', {
 			firebaseData: {},
 			mode: "list",
 			table: [],
-			filter: false
+			filter: false,
+			switch1: "130",
 		};
 	},
 	created(){
@@ -152,12 +158,19 @@ Vue.component('blood', {
 				this.beautify();
 			}, 600);
 		}
+
+		if(typeof localStorage["blood-switch"] == "string") {
+			this.switch1 = localStorage["blood-switch"];
+		}
 	},
 	destroyed() {
 		window.ondrop = null;
 		window.ondragover = null;
   },
 	methods: {
+		onSwitch(e){
+			localStorage["blood-switch"] = e;
+		},
 		onChange(index){
 			if(index > 0){
 				let item = this.table[index]
