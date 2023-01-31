@@ -7,8 +7,8 @@ Vue.component('blood', {
 				justify-content: center;">
 				<div style="flex: 1; margin: 0 10px;">
 					<Radio-group v-model="switch1" type="button" size="small" @on-change="onSwitch">
-						<Radio label="130"></Radio>
-						<Radio label="120"></Radio>
+						<Radio label="130">H</Radio>
+						<Radio label="120">L</Radio>
 					</Radio-group>
 				</div>
 				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
