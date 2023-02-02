@@ -293,10 +293,10 @@ Vue.component('blood', {
 			for(let i = 1; i < this.table.length; i++) {
 				// let date = new Date(this.table[i][0]);
 				let td3 = document.getElementById(`td_${i}_2`)
-				if(this.table[i][2] >= 130) td3.style.color = "#c01921";
+				if(this.switch1 == 130 && this.table[i][2] >= 130) td3.style.color = "#c01921";
 
 				let td4 = document.getElementById(`td_${i}_3`)
-				if(this.table[i][3] >= 90) td4.style.color = "#c01921";
+				if(this.switch1 == 130 && this.table[i][3] >= 90) td4.style.color = "#c01921";
 
 				let td5 = document.getElementById(`td_${i}_4`)
 				if(this.table[i][4] < 70) td5.style.color = "#c01921";
