@@ -75,7 +75,6 @@ Vue.component('blood', {
 							<div v-else>
 								{{item2}}
 							</div>
-
 						</td>
 					</tr>
 				</table>
@@ -134,7 +133,7 @@ Vue.component('blood', {
               if (file.name.indexOf(".csv") > -1 ) {
                 // console.log(event.target.result);
 								localStorage["blood-table-drop"] = event.target.result;
-								this.onAdd(event.target.result)
+								this.onDrop(event.target.result)
               }
             };
             reader.readAsText(file);
@@ -150,7 +149,7 @@ Vue.component('blood', {
 		await  this.fetch();
 
 		if(typeof localStorage["blood-table-drop"] == "string") {
-			this.onAdd(localStorage["blood-table-drop"]);
+			this.onDrop(localStorage["blood-table-drop"]);
 		} else if(typeof localStorage["blood-table-array"] == "string") {
 			this.table = JSON.parse(localStorage["blood-table-array"]);
 			this.mode = "table";
@@ -195,20 +194,23 @@ Vue.component('blood', {
 			this.yymm = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1]
 			await this.fetch();
 		},
-		async onAdd(result) {
+		async onDrop(result) {
 			let arr = result.split("\n"), count = 0;
-			console.log(arr)
+			// console.log(arr)
 			this.table = [];
 			arr.forEach((el, index) => {
 				if(el.trim().length > 0 && (el.indexOf("測量日期") > -1 || el.indexOf(this.yymm) == 0)) {
-					let row = el.split(",");
+					let row = el.split(","), date = null;
 					if(el.indexOf("測量日期") == -1){
-						let date = new Date(row[0]);
+						date = new Date(row[0]);
 						row[0] = date.toString("yyyy-mm-dd hh:MM");
 					} 
-					
-					if(el.indexOf("測量日期") == 0 || (el.indexOf("測量日期") == -1 && row[4] >= 70 )){ //  
-						let col6 = el.indexOf("測量日期") > -1 ? "刪除" : (row[4] < 65 ? "Y" : "N");
+					if(el.indexOf("測量日期") == 0){ //  
+						let col6 = "刪除";
+						row.push(col6);
+						this.table.push(row)						
+					} else if(row[4] >= 65 || date.getHours() <= 5 || date.getHours() > 18){ //  
+						let col6 =(row[4] < 65 ? "Y" : "N");
 						row.push(col6);
 						this.table.push(row)						
 					}
@@ -232,6 +234,8 @@ Vue.component('blood', {
 					// console.log(data)
 					if(typeof data == "object") {
 						this.firebaseData = data;
+						// console.log(JSON.stringify(data))
+						// localStorage["blood-temp"] = JSON.stringify(data)
 					} else {
 						this.firebaseData = {};
 					}
