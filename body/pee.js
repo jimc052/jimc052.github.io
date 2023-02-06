@@ -106,17 +106,14 @@ Vue.component('pee', {
 				this.yymmdd = today;
 				await this.fetch();
 			}
-			// console.log(this.datas)
-			// if(this.datas.length > 0) {
-			// 	let lastTime = new Date(this.yymmdd + " " + this.datas[0]);
-			// 	let sec = now.getSeconds() - lastTime.getSeconds();
-			// 	console.log(now + "; " + lastTime)
-			// 	console.log(now.getSeconds() + ", " + lastTime.getSeconds())
-			// 	if(sec < 60 * 1000 * 10) {
-			// 		alert("時間不對: " + Math.floor(sec))
-			// 		return;
-			// 	}
-			// }
+			if(this.datas.length > 0) {
+				let lastTime = new Date(this.yymmdd + " " + this.datas[0]);
+				let minutes = (now.getTime() - lastTime.getTime()) / (60 * 1000);
+				if(minutes < 10) {
+					alert("時間不對: " + Math.floor(minutes) + " 分")
+					return;
+				}
+			}
 			this.datas.unshift(now.toString("hh:MM"));
 			this.showNextTime();
 			await this.save();
