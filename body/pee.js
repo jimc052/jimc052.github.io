@@ -27,7 +27,17 @@ Vue.component('pee', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}">
 					<div style="font-size: 25px; margin-right: 10px; width: 80px; ">{{(datas.length - index) + "."}}</div>
-					<div style="flex: 1; font-size: 25px; text-align: center">{{item}}</div>
+					<div style="flex: 1"></div>
+
+					<Input v-if="active == index"  ref="input" :value="item"
+						style="width: 120px; font-size: 20px; padding: 5px;" size="large" clearable 
+						@on-enter="onEnter"/>
+
+					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
+						@click="active = index"
+					>{{item}}</div>
+					
+					<div style="flex: 1"></div>
 					<div style="font-size: 25px; width: 80px; text-align: right;"
 						:style="{color: timeSpan(index) < '1:30' ? 'red' : ''}"
 					>
@@ -58,7 +68,7 @@ Vue.component('pee', {
 			spinShow: false, 
 			datas: [],
 			nextTime: "",
-			// days: ["日", "一", "二", "三", "四", "五", "六"]
+			active: -1
 		};
 	},
 	created(){
@@ -77,32 +87,51 @@ Vue.component('pee', {
 			await this.fetch();
 		},
 		async onAdd() {
-			let execute = () => {
-				return new Promise(async (success, error) => { 
-					this.datas.unshift((new Date()).toString("hh:MM"));
-					this.showNextTime();
-					let ref = FireStore.db.collection("users").doc(FireStore.uid())
-							.collection("pee").doc(this.yymmdd)
-					this.spinShow = true;
-					try {
-						let x = await ref.set({pee: this.datas.join(",")});
-					} catch(e) {
-						console.log(e)
-					} finally {
-						setTimeout(() => {
-							this.spinShow = false;
-							success();
-						}, 600);
-					}
-				});
-			}
-
 			let today = (new Date()).toString("yyyy-mm-dd");
 			if(today != this.yymmdd) {
 				this.yymmdd = today;
 				await this.fetch();
 			}
-			await execute();
+			this.datas.unshift((new Date()).toString("hh:MM"));
+			this.showNextTime();
+			await this.save();
+		},
+		async save() {
+			return new Promise(async (success, error) => { 
+				let ref = FireStore.db.collection("users").doc(FireStore.uid())
+						.collection("pee").doc(this.yymmdd)
+				this.spinShow = true;
+				try {
+					let x = await ref.set({pee: this.datas.join(",")});
+				} catch(e) {
+					console.log(e)
+				} finally {
+					setTimeout(() => {
+						this.spinShow = false;
+						success();
+					}, 600);
+				}
+			});
+		},
+		async onEnter(event){
+			const value = event.target.value;
+			let arr = value.split(":");
+			let msg = "";
+			if(arr.length != 2) 
+				msg = "請輸入冒號";
+			else if(arr[0].length > 2 || arr[1].length > 2)
+				msg = "請輸入 2 位數字";
+
+			if(msg.length == 0) {
+				if(arr[0].length == 1) arr[0] = "0" + arr[0];
+				if(arr[1].length == 1) arr[1] = "0" + arr[1];
+				// this.datas[]
+				this.$set(this.datas, this.active, arr[0] + ":" + arr[1]);
+				this.active = -1;
+				await this.save();
+			} else {
+				alert(msg)
+			}
 		},
 		async fetch() {
 			return new Promise(async (success, error) => { 
