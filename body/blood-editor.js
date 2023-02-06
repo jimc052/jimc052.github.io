@@ -137,7 +137,6 @@ Vue.component('blood-editor', {
 			this.visible = typeof this.recorder == "undefined" ? false : true;
 			if(typeof this.recorder != "undefined") {
 				this.day = ""; this.time1 = ""; this.time2 = ""; this.data1 = ""; this.data2 = "";
-				
 				if(this.recorder == null) {
 					let date = new Date();
 					this.day = date.toString("dd");

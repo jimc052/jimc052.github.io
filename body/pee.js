@@ -98,12 +98,24 @@ Vue.component('pee', {
 			await this.fetch();
 		},
 		async onAdd() {
-			let today = (new Date()).toString("yyyy-mm-dd");
+			let now = new Date();
+			console.log("onAdd: " + now)
+
+			let today = now.toString("yyyy-mm-dd");
 			if(today != this.yymmdd) {
 				this.yymmdd = today;
 				await this.fetch();
 			}
-			this.datas.unshift((new Date()).toString("hh:MM"));
+			console.log(this.datas)
+			if(this.datas.length > 0) {
+				let lastTime = new Date(this.yymmdd + " " + this.datas[this.datas.length -1]);
+				let sec = now.getSeconds() - lastTime.getSeconds();
+				if(sec < 60 * 1000 * 10) {
+					alert("時間不對")
+					return;
+				}
+			}
+			this.datas.unshift(now.toString("hh:MM"));
 			this.showNextTime();
 			await this.save();
 		},
