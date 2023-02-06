@@ -21,26 +21,30 @@ Vue.component('blood', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div v-if="mode == 'list'" style="flex: 1; overflow-y: auto; background: white;">
+			<div v-if="table.length == 0" style="flex: 1; overflow-y: auto; background: white;">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
-					:style="{'border-bottom': '1px solid #eee'}">
+					:style="{'border-bottom': '1px solid #eee'}"
+					@click="recorder = item; active = index;"
+				>
 
 					<div style="margin-right: 10px;">
 						<span style="font-size: 20px;">{{item.key}}</span>
 						<span style="font-size: 12px;"
-							:style="{color: '六日'.indexOf(item.days) > -1 ? '#c01921' : ''}">
-							{{"(" + item.days + ")"}}
+							:style="{color: '六日'.indexOf(item.week) > -1 ? '#c01921' : ''}">
+							{{"(" + item.week + ")"}}
 						</span>
 					</div>
 
 					<div v-for="(item2, index2) in item.data" 
 						style="flex: 1; display: flex; flex-direction: row; 
-							justify-content: flex-start; align-items: center; ">
+							justify-content: flex-start; align-items: center; "
+					>
 						<div style="font-size: 16px; margin-right: 10px;">
-						{{index2}}
+							{{index2}}
 						</div>
+
 						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
@@ -54,6 +58,7 @@ Vue.component('blood', {
 					</div>
 				</div>
 			</div>
+
 			<div v-else style="flex: 1; overflow-y: auto; background: white;">
 				<table style="border-collapse: collapse; width: 100%;" >
 					<tr v-for="(item, index) in table" style="cursor: pointer;"
@@ -79,17 +84,19 @@ Vue.component('blood', {
 					</tr>
 				</table>
 			</div>
-			<i-button v-if="mode == 'table' && table.length > 0"  shape="circle"
+			<i-button v-if="table.length > 0"  shape="circle"
 				:type="filter == false ? 'primary' : 'warning'" 
 				:icon="filter == false ? 'md-color-filter' : 'md-close'" 
 				circle @click.native="filter = !filter" size="large"
 				style="position: absolute; bottom: 60px; right: 10px;"
 			></i-button>
 
-			<i-button v-if="mode == 'table' && table.length > 0" type="error" shape="circle" icon="md-checkmark" 
-				circle @click.native="onSave" size="large"
+			<i-button v-if="canEdit == true || table.length > 0" type="error" shape="circle" 
+				:icon="table.length > 0 ? 'md-checkmark' : 'md-add'" 
+				circle @click.native="table.length > 0 ? onSaveTable() : onAdd()" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
+			<blood-editor :recorder="recorder" @onChange="onChangeRecorder"></blood-editor>
 		</div>
 	`,
 	props: {
@@ -104,12 +111,13 @@ Vue.component('blood', {
 			yymm: (new Date()).toString("yyyy-mm"),
 			spinShow: false, 
 			datas: [],
-			datas: [],
 			firebaseData: {},
-			mode: "list",
 			table: [],
 			filter: false,
 			switch1: "130",
+			canEdit: false,
+			recorder: undefined,
+			active: -1
 		};
 	},
 	created(){
@@ -152,7 +160,6 @@ Vue.component('blood', {
 			this.onDrop(localStorage["blood-table-drop"]);
 		} else if(typeof localStorage["blood-table-array"] == "string") {
 			this.table = JSON.parse(localStorage["blood-table-array"]);
-			this.mode = "table";
 			setTimeout(() => {
 				this.beautify();
 			}, 600);
@@ -161,12 +168,22 @@ Vue.component('blood', {
 		if(typeof localStorage["blood-switch"] == "string") {
 			this.switch1 = localStorage["blood-switch"];
 		}
+		window.onresize = () => {
+			return (() => {
+				this.onResize();
+			})()
+		}
+		this.onResize();
 	},
 	destroyed() {
 		window.ondrop = null;
 		window.ondragover = null;
   },
 	methods: {
+		onResize() {
+			if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
+				this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
+		},
 		onSwitch(e){
 			localStorage["blood-switch"] = e;
 		},
@@ -178,6 +195,22 @@ Vue.component('blood', {
 				delete localStorage["blood-table-drop"];
 				localStorage["blood-table-array"] = JSON.stringify(this.table);
 			}
+		},
+		onChangeRecorder(data) {
+			if(typeof data == "object" && data != null) {
+				console.log(JSON.stringify(data))
+				if(this.active == -1) {
+					this.datas.push(data)
+				} else {
+					this.$set(this.datas, this.active, data)
+				}
+				this.firebaseData[data["key"]] = data["data"];
+				this.onSave();
+				// console.log(JSON.stringify(this.firebaseData, null, 2))
+				if(this.active == -1) this.retrieve();
+			}
+			this.recorder = undefined;
+			this.active = -1
 		},
 		async onClickIcon(index) {
 			this.datas = [];
@@ -216,8 +249,7 @@ Vue.component('blood', {
 					}
 				}
 			});
-			console.log(this.table)
-			this.mode = "table";
+			// console.log(this.table)
 			setTimeout(() => {
 				this.beautify();
 			}, 600);
@@ -236,6 +268,7 @@ Vue.component('blood', {
 						this.firebaseData = data;
 						// console.log(JSON.stringify(data))
 						// localStorage["blood-temp"] = JSON.stringify(data)
+						// {"01":{"06:15":"123/84/86","20:47":"130/85/82"},"02":{"05:49":"116/77/76","21:05":"126/82/78"},"03":{"05:58":"117/77/71"}}
 					} else {
 						this.firebaseData = {};
 					}
@@ -249,7 +282,7 @@ Vue.component('blood', {
 				}
 			}
 		},
-		async onSave() {
+		async onSaveTable() {
 			let json = {};
 			for(let i = 1; i < this.table.length; i++){
 				let row = this.table[i];
@@ -261,17 +294,19 @@ Vue.component('blood', {
 				json[key][arr2[1]] = row[2] + "/" + row[3] + "/" + row[4];
 			}
 			this.firebaseData = Object.assign(this.firebaseData, json);
+			await this.onSave();
+
+			this.table = [];
+			this.retrieve();
+			delete localStorage["blood-table-drop"];
+			delete localStorage["blood-table-array"];
+		},
+		async onSave() {
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
 					.collection("blood").doc(this.yymm);
-			this.mode = "list";
-			this.table = [];
 			this.spinShow = true;
 			try {
 				let x = await ref.set(this.firebaseData);
-				this.retrieve();
-
-				delete localStorage["blood-table-drop"];
-				delete localStorage["blood-table-array"];
 			} catch(e) {
 				console.log(e)
 			} finally {
@@ -280,18 +315,22 @@ Vue.component('blood', {
 				}, 600);
 			}
 		},
+		onAdd() {
+			this.active = -1;
+			this.recorder = null;
+		},
 		retrieve() {
-			let days = ["日", "一", "二", "三", "四", "五", "六"]
+			let week = ["日", "一", "二", "三", "四", "五", "六"]
 			this.datas = [];
 			for(let key in this.firebaseData) {
 				let d = new Date(this.yymm + "-" + key)
-				let json = {key, data: this.firebaseData[key], days: days[d.getDay()]};
+				let json = {key, data: this.firebaseData[key], week: week[d.getDay()]};
 				this.datas.push(json)
 			}
 			this.datas.sort(function(a, b){
 				return a.key < b.key ? 1 : -1;
 			});
-			// console.log(this.datas)
+			// console.log(JSON.stringify(this.datas))
 		},
 		beautify(){
 			for(let i = 1; i < this.table.length; i++) {

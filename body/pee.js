@@ -34,7 +34,7 @@ Vue.component('pee', {
 						@on-enter="onEnter"/>
 
 					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
-						@click="active = index"
+						@click="onEdit(index)"
 					>{{item}}</div>
 					
 					<div style="flex: 1"></div>
@@ -68,7 +68,8 @@ Vue.component('pee', {
 			spinShow: false, 
 			datas: [],
 			nextTime: "",
-			active: -1
+			active: -1,
+			canEdit: false
 		};
 	},
 	created(){
@@ -76,10 +77,20 @@ Vue.component('pee', {
 	async mounted () {
 		document.title = "解尿記錄";
 		await  this.fetch();
+		window.onresize = () => {
+			return (() => {
+				this.onResize();
+			})()
+		}
+		this.onResize();
 	},
 	destroyed() {
   },
 	methods: {
+		onResize() {
+			if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
+				this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
+		},
 		async onClickIcon(index) {
 			this.datas = [];
 			let d = new Date(this.yymmdd);
@@ -112,6 +123,10 @@ Vue.component('pee', {
 					}, 600);
 				}
 			});
+		},
+		onEdit(index) {
+			if(this.canEdit == true)
+				this.active = index;
 		},
 		async onEnter(event){
 			const value = event.target.value;

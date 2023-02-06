@@ -20,6 +20,7 @@
 	<script src="../VOA/system/fireStore.js"></script>
 	<script src="../VOA/system/system.js"></script>
 	<script src="./blood.js"></script>
+	<script src="./blood-editor.js"></script>
 	<script src="./pee.js"></script>
 	<style>
 		* {
@@ -75,6 +76,8 @@
 	<div id="app">
 		<blood v-if="page == 'blood'" @change-page="changePage"></blood>
 		<pee v-else @change-page="changePage"></pee>
+
+		
 	</div>
 </body>
 <script>
@@ -144,7 +147,7 @@
 			el: '#app',
 			data() {
 				return {
-					page: "blood"
+					page: ""
 				};
 			},
 			created() {
@@ -154,6 +157,9 @@
 				let self = this;
 				if(typeof localStorage["body-page"] == "string" && localStorage["body-page"] != "blood")
 					this.page = localStorage["body-page"];
+				else {
+					this.page = "blood"
+				}
 
 				setTimeout(() => {
 					document.body.style.visibility = "visible";	
