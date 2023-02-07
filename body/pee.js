@@ -99,8 +99,6 @@ Vue.component('pee', {
 		},
 		async onAdd() {
 			let now = new Date();
-			console.log("onAdd: " + now)
-
 			let today = now.toString("yyyy-mm-dd");
 			if(today != this.yymmdd) {
 				this.yymmdd = today;
@@ -109,8 +107,8 @@ Vue.component('pee', {
 			if(this.datas.length > 0) {
 				let lastTime = new Date(this.yymmdd + " " + this.datas[0]);
 				let minutes = (now.getTime() - lastTime.getTime()) / (60 * 1000);
-				if(minutes < 10) {
-					alert("時間不對: " + Math.floor(minutes) + " 分")
+				if(minutes < 3) {
+					alert("時間太短: " + Math.floor(minutes) + " 分")
 					return;
 				}
 			}
