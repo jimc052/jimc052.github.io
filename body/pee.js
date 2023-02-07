@@ -44,6 +44,9 @@ Vue.component('pee', {
 						{{timeSpan(index)}}
 					</div>
 				</div>
+				<div v-if="yesterday.length > 0" style="font-size: 25px; padding: 5px; text-align: center;">
+					{{yesterday}}
+				</div>
 			</div>
 			<i-button v-if="datas.length > 0 && isToday()" type="warning" shape="circle" icon="md-clock" 
 				circle @click.native="onTimer" size="large"
@@ -69,14 +72,16 @@ Vue.component('pee', {
 			datas: [],
 			nextTime: "",
 			active: -1,
-			canEdit: false
+			canEdit: false,
+			yesterday: ""
 		};
 	},
 	created(){
 	},
 	async mounted () {
 		document.title = "解尿記錄";
-		await  this.fetch();
+		this.datas = await this.fetch(this.yymmdd, true);
+		await this.fetchYesterday(this.yymmdd);
 		window.onresize = () => {
 			return (() => {
 				this.onResize();
@@ -95,14 +100,15 @@ Vue.component('pee', {
 			this.datas = [];
 			let d = new Date(this.yymmdd);
 			this.yymmdd = d.addDays(index).toString("yyyy-mm-dd");
-			await this.fetch();
+			this.datas = await this.fetch(this.yymmdd, true);
+			await this.fetchYesterday(this.yymmdd);
 		},
 		async onAdd() {
 			let now = new Date();
 			let today = now.toString("yyyy-mm-dd");
 			if(today != this.yymmdd) {
 				this.yymmdd = today;
-				await this.fetch();
+				this.datas = await this.fetch(this.yymmdd, false);
 			}
 			if(this.datas.length > 0) {
 				let lastTime = new Date(this.yymmdd + " " + this.datas[0]);
@@ -157,10 +163,11 @@ Vue.component('pee', {
 				alert(msg)
 			}
 		},
-		async fetch() {
-			return new Promise(async (success, error) => { 
+		async fetch(yymmdd, showNextTime) {
+			return new Promise(async (success, error) => {
+				let datas = [];
 				let ref = FireStore.db.collection("users").doc(FireStore.uid())
-						.collection("pee").doc(this.yymmdd)
+						.collection("pee").doc(yymmdd)
 				if(this.$isLogin()) {
 					this.spinShow = true;
 					try {
@@ -168,21 +175,37 @@ Vue.component('pee', {
 						let data = snapshot1.data();
 						// console.log(data)
 						if(typeof data == "object" && typeof data.pee == "string") {
-							this.datas = data.pee.split(",")
+							datas = data.pee.split(",")
 						} else {
-							this.datas = [];
+							datas = [];
 						}
-						this.showNextTime();
+						if(showNextTime == true)
+							this.showNextTime();
 					} catch(e) {
 
 					} finally {
 						setTimeout(() => {
 							this.spinShow = false;
-							success();
+							success(datas);
 						}, 600);
 					}
 				} else {
-					success();
+					success(datas);
+				}
+			});
+		},
+		fetchYesterday(yymmdd) {
+			return new Promise(async (success, error) => {
+				let d = new Date(yymmdd);
+				yymmdd = d.addDays(-1).toString("yyyy-mm-dd");
+				let datas = await this.fetch(yymmdd, false);
+				if(datas.length > 0) {
+					this.yesterday = yymmdd + " " + datas[0];
+					if(datas.length > 1) {
+						// this.yesterday += "<br />" + yymmdd + " " + datas[1];
+					}
+				} else {
+					this.yesterday = "";
 				}
 			});
 		},
