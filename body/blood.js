@@ -6,10 +6,6 @@ Vue.component('blood', {
 				display: flex; flex-direction: row; align-items: center;
 				justify-content: center;">
 				<div style="flex: 1; margin: 0 10px;">
-					<Radio-group v-model="switch1" type="button" size="small" @on-change="onSwitch">
-						<Radio label="130">H</Radio>
-						<Radio label="120">L</Radio>
-					</Radio-group>
 				</div>
 				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
@@ -48,17 +44,23 @@ Vue.component('blood', {
 						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
-								<span v-if="(index3 == 0)" style="font-size: 18px;"
-									:style="{color: item3 >= 160 ? '#c01921' 
-										: (item3 >= 140 ? '#FFA500' 
-											: (item3 >= 120 ? '#FFD700' : 'rgb(45, 140, 240)'))}"
+								<span v-if="(index3 == 0)" style="font-size: 18px;  "
+									:style="{
+										color: item3 >= 160 ? '#c01921' 
+											: (item3 >= 140 ? '#FFA500' 
+												: (item3 >= 120 ? '#FFD700' : 'rgb(45, 140, 240)')),
+										'font-weight': item3 >= 140 ? '900' : '400'
+									}"
 								>
 									{{item3}}
 								</span>
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
-									:style="{color: item3 >= 100 ? '#c01921' 
-										: (item3 >= 90 ? '#FFA500' 
-											: (item3 >= 80 ? '#FFD700' : 'rgb(45, 140, 240)'))}"
+									:style="{
+										color: item3 >= 100 ? '#c01921' 
+											: (item3 >= 90 ? '#FFA500' 
+												: (item3 >= 80 ? '#FFD700' : 'rgb(45, 140, 240)')),
+										'font-weight': item3 >= 90 ? '900' : '400'
+									}"
 								>
 									{{item3}}
 								</span>
