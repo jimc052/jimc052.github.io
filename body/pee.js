@@ -16,8 +16,11 @@ Vue.component('pee', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div v-if="nextTime.length > 0" style="color: #c01921; font-size: 24px; text-align: center;"
-				:style="{margin: (nextTime.length > 0 ? '5px ' : '') + ' 0px'}"
+			<div v-if="nextTime.length > 0" style="font-size: 24px; text-align: center;"
+				:style="{
+					margin: (nextTime.length > 0 ? '5px ' : '') + ' 0px',
+					color: nextTime.indexOf('逾時') > -1 ? 'rgb(45, 140, 240)' : '#c01921' 
+				}"
 			>
 				{{nextTime}}
 			</div>
