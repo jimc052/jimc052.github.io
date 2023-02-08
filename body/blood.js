@@ -49,9 +49,19 @@ Vue.component('blood', {
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
 								<span v-if="(index3 == 0)" style="font-size: 18px;"
-									:style="{color: item3 >= switch1 ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+									:style="{color: item3 >= 160 ? '#c01921' 
+										: (item3 >= 140 ? '#FFA500' 
+											: (item3 >= 120 ? '#FFD700' : 'rgb(45, 140, 240)'))}"
+								>
+									{{item3}}
+								</span>
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
-									:style="{color: item3 >= (switch1 == 130 ? 90 : 80) ? '#c01921' : 'rgb(45, 140, 240)'}">{{item3}}</span>
+									:style="{color: item3 >= 100 ? '#c01921' 
+										: (item3 >= 90 ? '#FFA500' 
+											: (item3 >= 80 ? '#FFD700' : 'rgb(45, 140, 240)'))}"
+								>
+									{{item3}}
+								</span>
 								<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
 							</div>
 						</div>
@@ -114,7 +124,6 @@ Vue.component('blood', {
 			firebaseData: {},
 			table: [],
 			filter: false,
-			switch1: "130",
 			canEdit: false,
 			recorder: undefined,
 			active: -1
@@ -165,9 +174,6 @@ Vue.component('blood', {
 			}, 600);
 		}
 
-		if(typeof localStorage["blood-switch"] == "string") {
-			this.switch1 = localStorage["blood-switch"];
-		}
 		window.onresize = () => {
 			return (() => {
 				this.onResize();
@@ -335,11 +341,19 @@ Vue.component('blood', {
 		beautify(){
 			for(let i = 1; i < this.table.length; i++) {
 				// let date = new Date(this.table[i][0]);
-				let td3 = document.getElementById(`td_${i}_2`)
-				if(this.switch1 == 130 && this.table[i][2] >= 130) td3.style.color = "#c01921";
+				let td3 = document.getElementById(`td_${i}_2`);
+				let value = this.table[i][2];
+				td3.style.color = value >= 160 
+					? '#c01921' 
+					: (value >= 140 ? '#FFA500' 
+						: (value >= 120 ? '#FFD700' : 'rgb(45, 140, 240)'));
 
 				let td4 = document.getElementById(`td_${i}_3`)
-				if(this.switch1 == 130 && this.table[i][3] >= 90) td4.style.color = "#c01921";
+				value = this.table[i][3];
+				td4.style.color = value >= 160 
+					? '#c01921' 
+					: (value >= 140 ? '#FFA500' 
+						: (value >= 120 ? '#FFD700' : 'rgb(45, 140, 240)'));
 
 				let td5 = document.getElementById(`td_${i}_4`)
 				if(this.table[i][4] < 70) td5.style.color = "#c01921";

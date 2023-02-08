@@ -147,6 +147,7 @@ Vue.component('pee', {
 				this.active = index;
 		},
 		async onEnter(event){
+
 			const value = event.target.value;
 			let arr = value.split(":");
 			let msg = "";
@@ -158,10 +159,13 @@ Vue.component('pee', {
 			if(msg.length == 0) {
 				if(arr[0].length == 1) arr[0] = "0" + arr[0];
 				if(arr[1].length == 1) arr[1] = "0" + arr[1];
-				// this.datas[]
+				
 				this.$set(this.datas, this.active, arr[0] + ":" + arr[1]);
-				this.active = -1;
+				if(this.active == 0) {
+					this.showNextTime(arr[0] + ":" + arr[1])
+				}
 				await this.save();
+				this.active = -1;
 			} else {
 				alert(msg)
 			}
