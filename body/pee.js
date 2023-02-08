@@ -44,7 +44,7 @@ Vue.component('pee', {
 						{{timeSpan(index)}}
 					</div>
 				</div>
-				<div v-if="yesterday.length > 0" style="font-size: 25px; padding: 5px; text-align: center;">
+				<div v-if="yesterday.length > 0" style="color: #A9A9A9; font-size: 25px; padding: 5px; text-align: center;">
 					{{yesterday}}
 				</div>
 			</div>
@@ -119,7 +119,7 @@ Vue.component('pee', {
 				}
 			}
 			this.datas.unshift(now.toString("hh:MM"));
-			this.showNextTime();
+			this.showNextTime(this.datas[0]);
 			await this.save();
 		},
 		async save() {
@@ -180,7 +180,7 @@ Vue.component('pee', {
 							datas = [];
 						}
 						if(showNextTime == true)
-							this.showNextTime();
+							this.showNextTime(datas.length > 0 ? datas[0] : "");
 					} catch(e) {
 
 					} finally {
@@ -194,20 +194,22 @@ Vue.component('pee', {
 				}
 			});
 		},
-		fetchYesterday(yymmdd) {
-			return new Promise(async (success, error) => {
-				let d = new Date(yymmdd);
-				yymmdd = d.addDays(-1).toString("yyyy-mm-dd");
-				let datas = await this.fetch(yymmdd, false);
-				if(datas.length > 0) {
-					this.yesterday = yymmdd + " " + datas[0];
-					if(datas.length > 1) {
-						// this.yesterday += "<br />" + yymmdd + " " + datas[1];
-					}
-				} else {
-					this.yesterday = "";
+		async fetchYesterday(yymmdd) {
+			if(this.datas.length == 0){
+				this.yesterday = "";
+				return ;
+			}
+			let d = new Date(yymmdd);
+			yymmdd = d.addDays(-1).toString("yyyy-mm-dd");
+			let datas = await this.fetch(yymmdd, false);
+			if(datas.length > 0) {
+				this.yesterday = yymmdd + " " + datas[0];
+				if(datas.length > 1) {
+					// this.yesterday += "<br />" + yymmdd + " " + datas[1];
 				}
-			});
+			} else {
+				this.yesterday = "";
+			}
 		},
 		timeSpan(index) {
 			let diff = "";
@@ -239,11 +241,10 @@ Vue.component('pee', {
 		isToday() {
 			return (new Date()).toString("yyyy-mm-dd") == this.yymmdd;
 		},
-		showNextTime() {
+		showNextTime(time) {
 			let nextTime = "";
-			if(this.datas.length > 1 && this.isToday() == true){
-				let time = this.datas[0];
-				if(time > "06:00" && time < "21:00") {
+			if(time.length > 0 && this.isToday() == true){
+				if(time > "04:00" && time < "23:00") {
 					let arr1 = time.split(":");
 					let h = parseInt(arr1[0], 10) + 2;
 					if(h < 10) h = "0" + h;
