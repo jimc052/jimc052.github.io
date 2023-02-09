@@ -40,15 +40,13 @@ Vue.component('blood', {
 						<div style="font-size: 16px; margin-right: 10px;">
 							{{index2}}
 						</div>
-
 						<div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
 							<div v-for="(item3, index3) in item2.split('/')">
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
 								<span v-if="(index3 == 0)" style="font-size: 18px;  "
 									:style="{
-										color: item3 >= 160 ? '#c01921' 
-											: (item3 >= 140 ? '#FFA500' 
-												: (item3 >= 120 ? '#FFD700' : 'rgb(45, 140, 240)')),
+										color: item3 >= 140 ? '#c01921' 
+											: (item3 >= 120 ? '#FFA500' : 'rgb(45, 140, 240)'),
 										'font-weight': item3 >= 140 ? '900' : '400'
 									}"
 								>
@@ -56,9 +54,8 @@ Vue.component('blood', {
 								</span>
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
 									:style="{
-										color: item3 >= 100 ? '#c01921' 
-											: (item3 >= 90 ? '#FFA500' 
-												: (item3 >= 80 ? '#FFD700' : 'rgb(45, 140, 240)')),
+										color: item3 >= 90 ? '#c01921' 
+											: (item3 >= 80 ? '#FFA500' : 'rgb(45, 140, 240)'),
 										'font-weight': item3 >= 90 ? '900' : '400'
 									}"
 								>
@@ -342,20 +339,13 @@ Vue.component('blood', {
 		},
 		beautify(){
 			for(let i = 1; i < this.table.length; i++) {
-				// let date = new Date(this.table[i][0]);
 				let td3 = document.getElementById(`td_${i}_2`);
 				let value = this.table[i][2];
-				td3.style.color = value >= 160 
-					? '#c01921' 
-					: (value >= 140 ? '#FFA500' 
-						: (value >= 120 ? '#FFD700' : 'rgb(45, 140, 240)'));
+				td3.style.color = (value >= 140 ? '#c01921' : (value >= 120 ? '#FFA500' : 'rgb(45, 140, 240)'));
 
 				let td4 = document.getElementById(`td_${i}_3`)
 				value = this.table[i][3];
-				td4.style.color = value >= 160 
-					? '#c01921' 
-					: (value >= 140 ? '#FFA500' 
-						: (value >= 120 ? '#FFD700' : 'rgb(45, 140, 240)'));
+				td4.style.color = (value >= 90 ? '#c01921' : (value >= 80 ? '#FFA500' : 'rgb(45, 140, 240)'));
 
 				let td5 = document.getElementById(`td_${i}_4`)
 				if(this.table[i][4] < 70) td5.style.color = "#c01921";
