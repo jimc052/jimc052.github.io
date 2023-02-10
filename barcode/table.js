@@ -124,7 +124,6 @@ Vue.component('vue-table', {
 		this.retrieve();
 	},
 	destroyed() {
-		// this.removeEventListener("click", this.onRowClick);
 		if(this.dataPage.length > 0) this.eventListener(1);
 		this.broadcast.$off('onResize', this.onResize);
   },

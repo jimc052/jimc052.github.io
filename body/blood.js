@@ -17,7 +17,7 @@ Vue.component('blood', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div v-if="table.length == 0" style="flex: 1; overflow-y: auto; background: white;">
+			<div v-if="table.length == 0" style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
@@ -46,7 +46,7 @@ Vue.component('blood', {
 								<span v-if="(index3 == 0)" style="font-size: 18px;  "
 									:style="{
 										color: item3 >= 140 ? '#c01921' 
-											: (item3 >= 120 ? '#FFA500' : 'rgb(45, 140, 240)'),
+											: (item3 >= 120 ? '#ff9900' : 'rgb(45, 140, 240)'),
 										'font-weight': item3 >= 140 ? '900' : '400'
 									}"
 								>
@@ -55,7 +55,7 @@ Vue.component('blood', {
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
 									:style="{
 										color: item3 >= 90 ? '#c01921' 
-											: (item3 >= 80 ? '#FFA500' : 'rgb(45, 140, 240)'),
+											: (item3 >= 80 ? '#ff9900' : 'rgb(45, 140, 240)'),
 										'font-weight': item3 >= 90 ? '900' : '400'
 									}"
 								>
@@ -68,7 +68,7 @@ Vue.component('blood', {
 				</div>
 			</div>
 
-			<div v-else style="flex: 1; overflow-y: auto; background: white;">
+			<div v-else style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<table style="border-collapse: collapse; width: 100%;" >
 					<tr v-for="(item, index) in table" style="cursor: pointer;"
 						:style="{background: item[6] == 'Y' ? '#eee' : 'white'}"
@@ -172,22 +172,21 @@ Vue.component('blood', {
 				this.beautify();
 			}, 600);
 		}
+		this.broadcast.$on('onResize', this.onResize);
 
-		window.onresize = () => {
-			return (() => {
-				this.onResize();
-			})()
-		}
 		this.onResize();
 	},
 	destroyed() {
 		window.ondrop = null;
 		window.ondragover = null;
+		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
 		onResize() {
-			if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
-				this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
+			this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
+			let container = document.querySelector(".container");
+			container.style.zoom = document.body.clientWidth > 500 ? 1.4 : 1;
+			// console.log(document.body.clientWidth + ": " + container.style.zoom)
 		},
 		onSwitch(e){
 			localStorage["blood-switch"] = e;
@@ -341,11 +340,11 @@ Vue.component('blood', {
 			for(let i = 1; i < this.table.length; i++) {
 				let td3 = document.getElementById(`td_${i}_2`);
 				let value = this.table[i][2];
-				td3.style.color = (value >= 140 ? '#c01921' : (value >= 120 ? '#FFA500' : 'rgb(45, 140, 240)'));
+				td3.style.color = (value >= 140 ? '#c01921' : (value >= 120 ? '#ff9900' : 'rgb(45, 140, 240)'));
 
 				let td4 = document.getElementById(`td_${i}_3`)
 				value = this.table[i][3];
-				td4.style.color = (value >= 90 ? '#c01921' : (value >= 80 ? '#FFA500' : 'rgb(45, 140, 240)'));
+				td4.style.color = (value >= 90 ? '#c01921' : (value >= 80 ? '#ff9900' : 'rgb(45, 140, 240)'));
 
 				let td5 = document.getElementById(`td_${i}_4`)
 				if(this.table[i][4] < 70) td5.style.color = "#c01921";

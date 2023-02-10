@@ -93,10 +93,11 @@ Vue.component('pee', {
 		this.onResize();
 	},
 	destroyed() {
+		window.onresize = null;
   },
 	methods: {
 		onResize() {
-			if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
+			// if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
 				this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
 		},
 		async onClickIcon(index) {
