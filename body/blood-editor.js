@@ -1,27 +1,29 @@
 Vue.component('blood-editor', {
-	template:  `<modal title="血壓" v-model="visible" :width="450"
+	template:  `<modal title="血壓" v-model="visible"
 		@on-visible-change="onVisibleChange"	
 	>
 		<span>日期：</span><Input ref="inputDay" v-model="day"
 			style="width: 60px; font-size: 20px; padding: 5px;" size="large" clearable 
-			@on-enter="onEnter"/>
+			/>
 		<div>
-			<span>早上：</span><Input ref="inputTime1" v-model="time1"
-				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-enter="onEnter"/>
-			<Input ref="inputData1" v-model="data1"
-				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-enter="onEnter"/>
+			<span>早上：</span>
+				<Input ref="inputTime1" v-model="time1"
+					style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
+					/>
+				<Input ref="inputData1" v-model="data1" element-id="blood1"
+					style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
+					@on-change="onKeyChange" />
 		</div>
 
 		<div>
-			<span>晚上：</span><Input ref="inputTime2" v-model="time2"
+			<span>晚上：</span>
+				<Input ref="inputTime2" v-model="time2"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-enter="onEnter"/>
+				/>
 
-				<Input ref="inputData2" v-model="data2"
+				<Input ref="inputData2" v-model="data2" element-id="blood2"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-enter="onEnter"/>
+				@on-change="onKeyChange"/>
 		</div>
 
 		<div slot="footer">
@@ -53,8 +55,9 @@ Vue.component('blood-editor', {
 	destroyed() {
   },
 	methods: {
-		onEnter(){
-
+		onKeyChange(e){
+			let s = e.target.id == "blood1" ? "data1" : "data2";
+			if(this[s].length == 3 || this[s].length == 6) this[s] += "/";
 		},
 		onVisibleChange(v){
 			if(v == false) {
@@ -120,13 +123,6 @@ Vue.component('blood-editor', {
 					myData.data[this.time2] = this.data2;
 				}
 				this.$emit("onChange", myData);
-				/*
-				{
-					"01":{"06:15":"123/84/86","20:47":"130/85/82"},
-					"02":{"05:49":"116/77/76","21:05":"126/82/78"},
-					"03":{"05:58":"117/77/71"}
-				}
-				*/
 			} else {
 				alert(msg)
 			}
@@ -134,12 +130,14 @@ Vue.component('blood-editor', {
 	},
 	watch: {
 		recorder(value) {
+			let date = new Date();
 			this.visible = typeof this.recorder == "undefined" ? false : true;
 			if(typeof this.recorder != "undefined") {
 				this.day = ""; this.time1 = ""; this.time2 = ""; this.data1 = ""; this.data2 = "";
 				if(this.recorder == null) {
-					let date = new Date();
+					
 					this.day = date.toString("dd");
+					this.time1 = date.toString("hh:MM")
 				} else {
 					this.day = this.recorder.key;
 					for(let key in this.recorder.data){
@@ -151,6 +149,9 @@ Vue.component('blood-editor', {
 							this.data2 = this.recorder.data[key]
 						}
 					}
+
+					if(this.time2.length == 0)
+						this.time2 = date.toString("hh:MM");
 				}
 			}
 		}

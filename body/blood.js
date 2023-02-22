@@ -22,7 +22,7 @@ Vue.component('blood', {
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}"
-					@click="recorder = item; active = index;"
+					@click="onClickRow(item, index);"
 				>
 
 					<div style="margin-right: 10px;">
@@ -175,6 +175,7 @@ Vue.component('blood', {
 		this.broadcast.$on('onResize', this.onResize);
 
 		this.onResize();
+		this.canEdit = true;
 	},
 	destroyed() {
 		window.ondrop = null;
@@ -183,13 +184,11 @@ Vue.component('blood', {
   },
 	methods: {
 		onResize() {
-			this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
+			
+			// this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
 			let container = document.querySelector(".container");
 			container.style.zoom = document.body.clientWidth > 500 ? 1.4 : 1;
 			// console.log(document.body.clientWidth + ": " + container.style.zoom)
-		},
-		onSwitch(e){
-			localStorage["blood-switch"] = e;
 		},
 		onChange(index){
 			if(index > 0){
@@ -228,7 +227,8 @@ Vue.component('blood', {
 				arr[1] = 1;
 			}
 
-			this.yymm = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1]
+			this.yymm = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1];
+			this.canEdit = this.yymm == (new Date()).toString("yyyy-mm");
 			await this.fetch();
 		},
 		async onDrop(result) {
@@ -348,6 +348,12 @@ Vue.component('blood', {
 
 				let td5 = document.getElementById(`td_${i}_4`)
 				if(this.table[i][4] < 70) td5.style.color = "#c01921";
+			}
+		}, 
+		onClickRow(item, index) {
+			if(this.canEdit == true) {
+				this.recorder = item; 
+				this.active = index;
 			}
 		}
 	},
