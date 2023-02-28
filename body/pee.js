@@ -98,7 +98,7 @@ Vue.component('pee', {
 	methods: {
 		onResize() {
 			// if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
-				this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
+				this.canEdit = true; // (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
 		},
 		async onClickIcon(index) {
 			this.datas = [];

@@ -137,21 +137,29 @@ Vue.component('blood-editor', {
 				if(this.recorder == null) {
 					
 					this.day = date.toString("dd");
-					this.time1 = date.toString("hh:MM")
+					this.time1 = date.toString("hh:MM");
+					setTimeout(() => {
+						document.querySelector("#blood1").focus();
+					}, 600);
 				} else {
 					this.day = this.recorder.key;
 					for(let key in this.recorder.data){
 						if(key < "12:00") {
 							this.time1 = key;
-							this.data1 = this.recorder.data[key]
+							this.data1 = this.recorder.data[key];
 						} else {
 							this.time2 = key;
-							this.data2 = this.recorder.data[key]
+							this.data2 = this.recorder.data[key];
 						}
 					}
 
-					if(this.time2.length == 0)
+					if(this.time2.length == 0) {
 						this.time2 = date.toString("hh:MM");
+						setTimeout(() => {
+							document.querySelector("#blood2").focus();
+						}, 600);
+						
+					}
 				}
 			}
 		}
