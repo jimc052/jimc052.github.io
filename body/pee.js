@@ -8,7 +8,9 @@ Vue.component('pee', {
 				<div style="flex: 1;" />
 				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
-				{{yymmdd}}
+				<span style="font-size: inherit; cursor: pointer; " @click="onClickIcon(0)">
+					{{yymmdd}}
+				</span>
 				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
 				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
