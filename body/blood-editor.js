@@ -28,7 +28,7 @@ Vue.component('blood-editor', {
 
 		<div slot="footer">
 			<i-button  size="large" @click="$emit('onChange', undefined)">取消</i-button>
-			<i-button type="primary" size="large" @click="onOK">確定</i-button>
+			<i-button type="primary" size="large" @click="onOK" v-if="dirty == true">確定</i-button>
 		</div>
 	</modal>`,
 	props: {
@@ -45,23 +45,42 @@ Vue.component('blood-editor', {
 			time2: "",
 			data1: "",
 			data2: "",
+			dirty: false
 		};
 	},
 	created(){
 	},
 	mounted () {
 		// console.log(holiday)
+		let blood1 = document.querySelector("#blood1");
+		let blood2 = document.querySelector("#blood2");
+		blood1.addEventListener("keydown", this.keydown);
+		blood2.addEventListener("keydown", this.keydown);
 	},
 	destroyed() {
+		blood1.removeEventListener("keydown", this.keydown);
+		blood2.removeEventListener("keydown", this.keydown);
   },
 	methods: {
+		keydown(e) {
+			if(e.keyCode == 13 && this.dirty == true) {
+				this.onOK();
+			} else {
+				// if (e.key == "/" || (e.keyCode >= 48 && e.keyCode <= 57)) {
+				// 	this.dirty = true;
+				// }
+			}
+		},
 		onKeyChange(e){
+			e.returnValue = false;
 			let s = e.target.id == "blood1" ? "data1" : "data2";
 			if(this[s].length == 3 || this[s].length == 6) this[s] += "/";
+			this.dirty = true;
 		},
 		onVisibleChange(v){
 			if(v == false) {
 				this.$emit("onChange", undefined);
+				this.dirty = false;
 			}
 		},
 		onOK(){
@@ -88,7 +107,12 @@ Vue.component('blood-editor', {
 				let arr = this.data1.split("/");
 				if(arr.length != 3) 
 					msg = "請在早上輸入正確 '收縮/舒張/脈搏' ";
-
+				else {
+					const regex = /^(\d+\/)+\d+$/;
+					if (! regex.test(this.data1)) {
+						msg = "請在早上輸入正確 '收縮/舒張/脈搏' ";
+					}
+				}
 			}
 
 			if(msg.length == 0 && this.time2.length > 0) {
@@ -107,6 +131,12 @@ Vue.component('blood-editor', {
 				let arr = this.data2.split("/");
 				if(arr.length != 3) 
 					msg = "請在晚上輸入正確 '收縮/舒張/脈搏' ";
+				else {
+					const regex = /^(\d+\/)+\d+$/;
+					if (! regex.test(this.data2)) {
+						msg = "請在晚上輸入正確 '收縮/舒張/脈搏' ";
+					}
+				}
 			} 
 
 			if(msg.length == 0 && this.time1.length == 0 && this.time2.length == 0){
@@ -130,12 +160,12 @@ Vue.component('blood-editor', {
 	},
 	watch: {
 		recorder(value) {
+			this.dirty = false;
 			let date = new Date();
 			this.visible = typeof this.recorder == "undefined" ? false : true;
 			if(typeof this.recorder != "undefined") {
 				this.day = ""; this.time1 = ""; this.time2 = ""; this.data1 = ""; this.data2 = "";
 				if(this.recorder == null) {
-					
 					this.day = date.toString("dd");
 					this.time1 = date.toString("hh:MM");
 					setTimeout(() => {
@@ -152,9 +182,9 @@ Vue.component('blood-editor', {
 							this.data2 = this.recorder.data[key];
 						}
 					}
-
-					if(this.time2.length == 0) {
-						this.time2 = date.toString("hh:MM");
+					let time2 = date.toString("hh:MM");
+					if(this.time2.length == 0 && time2 >= "19:00") {
+						this.time2 = time2;
 						setTimeout(() => {
 							document.querySelector("#blood2").focus();
 						}, 600);
