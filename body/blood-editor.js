@@ -9,24 +9,24 @@ Vue.component('blood-editor', {
 			<span>早上：</span>
 			<Input ref="inputTime1" v-model="time1"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				:disabled="!isMorning"
+				:disabled="!isMorning || day != today"
 				/>
 			<Input ref="inputData1" v-model="data1" element-id="blood1"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
 				@on-change="onKeyChange" 
-				:disabled="!isMorning" />
+				:disabled="!isMorning || day != today" />
 		</div>
 
 		<div>
 			<span>晚上：</span>
 			<Input ref="inputTime2" v-model="time2"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				:disabled="isMorning"
+				:disabled="isMorning || day != today"
 			/>
 			<Input ref="inputData2" v-model="data2" element-id="blood2"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
 				@on-change="onKeyChange"
-				:disabled="isMorning"/>
+				:disabled="isMorning || day != today"/>
 		</div>
 
 		<div slot="footer">
@@ -175,7 +175,6 @@ Vue.component('blood-editor', {
 				if(this.recorder == null) {
 					this.day = this.today;
 					if(now < "12:00") {
-						this.isMorning = true;
 						this.time1 = now;
 						setTimeout(() => {
 							document.querySelector("#blood1").focus();
@@ -187,11 +186,9 @@ Vue.component('blood-editor', {
 						if(key < "12:00") {
 							this.time1 = key;
 							this.data1 = this.recorder.data[key];
-							this.isMorning = true;
 						} else {
 							this.time2 = key;
 							this.data2 = this.recorder.data[key];
-							this.isMorning = false;
 						}
 					}
 					let time2 = date.toString("hh:MM");
@@ -204,6 +201,8 @@ Vue.component('blood-editor', {
 					}
 				}
 			}
+			this.isMorning = now < "12:00" ? true : false;
+			console.log("isMorning: " + this.isMorning)
 		}
 	}
 });
