@@ -1,29 +1,32 @@
 Vue.component('blood-editor', {
-	template:  `<modal title="血壓" v-model="visible"
-		@on-visible-change="onVisibleChange"	
-	>
-		<span>日期：</span><Input ref="inputDay" v-model="day"
-			style="width: 60px; font-size: 20px; padding: 5px;" size="large" clearable 
-			/>
+	template:  `<modal title="血壓" v-model="visible" @on-visible-change="onVisibleChange">
+		<span>日期：</span>
+		<Input ref="inputDay" v-model="day"
+			style="width: 80px; font-size: 20px; padding: 5px;" size="large" 
+			clearable :disabled="day.length > 0 && day != today"
+		/>
 		<div>
 			<span>早上：</span>
-				<Input ref="inputTime1" v-model="time1"
-					style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-					/>
-				<Input ref="inputData1" v-model="data1" element-id="blood1"
-					style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
-					@on-change="onKeyChange" />
+			<Input ref="inputTime1" v-model="time1"
+				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
+				:disabled="!isMorning"
+				/>
+			<Input ref="inputData1" v-model="data1" element-id="blood1"
+				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
+				@on-change="onKeyChange" 
+				:disabled="!isMorning" />
 		</div>
 
 		<div>
 			<span>晚上：</span>
-				<Input ref="inputTime2" v-model="time2"
+			<Input ref="inputTime2" v-model="time2"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				/>
-
-				<Input ref="inputData2" v-model="data2" element-id="blood2"
+				:disabled="isMorning"
+			/>
+			<Input ref="inputData2" v-model="data2" element-id="blood2"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-change="onKeyChange"/>
+				@on-change="onKeyChange"
+				:disabled="isMorning"/>
 		</div>
 
 		<div slot="footer">
@@ -45,7 +48,9 @@ Vue.component('blood-editor', {
 			time2: "",
 			data1: "",
 			data2: "",
-			dirty: false
+			dirty: false,
+			today: "",
+			isMorning: true,
 		};
 	},
 	created(){
@@ -162,24 +167,31 @@ Vue.component('blood-editor', {
 		recorder(value) {
 			this.dirty = false;
 			let date = new Date();
+			this.today = date.toString("dd");
+			let now = date.toString("hh:MM");
 			this.visible = typeof this.recorder == "undefined" ? false : true;
 			if(typeof this.recorder != "undefined") {
 				this.day = ""; this.time1 = ""; this.time2 = ""; this.data1 = ""; this.data2 = "";
 				if(this.recorder == null) {
-					this.day = date.toString("dd");
-					this.time1 = date.toString("hh:MM");
-					setTimeout(() => {
-						document.querySelector("#blood1").focus();
-					}, 600);
+					this.day = this.today;
+					if(now < "12:00") {
+						this.isMorning = true;
+						this.time1 = now;
+						setTimeout(() => {
+							document.querySelector("#blood1").focus();
+						}, 600);						
+					}
 				} else {
 					this.day = this.recorder.key;
 					for(let key in this.recorder.data){
 						if(key < "12:00") {
 							this.time1 = key;
 							this.data1 = this.recorder.data[key];
+							this.isMorning = true;
 						} else {
 							this.time2 = key;
 							this.data2 = this.recorder.data[key];
+							this.isMorning = false;
 						}
 					}
 					let time2 = date.toString("hh:MM");

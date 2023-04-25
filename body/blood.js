@@ -109,11 +109,6 @@ Vue.component('blood', {
 		</div>
 	`,
 	props: {
-		// editable: {
-		// 	type: Boolean,
-		// 	require: true, 
-		// 	default: true
-		// },
 	},
 	data() {
 		return {
