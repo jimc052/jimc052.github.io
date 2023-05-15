@@ -13,18 +13,22 @@ Vue.component('blood', {
 				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
 				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
+					<Icon :type="calendar" size="32" 
+						@click.native="onClickCalendar"
+						style="cursor: pointer; margin: 0px 10px;"
+						:style="{color: calendar == 'ios-calendar' ? 'white' : 'silver'}"
+					/>
 					<Icon type="md-swap" size="32" @click.native="$emit('change-page', 'pee')" 
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div v-if="table.length == 0" style="flex: 1; overflow-y: auto; background: white;" class="container">
+			<div v-if="table.length == 0 && calendar == 'ios-calendar' " style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}"
 					@click="onClickRow(item, index);"
 				>
-
 					<div style="margin-right: 10px;">
 						<span style="font-size: 20px;">{{item.key}}</span>
 						<span style="font-size: 12px;"
@@ -67,7 +71,42 @@ Vue.component('blood', {
 					</div>
 				</div>
 			</div>
-
+			
+			<div v-else-if="table.length == 0 && calendar == 'ios-calendar-outline' " style="flex: 1; overflow-y: auto; background: white;" class="container">
+				<div v-for="(item, index) in datas" 
+					style="padding: 5px 10px;
+						display: flex; flex-direction: row; align-items: center; justify-content: center;"
+					:style="{'border-bottom': '1px solid #eee'}"
+				>
+					<div>{{index}}</div>
+					<div style="flex: 1"></div>
+			
+					<!-- start -->
+					<div v-for="(item3, index3) in item.split('/')">
+						<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
+						<span v-if="(index3 == 0)" style="font-size: 18px;  "
+							:style="{
+								color: item3 >= 140 ? '#c01921' 
+									: (item3 >= 120 ? '#ff9900' : 'rgb(45, 140, 240)'),
+								'font-weight': item3 >= 140 ? '900' : '400'
+							}"
+						>
+							{{item3}}
+						</span>
+						<span v-if="(index3 == 1)"  style="font-size: 18px;"
+							:style="{
+								color: item3 >= 90 ? '#c01921' 
+									: (item3 >= 80 ? '#ff9900' : 'rgb(45, 140, 240)'),
+								'font-weight': item3 >= 90 ? '900' : '400'
+							}"
+						>
+							{{item3}}
+						</span>
+						<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
+					</div>
+				</div>
+				<!-- end -->
+			</div>
 			<div v-else style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<table style="border-collapse: collapse; width: 100%;" >
 					<tr v-for="(item, index) in table" style="cursor: pointer;"
@@ -98,9 +137,10 @@ Vue.component('blood', {
 				:icon="filter == false ? 'md-color-filter' : 'md-close'" 
 				circle @click.native="filter = !filter" size="large"
 				style="position: absolute; bottom: 60px; right: 10px;"
+				
 			></i-button>
 
-			<i-button v-if="canEdit == true || table.length > 0" type="error" shape="circle" 
+			<i-button v-if="calendar == 'ios-calendar' && (canEdit == true || table.length > 0)" type="error" shape="circle" 
 				:icon="table.length > 0 ? 'md-checkmark' : 'md-add'" 
 				circle @click.native="table.length > 0 ? onSaveTable() : onAdd()" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
@@ -120,7 +160,8 @@ Vue.component('blood', {
 			filter: false,
 			canEdit: false,
 			recorder: undefined,
-			active: -1
+			active: -1,
+			calendar: "ios-calendar"
 		};
 	},
 	created(){
@@ -171,6 +212,7 @@ Vue.component('blood', {
 
 		this.onResize();
 		this.canEdit = true;
+		// if(location.href.indexOf("/Users/jimc/") > -1) this.onClickCalendar();
 	},
 	destroyed() {
 		window.ondrop = null;
@@ -179,10 +221,9 @@ Vue.component('blood', {
   },
 	methods: {
 		onResize() {
-			
 			// this.canEdit = (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
 			let container = document.querySelector(".container");
-			container.style.zoom = document.body.clientWidth > 500 ? 1.4 : 1;
+			container.style.zoom = document.body.clientWidth > 500 ? 1.4 : 0.9;
 			// console.log(document.body.clientWidth + ": " + container.style.zoom)
 		},
 		onChange(index){
@@ -262,12 +303,9 @@ Vue.component('blood', {
 					let snapshot1 = await ref.get();
 					// console.log(snapshot1)
 					let data = snapshot1.data();
-					// console.log(data)
+					// console.log(JSON.stringify(data, null, 2))
 					if(typeof data == "object") {
 						this.firebaseData = data;
-						// console.log(JSON.stringify(data))
-						// localStorage["blood-temp"] = JSON.stringify(data)
-						// {"01":{"06:15":"123/84/86","20:47":"130/85/82"},"02":{"05:49":"116/77/76","21:05":"126/82/78"},"03":{"05:58":"117/77/71"}}
 					} else {
 						this.firebaseData = {};
 					}
@@ -350,7 +388,104 @@ Vue.component('blood', {
 				this.recorder = item; 
 				this.active = index;
 			}
-		}
+		},
+		async onClickCalendar() {
+
+			this.datas = [];
+			this.calendar = this.calendar == "ios-calendar" 
+				? "ios-calendar-outline" : "ios-calendar";
+			if(this.calendar == "ios-calendar") {
+				this.fetch();
+			} else {
+				let date = new Date(), 
+					ds = {};
+				this.spinShow = true;
+
+				for(let i = 0; i <= 5; i++) {
+					let yymm = date.addMonths(i  * -1).toString("yyyy-mm");
+					let data = await this.fetch2(yymm);
+					for(let key in data) {
+						let arr = [[], []];
+						for(let key2 in data[key]) {
+							if(arr[0].length == 0) 
+								arr[0] = data[key][key2].split("/");
+							else {
+								arr[1] = data[key][key2].split("/");
+							}
+						}
+						if(arr[1].length == 3 && arr[1].length == 3) {
+							for(let j = 0; j < arr[1].length; j++) {
+								arr[0][j] = (parseInt(arr[0][j], 10) + parseInt(arr[1][j], 10)) / 2;
+							}
+							ds[yymm + "-" + key] = arr[0].join("/")
+						} else if(arr[0].length == 0 && arr[1].length == 3) {
+							ds[yymm + "-" + key] = arr[1].join("/");
+						} else if(arr[0].length == 3 && arr[1].length == 0) {
+							ds[yymm + "-" + key] = arr[0].join("/");
+						}
+					}
+				}
+
+				let today = date.addDays(-1), result = {};
+				for(let i = 0; i < 24; i++) {
+					let span = "", arr = [];
+					for(let j = 0; j < 7; j++) {
+						let yymmdd = today.toString("yyyy-mm-dd");
+						if(j == 0) 
+							span = yymmdd;
+						else if(j == 6)
+							span = yymmdd + "~" + span;
+						if(typeof ds[yymmdd] != "undefined") {
+							arr.push(ds[yymmdd]);
+						}
+						today = today.addDays(-1);
+					}
+					if(arr.length > 0) {
+						let arr2 = [0, 0, 0];
+						for(let j = 0; j < arr.length; j++) {
+							let arr3 = arr[j].split("/")
+							// console.log("arr3: " + (j) + " => " + JSON.stringify(arr3));
+							for(let k = 0; k < arr3.length; k++) {
+								arr2[k] += parseInt(arr3[k], 10);
+							}
+						}
+						for(let j = 0; j < arr2.length; j++) {
+								arr2[j] = Math.floor(arr2[j] / arr.length);
+						}
+						// arr[0][j] = (parseInt(arr[0][j], 10) + parseInt(arr[1][j], 10)) / 2;
+						// console.log("區間：" + span)
+						// console.log(JSON.stringify(arr2));
+						result[span] = arr2.join("/")
+					} else {
+						// console.log(span + ": none")
+					}
+				}
+				this.datas = result;
+				// console.log(JSON.stringify(result, 2, null));
+				// console.log(today)
+				setTimeout(() => {
+					this.spinShow = false;
+				}, 600);
+			}
+		},
+		async fetch2(yymm) {
+			let ref = FireStore.db.collection("users").doc(FireStore.uid())
+					.collection("blood").doc(yymm)
+			if(this.$isLogin()) {
+				try {
+					let snapshot1 = await ref.get();
+					// console.log(snapshot1)
+					let data = snapshot1.data();
+					if(typeof data == "object") {
+						return data;
+					} else {
+						return {};
+					}
+				} catch(e) {
+					throw e;
+				}
+			}
+		},
 	},
 	watch: {
 	},
