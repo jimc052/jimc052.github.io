@@ -49,18 +49,16 @@ Vue.component('blood', {
 								<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
 								<span v-if="(index3 == 0)" style="font-size: 18px;  "
 									:style="{
-										color: item3 >= 140 ? '#c01921' 
-											: (item3 >= 120 ? '#ff9900' : 'rgb(45, 140, 240)'),
-										'font-weight': item3 >= 140 ? '900' : '400'
+										color: colorSBP(item3),
+										'font-weight': fontDBP(item3)
 									}"
 								>
 									{{item3}}
 								</span>
 								<span v-if="(index3 == 1)"  style="font-size: 18px;"
 									:style="{
-										color: item3 >= 90 ? '#c01921' 
-											: (item3 >= 80 ? '#ff9900' : 'rgb(45, 140, 240)'),
-										'font-weight': item3 >= 90 ? '900' : '400'
+										color: colorDBP(item3),
+										'font-weight': fontDBP(item3)
 									}"
 								>
 									{{item3}}
@@ -78,26 +76,22 @@ Vue.component('blood', {
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}"
 				>
-					<div>{{index}}</div>
+					<div style="font-size: 18px;">{{index}}</div>
 					<div style="flex: 1"></div>
-			
-					<!-- start -->
 					<div v-for="(item3, index3) in item.split('/')">
 						<span v-if="! (index3 == 0)" style="font-size: 14px;">{{"/"}}</span>
 						<span v-if="(index3 == 0)" style="font-size: 18px;  "
 							:style="{
-								color: item3 >= 140 ? '#c01921' 
-									: (item3 >= 120 ? '#ff9900' : 'rgb(45, 140, 240)'),
-								'font-weight': item3 >= 140 ? '900' : '400'
+								color: colorSBP(item3),
+								'font-weight': fontSBP(item3)
 							}"
 						>
 							{{item3}}
 						</span>
 						<span v-if="(index3 == 1)"  style="font-size: 18px;"
 							:style="{
-								color: item3 >= 90 ? '#c01921' 
-									: (item3 >= 80 ? '#ff9900' : 'rgb(45, 140, 240)'),
-								'font-weight': item3 >= 90 ? '900' : '400'
+								color: colorDBP(item3),
+								'font-weight': fontDBP(item3)
 							}"
 						>
 							{{item3}}
@@ -105,7 +99,6 @@ Vue.component('blood', {
 						<span v-if="index3 == 2"  style="font-size: 18px;">{{item3}}</span>
 					</div>
 				</div>
-				<!-- end -->
 			</div>
 			<div v-else style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<table style="border-collapse: collapse; width: 100%;" >
@@ -373,11 +366,11 @@ Vue.component('blood', {
 			for(let i = 1; i < this.table.length; i++) {
 				let td3 = document.getElementById(`td_${i}_2`);
 				let value = this.table[i][2];
-				td3.style.color = (value >= 140 ? '#c01921' : (value >= 120 ? '#ff9900' : 'rgb(45, 140, 240)'));
+				td3.style.color = this.colorSBP(value);
 
 				let td4 = document.getElementById(`td_${i}_3`)
 				value = this.table[i][3];
-				td4.style.color = (value >= 90 ? '#c01921' : (value >= 80 ? '#ff9900' : 'rgb(45, 140, 240)'));
+				td4.style.color = this.colorDBP(value);
 
 				let td5 = document.getElementById(`td_${i}_4`)
 				if(this.table[i][4] < 70) td5.style.color = "#c01921";
@@ -390,7 +383,6 @@ Vue.component('blood', {
 			}
 		},
 		async onClickCalendar() {
-
 			this.datas = [];
 			this.calendar = this.calendar == "ios-calendar" 
 				? "ios-calendar-outline" : "ios-calendar";
@@ -486,6 +478,20 @@ Vue.component('blood', {
 				}
 			}
 		},
+		colorSBP(value) { // 收縮壓
+			return value >= 140 ? '#c01921' 
+				: (value >= 120 ? '#ff9900' : 'rgb(45, 140, 240)')
+		},
+		colorDBP(value) { // 舒張壓
+			return value >= 90 ? '#c01921' 
+					: (value >= 80 ? '#ff9900' : 'rgb(45, 140, 240)')
+		}, 
+		fontSBP(value) {
+			return value >= 140 ? '900' : '400';
+		},
+		fontDBP(value) {
+			return value >= 90 ? '900' : '400';
+		}
 	},
 	watch: {
 	},
