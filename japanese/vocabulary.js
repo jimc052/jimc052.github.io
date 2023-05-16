@@ -21,14 +21,14 @@ Vue.component('vocabulary', {
 		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
 			<div style="flex: 1; back">
 			</div>
-			<Page :total="datas.length" 
+			<Page :total="dataStore.length" 
 				:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
 				style="" 
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 		</div>
 	</div>`,
 	props: {
-		// datas: {
+		// dataStore: {
 		// 	type: Array,
 		// 	// require: true, 
 		// 	default: [] // 
@@ -42,10 +42,11 @@ Vue.component('vocabulary', {
 			height: 0,
 			opts: [15, 20, 30, 40],
 			pageSize: 15,
-			datas: [],
+			dataStore: [],
 			data2: [],
 			row: {},
-			currentPage: 0
+			currentPage: 0, 
+			colTitle: "語	級別	舊	漢字・原文	備註	發音	中文意思"
 		};
 	},
 	created(){
@@ -53,7 +54,6 @@ Vue.component('vocabulary', {
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
 		}
-		// 語	級別	舊	漢字・原文	備註	發音	中文意思
 	},
 	async mounted () {
 		this.onResize();
@@ -70,8 +70,7 @@ Vue.component('vocabulary', {
 			// 	return row._index + ((this.currentPage-1) * this.pageSize) + 1;
 			// }
 		});
-		let cols = `語	級別	舊	漢字・原文	備註	發音	中文意思`.split("\t");
-		cols.forEach(el => {
+		this.colTitle.split("\t").forEach(el => {
 			let json = {title: el, key: el, ellipsis: true};
 			if(el == "級別" || el == "發音") {
 				json.align = 'center';
@@ -118,9 +117,9 @@ Vue.component('vocabulary', {
 			if(this.data2.length > 0) this.eventListener(1);
 			this.data2 = [];
 			let start = (e - 1) * this.pageSize, end = start + this.pageSize;
-			if(end > this.datas.length) end = this.datas.length;
+			if(end > this.dataStore.length) end = this.dataStore.length;
 			for(let i = start; i < end; i++) {
-				this.data2.push(this.datas[i]);
+				this.data2.push(this.dataStore[i]);
 			}
 
 			// setTimeout(()=>{
@@ -145,9 +144,9 @@ Vue.component('vocabulary', {
 		},
 		onSearch() {
 			this.level = "0";
-			this.datas = []; this.data2 = [];
+			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
-			let cols = `語	級別	舊	漢字・原文	備註	發音	中文意思`.split("\t");
+			let cols = this.colTitle.split("\t");
 			let arr = words.split("\n");
 			arr.forEach((el1, index1) => { // 0， 3， 6
 				let row = el1.split("\t");
@@ -156,17 +155,17 @@ Vue.component('vocabulary', {
 					row.forEach((el2, index2) => {
 						if(cols[index2] != "舊") json[cols[index2]] = el2;
 					});
-					this.datas.push(json)
+					this.dataStore.push(json)
 				}
 			});
-			// console.log(this.datas)
+			// console.log(this.dataStore)
 			this.onChangePage(1)
 		},
 		onChangeLevel() {
 			this.search = "";
-			this.datas = []; this.data2 = [];
+			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
-			let cols = `語	級別	舊	漢字・原文	備註	發音	中文意思`.split("\t");
+			let cols = this.colTitle.split("\t");
 			let arr = words.split("\n");
 			arr.forEach((el1, index1) => { // 0， 3， 6
 				let row = el1.split("\t");
@@ -175,15 +174,14 @@ Vue.component('vocabulary', {
 					row.forEach((el2, index2) => {
 						if(cols[index2] != "舊") json[cols[index2]] = el2;
 					});
-					this.datas.push(json)
+					this.dataStore.push(json)
 				}
 			});
-			// console.log(this.datas)
+			console.log(this.dataStore.length)
 			this.onChangePage(1)
 		},
 		onCellClick(row, column, data, event) {
 			console.log(row["語"])
-
 			TTX.speak(row["語"])
 		}
 	},
