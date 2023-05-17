@@ -7,6 +7,12 @@ class Player {
 	static play(mp3) {
 		return new Promise(async (resolve, reject) => {
 			let audio = new Audio();
+			if(mp3 == "chi") 
+				mp3 = "ci";
+			else if(mp3 == "tsu") 
+				mp3 = "cu"
+			else if(mp3 == "shi") 
+				mp3 = "si"
 			audio.src = Player.url + mp3 + ".mp3";
 			audio.autoplay = false;
 			audio.addEventListener("loadstart", () => {
@@ -32,7 +38,7 @@ class Player {
 					Player.mode = "";
 					resolve();
 				}, 1000);
-    }, true);
+    	}, true);
 
 		});
 	}
