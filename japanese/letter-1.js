@@ -1,6 +1,6 @@
 let idTime;
 Vue.component('letter-1', { 
-	template:  `<div id="frame" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+	template:  `<div id="frame-letter-1" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
 		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: size + 'px'}">
 			<RadioGroup v-if="!isTest" v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>

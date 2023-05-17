@@ -167,7 +167,9 @@
 </head>
 <body style="overflow: hidden;">
 	<div id="app" style="display: flex; flex-direction: row;">
-		<div :style="{width: width + 'px'}" style="height: 100%; padding: 0px; background-color: white; margin-right: 5px; display: flex; flex-direction: column; align-items: stretch; justify-content: center;">
+		<div :style="{width: width + 'px'}" style="height: 100%; padding: 0px; background-color: white; margin-right: 5px; display: flex; flex-direction: column; align-items: stretch; justify-content: center;"
+			v-if="open"
+		>
 			<div style="background: #2d8cf0; padding: 5px 0px; display: flex; flex-direction: column;  justify-content: center;" 
 					:style="{height: width > 30 ? null : '100%', alignItems: width > 30 ? 'flex-end' : 'center'} ">
 				<Icon v-if="width > 30" type="ios-arrow-back" size="30" style="cursor: pointer; color: white;"
@@ -270,6 +272,7 @@
 				return {
 					page: "筆順練習",
 					width: document.body.clientWidth < 400 ? 30: 180,
+					open: true
 				};
 			},
 			created() {
@@ -288,9 +291,10 @@
 					})()
 				}
 				let mode = this.$queryString('mode');
-				if(typeof mode == "string" && mode.length > 0)
-					this.page = this.$queryString('mode')
-				else {
+				if(typeof mode == "string" && mode.length > 0) {
+					this.page = this.$queryString('mode');
+					this.open = false;
+				} else {
 					let page = window.localStorage["japanese-page"];
 					if(typeof page == "string" )
 						this.page = page;

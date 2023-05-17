@@ -1,5 +1,5 @@
 Vue.component('letter-all', { 
-	template:  `<div id="frame" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
+	template:  `<div id="frame-letter-all" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start;">
 		<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
 			<RadioGroup  v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
@@ -18,7 +18,7 @@ Vue.component('letter-all', {
 				:style="{'margin-top': index1 > 0 ? '10px' : '' }"
 			>
 				<div v-for="(item2, index2) in datas[index][index1]" :key="index2" :style="{'margin-left': index2 > 0 ? '10px' : '' }">
-					<vm-canvas ref="canvas" v-if="size > 0" style="margin-top: 0px;" :size="size" 
+					<vm-canvas :ref="'canvas_' + index1 + '_' + index2 " v-if="size > 0" style="margin-top: 0px;" :size="size" 
 						:char="row > -1 && datas[index][index1][index2] != null ? datas[index][index1][index2][word] : '' " 
 						:style="{width: size + 'px'}"
 					>
@@ -26,6 +26,11 @@ Vue.component('letter-all', {
 				</div>
 			</div>
 		</div>
+
+		<i-button icon="md-refresh" type="primary" shape="circle" circle 
+			@click.native="onClickClear()" size="large"
+			style="position: absolute; bottom: 10px; right: 10px;"
+		/>
   </div>`,
 	props: {
 	},
@@ -52,6 +57,9 @@ Vue.component('letter-all', {
 	created(){
 	},
 	async mounted () {
+		setTimeout(() => {
+			this.onClickClear()
+		}, 600);
 	},
 	destroyed() {
   },
@@ -69,6 +77,11 @@ Vue.component('letter-all', {
 			let o = document.activeElement;
 			o.blur();
 		},
+		onClickClear() {
+			for(let key in this.$refs) {
+				this.$refs[key][0].render()
+			}
+		}
 	},
 	watch: {
 	},

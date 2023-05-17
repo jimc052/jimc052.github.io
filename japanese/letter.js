@@ -1,5 +1,5 @@
 Vue.component('letter', { 
-	template:  `<div id="frame" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+	template:  `<div id="frame-letter" style="height: 100%; width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
 		<letter-1 v-if="page == 1"></letter-1>
 		<letter-all v-if="page == 2"></letter-all>
   </div>`,
