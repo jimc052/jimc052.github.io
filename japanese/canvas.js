@@ -6,6 +6,7 @@ Vue.component('vm-canvas', {
 			{{char}}
 		</div>
 		<canvas ref="canvas" :width="size" :height="size" style="position: absolute;  z-index: 100; background: transparent;"></canvas>
+		<div style="position: absolute;  z-index: 100; left: 5px; bottom: 0px;">{{mp3}}</div>
   </div>`,
 	props: {
 		size: {
@@ -16,7 +17,15 @@ Vue.component('vm-canvas', {
 		char: {
 			type: String,
 			default: ""
-		}
+		},
+		mp3: {
+			type: String,
+			default: ""
+		},
+		font: {
+			type: String,
+			default: "メイリオ"
+		},
 	},
 	data() {
 		return {
@@ -25,6 +34,7 @@ Vue.component('vm-canvas', {
 	created(){
 	},
 	async mounted () {
+		// console.log(this.char + ", " + this.mp3)
 		if(this.char.length > 0) {
 			this.drawGrid();
 			this.render();			
@@ -52,7 +62,7 @@ Vue.component('vm-canvas', {
 			// letter.style.height = this.size + "px";
 			// letter.style.marginTop = (this.size * -1) + "px";
 			letter.style.fontSize = (this.size - 20) + "px";
-			letter.style.fontFamily = "メイリオ";
+			letter.style.fontFamily = this.font; // "メイリオ";
 			letter.style.color = "#c4c4c4";
 			
 			let width = canvas.width, height = canvas.height;
@@ -177,6 +187,9 @@ Vue.component('vm-canvas', {
 		char(value) {
 			this.clear();
 			// console.log(value)
+		},
+		font(vale) {
+			this.render();
 		}
 	},
 });

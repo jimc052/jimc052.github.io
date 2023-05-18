@@ -54,6 +54,7 @@ Vue.component('vocabulary', {
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
 		}
+		
 	},
 	async mounted () {
 		this.onResize();
@@ -82,7 +83,11 @@ Vue.component('vocabulary', {
 			else if(el == "舊") {
 				return;
 			}
+			
 			this.columns.push(json)
+			if(el == "語") {
+				this.columns.push({title: "讀音", key: el + "2", ellipsis: true, render: this.render})
+			}
 		});
 		TTX.initial();
 	},
@@ -91,6 +96,38 @@ Vue.component('vocabulary', {
 		window.removeEventListener('keydown', this.onKeydown, false);
   },
 	methods: {
+		render(h, p){
+			let key = p.column.key;
+			let value = p.row["語"];
+			let datas = this.$japanese();
+			let voicedSound = "ゃャゅュょョ"; // 拗音
+			let result = "";
+			// console.log(value)
+			while(value.length > 0) {
+				let char = value.substr(0, 1);
+				if(voicedSound.indexOf(value.substr(1, 1)) > -1) {
+					char += value.substr(1, 1);
+				}
+				let mp3 = "";
+				for(let x = 0; x < datas.length; x++){
+					for(let y = 0; y < datas[x].length; y++){
+						for(let z = 0; z < datas[x][y].length; z++){
+							if(datas[x][y][z] == null) continue;
+							if(datas[x][y][z]["平"] == char || datas[x][y][z]["片"] == char) {
+								mp3 = datas[x][y][z]["mp3"];
+								break;
+							}
+						}
+						if(mp3.length > 0) break;
+					}
+					if(mp3.length > 0) break;
+				}
+				// console.log(char + "=>" + mp3)
+				result += (result.length > 0 ? "-" : "") + mp3;
+				value = value.replace(char, "");
+			}
+			return h('span', result);
+		},
 		onResize(){
 			let frame = this.$refs["frame"];
 			if(typeof frame == "object") {
@@ -121,10 +158,6 @@ Vue.component('vocabulary', {
 			for(let i = start; i < end; i++) {
 				this.data2.push(this.dataStore[i]);
 			}
-
-			// setTimeout(()=>{
-			// 	this.eventListener(0);
-			// }, 600)
 		},
 		eventListener(opt){
 			// let arr = document.querySelectorAll("#" + this.id + " div.ivu-table-fixed-body table td:first-child")
@@ -177,11 +210,11 @@ Vue.component('vocabulary', {
 					this.dataStore.push(json)
 				}
 			});
-			console.log(this.dataStore.length)
+			// console.log(this.dataStore.length)
 			this.onChangePage(1)
 		},
 		onCellClick(row, column, data, event) {
-			console.log(row["語"])
+			// console.log(row["語"])
 			TTX.speak(row["語"])
 		}
 	},
