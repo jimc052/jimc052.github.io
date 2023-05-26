@@ -18,7 +18,10 @@ Vue.component('vocabulary', {
 			/>
 		</div>
 		<div ref="frame" style="flex: 1;">
-			<Table id="table" highlight-row :height="height" border :columns="columns" :data="data2"
+			<Table id="table" ref="table" highlight-row 
+				:height="height"
+				:width="width"
+				border :columns="columns" :data="data2"
 				@on-column-width-resize="onColumnResize"
 				@on-cell-click="onCellClick"
 			></Table>
@@ -30,6 +33,7 @@ Vue.component('vocabulary', {
 				:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
 				style="" 
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
+			
 		</div>
 	</div>`,
 	props: {
@@ -45,6 +49,7 @@ Vue.component('vocabulary', {
 			search: "",
 			columns: [],
 			height: 0,
+			width: 0,
 			opts: [15, 20, 30, 40],
 			pageSize: 15,
 			dataStore: [],
@@ -59,7 +64,6 @@ Vue.component('vocabulary', {
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
 		}
-		
 	},
 	async mounted () {
 		this.onResize();
@@ -97,7 +101,7 @@ Vue.component('vocabulary', {
 		TTX.initial();
 
 		let s = window.localStorage["japanese-vocabulary-search"];
-		if(typeof s != "undefined") {
+		if(typeof s != "undefined" && s.length > 0) {
 			this.search = s;
 			this.onSearch();
 			return;
@@ -116,57 +120,115 @@ Vue.component('vocabulary', {
 	methods: {
 		render(h, p){
 			let key = p.column.key;
-			let value = p.row["語"];
+			let values = p.row["語"].split("//");
 			let datas = this.$japanese();
+
 			let voicedSound = "ゃャゅュょョ"; // 拗音
 			let doubleConsonan = "っッ"; // 促音, 雙寫後面一個假名的字母
-			let result = "";
-			
-			// console.log(value)
-			while(value.length > 0) {
-				let char = value.substr(0, 1), double = "";
-				if(char == "（" || char == "）") {
-					result += char;
-				} else {
-					if(voicedSound.indexOf(value.substr(1, 1)) > -1) {
-						char += value.substr(1, 1);
-					} else if(doubleConsonan.indexOf(char) > -1) {
-						double = char;
-						char = value.substr(1, 1);
-					}
+			let longSound = {a: "ā", i: "ī", u: "ū", e: "ē", o: "ō"}; // 長音
+			let voiceN = "んン";
 
-					let mp3 = "";
-					for(let x = 0; x < datas.length; x++){
-						for(let y = 0; y < datas[x].length; y++){
-							for(let z = 0; z < datas[x][y].length; z++){
-								if(datas[x][y][z] == null) continue;
-								if(datas[x][y][z]["平"] == char || datas[x][y][z]["片"] == char) {
-									mp3 = datas[x][y][z]["mp3"];
-									break;
-								}
+			let results = [];
+
+			for(let x = 0; x < values.length; x++) {
+				let s = execute(values[x]);
+				if(x > 0) results.push(h('span', "，"))
+				let json = {
+					// attrs: {id: 'foo'}, // ok
+					'class': {speech: true}, // ok
+					// domProps: {
+					// 	value: s
+					// },
+					// style: { // OK
+					// 	color: 'red',
+					// 	// fontSize: '28px'
+					// },
+					on: {
+						click: function (event) {
+							TTX.speak(values[x])
+						}
+					}
+				};
+				results.push(h('a', json, s))
+			}
+			return h('span', {}, results);
+
+			function match(char) {
+				let mp3 = "";
+				for(let x = 0; x < datas.length; x++){
+					for(let y = 0; y < datas[x].length; y++){
+						for(let z = 0; z < datas[x][y].length; z++){
+							if(datas[x][y][z] == null) continue;
+							if(datas[x][y][z]["平"] === char || datas[x][y][z]["片"] === char) {
+								mp3 = datas[x][y][z]["mp3"];
+								break;
 							}
-							if(mp3.length > 0) break;
 						}
 						if(mp3.length > 0) break;
 					}
-					if(double.length > 0 ) {
-						mp3 = mp3.substr(0, 1) + "-" + mp3;
-					}
-					result += (result.length > 0 ? " " : "") + mp3;
+					if(mp3.length > 0) break;
 				}
-				value = value.replace(double + char, "");
+				
+				return mp3;
 			}
-			result = result.replace("（ ", " (").replace("）", ")")
-			// return h('span', result);
-
-			return h('span', {}, [
-				h('div', result)
-			]);
+			function execute(value) {
+				let arr1 = [];
+				for (let i = 0; i < value.length; i++) {
+					let char = value.substr(i, 1);
+					if (voicedSound.indexOf(char) > -1) { // 拗音
+						arr1[arr1.length - 1] += char;
+					} else {
+						arr1.push(char);
+					}
+				}
+				for (let i = 0; i < value.length; i++) {
+					let char = arr1[i];
+					if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
+						arr1[i] = "n"
+					} else if (doubleConsonan.indexOf(char) > -1) { // 促音
+	
+					} else if (char == "ー") { // 長音
+						let c1 = arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+						let c2 = arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+						arr1[i - 1] = c1 + longSound[c2];
+						arr1[i] = null;
+					} else {
+						let mp3 = match(arr1[i]);
+						if (mp3.length > 0) {
+							if (i > 0 && doubleConsonan.indexOf(arr1[i - 1]) > -1) { // 促音
+								arr1[i] = mp3.substring(0, 1) + mp3;
+								arr1[i - 1] = null;
+							} else if (i > 0 && "aiueo".indexOf(mp3) > -1) { // 長音
+								if (arr1[i - 1] == mp3) {
+									arr1[i - 1] = longSound[mp3];
+									arr1[i] = null;
+								} else if ("aiueo".indexOf(mp3) > -1) {
+									let c1 = arr1[i - 1].length == 1 ?
+										"" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+									let c2 = arr1[i - 1].length == 1 ?
+										arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+									if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
+										arr1[i - 1] = c1 + longSound[c2];
+										arr1[i] = null;
+									} else
+										arr1[i] = mp3;
+								}
+							} else
+								arr1[i] = mp3;
+						}
+					}
+				}
+				arr1 = arr1.filter(el => {
+					return el != null
+				});
+				return arr1.join(" ");
+			}
 		},
 		onResize(){
 			let frame = this.$refs["frame"];
 			if(typeof frame == "object") {
 				this.height = frame.clientHeight;
+				this.width = frame.clientWidth;
 				frame.style.height = this.height + "px";
 			}
 		},
@@ -192,7 +254,9 @@ Vue.component('vocabulary', {
 			if(end > this.dataStore.length) end = this.dataStore.length;
 			for(let i = start; i < end; i++) {
 				this.data2.push(this.dataStore[i]);
-			}
+			}	
+			let table = document.querySelector(".ivu-table-body");
+			table.scrollTop = 0;
 		},
 		eventListener(opt){
 			// let arr = document.querySelectorAll("#" + this.id + " div.ivu-table-fixed-body table td:first-child")
@@ -254,7 +318,7 @@ Vue.component('vocabulary', {
 		},
 		onCellClick(row, column, data, event) {
 			// console.log(row["語"])
-			TTX.speak(row["語"])
+			// TTX.speak(row["語"])
 		}
 	},
 	watch: {
