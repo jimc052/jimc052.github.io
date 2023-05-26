@@ -1,15 +1,20 @@
 // open -a Google\ Chrome "index.html"
+
 Vue.component('vocabulary', { 
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
-			<RadioGroup v-model="level" type="button" @on-change="onChangeLevel">
-				<Radio v-for="(item1, index1) in ['1','2','3','4']" :key="index1" :label="item1" >
-					{{item1}}
-				</Radio>
+			<RadioGroup v-model="level" type="button" button-style="solid" 
+				@on-change="onChangeLevel"
+			>
+				<Radio label="1"></Radio>
+				<Radio label="2"></Radio>
+				<Radio label="3"></Radio>
+				<Radio label="4"></Radio>
 			</RadioGroup>
 			<div style="flex: 1; back" />
-			<Input ref="input" v-model="search" search style="width: 200px; font-size: 20px; padding: 5px;" size="large"
-			@on-search="onSearch" 
+			<Input ref="input" v-model="search" search 
+				style="width: 200px; font-size: 20px; padding: 5px; margin-right: 10px;" size="large"
+				@on-search="onSearch" 
 			/>
 		</div>
 		<div ref="frame" style="flex: 1;">
@@ -90,6 +95,19 @@ Vue.component('vocabulary', {
 			}
 		});
 		TTX.initial();
+
+		let s = window.localStorage["japanese-vocabulary-search"];
+		if(typeof s != "undefined") {
+			this.search = s;
+			this.onSearch();
+			return;
+		}
+		s = window.localStorage["japanese-vocabulary-level"];
+		// if(typeof s != "undefined") {
+		// 	this.level = s;
+		// 	this.onChangeLevel();
+		// 	return;
+		// }
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
@@ -101,32 +119,49 @@ Vue.component('vocabulary', {
 			let value = p.row["語"];
 			let datas = this.$japanese();
 			let voicedSound = "ゃャゅュょョ"; // 拗音
+			let doubleConsonan = "っッ"; // 促音, 雙寫後面一個假名的字母
 			let result = "";
+			
 			// console.log(value)
 			while(value.length > 0) {
-				let char = value.substr(0, 1);
-				if(voicedSound.indexOf(value.substr(1, 1)) > -1) {
-					char += value.substr(1, 1);
-				}
-				let mp3 = "";
-				for(let x = 0; x < datas.length; x++){
-					for(let y = 0; y < datas[x].length; y++){
-						for(let z = 0; z < datas[x][y].length; z++){
-							if(datas[x][y][z] == null) continue;
-							if(datas[x][y][z]["平"] == char || datas[x][y][z]["片"] == char) {
-								mp3 = datas[x][y][z]["mp3"];
-								break;
+				let char = value.substr(0, 1), double = "";
+				if(char == "（" || char == "）") {
+					result += char;
+				} else {
+					if(voicedSound.indexOf(value.substr(1, 1)) > -1) {
+						char += value.substr(1, 1);
+					} else if(doubleConsonan.indexOf(char) > -1) {
+						double = char;
+						char = value.substr(1, 1);
+					}
+
+					let mp3 = "";
+					for(let x = 0; x < datas.length; x++){
+						for(let y = 0; y < datas[x].length; y++){
+							for(let z = 0; z < datas[x][y].length; z++){
+								if(datas[x][y][z] == null) continue;
+								if(datas[x][y][z]["平"] == char || datas[x][y][z]["片"] == char) {
+									mp3 = datas[x][y][z]["mp3"];
+									break;
+								}
 							}
+							if(mp3.length > 0) break;
 						}
 						if(mp3.length > 0) break;
 					}
-					if(mp3.length > 0) break;
+					if(double.length > 0 ) {
+						mp3 = mp3.substr(0, 1) + "-" + mp3;
+					}
+					result += (result.length > 0 ? " " : "") + mp3;
 				}
-				// console.log(char + "=>" + mp3)
-				result += (result.length > 0 ? "-" : "") + mp3;
-				value = value.replace(char, "");
+				value = value.replace(double + char, "");
 			}
-			return h('span', result);
+			result = result.replace("（ ", " (").replace("）", ")")
+			// return h('span', result);
+
+			return h('span', {}, [
+				h('div', result)
+			]);
 		},
 		onResize(){
 			let frame = this.$refs["frame"];
@@ -192,7 +227,9 @@ Vue.component('vocabulary', {
 				}
 			});
 			// console.log(this.dataStore)
-			this.onChangePage(1)
+			this.onChangePage(1);
+			window.localStorage["japanese-vocabulary-search"] = this.search;
+			window.localStorage["japanese-vocabulary-level"] = "";
 		},
 		onChangeLevel() {
 			this.search = "";
@@ -211,7 +248,9 @@ Vue.component('vocabulary', {
 				}
 			});
 			// console.log(this.dataStore.length)
-			this.onChangePage(1)
+			this.onChangePage(1);
+			window.localStorage["japanese-vocabulary-level"] = this.level;
+			window.localStorage["japanese-vocabulary-search"] = "";
 		},
 		onCellClick(row, column, data, event) {
 			// console.log(row["語"])

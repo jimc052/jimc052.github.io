@@ -9,10 +9,16 @@ class Player {
 			let audio = new Audio();
 			if(mp3 == "chi") 
 				mp3 = "ci";
+			else if(mp3 == "cha" || mp3 == "cho" || mp3 == "chu") 
+				mp3 = mp3.replace("ch", "cy");
+			else if(mp3 == "sha" || mp3 == "sho" || mp3 == "shu") 
+				mp3 = mp3.replace("sh", "sy");
 			else if(mp3 == "tsu") 
 				mp3 = "cu"
 			else if(mp3 == "shi") 
 				mp3 = "si"
+			else if(mp3 == "fu") 
+				mp3 = "hu"
 			audio.src = Player.url + mp3 + ".mp3";
 			audio.autoplay = false;
 			audio.addEventListener("loadstart", () => {
