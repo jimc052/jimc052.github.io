@@ -131,7 +131,8 @@ Vue.component('vocabulary', {
 			let results = [];
 
 			for(let x = 0; x < values.length; x++) {
-				let s = execute(values[x]);
+				let s = rome(values[x]);
+				// console.log(values[x] + ", " + s)
 				if(x > 0) results.push(h('span', "，"))
 				let json = {
 					// attrs: {id: 'foo'}, // ok
@@ -171,22 +172,26 @@ Vue.component('vocabulary', {
 				
 				return mp3;
 			}
-			function execute(value) {
+			function rome(value) {
 				let arr1 = [];
 				for (let i = 0; i < value.length; i++) {
 					let char = value.substr(i, 1);
-					if (voicedSound.indexOf(char) > -1) { // 拗音
+					if(char == "。")
+						continue;
+					else if (voicedSound.indexOf(char) > -1) { // 拗音
 						arr1[arr1.length - 1] += char;
 					} else {
 						arr1.push(char);
 					}
 				}
+
+        let indexDoubleConsonan = -1;
 				for (let i = 0; i < value.length; i++) {
 					let char = arr1[i];
 					if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
 						arr1[i] = "n"
 					} else if (doubleConsonan.indexOf(char) > -1) { // 促音
-	
+            
 					} else if (char == "ー") { // 長音
 						let c1 = arr1[i - 1].substr(0, arr1[i - 1].length - 1);
 						let c2 = arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
@@ -198,14 +203,15 @@ Vue.component('vocabulary', {
 							if (i > 0 && doubleConsonan.indexOf(arr1[i - 1]) > -1) { // 促音
 								arr1[i] = mp3.substring(0, 1) + mp3;
 								arr1[i - 1] = null;
-							} else if (i > 0 && "aiueo".indexOf(mp3) > -1) { // 長音
+                indexDoubleConsonan = i;
+							} else if (i > 0 && indexDoubleConsonan != i - 1 && "aiueo".indexOf(mp3) > -1) { // 長音
 								if (arr1[i - 1] == mp3) {
 									arr1[i - 1] = longSound[mp3];
 									arr1[i] = null;
 								} else if ("aiueo".indexOf(mp3) > -1) {
-									let c1 = arr1[i - 1].length == 1 ?
+									let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1 ?
 										"" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-									let c2 = arr1[i - 1].length == 1 ?
+									let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1 ?
 										arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
 									if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
 										arr1[i - 1] = c1 + longSound[c2];
@@ -278,18 +284,20 @@ Vue.component('vocabulary', {
 			this.level = "0";
 			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
-			let cols = this.colTitle.split("\t");
-			let arr = words.split("\n");
-			arr.forEach((el1, index1) => { // 0， 3， 6
-				let row = el1.split("\t");
-				if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
-					let json = {};
-					row.forEach((el2, index2) => {
-						if(cols[index2] != "舊") json[cols[index2]] = el2;
-					});
-					this.dataStore.push(json)
-				}
-			});
+			if(this.search.length > 0) {
+				let cols = this.colTitle.split("\t");
+				let arr = words.split("\n");
+				arr.forEach((el1, index1) => { // 0， 3， 6
+					let row = el1.split("\t");
+					if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
+						let json = {};
+						row.forEach((el2, index2) => {
+							if(cols[index2] != "舊") json[cols[index2]] = el2;
+						});
+						this.dataStore.push(json)
+					}
+				});
+			}
 			// console.log(this.dataStore)
 			this.onChangePage(1);
 			window.localStorage["japanese-vocabulary-search"] = this.search;
@@ -6370,7 +6378,7 @@ let words = `あ	3		あ	感動詞	1	喂、哎
 はじまる	4		始まる		0	開始、引起、發生
 はじめ	4		初め（に）		0	最初、開頭、起因、原先、起源
 はじめて	4		初めて		2	初次、唯有…才
-はじめまして。	4		初めまして。	挨拶語	4	初次見面、幸會
+はじめまして	4		初めまして	挨拶語	4	初次見面、幸會
 はじめる	3		始める		0	開始、開創、起來
 はじめる	3	*2	〜始める	補助動詞	0	開始〜
 パジャマ	1		pajamas		1	睡衣
