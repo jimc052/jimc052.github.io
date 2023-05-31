@@ -4,9 +4,11 @@ Vue.component('vocabulary', {
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
 			<RadioGroup v-model="level" type="button" button-style="solid" 
+				size="large"
 				@on-change="onChangeLevel"
+				ref="radio-group"
 			>
-				<Radio label="1"></Radio>
+				<Radio label="1" true-value="true"></Radio>
 				<Radio label="2"></Radio>
 				<Radio label="3"></Radio>
 				<Radio label="4"></Radio>
@@ -23,14 +25,13 @@ Vue.component('vocabulary', {
 				:width="width"
 				border :columns="columns" :data="data2"
 				@on-column-width-resize="onColumnResize"
-				@on-cell-click="onCellClick"
 			></Table>
 		</div>
 		<div style="display: flex; flex-direction: row; padding: 5px 10px;">
 			<div style="flex: 1; back">
 			</div>
 			<Page :total="dataStore.length" 
-				:page-size="pageSize" :page-size-opts="opts" show-elevator show-sizer 
+				:page-size="pageSize" :page-size-opts="pageOpts" show-elevator show-sizer 
 				style="" 
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 			
@@ -50,7 +51,7 @@ Vue.component('vocabulary', {
 			columns: [],
 			height: 0,
 			width: 0,
-			opts: [15, 20, 30, 40],
+			pageOpts: [15, 20, 30, 40],
 			pageSize: 15,
 			dataStore: [],
 			data2: [],
@@ -86,7 +87,6 @@ Vue.component('vocabulary', {
 				json.align = 'center';
 				json.width = 60;
 			}
-				
 			else if(el == "備註")
 				json.width = 150;
 			else if(el == "舊") {
@@ -95,31 +95,85 @@ Vue.component('vocabulary', {
 			
 			this.columns.push(json)
 			if(el == "語") {
-				this.columns.push({title: "讀音", key: el + "2", ellipsis: true, render: this.render})
+				json.render = this.renderAccent;
+
+				this.columns.push({title: "讀音", key: el + "2", ellipsis: true, render: this.renderPronounce})
 			}
 		});
 		TTX.initial();
+
+		// if(this.$isDebug()) { this.onDebugSearch(); return; }
 
 		let s = window.localStorage["japanese-vocabulary-search"];
 		if(typeof s != "undefined" && s.length > 0) {
 			this.search = s;
 			this.onSearch();
-			return;
+		} else {
+			s = window.localStorage["japanese-vocabulary-level"];
+			if(typeof s != "undefined" && s.length > 0) {
+				this.$refs["radio-group"].$children[s - 1].currentValue = true;
+				this.level = s;
+				this.onChangeLevel();
+			}
 		}
-		s = window.localStorage["japanese-vocabulary-level"];
-		// if(typeof s != "undefined") {
-		// 	this.level = s;
-		// 	this.onChangeLevel();
-		// 	return;
-		// }
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
 		window.removeEventListener('keydown', this.onKeydown, false);
   },
 	methods: {
-		render(h, p){
-			let key = p.column.key;
+		renderAccent(h, p){
+			let values = p.row["語"].split("//");
+			let accnets = p.row["發音"].split("//");
+			let voicedSound = "ゃャゅュょョ"; // 拗音
+			let results = "";
+
+			for(let x = 0; x < values.length; x++) {
+				let value = values[x];
+				let accent = accnets[x];
+				if(typeof accent != "undefined" && accent != null && accent.indexOf(",") > -1) {
+					accent = accent.split(",")[0];
+				}
+				let arr = [];
+				for (let i = 0; i < value.length; i++) {
+					let char = value.substr(i, 1);
+					if(char == "。")
+						continue;
+					else if (voicedSound.indexOf(char) > -1) { // 拗音
+						arr[arr.length - 1] += char;
+						// console.log(arr[arr.length - 1])
+					} else {
+						arr.push(char);
+					}
+				}
+				let result = "";
+				if(typeof accent != "undefined" && accent != null) {
+					for(let i = 0; i < arr.length; i++) {
+						if(accent == "0" && i > 0) {
+							result += "<span class='accent'>" + arr[i] + "</span>";
+						} else if(accent == "1" && i == 0) {
+							result += "<span class='accent'>" + arr[i] + "</span>";
+						} else if(accent.indexOf(",") == -1 && i > 0 && i < accent) {
+							result += "<span class='accent'>" + arr[i] + "</span>";
+						} else 
+							result += arr[i];
+					}
+				} else {
+					result = arr.join("");
+				}
+				results += (results.length > 0 ? "//" : "") + result;
+			}
+
+			return h('span', 
+				{
+					domProps: {
+						innerHTML: results
+					},
+				},
+			);
+		},
+		renderPronounce(h, p){
+			// let key = p.column.key;
 			let values = p.row["語"].split("//");
 			let datas = this.$japanese();
 
@@ -136,10 +190,11 @@ Vue.component('vocabulary', {
 				if(x > 0) results.push(h('span', "，"))
 				let json = {
 					// attrs: {id: 'foo'}, // ok
-					'class': {speech: true}, // ok
-					// domProps: {
-					// 	value: s
-					// },
+					// 'class': {pronounce: true}, // ok
+					domProps: {
+					// 	value: s,
+						// innerHTML: "<span style='color: red'>" + s + "<span>" // OK
+					},
 					// style: { // OK
 					// 	color: 'red',
 					// 	// fontSize: '28px'
@@ -186,19 +241,33 @@ Vue.component('vocabulary', {
 				}
 
         let indexDoubleConsonan = -1;
-				for (let i = 0; i < value.length; i++) {
+        let i = 0;
+        while(i < arr1.length) {
 					let char = arr1[i];
 					if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
 						arr1[i] = "n"
 					} else if (doubleConsonan.indexOf(char) > -1) { // 促音
-            
+
+          } else if (char == "ィ") { // 不知怎麼用，只好寫死
+            let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1 ?
+							"" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+            let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1 ?
+							arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+            if (c2 == "e" || c2 == "u") { // 長音
+              arr1[i - 1] = c1 + longSound["i"];
+              arr1.splice(i, 1); continue;
+            } else {
+              arr1[i] = "i";
+            }
 					} else if (char == "ー") { // 長音
 						let c1 = arr1[i - 1].substr(0, arr1[i - 1].length - 1);
 						let c2 = arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-						arr1[i - 1] = c1 + longSound[c2];
-						arr1[i] = null;
+            let c3 = longSound[c2];
+            if(typeof c3 != "undefined" )
+						  arr1[i - 1] = c1 + c3;
+						arr1.splice(i, 1); continue;
 					} else {
-						let mp3 = match(arr1[i]);
+						let mp3 = match(char); // char == "ィ" ? "i" : 
 						if (mp3.length > 0) {
 							if (i > 0 && doubleConsonan.indexOf(arr1[i - 1]) > -1) { // 促音
 								arr1[i] = mp3.substring(0, 1) + mp3;
@@ -207,7 +276,7 @@ Vue.component('vocabulary', {
 							} else if (i > 0 && indexDoubleConsonan != i - 1 && "aiueo".indexOf(mp3) > -1) { // 長音
 								if (arr1[i - 1] == mp3) {
 									arr1[i - 1] = longSound[mp3];
-									arr1[i] = null;
+									arr1.splice(i, 1); continue;
 								} else if ("aiueo".indexOf(mp3) > -1) {
 									let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1 ?
 										"" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
@@ -215,7 +284,7 @@ Vue.component('vocabulary', {
 										arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
 									if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
 										arr1[i - 1] = c1 + longSound[c2];
-										arr1[i] = null;
+										arr1.splice(i, 1); continue;
 									} else
 										arr1[i] = mp3;
 								}
@@ -223,6 +292,7 @@ Vue.component('vocabulary', {
 								arr1[i] = mp3;
 						}
 					}
+          i++;
 				}
 				arr1 = arr1.filter(el => {
 					return el != null
@@ -298,36 +368,59 @@ Vue.component('vocabulary', {
 					}
 				});
 			}
-			// console.log(this.dataStore)
+			// let s = "";
+			// this.dataStore.forEach(el => {
+			// 	s += (s.length > 0 ? "\n" : "") + el["語"];
+			// })
+			// console.log(s)
+			// console.log(JSON.stringify(this.dataStore, null, 2))
 			this.onChangePage(1);
 			window.localStorage["japanese-vocabulary-search"] = this.search;
 			window.localStorage["japanese-vocabulary-level"] = "";
 		},
 		onChangeLevel() {
+			let datas = this.level.indexOf("長音") > -1 ? this.$japanese() : null;
 			this.search = "";
 			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
 			let cols = this.colTitle.split("\t");
 			let arr = words.split("\n");
-			arr.forEach((el1, index1) => { // 0， 3， 6
+
+			arr.forEach((el1, index1) => {
 				let row = el1.split("\t");
-				if(row[1] == this.level) {
+				if(this.level <= 4 && row[1] == this.level) {
 					let json = {};
 					row.forEach((el2, index2) => {
 						if(cols[index2] != "舊") json[cols[index2]] = el2;
 					});
 					this.dataStore.push(json)
-				}
+				}  
 			});
-			// console.log(this.dataStore.length)
+			// console.log(this.dataStore[0])
 			this.onChangePage(1);
 			window.localStorage["japanese-vocabulary-level"] = this.level;
 			window.localStorage["japanese-vocabulary-search"] = "";
 		},
-		onCellClick(row, column, data, event) {
-			// console.log(row["語"])
-			// TTX.speak(row["語"])
-		}
+		onDebugSearch() {
+			this.search = "";
+			this.dataStore = []; this.data2 = [];
+			this.currentPage = -1;
+			let cols = this.colTitle.split("\t");
+			let arr = words.split("\n");
+
+			arr.forEach((el1, index1) => {
+				let row = el1.split("\t");
+				if(row[5].indexOf(",") > -1) {
+				// if(row[5] == "4") {
+					let json = {};
+					row.forEach((el2, index2) => {
+						if(cols[index2] != "舊") json[cols[index2]] = el2;
+					});
+					this.dataStore.push(json)
+				}  
+			});
+			this.onChangePage(1);
+		},
 	},
 	watch: {
 	},
@@ -829,10 +922,10 @@ let words = `あ	3		あ	感動詞	1	喂、哎
 いわゆる	2		所謂		2,3	所謂
 いん	3		〜員		1	人員、成員
 いんかん	1		印鑑		0,3	印鑑、圖章
-インキ	2		inkt	オランダ語	0,1	墨水
+インキ	2		ink	オランダ語	0,1	墨水
 いんき	1		陰気		0	陰暗、陰鬱、憂鬱
 いんきょ	1		隠居		0	退休的老年人、卸去所掌管的家務的人
-インク	2		inkt	オランダ語	0,1	墨水
+インク	2		ink	オランダ語	0,1	墨水
 いんさつ	2		印刷		0	印刷
 いんしょう	2		印象		0	印象
 インターチェンジ	1		interchange		5	高速公路出入口

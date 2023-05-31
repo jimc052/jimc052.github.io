@@ -169,6 +169,10 @@
 		.button + .button {
 			margin-left: 3px;
 		}
+		.accent {
+			margin-top: 2px;
+			border-top: 2px solid red;
+		}
 	</style>
 </head>
 <body style="overflow: hidden;">
@@ -234,7 +238,9 @@
 			}
 			return decodeURI(s);
 		}
-
+		Vue.prototype.$isDebug = function() {
+			return location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1 ? true : false;
+		}
 		Vue.prototype.$japanese = function() {
 			return [
 				[ // 清音
@@ -258,7 +264,8 @@
 					[
 						{"平":"きゃ","mp3":"kya","片":"キャ"},null,
 						{"平":"きゅ","mp3":"kyu","片":"キュ"},null,
-						{"平":"きょ","mp3":"kyo","片":"キョ"}],
+						{"平":"きょ","mp3":"kyo","片":"キョ"}
+					],
 					[{"平":"しゃ","mp3":"sha","片":"シャ"},null,{"平":"しゅ","mp3":"shu","片":"シュ"},null,{"平":"しょ","mp3":"sho","片":"ショ"}],
 					[{"平":"ちゃ","mp3":"cha","片":"チャ"},null,{"平":"ちゅ","mp3":"chu","片":"チュ"},null,{"平":"ちょ","mp3":"cho","片":"チョ"}],
 					[{"平":"にゃ","mp3":"nya","片":"ニャ"},null,{"平":"にゅ","mp3":"nyu","片":"ニュ"},null,{"平":"にょ","mp3":"nyo","片":"ニョ"}],
