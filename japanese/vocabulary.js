@@ -249,10 +249,10 @@ Vue.component('vocabulary', {
 					} else if (doubleConsonan.indexOf(char) > -1) { // 促音
 
           } else if (char == "ィ") { // 不知怎麼用，只好寫死
-            let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1 ?
-							"" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-            let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1 ?
-							arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+            let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
+							? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+            let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
+							? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
             if (c2 == "e" || c2 == "u") { // 長音
               arr1[i - 1] = c1 + longSound["i"];
               arr1.splice(i, 1); continue;
@@ -278,10 +278,10 @@ Vue.component('vocabulary', {
 									arr1[i - 1] = longSound[mp3];
 									arr1.splice(i, 1); continue;
 								} else if ("aiueo".indexOf(mp3) > -1) {
-									let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1 ?
-										"" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-									let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1 ?
-										arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+									let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
+										? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+									let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
+										? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
 									if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
 										arr1[i - 1] = c1 + longSound[c2];
 										arr1.splice(i, 1); continue;
@@ -354,52 +354,49 @@ Vue.component('vocabulary', {
 			this.level = "0";
 			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
-			if(this.search.length > 0) {
+			setTimeout(() => {
+				if(this.search.length > 0) {
+					let cols = this.colTitle.split("\t");
+					let arr = words.split("\n");
+					arr.forEach((el1, index1) => { // 0， 3， 6
+						let row = el1.split("\t");
+						if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
+							let json = {};
+							row.forEach((el2, index2) => {
+								if(cols[index2] != "舊") json[cols[index2]] = el2;
+							});
+							this.dataStore.push(json)
+						}
+					});
+				}
+				this.onChangePage(1);
+				window.localStorage["japanese-vocabulary-search"] = this.search;
+				window.localStorage["japanese-vocabulary-level"] = "";
+			}, 300);
+		},
+		onChangeLevel() {
+			this.search = "";
+			this.dataStore = []; this.data2 = [];
+			this.currentPage = -1;
+			setTimeout(() => {
 				let cols = this.colTitle.split("\t");
 				let arr = words.split("\n");
-				arr.forEach((el1, index1) => { // 0， 3， 6
+
+				arr.forEach((el1, index1) => {
 					let row = el1.split("\t");
-					if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
+					if(this.level <= 4 && row[1] == this.level) {
 						let json = {};
 						row.forEach((el2, index2) => {
 							if(cols[index2] != "舊") json[cols[index2]] = el2;
 						});
 						this.dataStore.push(json)
-					}
+					}  
 				});
-			}
-			// let s = "";
-			// this.dataStore.forEach(el => {
-			// 	s += (s.length > 0 ? "\n" : "") + el["語"];
-			// })
-			// console.log(s)
-			// console.log(JSON.stringify(this.dataStore, null, 2))
-			this.onChangePage(1);
-			window.localStorage["japanese-vocabulary-search"] = this.search;
-			window.localStorage["japanese-vocabulary-level"] = "";
-		},
-		onChangeLevel() {
-			let datas = this.level.indexOf("長音") > -1 ? this.$japanese() : null;
-			this.search = "";
-			this.dataStore = []; this.data2 = [];
-			this.currentPage = -1;
-			let cols = this.colTitle.split("\t");
-			let arr = words.split("\n");
-
-			arr.forEach((el1, index1) => {
-				let row = el1.split("\t");
-				if(this.level <= 4 && row[1] == this.level) {
-					let json = {};
-					row.forEach((el2, index2) => {
-						if(cols[index2] != "舊") json[cols[index2]] = el2;
-					});
-					this.dataStore.push(json)
-				}  
-			});
-			// console.log(this.dataStore[0])
-			this.onChangePage(1);
-			window.localStorage["japanese-vocabulary-level"] = this.level;
-			window.localStorage["japanese-vocabulary-search"] = "";
+				// console.log(this.dataStore[0])
+				this.onChangePage(1);
+				window.localStorage["japanese-vocabulary-level"] = this.level;
+				window.localStorage["japanese-vocabulary-search"] = "";
+			}, 300);
 		},
 		onDebugSearch() {
 			this.search = "";
