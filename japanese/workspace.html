@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>日文-WorkSpace</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			/* user-select: none; */
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			margin: 0px;
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			color: rgb(0, 0, 0);
+		}
+		html, body, #app {
+			min-height: 100% !important;
+			height: 100%;
+		}
+    body {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    div {
+      flex: 1;
+      overflow: auto;
+      border: 1px #c01921 solid;
+      padding: 5px;
+    }
+    table {
+      border-collapse: collapse; width: 100%; 
+      font-size: 16px;
+    }
+    td {
+      border: 1px solid black;padding: 5px;
+    }
+	</style>
+</head>
+<body>
+  <div style="margin: 5px;"><table id="table1"></table></div>
+  <div style="margin: 5px;"><table id="table2"></table></div>
+</body>
+<script>
+	window.onload = async function(){
+    let ds1 = localStorage["japan-workspace1"].split("\n");
+    let ds2 = localStorage["japan-workspace2"].split("\n");
+    let table1 = document.querySelector("#table1");
+    let table2 = document.querySelector("#table2");
+    ds1.forEach((el1, index1) => {
+      let tr = table1.insertRow(index1);
+      let cells = el1.split("\t");
+      cells.forEach((el2, index2) => {
+        let td = tr.insertCell(index2);
+        td.innerText = cells[index2];
+      });
+    });
+
+    ds2.forEach((el1, index1) => {
+      let tr = table2.insertRow(index1);
+      let cells = el1.split("\t");
+      cells.forEach((el2, index2) => {
+        let td = tr.insertCell(index2);
+        td.innerText = cells[index2];
+      });
+    });
+	}
+</script>
+</html>
