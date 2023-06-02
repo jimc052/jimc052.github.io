@@ -51,6 +51,7 @@
   <div style="margin: 5px;"><table id="table2"></table></div>
 </body>
 <script>
+  let btnFind = `<button onclick="find()" style="color: #c01921; border-color: #c01921;">find</button>`;
 	window.onload = async function(){
     let ds1 = localStorage["japan-workspace1"].split("\n");
     let ds2 = localStorage["japan-workspace2"].split("\n");
@@ -58,21 +59,41 @@
     let table2 = document.querySelector("#table2");
     ds1.forEach((el1, index1) => {
       let tr = table1.insertRow(index1);
+      tr.id = `tr1_${index1}`;
       let cells = el1.split("\t");
       cells.forEach((el2, index2) => {
         let td = tr.insertCell(index2);
         td.innerText = cells[index2];
       });
+      if(cells.length == 7) tr.insertCell(cells.length);
     });
 
     ds2.forEach((el1, index1) => {
       let tr = table2.insertRow(index1);
+      tr.id = `tr2_${index1}`;
       let cells = el1.split("\t");
       cells.forEach((el2, index2) => {
         let td = tr.insertCell(index2);
         td.innerText = cells[index2];
       });
+      if(cells.length == 5) {
+        let td = tr.insertCell(cells.length);
+        if(index1 == 0) {
+          td.innerHTML = btnFind;
+        }
+      }
     });
+    // let tr = table2.insertRow(1);
+    // let td = tr.insertCell(0);
+    // td.innerText = "test"
+    // table2.deleteRow(0);
 	}
+  function find() {
+    alert("find")
+  }
+  function  save(ds, index) {
+
+    localStorage["japan-workspace" + index] = result;
+  }
 </script>
 </html>
