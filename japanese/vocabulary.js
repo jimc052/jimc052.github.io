@@ -1,5 +1,4 @@
 // open -a Google\ Chrome "index.html"
-
 Vue.component('vocabulary', { 
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
@@ -422,4 +421,3 @@ Vue.component('vocabulary', {
 	watch: {
 	},
 });
-
