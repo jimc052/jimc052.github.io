@@ -12,7 +12,13 @@ Vue.component('vocabulary', {
 				<Radio label="3"></Radio>
 				<Radio label="4"></Radio>
 			</RadioGroup>
-			<div style="flex: 1; back" />
+			
+			<div style="flex: 1;" />
+			<Select v-model="option" style="width:150px" size="large" @on-change="onChangeOption">
+				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
+			</Select>
+			<div style="flex: 1;" />
+
 			<Input ref="input" v-model="search" search 
 				style="width: 200px; font-size: 20px; padding: 5px; margin-right: 10px;" size="large"
 				@on-search="onSearch" 
@@ -56,7 +62,9 @@ Vue.component('vocabulary', {
 			data2: [],
 			row: {},
 			currentPage: 0, 
-			colTitle: "語	級別	舊	漢字・原文	備註	發音	中文意思"
+			colTitle: "語	級別	舊	漢字・原文	備註	發音	中文意思	分類",
+			option: "",
+			options: ["地點", "食物", "物品", "方位", "數字", "動詞", "形容詞"]
 		};
 	},
 	created(){
@@ -350,7 +358,7 @@ Vue.component('vocabulary', {
 			window.localStorage["japanese-vocabulary-pageSize"] = e;
 		},
 		onSearch() {
-			this.level = "0";
+			this.level = "0";  this.option = "";
 			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
 			setTimeout(() => {
@@ -371,10 +379,11 @@ Vue.component('vocabulary', {
 				this.onChangePage(1);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
 				window.localStorage["japanese-vocabulary-level"] = "";
+				window.localStorage["japanese-vocabulary-option"] = "";
 			}, 300);
 		},
 		onChangeLevel() {
-			this.search = "";
+			this.search = ""; this.option = "";
 			this.dataStore = []; this.data2 = [];
 			this.currentPage = -1;
 			setTimeout(() => {
@@ -395,6 +404,33 @@ Vue.component('vocabulary', {
 				this.onChangePage(1);
 				window.localStorage["japanese-vocabulary-level"] = this.level;
 				window.localStorage["japanese-vocabulary-search"] = "";
+				window.localStorage["japanese-vocabulary-option"] = "";
+			}, 300);
+		},
+		onChangeOption() {
+			this.search = ""; this.level = "0";  
+			this.dataStore = []; this.data2 = [];
+			this.currentPage = -1;
+			let colTitle = this.colTitle.split("\t");
+			setTimeout(() => {
+				let cols = this.colTitle.split("\t");
+				let arr = words.split("\n");
+
+				arr.forEach((el1, index1) => {
+					let row = el1.split("\t");
+					if(colTitle.length == row.length && row[row.length - 1] == this.option) {
+						let json = {};
+						row.forEach((el2, index2) => {
+							if(cols[index2] != "舊") json[cols[index2]] = el2;
+						});
+						this.dataStore.push(json)
+					}  
+				});
+				// console.log(this.dataStore[0])
+				this.onChangePage(1);
+				window.localStorage["japanese-vocabulary-level"] = "";
+				window.localStorage["japanese-vocabulary-search"] = "";
+				window.localStorage["japanese-vocabulary-option"] = this.option;
 			}, 300);
 		},
 		onDebugSearch() {

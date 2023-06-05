@@ -58,9 +58,9 @@
     ds2 = localStorage["japan-workspace2"].split("\n");
     table1 = document.querySelector("#table1");
     table2 = document.querySelector("#table2");
-    // retrieve();
+    retrieve();
 
-    turnColumn();
+    // turnColumn();
 	}
 
   function turnColumn() { // 調整欄位
@@ -74,6 +74,7 @@
   }
 
   function retrieve() {
+    // 語	級別	舊	漢字・原文	備註	發音	中文意
     ds1.forEach((el1, index1) => {
       let tr = table1.insertRow(index1);
       tr.id = `tr1_${index1}`;
@@ -89,6 +90,7 @@
       if(cells.length == 7) tr.insertCell(cells.length + 1);
     });
 
+    // 平假名讀音	日文	中文	羅馬拼音打字	類型
     ds2.forEach((el1, index1) => {
       let tr = table2.insertRow(index1);
       tr.id = `tr2_${index1}`;
@@ -112,40 +114,68 @@
   function find(index) {
     // index = typeof index == "undefined" ? 0 : index;
     let row2 = ds2[typeof index == "undefined" ? 0 : index].split("\t");
-    console.log(row2)
-    let 日文 = row2[2], 假名 = row2[3], b = false;
+    let 日文 = row2[1], 假名 = row2[0], b = false;
     for(let i = 0; i < ds1.length; i++){
       let cells = ds1[i].split("\t");
-      if(cells[0] == 假名 || cells[3] == 日文 || cells[0] == 日文) { //  
+      if(cells[0] == 假名 || cells[3] == 日文 || cells[0] == 日文) { //
         b = true;
         document.querySelector(`#tr1_${i}`).scrollIntoView({ block: "center" });
         document.querySelector(`#tr1_${i}`).style.backgroundColor = "orange";
-        setTimeout(() => {
-          let rowSplice = ds2.splice(typeof index == "undefined" ? 0 : index, 1);
-          var yes = confirm('你確定寫入嗎？\n' + cells[0] + ", " + cells[0] + ", " + cells[3]);
-          if (yes) {
+        if(cells[0] == 假名 && cells[3] == 日文) {
+          setTimeout(() => {
+            let rowSplice = ds2.splice(typeof index == "undefined" ? 0 : index, 1);
+            var yes = confirm('寫入!!\n' + 假名 + ", " + 日文);
             let td = document.querySelectorAll(`#tr1_${i} > td`);
-            td[td.length -1].innerText = row2[0];
+            td[td.length -1].innerText = row2[4];
 
             document.querySelector(`#tr1_${i}`).style.backgroundColor = "#D5EBF2";
-            ds1[i] += "\t" + row2[0];
+            ds1[i] += "\t" + row2[4];
             save(ds1, 1);
             if(typeof index == "undefined")
               nextFind();
             else {
+              rowSplice[0] += "\tOK";
+              ds2.push(rowSplice[0])
               save(ds2, 2);
             }
-            return;
-          } else {
-            document.querySelector(`#tr1_${i}`).style.backgroundColor = "#eee";
-            if(typeof index == "undefined") {
-              rowSplice[0] += "\t?";
-              ds2.push(rowSplice[0])
-              nextFind();              
-            }
-            return;
-          }          
-        }, 300);
+          }, 300);
+        } else {
+          let repeat = false;
+          if(i < ds1.length -1) {
+            let cells2 = ds1[i + 1].split("\t");
+            repeat = (cells[0] == cells2[0] || cells[3] == cells2[3]) 
+          }
+          setTimeout(() => {
+            let rowSplice = ds2.splice(typeof index == "undefined" ? 0 : index, 1);
+            var yes = confirm('你確定寫入嗎？\n' 
+              + (repeat == true ? "有重複..........\n\n" : "") 
+              + cells[0] + ", " + cells[3]);
+            if (yes) {
+              let td = document.querySelectorAll(`#tr1_${i} > td`);
+              td[td.length -1].innerText = row2[4];
+
+              document.querySelector(`#tr1_${i}`).style.backgroundColor = "#D5EBF2";
+              ds1[i] += "\t" + row2[4];
+              save(ds1, 1);
+              if(typeof index == "undefined")
+                nextFind();
+              else {
+                rowSplice[0] += "\tOK";
+                ds2.push(rowSplice[0])
+                save(ds2, 2);
+              }
+              return;
+            } else {
+              document.querySelector(`#tr1_${i}`).style.backgroundColor = "#eee";
+              if(typeof index == "undefined") {
+                rowSplice[0] += "\t?";
+                ds2.push(rowSplice[0])
+                nextFind();              
+              }
+              return;
+            }          
+          }, 300);
+        }
         break;
       }
     }
