@@ -62,7 +62,7 @@ Vue.component('vocabulary', {
 			currentPage: 0, 
 			colTitle: "語	級別	舊	漢字・原文	備註	重音	中文意思	分類",
 			option: "",
-			options: ["地點", "食物", "飲料", "物品", "服裝", "方位", "數字", "動詞", "形容詞"],
+			options: ["家族", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字", "動詞", "形容詞"],
 			activeIndex: -1
 		};
 	},
@@ -388,6 +388,8 @@ Vue.component('vocabulary', {
 			this.currentPage = -1; this.activeIndex = -1;
 			setTimeout(() => {
 				if(this.search.length > 0) {
+					let equal = this.search.substr(0, 1);
+					let search = equal == "=" ? this.search.substr(1) : this.search;
 					let cols = this.colTitle.split("\t");
 					let arr = words.split("\n");
 					arr.forEach((el1, index1) => { // 0， 3， 6
@@ -404,13 +406,19 @@ Vue.component('vocabulary', {
 									if(cols[index2] != "舊") json[cols[index2]] = el2;
 								});
 								this.dataStore.push(json)
-						} else if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 
-							|| row[4].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
+						} else if(equal = "=" && (row[0] == search || row[3] == search || row[4] == search || row[6] == search)) {
 							let json = {index: index1};
 							row.forEach((el2, index2) => {
 								if(cols[index2] != "舊") json[cols[index2]] = el2;
 							});
-							this.dataStore.push(json)
+							this.dataStore.push(json);
+						} else if(row[0].indexOf(this.search) > -1 || row[3].indexOf(this.search) > -1 
+						|| row[4].indexOf(this.search) > -1 || row[6].indexOf(this.search) > -1) {
+						let json = {index: index1};
+						row.forEach((el2, index2) => {
+							if(cols[index2] != "舊") json[cols[index2]] = el2;
+						});
+						this.dataStore.push(json)
 						}
 					});
 				}
