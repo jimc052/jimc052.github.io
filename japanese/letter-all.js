@@ -52,7 +52,7 @@ Vue.component('letter-all', {
 			row: 0,
 			col: 0,
 			datas: this.$japanese(),
-			font: typeof localStorage["japan-font"] == "string" ? localStorage["japan-font"] : "メイリオ", 
+			font: typeof localStorage["japanese-font"] == "string" ? localStorage["japanese-font"] : "メイリオ", 
 			fonts: ["メイリオ", "Hiragino Kaku Gothic Pro", "Osaka", ]
 			// "ヒラギノ角ゴ Pro W3", "Meiryo", "ＭＳ Ｐゴシック", "MS PGothic", "sans-serif"
 		};
@@ -87,7 +87,7 @@ Vue.component('letter-all', {
 		},
 		onSelect(e) {
 			this.font = e.label;
-			localStorage["japan-font"] = this.font;
+			localStorage["japanese-font"] = this.font;
 		}
 	},
 	watch: {
