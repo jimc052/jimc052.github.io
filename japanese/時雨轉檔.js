@@ -6,15 +6,14 @@ let tables = document.querySelectorAll("table");
 let result = "";
 for(let i = 0; i < h4s.length; i++) {
   console.log(i + ": " + h4s[i].innerText)
-  let 分類 = h4s[i].innerText == "綜合" || 分類 == "片假名" 
+  let 分類 = h4s[i].innerText == "綜合" || h4s[i].innerText == "綜合" == "片假名" 
     ? undefined : h4s[i].innerText;
   let trs = tables[i].querySelectorAll("tr");
   let colNames = trs[0].innerText.split("\t");
   if(分類 == "片假名") 
     colNames[0] = "假名";
+  result += (result.length > 0 ? "\n" : "");
   
-  //日文,假名,重音,中文
-  // console.log("  => " + trs[0].innerText + ", " + typeof(trs[0].innerText) + ", " + Array.isArray(trs[0].innerText))
   // if(i < 1) {
     for(let j = 1; j < trs.length; j ++){
       let json = {分類};
@@ -22,6 +21,10 @@ for(let i = 0; i < h4s.length; i++) {
       for(let k = 0; k < colNames.length; k++) {
         if("日文,假名,重音,中文".indexOf(colNames[k]) > -1)
           json[colNames[k]] = tds[k];
+      }
+      if(json["假名"].indexOf("---") > -1) {
+        json["假名"] = json["日文"];
+        json["日文"] = "";
       }
       result += (result.length > 0 ? ",\n" : "") + "  " + JSON.stringify(json);
     }
