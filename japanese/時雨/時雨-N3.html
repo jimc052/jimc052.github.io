@@ -2190,15 +2190,15 @@
 			<td style="text-align: center;"><b onmousedown="PlaySound('otamajakushi')">🔊</b></td>
 		</tr>
 		<tr>
-			<td style="height: 23px; text-align: center;">オーブン</td>
-			<td style="text-align: center;">------</td>
+			<td style="height: 23px; text-align: center;"></td>
+			<td style="text-align: center;">オーブン</td>
 			<td style="text-align: center;">1</td>
 			<td style="text-align: center;">烤箱</td>
 			<td style="text-align: center;"><b onmousedown="PlaySound('oobun')">🔊</b></td>
 		</tr>
 		<tr>
-			<td style="height: 23px; text-align: center;">エプロン</td>
-			<td style="text-align: center;">------</td>
+			<td style="height: 23px; text-align: center;"></td>
+			<td style="text-align: center;">エプロン</td>
 			<td style="text-align: center;">1</td>
 			<td style="text-align: center;">圍裙</td>
 			<td style="text-align: center;"><b onmousedown="PlaySound('epuron')">🔊</b></td>
@@ -6123,11 +6123,11 @@
 	</colgroup>
 	<tbody>
 		<tr>
-			<td style="background-color: #000000; text-align: center;">日文</td>
-			<td style="background-color: #000000; text-align: center;">假名</td>
-			<td style="background-color: #000000; text-align: center;">重音</td>
-			<td style="background-color: #000000; text-align: center;">詞性</td>
-			<td style="background-color: #000000; text-align: center;">中文</td>
+			<td style="background-color: #000000; color: #ffffff; text-align: center;">日文</td>
+			<td style="background-color: #000000; color: #ffffff; text-align: center;">假名</td>
+			<td style="background-color: #000000; color: #ffffff; text-align: center;">重音</td>
+			<td style="background-color: #000000; color: #ffffff; text-align: center;">詞性</td>
+			<td style="background-color: #000000; color: #ffffff; text-align: center;">中文</td>
 		</tr>
 		<tr style="text-align: center;">
 			<td style="height: 23px;">生む</td>
@@ -6926,3 +6926,15 @@
 		</tr>
 	</tbody>
 </table>
+
+<script>
+	window.onload = async function(){
+		let script   = document.createElement("script");
+		script.type  = "text/javascript";
+		script.src   = "../時雨轉檔.js"; //filename;
+		script.onload = function(){
+		};
+		document.getElementsByTagName("head")[0].appendChild(script);
+	}
+</script>
+
