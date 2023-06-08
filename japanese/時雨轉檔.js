@@ -1,22 +1,25 @@
 let h4s = document.querySelectorAll("h4");
 let divs = document.querySelectorAll("div");
 let tables = document.querySelectorAll("table");
+let url = decodeURI(location.pathname);
+let page = url.substr(url.indexOf("時雨-N")).replace(".html", "");
 
 function transform() {
   let result = "";
   for(let i = 0; i < h4s.length; i++) {
     console.log(i + ": " + h4s[i].innerText)
-    let 分類 = h4s[i].innerText == "綜合" || h4s[i].innerText == "綜合" == "片假名" 
+    let 分類 = h4s[i].innerText == "綜合" || h4s[i].innerText == "片假名" 
       ? undefined : h4s[i].innerText;
     let trs = tables[i].querySelectorAll("tr");
     let colNames = trs[0].innerText.split("\t");
-    if(分類 == "片假名") 
+    if(h4s[i].innerText == "片假名") {
       colNames[0] = "假名";
-    result += (result.length > 0 ? "\n" : "");
+    }
+    // result += (result.length > 0 ? "\n" : "");
     
     // if(i < 1) {
       for(let j = 1; j < trs.length; j ++){
-        let json = {分類};
+        let json = {};
         let tds = trs[j].innerText.split("\t");
         for(let k = 0; k < colNames.length; k++) {
           if("日文,假名,重音,中文".indexOf(colNames[k]) > -1)
@@ -28,8 +31,15 @@ function transform() {
         }
         json["漢字"] = json["日文"];
         delete json["日文"];
+        json = Object.assign(json, {分類, 
+          級別: page.replace("時雨-", ""),
+          來源: "時雨" +
+          "-" + (i < 9 ? "0" : "") + (i + 1) +
+          "-" + (j < 10 ? "0" : "") + j
+        });
         result += (result.length > 0 ? ",\n" : "") + "  " + JSON.stringify(json);
       }
+      window.localStorage["japanese-" + page] = result;
     // }
 
     divs[i].style.display = "none";
@@ -83,5 +93,5 @@ function loadStyle() {
   header.appendChild(style);
 }
 
-// transform();
+transform();
 loadStyle();

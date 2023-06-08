@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>時雨-整合</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+	<style>
+		* {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			/* user-select: none; */
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+			font-size: 16px;
+		}
+		body {
+			/* margin: 10px; */
+			background-color: #ebecf0;
+			padding: 0px 0px;
+			color: rgb(0, 0, 0);
+		}
+		html, body{
+			min-height: 100% !important;
+			height: 100%;
+		}
+    body {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    table {
+      border-collapse: collapse; width: 100%; 
+      font-size: 16px;
+      width: 100%;
+    }
+    table thead tr:first-child td {
+      text-align: center;
+      color: blue;
+      font-weight: 700;
+      background: #eee;
+    }
+    td{
+      border: 1px solid black;padding: 5px;
+      text-align: center;
+    }
+	</style>
+</head>
+<body>
+  <div style="padding: 5px 0;">
+    <button onclick="delSelected()">刪除時雨本身的重複</button>
+  </div> 
+  <div style="flex: 1; overflow: scroll">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</body>
+<script>
+  let mode = "自身", removeStr = "";
+  function delSelected() {
+    alert("delSelected")
+  }
+	window.onload = async function(){
+    if(typeof window.localStorage["japanese-時雨-remove"] == "string") {
+      removeStr = window.localStorage["japanese-時雨-remove"];
+    }
+    let thead = document.querySelector("thead");
+    let tbody = document.querySelector("tbody");
+    let s = "";
+    for(let i = 3; i <= 5; i++) {
+      s += (s.length > 0 ? ",\n": "") + window.localStorage["japanese-時雨-N" + i];
+    }
+    let cols = "假名,漢字,中文,級別,重音,分類,來源".split(",");
+    { // title
+      let row = thead.insertRow();
+      let cell = row.insertCell();
+      cell.innerHTML = "項次";
+      for(let j = 0; j < cols.length; j++) {
+        cell = row.insertCell();
+        cell.innerHTML = cols[j];
+      }
+      cell = row.insertCell();
+      cell.innerHTML = "刪除";
+    }
+
+    let arr = JSON.parse(`[${s}]`);
+    if(mode == "自身") {
+      arr.sort(function(a, b){
+        if(a["假名"] > b["假名"])
+          return -1;
+        else if(a["假名"] <  b["假名"])
+          return 1;
+        else
+          return 0;
+      });      
+    }
+
+    let color = "transparent", result = "";
+    for(let i = 0; i < arr.length; i++) {
+      let data = arr[i];
+
+      if(removeStr.indexOf(data["級別"] + data["來源"].replace("時雨", "")) > -1) continue;
+      
+      let row = tbody.insertRow();
+      row.id = "tr_" + i;
+      let cell = row.insertCell();
+      cell.innerHTML = i + 1;
+      for(let j = 0; j < cols.length; j++) {
+        let col = cols[j];
+        cell = row.insertCell();
+        cell.innerHTML = typeof data[col] == "string" ? data[col] : "";
+      }
+      cell = row.insertCell();
+      let btnDel = `<button onclick='remove({index})'>刪除</button>`;
+      if(mode == "自身") {
+        if(i > 0 && arr[i - 1]["假名"] == arr[i]["假名"]){
+          color = color == "transparent" ? "#F6DDCC" : "transparent";
+          let index = 2;
+          if(arr[i - 1]["中文"] == arr[i]["中文"]) {
+            let 分類1 = (typeof arr[i - 1]["分類"] == "string" ? arr[i - 1]["分類"] : "");
+            let 分類2 = (typeof arr[i]["分類"] == "string" ? arr[i]["分類"] : "");
+            index = 分類1.length > 0 ? 0 : (分類2.length > 0 ? -1 : 9);
+            console.log(arr[i]["中文"] + ": " + index + ", " + 分類1 + ", " + 分類2)
+          }
+
+          row.style.background = color;
+          row.setAttribute("repeat", "true")
+
+          row = document.querySelector("#tr_" + (i - 1));
+          row.style.background = color;
+          row.setAttribute("repeat", "true")
+          result += (result.length > 0 ? "\n\n" : 0) + 
+            JSON.stringify(arr[i - 1]) + ",\n" + JSON.stringify(arr[i]) + "";
+            
+          if(index == 0 || index == 2) {
+            cell.innerHTML = btnDel.replace("{index}", i);
+          }
+          if(index == -1 || index == 2) {
+            let td = document.querySelectorAll("#tr_" + (i-1) + " td");
+            td[td.length -1].innerHTML = btnDel.replace("{index}", i - 1);
+          }
+        }
+      }
+    }
+    
+    if(mode == "自身") {
+      let rows = tbody.querySelectorAll("tr");
+      for(let i = rows.length - 1; i >= 0; i--) {
+        if(rows[i].getAttribute("repeat") != "true") {
+          tbody.deleteRow(i)
+        }
+      }
+    }
+	}
+
+  function remove(params) {
+    
+  }
+</script>
+</html>
+
