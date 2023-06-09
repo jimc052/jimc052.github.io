@@ -60,7 +60,7 @@ Vue.component('vocabulary', {
 			dsTable: [],
 			row: {},
 			currentPage: 0, 
-			colTitle: "語	級別	舊	漢字・原文	備註	重音	中文意思	分類",
+			colTitle: "語	級別	舊	漢字・原文	備註	重音	中文	分類",
 			option: "",
 			options: ["家族", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字", "動詞", "形容詞"],
 			activeIndex: -1
@@ -496,7 +496,7 @@ Vue.component('vocabulary', {
 			}, 300);
 		},
 		onDebugSearch() {
-			// "語	級別	舊	漢字・原文	備註	重音	中文意思	分類"
+			// "語	級別	舊	漢字・原文	備註	重音	中文	分類"
 			this.search = "";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1;

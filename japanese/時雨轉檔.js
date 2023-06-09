@@ -29,6 +29,9 @@ function transform() {
           json["假名"] = json["日文"];
           json["日文"] = "";
         }
+        if(typeof json["重音"] == "string") {
+          json["重音"] = json["重音"].replace(".", ",")
+        }
         json["漢字"] = json["日文"];
         delete json["日文"];
         json = Object.assign(json, {分類, 
