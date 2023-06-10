@@ -36,8 +36,7 @@ function transform() {
         delete json["日文"];
         json = Object.assign(json, {分類, 
           級別: page.replace("時雨-", ""),
-          來源: "時雨" +
-          "-" + (i < 9 ? "0" : "") + (i + 1) +
+          來源: (i < 9 ? "0" : "") + (i + 1) +
           "-" + (j < 10 ? "0" : "") + j
         });
         result += (result.length > 0 ? ",\n" : "") + "  " + JSON.stringify(json);
