@@ -36,8 +36,8 @@ function transform() {
         delete json["日文"];
         json = Object.assign(json, {分類, 
           級別: page.replace("時雨-", ""),
-          來源: (i < 9 ? "0" : "") + (i + 1) +
-          "-" + (j < 10 ? "0" : "") + j
+          來源: ("" + i).paddingStart("0", 2) +
+          "-" + ("" + j).paddingStart("0", 3)
         });
         result += (result.length > 0 ? ",\n" : "") + "  " + JSON.stringify(json);
       }
@@ -93,6 +93,13 @@ function loadStyle() {
 
   var header = document.getElementsByTagName('head')[0];
   header.appendChild(style);
+}
+String.prototype.paddingStart = function(padString, length) {
+  var str = this;
+  while (str.length < length ) {
+      str = padString + str;
+  }
+  return str;
 }
 
 transform();
