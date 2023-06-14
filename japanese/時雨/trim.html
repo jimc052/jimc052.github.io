@@ -50,6 +50,10 @@
       background: #eee;
     }
 
+    tr.remove > td {
+      color: red;
+    }
+
     td {
       border: 1px solid black;
       padding: 5px;
@@ -79,8 +83,8 @@
 <script>
   let mode = "", 刪除記錄 = "";
   let ds時雨 = [];
-  let btnRemove  = `<button style="color: red;" onclick='remove({item}, {index})'>刪除</button>`;
-  let btnRecover  = `<button onclick='recover({item}, {index})'>復原</button>`;
+  let btnRemove  = `<button style="color: white; background: red;" onclick='remove({item}, {index})'>刪除</button>`;
+  let btnRecover  = `<button style="color: white; background: green;" onclick='recover({item}, {index})'>復原</button>`;
 
   window.onload = async function () {
     // trim_時雨()
@@ -95,7 +99,7 @@
 
   function trim_時雨(_mode) {
     mode = _mode;
-    let cols = "假名,漢字,中文,級別,重音,分類,來源".split(","); 
+    
     if (typeof window.localStorage["japanese-時雨-刪除記錄"] == "string") {
       刪除記錄 = window.localStorage["japanese-時雨-刪除記錄"];
     }
@@ -103,28 +107,28 @@
     window.localStorage["japanese-時雨-radio"] = mode;
     let thead = document.querySelector("thead");
     let tbody = document.querySelector("tbody");
+    let cols = "假名,漢字,中文,級別,重音,分類,來源".split(","); 
+    let header = thead.querySelectorAll("td");
+    if(header.length == 0) {
+      let row = thead.insertRow();
+      let cell = row.insertCell();
+      cell.innerHTML = "項次";
+      for (let j = 0; j < cols.length; j++) {
+        cell = row.insertCell();
+        cell.innerHTML = cols[j];
+      }
+      cell = row.insertCell();
+      cell.innerHTML = "刪除";
+    }
 
     tbody.innerHTML = "";
     setTimeout(() => {
-
       let s = "";
       for (let i = 3; i <= 5; i++) {
         s += (s.length > 0 ? ",\n" : "") + window.localStorage["japanese-時雨-N" + i];
       }
-      let header = thead.querySelectorAll("td");
-      if(header.length == 0) {
-        let row = thead.insertRow();
-        let cell = row.insertCell();
-        cell.innerHTML = "項次";
-        for (let j = 0; j < cols.length; j++) {
-          cell = row.insertCell();
-          cell.innerHTML = cols[j];
-        }
-        cell = row.insertCell();
-        cell.innerHTML = "刪除";
-      }
-
       ds時雨 = JSON.parse(`[${s}]`);
+
       if (mode != "1") {
         ds時雨.sort(function (a, b) {
           if (a["假名"] > b["假名"])
@@ -137,10 +141,9 @@
       }
 
       let color = "transparent", delStr = "";
-      
-
       for (let i = 0; i < ds時雨.length; i++) {
         let data = ds時雨[i];
+        
         let row = tbody.insertRow();
         row.id = "tr_時雨_" + i;
         let cell = row.insertCell();
@@ -166,19 +169,26 @@
             let row2 = document.querySelector("#tr_時雨_" + (i - 1));
             if (index == 2) {
               row.style.background = color;
-              row.setAttribute("repeat", "true");
+              if(!(mode == "3" && 刪除記錄.indexOf(ds時雨[i]["級別"] + "-" + ds時雨[i]["來源"]) > -1)) {
+                row.setAttribute("repeat", "true");
+              }
+              
               if(row2 != null) {
                 row2.style.background = color;
-                row2.setAttribute("repeat", "true");
-                let td = row2.querySelectorAll("td");
+                if(!(mode == "3" && 刪除記錄.indexOf(ds時雨[i -1]["級別"] + "-" + ds時雨[i-1]["來源"]) > -1)) {
+                  row2.setAttribute("repeat", "true");
+                }
               }
             } 
             else if (index == -1 || index == 0) {
-              row.style.background = color;
-              row.setAttribute("repeat", "true");
-              
-              row2.style.background = color;
-              row2.setAttribute("repeat", "true");
+              if (mode == "2") {
+                row.style.background = color;
+                row.setAttribute("repeat", "true");
+                if(row2 != null) {
+                  row2.style.background = color;
+                  row2.setAttribute("repeat", "true");                
+                }
+              }
 
               if(刪除記錄.indexOf(ds時雨[i + index]["級別"] + "-" + ds時雨[i + index]["來源"]) == -1) {
                 delStr += (delStr.length > 0 ? "\n" : "") + 
@@ -189,6 +199,7 @@
         }
         let data2 = ds時雨[i]["級別"] + "-" + ds時雨[i]["來源"];
         if(刪除記錄.indexOf(data2) > -1 || delStr.indexOf(data2) > -1) {
+          row.classList.add("remove");
           cell.innerHTML = btnRecover.replace("{index}", i).replace("{item}", JSON.stringify(ds時雨[i]));
         } else {
           cell.innerHTML = btnRemove.replace("{index}", i).replace("{item}", JSON.stringify(ds時雨[i]));
@@ -207,6 +218,22 @@
             tbody.deleteRow(i)
           }
         }
+        if (mode == "3") {
+          rows = tbody.querySelectorAll("tr");
+          let i = 0;
+          while(i < rows.length - 1) {
+            color = color == "pink" ? "#F6DDCC" : "pink";
+            rows[i].style.background = color;
+            let td1 = rows[i].querySelectorAll("td");
+            let td2 = rows[i + 1].querySelectorAll("td");
+            console.log(i + ": " + td1[1].innerHTML + "," + td2[1].innerHTML)
+            if(td1[1].innerHTML == td2[1].innerHTML) {
+              rows[i + 1].style.background = color;
+              i++;
+            }
+            i++;
+          }
+        }
       }
     }, 300);
   }
@@ -214,9 +241,10 @@
   function remove(item, index) {
     刪除記錄 = item["級別"] + "-" + item["來源"] + (刪除記錄.length > 0 ? "\n" : "") + 刪除記錄;
 
-    let row2 = document.querySelector("#tr_時雨_" + (index));
-    let td = row2.querySelectorAll("td");
+    let row = document.querySelector("#tr_時雨_" + (index));
+    let td = row.querySelectorAll("td");
     td[td.length - 1].innerHTML = btnRecover.replace("{index}", index).replace("{item}", JSON.stringify(item));
+    row.classList.add("remove");
 
     window.localStorage["japanese-時雨-刪除記錄"] = 刪除記錄;
   }
@@ -224,10 +252,10 @@
   function recover(item, index) {
     let data = item["級別"] + "-" + item["來源"];
     刪除記錄 = 刪除記錄.replace(data + "\n", "").replace(data, "")
-    let row2 = document.querySelector("#tr_時雨_" + (index));
-    let td = row2.querySelectorAll("td");
+    let row = document.querySelector("#tr_時雨_" + (index));
+    let td = row.querySelectorAll("td");
     td[td.length - 1].innerHTML = btnRemove.replace("{index}", index).replace("{item}", JSON.stringify(item));
-
+    row.classList.remove("remove");
     window.localStorage["japanese-時雨-刪除記錄"] = 刪除記錄;
   }
 

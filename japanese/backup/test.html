@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>測試用</title>
+  <script src="../system.js"></script>
+  <style>
+    span.accent {
+			margin-top: 2px;
+			border-top: 1px solid #D3D3D3;
+      border-left: 1px solid #D3D3D3;
+      border-right: 1px solid #D3D3D3;
+		}
+    span.accent-bottom  {
+      border-bottom: 1px solid #D3D3D3;
+    }
+
+    div {
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  
+</body>
+<script>
+  let arr = [
+    ["ふつか", "0"], // ⓪①②③④⑤⑥
+    ["ふつか", "⓪"], // ⓪①②③④⑤⑥
+    ["いくつ", "1"], 
+    ["いくつ", "①"], 
+    ["ひとつ", "2"],
+    ["ふたつ", "3"], 
+    ["ついたち", "4"], 
+    ["ついたち", "④"], 
+  ]
+  window.onload = () => {
+    for(let i = 0; i < arr.length; i++){
+      let div = document.createElement("div");
+      div.innerHTML = renderAccent(arr[i][0], arr[i][1]) + "    " + arr[i][1]
+      document.body.appendChild(div);
+    }
+  }
+</script>
+
+</html>

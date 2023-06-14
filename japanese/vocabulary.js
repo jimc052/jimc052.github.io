@@ -158,52 +158,52 @@ Vue.component('vocabulary', {
   },
 	methods: {
 		renderAccent(h, p){
-			let values = p.row["語"].split("//");
-			let accnets = p.row["重音"].split("//");
-			let voicedSound = "ゃャゅュょョ"; // 拗音
-			let results = "";
+			let values = p.row["語"];
+			let accnets = p.row["重音"];
+			// let voicedSound = "ゃャゅュょョ"; // 拗音
+			// let results = "";
 
-			for(let x = 0; x < values.length; x++) {
-				let value = values[x];
-				let accent = accnets[x];
-				if(typeof accent != "undefined" && accent != null && accent.indexOf(",") > -1) {
-					accent = accent.split(",")[0];
-				}
-				let arr = [];
-				for (let i = 0; i < value.length; i++) {
-					let char = value.substr(i, 1);
-					if(char == "。")
-						continue;
-					else if (voicedSound.indexOf(char) > -1) { // 拗音
-						arr[arr.length - 1] += char;
-						// console.log(arr[arr.length - 1])
-					} else {
-						arr.push(char);
-					}
-				}
-				// console.log(arr)
-				let result = "";
-				if(typeof accent != "undefined" && accent != null) {
-					for(let i = 0; i < arr.length; i++) {
-						if(accent == "0" && i > 0) {
-							result += "<span class='accent'>" + arr[i] + "</span>";
-						} else if(accent == "1" && i == 0) {
-							result += "<span class='accent'>" + arr[i] + "</span>";
-						} else if(accent.indexOf(",") == -1 && i > 0 && i < accent) {
-							result += "<span class='accent'>" + arr[i] + "</span>";
-						} else 
-							result += arr[i];
-					}
-				} else {
-					result = arr.join("");
-				}
-				results += (results.length > 0 ? "//" : "") + result;
-			}
+			// for(let x = 0; x < values.length; x++) {
+			// 	let value = values[x];
+			// 	let accent = accnets[x];
+			// 	if(typeof accent != "undefined" && accent != null && accent.indexOf(",") > -1) {
+			// 		accent = accent.split(",")[0];
+			// 	}
+			// 	let arr = [];
+			// 	for (let i = 0; i < value.length; i++) {
+			// 		let char = value.substr(i, 1);
+			// 		if(char == "。")
+			// 			continue;
+			// 		else if (voicedSound.indexOf(char) > -1) { // 拗音
+			// 			arr[arr.length - 1] += char;
+			// 			// console.log(arr[arr.length - 1])
+			// 		} else {
+			// 			arr.push(char);
+			// 		}
+			// 	}
+			// 	// console.log(arr)
+			// 	let result = "";
+			// 	if(typeof accent != "undefined" && accent != null) {
+			// 		for(let i = 0; i < arr.length; i++) {
+			// 			if(accent == "0" && i > 0) {
+			// 				result += "<span class='accent'>" + arr[i] + "</span>";
+			// 			} else if(accent == "1" && i == 0) {
+			// 				result += "<span class='accent'>" + arr[i] + "</span>";
+			// 			} else if(accent.indexOf(",") == -1 && i > 0 && i < accent) {
+			// 				result += "<span class='accent'>" + arr[i] + "</span>";
+			// 			} else 
+			// 				result += arr[i];
+			// 		}
+			// 	} else {
+			// 		result = arr.join("");
+			// 	}
+			// 	results += (results.length > 0 ? "//" : "") + result;
+			// }
 
 			return h('span', 
 				{
 					domProps: {
-						innerHTML: results
+						innerHTML: window.renderAccent(values, accnets)
 					},
 				},
 			);
