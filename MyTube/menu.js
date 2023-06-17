@@ -71,24 +71,12 @@ Vue.component('yt-menu', {
       active: "0",
       topic: "0",
       project: [
-      ], // https://www.youtube.com/c/ClubJamesStudios/videos
+      ],
       menu: [],
       document: []
 		}; // 
 	},
 	created(){
-    /*    
-      }, {
-        title: "", id: "", 
-        position: [
-        ]
-
-      }, {
-        title: "", id: "", 
-        position: [
-          {title: "", start: , end: },
-        ]
-    */
 	},
 	mounted () {
     this.intit();
