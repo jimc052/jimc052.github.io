@@ -232,7 +232,9 @@
 </head>
 <body style="overflow: hidden; visibility: hidden;">
   <div id="app" style="display: flex; flex-direction: row;">
-		<div style="border-right:  1px rgb(0, 0, 0, 0.3) solid;"><yt-menu @on-select="onSelect" @on-click-add="onClickAdd" ref="menu"/></div>
+		<div style="border-right:  1px rgb(0, 0, 0, 0.3) solid;">
+			<yt-menu @on-select="onSelect" @on-click-add="onClickAdd" ref="menu"/>
+		</div>
 		<div style="flex: 1;">
 			<div id="playerParent" style="padding: 2px;">
 				<div v-if="smallScreen" id="header" :style="{background: '#2d8cf0', 
