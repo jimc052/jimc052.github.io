@@ -1,35 +1,57 @@
 let h3s = document.querySelectorAll("h3");
 let tables = document.querySelectorAll("table");
-let left = document.createElement("div");
-document.body.appendChild(left);
-left.id = "left";
 
-let right = document.createElement("div");
-document.body.appendChild(right);
-right.id = "right";
+function list() {
+  let left = document.createElement("div");
+  document.body.appendChild(left);
+  left.id = "left";
 
-let s = "";
-for(let i = 0; i < h3s.length; i++) {
-  let anchor = document.createElement("a");
-  anchor.href= `javascript:show(${i})`;
-  anchor.innerText = h3s[i].innerText;
-  anchor.style.display = "block";
-  anchor.style.padding = "5px 5px";
-  anchor.style.width = "100%";
-  left.appendChild(anchor);
+  let right = document.createElement("div");
+  document.body.appendChild(right);
+  right.id = "right";
 
-  // console.log(h3s[i].innerText);
-  // let tr = tables[i].querySelectorAll("tr");
-  // for(let j = 0; j < tr.length; j++) {
-  //   let td = tr[j].querySelectorAll("td");
-  //   let c = td[td.length -1].innerText;
-  //   if(c.length == 0) {
-  //     console.log(tr[j].innerHTML)
-  //   }
-  // }
-  
-  tables[i].style.display = "none";
-  h3s[i].style.display = "none";
+  let s = "";
+  for(let i = 0; i < h3s.length; i++) {
+    let anchor = document.createElement("a");
+    anchor.href= `javascript:show(${i})`;
+    anchor.innerText = h3s[i].innerText;
+    anchor.style.display = "block";
+    anchor.style.padding = "5px 5px";
+    anchor.style.width = "100%";
+    left.appendChild(anchor);
+    
+    tables[i].style.display = "none";
+    h3s[i].style.display = "none";
+  }  
+}
+
+function exportData() {
+  let textarea = document.createElement("textarea");
+  document.body.appendChild(textarea);
+
+  let json = {};
+  for(let i = 0; i < h3s.length; i++) {
+    if(h3s[i].innerText.indexOf("大家的日本語改訂版") > -1){
+      let lesson = h3s[i].innerText.replace("大家的日本語改訂版(", "").replace(")", "");
+      let arr = [];
+      let trs = tables[i].querySelectorAll("tr");
+      for(let j = 0; j < trs.length; j++) {
+        let s = "";
+        let tds = trs[j].querySelectorAll("td");
+        for(let k = 0; k < tds.length; k++) {
+          s += (s.length > 0 ? "\t" : "") + tds[k].innerText.trim()
+        }
+        arr.push(s)
+      }
+
+      json[`第${lesson}課`] = arr;
+    }
+    
+    
+    tables[i].style.display = "none";
+    h3s[i].style.display = "none";
+  }
+  textarea.value = JSON.stringify(json, null, 2);
 }
 
 function show(index) {
@@ -65,6 +87,8 @@ function show(index) {
     }
   }, 300);
 }
+exportData()
+// list();
 
 let style = document.createElement('style');
 style.innerHTML = `
@@ -109,6 +133,10 @@ style.innerHTML = `
   }
   span.accent-bottom  {
     border-bottom: 1px solid #D3D3D3;
+  }
+  textarea {
+    width: 100%;
+    height: 100%;
   }
 `;
 document.getElementsByTagName("head")[0].appendChild(style);
