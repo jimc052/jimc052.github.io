@@ -29,7 +29,7 @@
 	<script src="./vocabulary.js"></script>
 	<script src="./vocabulary-editor.js"></script>
 	<script src="./canvas.js"></script>
-	<script src="./單字.js"></script>
+	<script src="./lesson.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -207,6 +207,7 @@
 		<div style="flex: 1;">
 			<pronounce v-if="page == '五十音'"></pronounce>
 			<vocabulary v-else-if="page == '字典'"></vocabulary>
+			<lesson v-else-if="page == '大家的日本語'"></lesson>
 			<letter v-else></letter>
 		</div>
 	</div>
@@ -287,13 +288,36 @@
 				]
 			];
 		}
+		
+		Vue.prototype.$appendScript = (src) => {
+			return new Promise(async (resolve, reject) => {
+				let script   = document.createElement("script");
+				script.type  = "text/javascript";
+				script.src   = src;;
+				script.onload = function(){
+					resolve();
+				};
+
+				script.onerror = function(e){
+					console.log(e)
+					alert(e)
+					reject();
+				}
+				document.getElementsByTagName("head")[0].appendChild(script);
+			});
+		}
+		Vue.prototype.$removeScript = (src) => {
+			let script = document.querySelector(`script[src='${src}']`);
+			if(script)
+				document.getElementsByTagName("head")[0].removeChild(script);
+		}
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 
 		vm = new Vue({
 			el: '#app',
 			data() {
 				return {
-					page: "筆順練習",
+					page: "大家的日本語",
 					width: document.body.clientWidth < 400 ? 30: 180,
 					open: true
 				};

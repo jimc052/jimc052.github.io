@@ -73,6 +73,8 @@ Vue.component('vocabulary', {
 		}
 	},
 	async mounted () {
+		this.vocabularyRestore();
+
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
 		window.addEventListener('keydown', this.onKeydown, false);
@@ -149,12 +151,13 @@ Vue.component('vocabulary', {
 				}
 			}
 		}
-		this.vocabularyRestore();
-		
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
 		window.removeEventListener('keydown', this.onKeydown, false);
+
+		this.$removeScript("./datas/單字.js");
+		words = undefined;
   },
 	methods: {
 		renderAccent(h, p){
@@ -589,7 +592,9 @@ Vue.component('vocabulary', {
 			let s = window.localStorage["japanese-vocabulary"];
 			if(typeof s != "undefined" && s.length > 0)
 				words = s;
-			// console.log(words);
+			else {
+				this.$appendScript("./datas/單字.js");
+			}
 		}
 	},
 	watch: {
