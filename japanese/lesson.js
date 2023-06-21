@@ -128,12 +128,13 @@ Vue.component('lesson', {
 					for(let i = 0; i < arr.length; i++) {
 						let td = arr[i].split("\t");
 						let div1 = `
-							<div> <span style="width: 40px">${i + 1}.</span>
+							<div> 
+								<span style="width: 40px">${i + 1}.</span>
 								<a href="javascript: TTX.speak('${td[0]}');">${td[0]}</a>
 							</div>
 						`;
 						let div2 = `<div style="min-height: 24px;">${td[1]}</div>`;
-						let div3 = `<div>${td[2]}</div>`;
+						let div3 = `<div>${td[2]}</div>`; //  style="border-top: 1px #eee solid;"
 						this.html += `<div class="card">${div1}${div2}${div3}</div>`
 					}
 					setTimeout(() => {
@@ -170,7 +171,7 @@ Vue.component('lesson', {
 			} else {
 				let w1 = frame.clientWidth - 20;
 				if(frame.clientWidth > 800) {
-					let colNum = 0, margin = 10;
+					let colNum = 0, margin = 0;
 					for(let i = 8; i >= 1; i--) {
 						let w = Math.floor((w1 - ((i -1) * margin)) / i);
 						if(w > 300) {
