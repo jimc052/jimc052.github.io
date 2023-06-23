@@ -2,7 +2,7 @@ Vue.component('yt-editor', {
 	template:  `
     <modal v-model="visible" class-name="vertical-center-modal" 
         fullscreen style="overflow: hidden;" id="dlgEdit">
-      <Tabs type="card" id="tabs" value="原稿">
+      <Tabs type="card" id="tabs" value="原稿" @on-click="onChangeTabPane">
         <TabPane :closable="false" label="基本資料" :style="{height: height + 'px'}"  name="0">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
           v-model="title" />
@@ -15,7 +15,7 @@ Vue.component('yt-editor', {
 
 				<TabPane :closable="false" label="位置" :style="{height: height + 'px'}"  name="2">
           <textarea style="width: 100%; height: calc(100% - 25px); font-size: 18px; padding: 10px;"
-          v-model="position" />
+          v-model="position" id="editor_position" />
         </TabPane>
 
 				<TabPane :closable="false" label="原稿" :style="{height: height + 'px'}"  name="原稿">
@@ -56,7 +56,8 @@ Vue.component('yt-editor', {
 			topic: "",
 			position: "",
 			height: 0,
-			source: ""
+			source: "",
+			isSecond: true,
 		};
 	},
 	created(){
@@ -67,18 +68,31 @@ Vue.component('yt-editor', {
 
 		let close = document.querySelector("#dlgEdit .ivu-modal-close");
 		if(close != null) close.parentNode.removeChild(close);
+		window.addEventListener('keydown', this.onKeydown, false);
 	},
 	destroyed() {
+		window.removeEventListener('keydown', this.onKeydown, false);
   },
 	methods: {
+		onChangeTabPane(e){
+			if(e == 2){
+				setTimeout(() => {
+					document.querySelector("#editor_position").focus();	
+				}, 300);
+			}
+		},
     close() {
 			this.$emit('on-close');
 		},
 		update(){
 			let json = JSON.parse(this.title);
 			try {
-				if(this.position.length > 0)
+				if(this.position.length > 0) {
 					json.position = JSON.parse(this.position);
+					for(let i = 0; i < json.position.length; i++) {
+						json.position[i] = this.changeTimeFormat(json.position[i], true);
+					}
+				}
 				if(this.topic.length > 0)
 					json.topic = JSON.parse(this.topic);
 				this.$emit("update", json);
@@ -87,13 +101,77 @@ Vue.component('yt-editor', {
 				alert(e)
 			}
 			
-		}	
+		},
+		onKeydown(event){
+			let o = document.activeElement;
+			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let sk = event.shiftKey, code = event.keyCode;
+			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
+
+			if(o.id == "editor_position") {
+				if(pk && sk && char == "C") {
+					this.isSecond = !this.isSecond;
+					if(this.position.length > 0) {
+						let position = JSON.parse(this.position), s = "";
+						for(let i = 0; i < position.length; i++) {
+							position[i] = this.changeTimeFormat(position[i], this.isSecond);
+							s += (s.length > 0 ? ",\n" : "") + "  " + JSON.stringify(position[i])
+
+						}
+						this.position = "[\n" + s + "\n]"; 
+					}
+				} else {
+					return;
+				}
+				// if(b == true) {
+					event.preventDefault();
+					event.stopImmediatePropagation();
+					event.stopPropagation();				
+				// }
+			}
+		},
+		changeTimeFormat(row, isSecond) {
+			if(isSecond == true) {
+				if(typeof row.start == "string") {
+					if(row.start.indexOf(":") > 0) {
+						let arr = row.start.split(":");
+						row.start = (parseInt(arr[0], 10) * 60) 
+							+ parseInt(arr[1], 10);
+					} else {
+						row.start = parseInt(row.start, 10);
+					}
+				}
+				if(typeof row.end == "string") {
+					if(row.end.indexOf(":") > 0) {
+						let arr = row.end.split(":");
+						row.end = (parseInt(arr[0], 10) * 60) 
+							+ parseInt(arr[1], 10);
+					} else {
+						row.end = parseInt(row.end, 10);
+					}
+				}				
+			} else {
+				if(typeof row.start == "number") {
+					let i1 = Math.floor(row.start / 60)
+					let i2 =row.start % 60;
+					row.start = `${i1}:${i2}`
+				}
+				if(typeof row.end == "number") {
+					let i1 = Math.floor(row.end / 60)
+					let i2 =row.end % 60;
+					row.end = `${i1}:${i2}`
+				}
+			}
+			return row;
+		}
 	},
 	computed: {
 	},
 	watch: {
 		visible(value) {
 			if(value == true) {
+				this.isSecond = true;
 				let obj = Object.assign({}, this.editdata);
 				this.topic = "";
 				if(Array.isArray(obj.topic)) {

@@ -198,17 +198,8 @@ Vue.component('dlg-list', {
 				} else if((id == "editStart" || id == "editEnd") && ok && code == 80) { // p
 					if(!this.isNumber(document.getElementById(id).value)) return;
 					let x = toNumber(document.getElementById(id).value);
-					// console.log(x + ", " + typeof x)
-					let start = 0, end = 0;
-					if(id == "editStart"){
-						start = x;
-						end = x + 5;
-					} else {
-						start = this.isNumber(document.getElementById("editStart").value) 
-							? toNumber(document.getElementById("editStart").value) : x - 3;
-						end = x;
-						start = end - start > 3 ? end - 3 : start;
-					}
+					let start = x + (id == "editStart" ? 0 : -10);
+					let end = x + (id == "editStart" ? 10 : 0);
 					// console.log(start + "; " + end)
 					Youtube.play({end: end, start: start});
 				} else if((id == "editStart" || id == "editEnd") && pk) {
