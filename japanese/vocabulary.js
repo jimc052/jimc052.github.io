@@ -1,5 +1,5 @@
 // open -a Google\ Chrome "index.html"
-Vue.component('vocabulary', { 
+Vue.component('vocabulary', {
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
 			<RadioGroup v-model="level" type="button" button-style="solid" 
@@ -63,7 +63,8 @@ Vue.component('vocabulary', {
 			colTitle: "語	級別	舊	漢字・原文	備註	重音	中文	分類",
 			option: "",
 			options: ["家族", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字", "動詞", "形容詞"],
-			activeIndex: -1
+			activeIndex: -1,
+			sortKey: "語"
 		};
 	},
 	created(){
@@ -105,7 +106,9 @@ Vue.component('vocabulary', {
 		});
 
 		this.colTitle.split("\t").forEach(el => {
-			let json = {title: el, key: el, 
+			let json = {
+				title: el, 
+				key: el, 
 				ellipsis: true, 
 				// tooltip: true,
 				resizable: true,
@@ -121,11 +124,14 @@ Vue.component('vocabulary', {
 			else if(el == "舊") {
 				return;
 			}
-			
+
+			if(el == "語" || el == "漢字・原文" || el == "中文") { // 排序用
+				json.renderHeader = this.renderHeader;
+			}
+
 			this.columns.push(json)
 			if(el == "語") {
 				json.render = this.renderAccent;
-
 				this.columns.push({title: "讀音", ellipsis: true, render: this.renderPronounce})
 			}
 		});
@@ -163,46 +169,6 @@ Vue.component('vocabulary', {
 		renderAccent(h, p){
 			let values = p.row["語"];
 			let accnets = p.row["重音"];
-			// let voicedSound = "ゃャゅュょョ"; // 拗音
-			// let results = "";
-
-			// for(let x = 0; x < values.length; x++) {
-			// 	let value = values[x];
-			// 	let accent = accnets[x];
-			// 	if(typeof accent != "undefined" && accent != null && accent.indexOf(",") > -1) {
-			// 		accent = accent.split(",")[0];
-			// 	}
-			// 	let arr = [];
-			// 	for (let i = 0; i < value.length; i++) {
-			// 		let char = value.substr(i, 1);
-			// 		if(char == "。")
-			// 			continue;
-			// 		else if (voicedSound.indexOf(char) > -1) { // 拗音
-			// 			arr[arr.length - 1] += char;
-			// 			// console.log(arr[arr.length - 1])
-			// 		} else {
-			// 			arr.push(char);
-			// 		}
-			// 	}
-			// 	// console.log(arr)
-			// 	let result = "";
-			// 	if(typeof accent != "undefined" && accent != null) {
-			// 		for(let i = 0; i < arr.length; i++) {
-			// 			if(accent == "0" && i > 0) {
-			// 				result += "<span class='accent'>" + arr[i] + "</span>";
-			// 			} else if(accent == "1" && i == 0) {
-			// 				result += "<span class='accent'>" + arr[i] + "</span>";
-			// 			} else if(accent.indexOf(",") == -1 && i > 0 && i < accent) {
-			// 				result += "<span class='accent'>" + arr[i] + "</span>";
-			// 			} else 
-			// 				result += arr[i];
-			// 		}
-			// 	} else {
-			// 		result = arr.join("");
-			// 	}
-			// 	results += (results.length > 0 ? "//" : "") + result;
-			// }
-
 			return h('span', 
 				{
 					domProps: {
@@ -338,6 +304,28 @@ Vue.component('vocabulary', {
 				});
 				return arr1.join(" ");
 			}
+		},
+		renderHeader(h, params) {
+			
+			return h("div",[
+				h("a", params.column.title),
+				h("Icon",{
+					props:{
+						type:`md-arrow-dropdown`,
+						color:"#c8c8c8",
+						size: 30
+					},
+					style:{
+							marginLeft:"0px"
+					},
+					//调用点击的方法
+					on:{
+						click:()=>{
+							// doPassword();
+						}
+					}
+				})
+			])
 		},
 		onResize(){
 			let frame = this.$refs["frame"];
