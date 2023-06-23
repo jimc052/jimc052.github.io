@@ -180,17 +180,9 @@ Vue.component('vocabulary', {
 		renderPronounce(h, p){
 			// let key = p.column.key;
 			let values = p.row["語"].split("//");
-			let datas = this.$japanese();
-
-			let voicedSound = "ゃャゅュょョ"; // 拗音
-			let doubleConsonan = "っッ"; // 促音, 雙寫後面一個假名的字母
-			let longSound = {a: "ā", i: "ī", u: "ū", e: "ē", o: "ō"}; // 長音
-			let voiceN = "んン";
-
 			let results = [];
-
 			for(let x = 0; x < values.length; x++) {
-				let s = rome(values[x]);
+				let s = window.rome(values[x]);
 				// console.log(values[x] + ", " + s)
 				if(x > 0) results.push(h('span', "，"))
 				let json = {
@@ -213,119 +205,42 @@ Vue.component('vocabulary', {
 				results.push(h('a', json, s))
 			}
 			return h('span', {}, results);
-
-			function match(char) {
-				let mp3 = "";
-				for(let x = 0; x < datas.length; x++){
-					for(let y = 0; y < datas[x].length; y++){
-						for(let z = 0; z < datas[x][y].length; z++){
-							if(datas[x][y][z] == null) continue;
-							if(datas[x][y][z]["平"] === char || datas[x][y][z]["片"] === char) {
-								mp3 = datas[x][y][z]["mp3"];
-								break;
-							}
-						}
-						if(mp3.length > 0) break;
-					}
-					if(mp3.length > 0) break;
-				}
-				
-				return mp3;
-			}
-			function rome(value) {
-				let arr1 = [];
-				for (let i = 0; i < value.length; i++) {
-					let char = value.substr(i, 1);
-					if(char == "。")
-						continue;
-					else if (voicedSound.indexOf(char) > -1) { // 拗音
-						arr1[arr1.length - 1] += char;
-					} else {
-						arr1.push(char);
-					}
-				}
-
-        let indexDoubleConsonan = -1;
-        let i = 0;
-        while(i < arr1.length) {
-					let char = arr1[i];
-					if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
-						arr1[i] = "n"
-					} else if (doubleConsonan.indexOf(char) > -1) { // 促音
-
-          } else if (char == "ィ") { // 不知怎麼用，只好寫死
-            let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
-							? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-            let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
-							? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-            if (c2 == "e" || c2 == "u") { // 長音
-              arr1[i - 1] = c1 + longSound["i"];
-              arr1.splice(i, 1); continue;
-            } else {
-              arr1[i] = "i";
-            }
-					} else if (char == "ー") { // 長音
-						let c1 = arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-						let c2 = arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-            let c3 = longSound[c2];
-            if(typeof c3 != "undefined" )
-						  arr1[i - 1] = c1 + c3;
-						arr1.splice(i, 1); continue;
-					} else {
-						let mp3 = match(char); // char == "ィ" ? "i" : 
-						if (mp3.length > 0) {
-							if (i > 0 && doubleConsonan.indexOf(arr1[i - 1]) > -1) { // 促音
-								arr1[i] = mp3.substring(0, 1) + mp3;
-								arr1[i - 1] = null;
-                indexDoubleConsonan = i;
-							} else if (i > 0 && indexDoubleConsonan != i - 1 && "aiueo".indexOf(mp3) > -1) { // 長音
-								if (arr1[i - 1] == mp3) {
-									arr1[i - 1] = longSound[mp3];
-									arr1.splice(i, 1); continue;
-								} else if ("aiueo".indexOf(mp3) > -1) {
-									let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
-										? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-									let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
-										? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-									if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
-										arr1[i - 1] = c1 + longSound[c2];
-										arr1.splice(i, 1); continue;
-									} else
-										arr1[i] = mp3;
-								}
-							} else
-								arr1[i] = mp3;
-						}
-					}
-          i++;
-				}
-				arr1 = arr1.filter(el => {
-					return el != null
-				});
-				return arr1.join(" ");
-			}
 		},
 		renderHeader(h, params) {
-			
-			return h("div",[
-				h("a", params.column.title),
-				h("Icon",{
-					props:{
-						type:`md-arrow-dropdown`,
-						color:"#c8c8c8",
-						size: 30
-					},
-					style:{
-							marginLeft:"0px"
-					},
-					//调用点击的方法
-					on:{
-						click:()=>{
-							// doPassword();
-						}
+			let icon = h("Icon",{
+				props:{
+					type:`md-arrow-dropdown`,
+					color:"#c8c8c8",
+					size: 20
+				},
+				style:{
+						marginLeft: "0px",
+						// marginTop: "10px"
+				},
+				//调用点击的方法
+				on:{
+					click:()=>{
+						// doPassword();
 					}
-				})
-			])
+				}
+			});
+			let arr = [
+				h("span", params.column.title)
+			];
+			if(this.dataStore.length > 0 && this.sortKey == params.column.title)
+				arr.push(icon)
+			
+			return h(
+				this.dataStore.length > 0 && this.sortKey != params.column.title ? "a" : "div",
+				{ 
+				style: { },
+				on: {
+					click:  (event) => {
+						this.sortKey = params.column.title;
+						this.onChangePage(1, this.sortKey);
+					}
+				} 
+			}, arr);
 		},
 		onResize(){
 			let frame = this.$refs["frame"];
@@ -348,11 +263,16 @@ Vue.component('vocabulary', {
 		onColumnResize(width, start, col) { // 還沒寫...............
 			// console.log(col)
 		},
-		onChangePage(e) {
-			if(this.currentPage == e) return;
+		onChangePage(e, sortKey) {
+			if(this.currentPage == e && typeof sortKey == "undefined") return;
 			this.currentPage = e; this.activeIndex = -1;
-			if(this.dsTable.length > 0) this.eventListener(1);
 			this.dsTable = [];
+			if(typeof sortKey == "string") {
+				this.dataStore.sort((a, b) => {
+					return a[sortKey] < b[sortKey] ? -1 : 1;
+				})
+			}
+			
 			let start = (e - 1) * this.pageSize, end = start + this.pageSize;
 			if(end > this.dataStore.length) end = this.dataStore.length;
 			for(let i = start; i < end; i++) {
@@ -361,26 +281,17 @@ Vue.component('vocabulary', {
 			let table = document.querySelector(".ivu-table-body");
 			table.scrollTop = 0;
 		},
-		eventListener(opt){
-			// let arr = document.querySelectorAll("#" + this.id + " div.ivu-table-fixed-body table td:first-child")
-			// for(let i = 0; i < arr.length; i++) {
-			// 	if(opt == 0) {
-			// 		arr[i].setAttribute("row", i);
-			// 		arr[i].addEventListener("click", this.onRowClick, true);
-			// 	} else 
-			// 		arr[i].removeEventListener("click", this.onRowClick, true);
-			// }
-		},
 		onPageSizeChange(e) {
 			this.currentPage = 0; this.activeIndex = -1;
 			this.pageSize = e;
-			this.onChangePage(1);
+			this.onChangePage(1, this.sortKey);
 			window.localStorage["japanese-vocabulary-pageSize"] = e;
 		},
 		onSearch() {
 			this.option = ""; this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.activeIndex = -1;
+			this.sortKey = "語";
 			setTimeout(() => {
 				if(this.search.length > 0) {
 					let equal = this.search.indexOf("=") > -1 ? "=" 
@@ -459,7 +370,7 @@ Vue.component('vocabulary', {
 						});
 					}			
 				}
-				this.onChangePage(1);
+				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
@@ -469,6 +380,7 @@ Vue.component('vocabulary', {
 			this.search = ""; this.option = "";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.activeIndex = -1;
+			this.sortKey = "語";
 			setTimeout(() => {
 				let cols = this.colTitle.split("\t");
 				let arr = words.split("\n");
@@ -484,7 +396,7 @@ Vue.component('vocabulary', {
 					}  
 				});
 				// console.log(this.dataStore[0])
-				this.onChangePage(1);
+				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-level"] = this.level;
 				window.localStorage["japanese-vocabulary-search"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
@@ -501,6 +413,7 @@ Vue.component('vocabulary', {
 			this.search = "";   this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.activeIndex = -1;
+			this.sortKey = "語";
 			let colTitle = this.colTitle.split("\t");
 			setTimeout(() => {
 				let cols = this.colTitle.split("\t");
@@ -516,7 +429,7 @@ Vue.component('vocabulary', {
 					}  
 				});
 				// console.log(this.dataStore[0])
-				this.onChangePage(1);
+				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-search"] = "";
 				window.localStorage["japanese-vocabulary-option"] = this.option;
@@ -553,7 +466,7 @@ Vue.component('vocabulary', {
 			this.dataStore.sort(function(a, b){
 				return a["備註"] < b["備註"] ? 1 : -1;
 			});
-			this.onChangePage(1);
+			this.onChangePage(1, this.sortKey);
 		},
 		onCloseEditor(word) {
 			if(typeof word == "object") {
