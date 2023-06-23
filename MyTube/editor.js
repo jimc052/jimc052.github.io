@@ -103,14 +103,15 @@ Vue.component('yt-editor', {
 			
 		},
 		onKeydown(event){
+			if(this.visible == false) return;
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			let sk = event.shiftKey, code = event.keyCode;
 			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
-
+			console.log(`metaKey: ${pk}, shiftKey: ${sk}, char: ${char}`)
 			if(o.id == "editor_position") {
-				if(pk && sk && char == "C") {
+				if(pk && sk && char == "C") { // 切換秒數顯示格示
 					this.isSecond = !this.isSecond;
 					if(this.position.length > 0) {
 						let position = JSON.parse(this.position), s = "";
@@ -120,6 +121,23 @@ Vue.component('yt-editor', {
 
 						}
 						this.position = "[\n" + s + "\n]"; 
+					}
+				} else if(pk && char == "I") { // 插入一列
+					if(this.position.length == 0){
+						this.position = `[\n  {"start": "", "end": ""}\n]`
+					} else {
+						let arr = this.position.split("\n");
+						for(let i = arr.length - 1; i >=0; i++) {
+							if(arr[i] == "]") {
+								if(i > 0 && arr[i - 1].indexOf(`{`) > -1) {
+									arr[i - 1] += ",";
+								}
+								arr.splice(i, 0, `{"start": "", "end": ""}`
+								);
+								break;
+							}
+						}
+						this.position = arr.join("\n")					
 					}
 				} else {
 					return;
@@ -131,7 +149,7 @@ Vue.component('yt-editor', {
 				// }
 			}
 		},
-		changeTimeFormat(row, isSecond) {
+		changeTimeFormat(row, isSecond) { // 切換秒數顯示格示
 			if(isSecond == true) {
 				if(typeof row.start == "string") {
 					if(row.start.indexOf(":") > 0) {
@@ -171,6 +189,11 @@ Vue.component('yt-editor', {
 	watch: {
 		visible(value) {
 			if(value == true) {
+				console.log(`onKeyDown: \n
+					1. 位置：
+						1-1: metaKey + shiftKey + C => 切換秒數顯示格示
+						1-2: metaKey + I => 插入一列
+				`)
 				this.isSecond = true;
 				let obj = Object.assign({}, this.editdata);
 				this.topic = "";

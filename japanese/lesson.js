@@ -1,3 +1,4 @@
+/* 大家的日本語 */
 Vue.component('lesson', { 
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 10px;">
 		<div style="display: flex; flex-direction: row;">
@@ -73,7 +74,7 @@ Vue.component('lesson', {
 				if((this.mode == "課文" && frame.clientWidth > 1000)) {
 					frame.classList.add("big-screen");
 					frame.classList.remove("small-screen");
-				} else if((this.mode == "單字" && frame.clientWidth > 800)) {
+				} else if((this.mode == "單字" && frame.clientWidth > 600)) {
 						frame.classList.add("big-screen");
 						frame.classList.remove("small-screen");
 				} else {
@@ -94,60 +95,11 @@ Vue.component('lesson', {
 			this.html = "";
 			this.$refs["frame"].style.visibility = "hidden";
 
-			let parseLesson = async () => {
-				if(typeof 課文[this.option] == "object") {
-					//  style="margin-top: ${this.html.length > 0 ? 10 : 0}px;"
-					for(let key in 課文[this.option]) {
-						let header = `<h3>${key}</h3>`;
-						let arr = 課文[this.option][key], detail = "";
-						for(let i = 0; i < arr.length; i++) {
-							// console.log(arr[i])
-							detail += `
-								<li>
-									<a href="javascript: TTX.speak('${arr[i].日文}');">
-										${arr[i].日文}
-									</a>
-									<br>
-									${arr[i].中文}
-								</li>`
-						}
-						this.html += `
-							<div class="section">
-								${header}
-								<ol style="margin: 0px 0px 0px 30px; ">${detail}</ol>
-							</div>`
-					}
-					setTimeout(() => {
-						this.changeWidth();
-					}, 600);
-				}
-			}
-			let parseWord = () => {
-				if(typeof 單字[this.option] == "object") {
-					let arr = 單字[this.option];
-					for(let i = 0; i < arr.length; i++) {
-						let td = arr[i].split("\t");
-						let div1 = `
-							<div> 
-								<span style="width: 40px">${i + 1}.</span>
-								<a href="javascript: TTX.speak('${td[0]}');">${td[0]}</a>
-							</div>
-						`;
-						let div2 = `<div style="min-height: 24px;">${td[1]}</div>`;
-						let div3 = `<div>${td[2]}</div>`; //  style="border-top: 1px #eee solid;"
-						this.html += `<div class="card">${div1}${div2}${div3}</div>`
-					}
-					setTimeout(() => {
-						this.changeWidth();
-					}, 600);
-				}
-			}
-
 			setTimeout(() => {
 				if(this.mode == "課文") 
-					parseLesson();
+					this.parseLesson();
 				else {
-					parseWord();
+					this.parseWord();
 				}
 				setTimeout(() => {
 					this.changeWidth();
@@ -156,7 +108,8 @@ Vue.component('lesson', {
     },
 		changeWidth() {
 			let frame = this.$refs["frame"];
-			let arr = frame.querySelectorAll("div");
+			let arr = frame.querySelectorAll("div" + 
+				(this.mode == "課文" ? "" : ".card"));
 			let width = "auto", marginLeft = "0px";
 			if(this.mode == "課文") {
 				if(frame.clientWidth > 1000) {
@@ -169,12 +122,13 @@ Vue.component('lesson', {
 					arr[i].style.marginLeft = i == 0 ? "0px" : marginLeft;
 				}
 			} else {
-				let w1 = frame.clientWidth - 20;
-				if(frame.clientWidth > 800) {
+				let w1 = frame.clientWidth - 24;
+				
+				if(this.$refs["frame"].classList.contains("big-screen")) {
 					let colNum = 0, margin = 0;
 					for(let i = 8; i >= 1; i--) {
 						let w = Math.floor((w1 - ((i -1) * margin)) / i);
-						if(w > 300) {
+						if(w > 320) {
 							width = w + "px";
 							colNum = i;
 							break;
@@ -190,7 +144,7 @@ Vue.component('lesson', {
 				}
 			}
 			// setTimeout(() => {
-				if(arr.length)
+			if(arr.length > 0)
 				 frame.style.visibility = "visible";	
 			// }, 600);
 		},
@@ -219,7 +173,59 @@ Vue.component('lesson', {
 			
 			if(this.option.length > 0)
 				this.onChangeLesson();
-		} 
+		},
+		async parseLesson(){ // 課文
+			if(typeof 課文[this.option] == "object") {
+				//  style="margin-top: ${this.html.length > 0 ? 10 : 0}px;"
+				for(let key in 課文[this.option]) {
+					let header = `<h3>${key}</h3>`;
+					let arr = 課文[this.option][key], detail = "";
+					for(let i = 0; i < arr.length; i++) {
+						// console.log(arr[i])
+						detail += `
+							<li>
+								<a href="javascript: TTX.speak('${arr[i].日文}');">
+									${arr[i].日文}
+								</a>
+								<br>
+								${arr[i].中文}
+							</li>`
+					}
+					this.html += `
+						<div class="section">
+							${header}
+							<ol style="margin: 0px 0px 0px 30px; ">${detail}</ol>
+						</div>`
+				}
+				setTimeout(() => {
+					this.changeWidth();
+				}, 600);
+			}
+		},
+		parseWord(){ // 單字
+			if(typeof 單字[this.option] == "object") {
+				let arr = 單字[this.option];
+				for(let i = 0; i < arr.length; i++) {
+					let td = arr[i].split("\t");
+					let accent = window.renderAccent(td[0], td[3]);
+
+					this.html += `<div class="card" style="font-size: 20px;">
+							<div style="min-width: 25px;">${i + 1}.</div>
+							<div style="flex: 1; font-size: 20px;">
+								<div style="font-size: 20px;">${accent}</div>
+								<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
+									${window.rome(td[0])}
+								</a>
+								<div style="min-height: 24px;">${td[1]}</div>
+								<div>${td[2]}</div>
+							</div>
+						</div>`
+				}
+				setTimeout(() => {
+					this.changeWidth();
+				}, 600);
+			}
+		}
 	},
 	watch: {
 	},

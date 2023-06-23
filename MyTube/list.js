@@ -396,12 +396,5 @@ Vue.component('dlg-list', {
 				el.removeEventListener('change', this.onChange, false);
 			}
 		},
-		// rows(value) {
-		// 	let x = Array.isArray(this.editdata.position) ? this.editdata.position.length : 0;
-		// 	console.log(`editdata.position: ${x}, position: ${value.length}, `)
-		// 	if(x < value.length) {
-		// 		this.update();
-		// 	}
-		// }
 	}
 });
