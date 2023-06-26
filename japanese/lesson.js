@@ -1,7 +1,10 @@
 /* 大家的日本語 */
 Vue.component('lesson', { 
-	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 10px;">
-		<div style="display: flex; flex-direction: row;">
+	template:  `<div style="height: 100%; width: 100%; display: flex; flex-direction: column;"
+			:style="{
+				padding: (print == 'N' ? '10' : '0') + 'px'}"
+		>
+		<div v-if="print == 'N'" style="display: flex; flex-direction: row;">
 			<RadioGroup v-model="mode" type="button" button-style="solid" 
 				size="large"
 				@on-change="onChangeMode"
@@ -17,12 +20,14 @@ Vue.component('lesson', {
 				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
 			</Select>
 			<div style="flex: 1;" ></div>
-
 		</div>
 
     <div ref="frame" class="lesson-frame" v-html="html" @scroll="onScroll"
-			style="background: white; flex: 1; padding: 10px; border: 1px solid rgb(220, 222, 226); overflow: auto;
-			"
+			style="background: white; flex: 1;"
+			:style="{
+				padding: (print == 'N' ? '10' : '5') + 'px', 
+				border: print == 'N' ? '1px solid rgb(220, 222, 226)' : 'none'
+			}"
 		></div>
 	</div>`,
 	props: {
@@ -34,6 +39,7 @@ Vue.component('lesson', {
 			html: "",
 			scrollTop: 0,
 			mode: "課文",
+			print: "N"
 		};
 	},
 	created(){
@@ -53,9 +59,16 @@ Vue.component('lesson', {
 			this.option = s;
 		}
 		s = window.localStorage["japanese-大家的日本語-mode"];
-		if(typeof s == "string") {
-			this.mode = s;
+		if(this.$queryString("print") == "Y"){
+			this.mode = "單字";
+			this.print = "Y";
 		}
+		else if(typeof s == "string") {
+			this.mode = s;
+			this.$refs["frame"].style.overflow = "auto";
+		} 
+		// console.log(this.$queryString("print"))
+
 		this.$refs["radio-group"].$children[this.mode == "課文" ? 0 : 1].currentValue = true;
 		this.onChangeMode();
 	},
@@ -122,9 +135,11 @@ Vue.component('lesson', {
 					arr[i].style.marginLeft = i == 0 ? "0px" : marginLeft;
 				}
 			} else {
-				let w1 = frame.clientWidth - 24;
-				
-				if(this.$refs["frame"].classList.contains("big-screen")) {
+				let w1 = frame.clientWidth - (this.print == "Y" ? 0 : 20);
+				if(this.print == "Y") {
+					width = "390px";
+				}
+				else if(this.$refs["frame"].classList.contains("big-screen")) {
 					let colNum = 0, margin = 0;
 					for(let i = 8; i >= 1; i--) {
 						let w = Math.floor((w1 - ((i -1) * margin)) / i);
@@ -135,7 +150,6 @@ Vue.component('lesson', {
 						}
 					}
 				} else {
-
 				}
 
 				for(let i = 0; i < arr.length; i++) {
@@ -203,28 +217,46 @@ Vue.component('lesson', {
 			}
 		},
 		parseWord(){ // 單字
-			if(typeof 單字[this.option] == "object") {
-				let arr = 單字[this.option];
-				for(let i = 0; i < arr.length; i++) {
-					let td = arr[i].split("\t");
-					let accent = window.renderAccent(td[0], td[3]);
+			let execute = (option) => {
+				if(typeof 單字[option] == "object") {
+					let arr = 單字[option], result = "";
+					for(let i = 0; i < arr.length; i++) {
+						let td = arr[i].split("\t");
+						let accent = window.renderAccent(td[0], td[3]);
+						result += `<div class="card" style="font-size: 20px;">
+								<div style="min-width: 25px;">${i + 1}.</div>
+								<div style="flex: 1; font-size: 20px;">
+									<div style="font-size: 20px;">${accent}</div>
+									<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
+										${window.rome(td[0])}
+									</a>
+									<div style="min-height: 24px;">${td[1]}</div>
+									<div>${td[2]}</div>
+								</div>
+							</div>`
+					}
 
-					this.html += `<div class="card" style="font-size: 20px;">
-							<div style="min-width: 25px;">${i + 1}.</div>
-							<div style="flex: 1; font-size: 20px;">
-								<div style="font-size: 20px;">${accent}</div>
-								<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
-									${window.rome(td[0])}
-								</a>
-								<div style="min-height: 24px;">${td[1]}</div>
-								<div>${td[2]}</div>
-							</div>
-						</div>`
-				}
-				setTimeout(() => {
-					this.changeWidth();
-				}, 600);
+					// 
+					this.html += (this.print == "N" ? "" : 
+						(this.html.length ==0 ? "" : `<span style='page-break-after: always;'></span>`) // 
+						+ (`<h3 style="width: 100%; font-size: 30px;">${option}</h3>`)
+					
+					) + result;
+					
+				}				
 			}
+
+			if(this.print == "N") {
+				execute(this.option)
+			} else {
+				for(let key in 單字) {
+					execute(key)
+				}
+			}
+			setTimeout(() => {
+				this.changeWidth();
+			}, 600);
+
 		}
 	},
 	watch: {

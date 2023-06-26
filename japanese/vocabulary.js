@@ -255,10 +255,37 @@ Vue.component('vocabulary', {
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			// let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
 			// let sk = event.shiftKey, code = event.keyCode;
-			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
+			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
-			// console.log(o.id)
-			if(o.tagName == "INPUT") return;
+			/*
+			if(o.tagName == "BODY" && pk && char == "C") { // 因為第一行沒有行號，而其他行又多了行號，所以無法用；2023-06-26
+				const selection = window.getSelection();
+				let arr = selection.toString().split("\n")
+				let s = "", cols = 8;
+				arr.forEach((el, index) => {
+					let mod = index % cols;
+					s += (mod > 0 ? "\t" : "") + el;
+					
+					if(mod == cols - 1) {
+						s += "\n";
+					}
+				})
+
+				const el = document.createElement('textarea');
+				el.style.width = "100%"; el.style.height = "800px";
+				// el.style.display = "none";
+				el.value = s;
+				document.body.appendChild(el);
+				el.select();
+				document.execCommand('copy');
+				// document.body.removeChild(el);
+			} else {
+				return;
+			}
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			event.stopPropagation();
+			*/
 		},
 		onColumnResize(width, start, col) { // 還沒寫...............
 			// console.log(col)
