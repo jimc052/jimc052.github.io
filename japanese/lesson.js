@@ -4,7 +4,7 @@ Vue.component('lesson', {
 			:style="{
 				padding: (print == 'N' ? '10' : '0') + 'px'}"
 		>
-		<div v-if="print == 'N'" style="display: flex; flex-direction: row;">
+		<div v-if="print == 'N' && scrollTop < 200" style="display: flex; flex-direction: row;">
 			<RadioGroup v-model="mode" type="button" button-style="solid" 
 				size="large"
 				@on-change="onChangeMode"
@@ -99,14 +99,21 @@ Vue.component('lesson', {
 		},
 		onScroll(e) {
 			this.scrollTop = e.srcElement.scrollTop;
+			if(document.body.clientWidth < 600 && this.print == "N"){
+				window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`] = e.srcElement.scrollTop;
+			}
 		},
 		onKeydown() {
 		},
-		onChangeLesson() {
+		onChangeLesson(event) {
 			this.scrollTop = 0;
 			window.localStorage["japanese-大家的日本語-lesson"] = this.option;
 			this.html = "";
 			this.$refs["frame"].style.visibility = "hidden";
+			if(document.body.clientWidth < 600 && this.print == "N" && typeof event != "undefined") {
+				window.localStorage["japanese-大家的日本語-課文-scroll"] = 0;
+				window.localStorage["japanese-大家的日本語-單字-scroll"] = 0;				
+			}
 
 			setTimeout(() => {
 				if(this.mode == "課文") 
@@ -158,8 +165,15 @@ Vue.component('lesson', {
 				}
 			}
 			// setTimeout(() => {
-			if(arr.length > 0)
-				 frame.style.visibility = "visible";	
+			if(arr.length > 0) {
+				frame.style.visibility = "visible";	
+				if(document.body.clientWidth < 600 && this.print == "N"){
+					let y = window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`];
+					if(!isNaN(y)) {
+						this.$refs["frame"].scrollTop = y
+					}
+				}
+			}
 			// }, 600);
 		},
 		async onChangeMode() {
@@ -256,7 +270,6 @@ Vue.component('lesson', {
 			setTimeout(() => {
 				this.changeWidth();
 			}, 600);
-
 		}
 	},
 	watch: {
