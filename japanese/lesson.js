@@ -37,9 +37,9 @@ Vue.component('lesson', {
 			options: [],
       option: "",
 			html: "",
-			scrollTop: 0,
+			scrollTop: 0, // 不要用了，2023-06-27
 			mode: "課文",
-			print: "N"
+			print: "N",
 		};
 	},
 	created(){
@@ -68,6 +68,7 @@ Vue.component('lesson', {
 			this.$refs["frame"].style.overflow = "auto";
 		} 
 		// console.log(this.$queryString("print"))
+		// console.log("overflow: " + this.$refs["frame"].style.overflow)
 
 		this.$refs["radio-group"].$children[this.mode == "課文" ? 0 : 1].currentValue = true;
 		this.onChangeMode();
@@ -98,8 +99,8 @@ Vue.component('lesson', {
 			this.changeWidth();
 		},
 		onScroll(e) {
-			this.scrollTop = e.srcElement.scrollTop;
 			if(document.body.clientWidth < 600 && this.print == "N"){
+				// this.scrollTop = e.srcElement.scrollTop;  // 不要用了，2023-06-27
 				window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`] = e.srcElement.scrollTop;
 			}
 		},
@@ -114,7 +115,6 @@ Vue.component('lesson', {
 				window.localStorage["japanese-大家的日本語-課文-scroll"] = 0;
 				window.localStorage["japanese-大家的日本語-單字-scroll"] = 0;				
 			}
-
 			setTimeout(() => {
 				if(this.mode == "課文") 
 					this.parseLesson();
@@ -164,17 +164,17 @@ Vue.component('lesson', {
 					// arr[i].style.marginLeft = colNum == 0 ? "0px" : `${10}px`;
 				}
 			}
-			// setTimeout(() => {
+
 			if(arr.length > 0) {
-				frame.style.visibility = "visible";	
-				if(document.body.clientWidth < 600 && this.print == "N"){
-					let y = window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`];
-					if(!isNaN(y)) {
-						this.$refs["frame"].scrollTop = y
-					}
-				}
+				frame.style.visibility = "visible";
+				let y = window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`];
+				if(document.body.clientWidth < 600 && this.print == "N" && !isNaN(y)){
+					frame.style.overflow = "auto";
+					setTimeout(() => {
+						this.$refs["frame"].scrollTop = y;
+					}, 600);
+				} 
 			}
-			// }, 600);
 		},
 		async onChangeMode() {
 			window.localStorage["japanese-大家的日本語-mode"] = this.mode;
