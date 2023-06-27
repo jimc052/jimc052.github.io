@@ -70,7 +70,7 @@ window.renderAccent = (語, 重音) => {
 window.rome = (value) => {
   let datas = window.japanese();
   let voicedSound = "ゃャゅュょョ"; // 拗音
-  let doubleConsonan = "っッ"; // 促音, 雙寫後面一個假名的字母
+  let doubleConsonan = "っッ"; // 促音, 雙寫後面第一個假名的字母
   let longSound = {a: "ā", i: "ī", u: "ū", e: "ē", o: "ō"}; // 長音
   let voiceN = "んン";
 
@@ -81,6 +81,8 @@ window.rome = (value) => {
       continue;
     else if (voicedSound.indexOf(char) > -1) { // 拗音
       arr1[arr1.length - 1] += char;
+    } else if (doubleConsonan.indexOf(char) > -1 && i == value.length - 1) { // 促音, 在最後一個字；不發音
+
     } else {
       arr1.push(char);
     }
