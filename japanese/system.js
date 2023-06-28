@@ -67,7 +67,7 @@ window.renderAccent = (語, 重音) => {
   return results;
 }
 
-window.rome = (value) => {
+window.rome = (value) => { // 羅馬拼音
   let datas = window.japanese();
   let voicedSound = "ゃャゅュょョ"; // 拗音
   let doubleConsonan = "っッ"; // 促音, 雙寫後面第一個假名的字母
@@ -145,7 +145,7 @@ window.rome = (value) => {
   arr1 = arr1.filter(el => {
     return el != null
   });
-  return arr1.join(" ");
+  return arr1.join(" ").replace(/  /g, " ").replace(/\[ /g, "[").replace(/ \]/g, "]");
 
   function match(char) {
     let mp3 = "";
