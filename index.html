@@ -6,11 +6,15 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<style>
 		body {
+			
+			
+		}
+		div {
 			display: flex;
 			flex-direction: row;
+			justify-content: flex-start;
 			align-items: center;
-			justify-content: center;
-			flex-wrap: wrap;
+			/* flex-wrap: wrap; */
 		}
 		button {
 			min-width: 80px;
@@ -31,18 +35,24 @@
 		}
 	</style>
 </head>
-<body>
-  <button data='VOA'>VOA</button>
-	<button data='gym'>健身</button>
-	<button data='MyTube'>MyTube</button>
-	<button data='shiftTime'>輪班表</button>
-	<button data='barcode'>barcode</button>
-	<button data='VUE-JSON'>VUE-JSON</button>
-	<button data='japanese' data-mode="五十音">五十音</button>
-	<button data='japanese'  data-mode="字典" >日文字典</button>
-	<button data='japanese'  data-mode="筆順練習">筆順練習</button>
-	<button data='japanese'  data-mode="大家的日本語">大家的日本語</button>
-	<button data='body'>身體記錄</button>
+<body> 
+	<div>
+		<button data='VOA'>VOA</button>
+		<button data='gym'>健身</button>
+		<button data='shiftTime'>輪班表</button>
+		<button data='barcode'>barcode</button>
+		<button data='VUE-JSON'>VUE-JSON</button>		
+	</div>
+	<div>
+		<button data='japanese' data-mode="五十音">五十音</button>
+		<button data='japanese'  data-mode="筆順練習">筆順練習</button>
+		<button data='japanese'  data-mode="字典" >日文字典</button>
+		<button data='japanese'  data-mode="大家的日本語">大家的日本語</button>		
+	</div>
+	<div>
+		<button data='MyTube'>MyTube</button>
+		<button data='body'>身體記錄</button>		
+	</div>
 </body>
 <script>
 	window.onload = async function(){

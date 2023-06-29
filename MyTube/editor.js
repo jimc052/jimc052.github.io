@@ -155,7 +155,7 @@ Vue.component('yt-editor', {
 					if(row.start.indexOf(":") > 0) {
 						let arr = row.start.split(":");
 						row.start = (parseInt(arr[0], 10) * 60) 
-							+ parseInt(arr[1], 10);
+							+ parseFloat(arr[1]);
 					} else {
 						row.start = parseInt(row.start, 10);
 					}
@@ -164,7 +164,7 @@ Vue.component('yt-editor', {
 					if(row.end.indexOf(":") > 0) {
 						let arr = row.end.split(":");
 						row.end = (parseInt(arr[0], 10) * 60) 
-							+ parseInt(arr[1], 10);
+							+ parseFloat(arr[1]);
 					} else {
 						row.end = parseInt(row.end, 10);
 					}
@@ -172,13 +172,13 @@ Vue.component('yt-editor', {
 			} else {
 				if(typeof row.start == "number") {
 					let i1 = Math.floor(row.start / 60)
-					let i2 =row.start % 60;
-					row.start = `${i1}:${i2}`
+					let i2 = (row.start % 60).toFixed(1);
+					row.start = `${i1}:${i2}`.replace(".0", "");
 				}
 				if(typeof row.end == "number") {
 					let i1 = Math.floor(row.end / 60)
-					let i2 =row.end % 60;
-					row.end = `${i1}:${i2}`
+					let i2 = (row.end % 60).toFixed(1);
+					row.end = `${i1}:${i2}`.replace(".0", "");
 				}
 			}
 			return row;

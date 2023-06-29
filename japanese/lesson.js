@@ -237,8 +237,8 @@ Vue.component('lesson', {
 					for(let i = 0; i < arr.length; i++) {
 						let td = arr[i].split("\t");
 						let accent = window.renderAccent(td[0], td[3]);
-						result += `<div class="card" style="font-size: 20px;">
-								<div style="min-width: 25px;">${i + 1}.</div>
+						result += `<div class="card ${this.print == 'N' ? '' : 'print'}" style="font-size: 20px;">
+								<div style="min-width: 25px; font-size: 20px;">${i + 1}.</div>
 								<div style="flex: 1; font-size: 20px;">
 									<div style="font-size: 20px;">${accent}</div>
 									<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
@@ -247,24 +247,32 @@ Vue.component('lesson', {
 									<div style="min-height: 24px;">${td[1]}</div>
 									<div>${td[2]}</div>
 								</div>
-							</div>`
+							</div>`;
+						
+						if(this.print == "Y" && i % 18 == 17) {
+							result += `<span  style='width: 100%; page-break-after: always;'></span>`
+						}
 					}
 
-					// 
 					this.html += (this.print == "N" ? "" : 
-						(this.html.length ==0 ? "" : `<span style='page-break-after: always;'></span>`) // 
-						+ (`<h3 style="width: 100%; font-size: 30px;">${option}</h3>`)
+						(this.html.length == 0 ? "" : `<span style='page-break-after: always;'></span>`) // 
+						+ (`<h3 style="width: 100%; font-size: 30px; text-align: center;">${option}</h3>`)
 					
 					) + result;
 					
-				}				
+				}
 			}
 
 			if(this.print == "N") {
 				execute(this.option)
 			} else {
+				let lesson = this.$queryString("lesson");
 				for(let key in 單字) {
-					execute(key)
+					if(typeof lesson == "string" && lesson.length > 0) {
+						if(lesson.indexOf(key) > -1)
+							execute(key)
+					} else
+						execute(key)
 				}
 			}
 			setTimeout(() => {
