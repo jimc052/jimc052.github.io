@@ -7,10 +7,10 @@ Vue.component('blood', {
 				justify-content: center;">
 				<div style="flex: 1; margin: 0 10px;">
 				</div>
-				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
+				<Icon v-if="calendar == 'ios-calendar'" type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
 				{{yymm}}
-				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
+				<Icon  v-if="calendar == 'ios-calendar'" type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
 				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
 					<Icon :type="calendar" size="32" 
@@ -389,13 +389,13 @@ Vue.component('blood', {
 			if(this.calendar == "ios-calendar") {
 				this.fetch();
 			} else {
-				let date = new Date(), 
-					ds = {};
+				let date = new Date(), ds = {};
 				this.spinShow = true;
 
-				for(let i = 0; i <= 5; i++) {
+				for(let i = 0; i <= 11; i++) { // 只要1年的資料
 					let yymm = date.addMonths(i  * -1).toString("yyyy-mm");
-					let data = await this.fetch2(yymm);
+					let data = await this.fetch2(yymm), empty = 0;
+					// if(yymm == "2023-02") 
 					for(let key in data) {
 						let arr = [[], []];
 						for(let key2 in data[key]) {
@@ -409,20 +409,26 @@ Vue.component('blood', {
 							for(let j = 0; j < arr[1].length; j++) {
 								arr[0][j] = (parseInt(arr[0][j], 10) + parseInt(arr[1][j], 10)) / 2;
 							}
-							ds[yymm + "-" + key] = arr[0].join("/")
+							ds[yymm + "-" + key] = arr[0].join("/");
 						} else if(arr[0].length == 0 && arr[1].length == 3) {
 							ds[yymm + "-" + key] = arr[1].join("/");
 						} else if(arr[0].length == 3 && arr[1].length == 0) {
 							ds[yymm + "-" + key] = arr[0].join("/");
+						} else {
+						}
+						if(!(arr[0].length == 0 && arr[1].length == 0)) {
+							empty++;
 						}
 					}
+					if(empty == 0) break;
+					// console.log(yymm + ": " + empty)
 				}
 
 				let today = date.addDays(-1), result = {};
-				for(let i = 0; i < 24; i++) {
-					let span = "", arr = [];
+				for(let i = 0; i < 52; i++) { // 週
+					let span = "", arr = [], yymmdd = "";
 					for(let j = 0; j < 7; j++) {
-						let yymmdd = today.toString("yyyy-mm-dd");
+						yymmdd = today.toString("yyyy-mm-dd");
 						if(j == 0) 
 							span = yymmdd;
 						else if(j == 6)
@@ -432,6 +438,7 @@ Vue.component('blood', {
 						}
 						today = today.addDays(-1);
 					}
+					// if(i < 3) console.log(span + ": " + JSON.stringify(arr, null, 2))
 					if(arr.length > 0) {
 						let arr2 = [0, 0, 0];
 						for(let j = 0; j < arr.length; j++) {
@@ -450,6 +457,7 @@ Vue.component('blood', {
 						result[span] = arr2.join("/")
 					} else {
 						// console.log(span + ": none")
+						if(yymmdd <= "2022-12-30") break;
 					}
 				}
 				this.datas = result;

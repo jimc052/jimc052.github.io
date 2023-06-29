@@ -189,22 +189,16 @@ Date.prototype.addDays = function(days) {
 
 Date.prototype.addMonths = function(months) {
   var newDate = new Date(this.getTime()); // Create a new Date object based on the current date
-  var currentMonth = newDate.getMonth(); // Get the current month (0-11)
-  
-  // Calculate the new month and year
-  var newMonth = currentMonth + months;
-  var newYear = newDate.getFullYear();
+	newDate.setDate(1);
+  var currentMonth = newDate.getMonth() + months; // Get the current month (0-11)
+  var currentYear = newDate.getFullYear();
 
-  // Adjust the year if the new month exceeds December (11)
-  while (newMonth > 11) {
-    newMonth -= 12;
-    newYear++;
-  }
-
-  // Set the new month and year on the new Date object
+	let newYear = currentMonth < 0 ? currentYear - 1 : (
+		currentMonth > 11 ? currentYear + 1 : currentYear
+	)
+	let newMonth = currentMonth % 11;
   newDate.setMonth(newMonth);
   newDate.setFullYear(newYear);
-
   return newDate;
 };
 
