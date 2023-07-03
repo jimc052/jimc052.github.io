@@ -6,7 +6,7 @@ window.renderAccent = (語, 重音) => {
 
   for(let x = 0; x < values.length; x++) {
     let value = values[x];
-    let accent = accnets[x];
+    let accent = accnets.length > x ? accnets[x] : accnets[0];
     if(typeof accent == "string" && accent.length > 1) {
       accent = accent.substr(0, 1);
     } else if(accent.length == 0) {
@@ -62,7 +62,7 @@ window.renderAccent = (語, 重音) => {
     } else {
       result = arr.join("");
     }
-    results += (results.length > 0 ? "//" : "") + result;
+    results += (results.length > 0 ? "，" : "") + result;
   }
   return results;
 }
@@ -198,7 +198,7 @@ window.japanese = function() {
       [{"平":"みゃ","mp3":"mya","片":"ミャ"},null,{"平":"みゅ","mp3":"myu","片":"ミュ"},null,{"平":"みょ","mp3":"myo","片":"ミョ"}],
       [{"平":"りゃ","mp3":"rya","片":"リャ"},null,{"平":"りゅ","mp3":"ryu","片":"リュ"},null,{"平":"りょ","mp3":"ryo","片":"リョ"}],
       [{"平":"ぎゃ","mp3":"gya","片":"ギャ"},null,{"平":"ぎゅ","mp3":"gyu","片":"ギュ"},null,{"平":"ぎょ","mp3":"gyo","片":"ギョ"}],
-      [{"平":"じゃ","mp3":"zya","片":"ジャ"},null,{"平":"じゅ","mp3":"zyu","片":"ジュ"},null,{"平":"じょ","mp3":"zyo","片":"ジョ"}],
+      [{"平":"じゃ","mp3":"ja","片":"ジャ"},null,{"平":"じゅ","mp3":"ju","片":"ジュ"},null,{"平":"じょ","mp3":"jo","片":"ジョ"}],
       [{"平":"びゃ","mp3":"bya","片":"ビャ"},null,{"平":"びゅ","mp3":"byu","片":"ビュ"},null,{"平":"びょ","mp3":"byo","片":"ビョ"}],
       [{"平":"ぴゃ","mp3":"pya","片":"ピャ"},null,{"平":"ぴゅ","mp3":"pyu","片":"ピュ"},null,{"平":"ぴょ","mp3":"pyo","片":"ピョ"}],
     ]

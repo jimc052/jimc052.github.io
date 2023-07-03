@@ -19,6 +19,12 @@ class Player {
 				mp3 = "si"
 			else if(mp3 == "ji") 
 				mp3 = "zi"
+			else if(mp3 == "ja") 
+				mp3 = "zya"
+			else if(mp3 == "ju") 
+				mp3 = "zyu"
+			else if(mp3 == "jo") 
+				mp3 = "zyo"
 			else if(mp3 == "fu") 
 				mp3 = "hu"
 			audio.src = Player.url + mp3 + ".mp3";
