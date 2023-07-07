@@ -31,7 +31,7 @@ Vue.component('pronounce', {
 					:class="{cell: item2 != null, active: active == index1 + '-' + index2}" 
 					@click="play(index1, index2)">
 					{{item2 == null ? "" : item2[word]}}
-					<div>{{item2 == null ? "" : item2["mp3"]}}</div>
+					<div style="color: #2d8cf0">{{item2 == null ? "" : item2["mp3"]}}</div>
 				</td>
 			</tr>
 		</table>
