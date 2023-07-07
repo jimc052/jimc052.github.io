@@ -6,17 +6,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
 	<style>
 		body {
-			
-			
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			user-select: none;
+			font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
 		}
 		div {
 			display: flex;
 			flex-direction: row;
 			justify-content: flex-start;
 			align-items: center;
-			/* flex-wrap: wrap; */
 		}
-		button {
+		a {
 			min-width: 80px;
 			height: 40px;
 			/* font-size: 20px; */
@@ -29,50 +31,74 @@
 			display: inline-block;
 			font-size: 16px;
 			margin-top: 10px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			padding: 0px 10px;
 		}
-		button + button {
+		a.href {
+			background-color: #2d8cf0;
+		}
+		a + a {
 			margin-left: 5px;
 		}
 	</style>
 </head>
 <body> 
-	<div>
-		<button data='VOA'>VOA</button>
-		<button data='gym'>健身</button>
-		<button data='shiftTime'>輪班表</button>
-		<button data='barcode'>barcode</button>
-		<button data='VUE-JSON'>VUE-JSON</button>		
-	</div>
-	<div>
-		<button data='japanese' data-mode="五十音">五十音</button>
-		<button data='japanese'  data-mode="筆順練習">筆順練習</button>
-		<button data='japanese'  data-mode="字典" >日文字典</button>
-		<button data='japanese'  data-mode="大家的日本語">大家的日本語</button>		
-	</div>
-	<div>
-		<button data='MyTube'>MyTube</button>
-		<button data='body'>身體記錄</button>		
-	</div>
 </body>
 <script>
-	window.onload = async function(){
+	let Links = [
+		[
+			{title: "VOA", path: "VOA"}, 
+			{title: "健身", path: "gym"}, 
+			{title: "輪班表", path: "shiftTime"}, 
+			{title: "barcode", path: "barcode"},
+			{title: "VUE-JSON", path: "VUE-JSON"},
+		], [
+			{ path: "japanese", mode: "五十音", title: "五十音" }, 
+			{ path: "japanese", mode: "筆順練習", title: "筆順練習" }, 
+			{ path: "japanese", mode: "字典", title: "日文字典" }, 
+			{ path: "japanese", mode: "大家的日本語", title: "大家的日本語"}, 
+		], [
+			{ title: "日語筆記", href: "https://docs.google.com/document/d/19hoPOqtPwmYEruZORJrgBcoq2u-YExddY69UC4XLs0A/edit"},
+			{ title: "五十音筆記", href: "https://docs.google.com/document/d/1OitboqcHXE2XBaEHNGrxqpjQiC1Mg5cmrecU9myk2qo/edit",}
+		], [
+			{title: "MyTube", path: "MyTube"}, 
+			{title: "身體記錄", path: "body"}, 
+		]
+	];
+
+	window.onload = createLink;
+
+	function createLink() {
 		let local = location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1;
-		let arr = document.querySelectorAll("button");
-		arr.forEach(item=> {
-			item.addEventListener("click", (e)=> {
-				let data = e.target.getAttribute("data");
-				let mode = e.target.getAttribute("data-mode");
-				let para = (data == "MyTube" ? "?duration=5&repeat=2&answer=0" 
-					: (data == "shiftTime"  && local == true ? "?anonymous=amltY2hlbjUzNDJAZ21haWwuY29tCTUzNDJKaW1DaGVu" : "")
-					)
-				if(data == "barcode" && local == true) {
-					para = "?mode=COUPON&SITE=BSMS000032&STORE=000000&ID_NO=20249";
-				} else if(typeof mode == "string" && mode.length > 0) {
-					para = "?mode=" + mode;
+
+		for(let i = 0; i < Links.length; i++) {
+			let div = document.createElement("div");
+			for(let j = 0; j < Links[i].length; j++) {
+				let a = document.createElement("a");
+				a.innerHTML = Links[i][j].title;
+				if(typeof Links[i][j].href == "string") {
+					a.setAttribute("href", Links[i][j].href);
+					a.classList.add("href")
+				} 
+				else {
+					let path = Links[i][j].path;
+					let mode = Links[i][j].mode;
+					let para = (path == "MyTube" ? "?duration=5&repeat=2&answer=0" 
+						: (path == "shiftTime"  && local == true ? "?anonymous=amltY2hlbjUzNDJAZ21haWwuY29tCTUzNDJKaW1DaGVu" : "")
+						)
+					if(path == "barcode" && local == true) {
+						// para = "?mode=COUPON&SITE=BSMS000032&STORE=000000&ID_NO=20249";
+					} else if(typeof mode == "string" && mode.length > 0) {
+						para = "?mode=" + mode;
+					}
+					a.setAttribute("href", `./${path}/index.html` + para)					
 				}
-				location.href = `./${data}/index.html` + para;
-			})			
-		})
+				div.appendChild(a);
+			}
+			document.body.appendChild(div);
+		}
 	}
 </script>
 </html>
