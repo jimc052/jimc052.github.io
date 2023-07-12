@@ -414,48 +414,5 @@ Vue.component('gym-menu', {
 	computed: {
 	},
 	watch: {
-    
 	}
 });
-/*
-    async function fiebase2(){
-      console.log("fiebase.............")
-      let date = (new Date()).getTime(); // /" + report
-      // let ref = FireStore.db.collection("YouTube").doc("GYM");
-      try {
-        let ref = FireStore.db.collection("YouTube").doc("GYM");
-        json = {};
-        for(let i = 0; i < self.menu.length; i++) {
-          let obj = Object.assign({}, self.menu[i]);
-          obj.modifyDate = date;
-          obj.index = i;
-          let id = obj.id;
-          delete obj.id;
-          json[id] = obj
-        }
-
-        let x = await ref.set(json);
-
-        // for(let i = 0; i < self.menu.length; i++) {
-        //   let obj = Object.assign({}, self.menu[i]);
-        //   obj.modifyDate = date;
-        //   obj.index = i;
-        //   let id = obj.id;
-        //   delete obj.id;
-
-
-        //   let ref = FireStore.db.collection("GYM").doc(id);
-        //   let x = await ref.set(obj);
-        //   console.log(x)
-        //   // if(i > 2) break;
-        // }
-        
-      } catch(e) {
-        console.log(e)
-      }      
-    }
-    setTimeout(() => {
-      // fiebase2();  
-		}, 3000)
-
-*/

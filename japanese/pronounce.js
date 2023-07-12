@@ -10,13 +10,13 @@ Vue.component('pronounce', {
 				<Radio label="2">拗音</Radio>
 			</RadioGroup>
 			<div :style="{flex: width < 400 ? 1 : null, width: width < 400 ? null : '20px'}" />
-			<RadioGroup v-model="word" type="button" style="margin-left: 10px;">
+			<RadioGroup v-if="width < 600" v-model="word" type="button" style="margin-left: 10px;">
 				<Radio label="平">平假</Radio>
 				<Radio label="片">片假</Radio>
 			</RadioGroup>
 		</div>
 
-		<table  id="tbl50" style="border-collapse:collapse; width: 100%;">
+		<table id="tbl50" style="border-collapse:collapse; width: 100%;">
 			<tr>
 				<td @click="playAll()" style="cursor: pointer;" />
 				<td v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1" @click="playColumn(index1)" style="cursor: pointer;">
@@ -28,10 +28,21 @@ Vue.component('pronounce', {
 					{{item1[0][word].substr(0, 1)}}
 				</td>
 				<td v-for="(item2, index2) in item1" :key="index2" 
-					:class="{cell: item2 != null, active: active == index1 + '-' + index2}" 
-					@click="play(index1, index2)">
-					{{item2 == null ? "" : item2[word]}}
-					<div style="color: #2d8cf0">{{item2 == null ? "" : item2["mp3"]}}</div>
+					:class="{cell: item2 != null, active: active == index1 + '-' + index2}"
+					@click="play(index1, index2)"
+				>
+
+					<div v-if="width < 600" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+						{{item2 == null ? "" : item2[word]}}
+					</div>
+					<div v-else style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+						<span>{{item2 == null ? "" : item2["平"]}}</span>
+						<span style="margin-left: 5px; color: orange;">{{item2 == null ? "" : item2["片"]}}</span>
+					</div>
+
+					<div style="color: #2d8cf0" :class="{active: active == index1 + '-' + index2}">
+						{{item2 == null ? "" : item2["mp3"]}}
+					</div>
 				</td>
 			</tr>
 		</table>
@@ -66,10 +77,24 @@ Vue.component('pronounce', {
 			this.width = document.body.clientWidth;
 		},
 		onChangeIndex(e) {
+			// document.querySelector("#tbl50").innerHTML = "";
 			this.active = "";
 			if(this.index != "0") {
 				this.word = "平"
 			}
+			setTimeout(() => {
+				let tr = document.querySelectorAll("#tbl50 tr");
+				for(let i = 0; i < tr.length; i++) {
+					let td = tr[i].querySelectorAll("td");
+					if(this.index == "2") {
+						td[2].classList.add("hidden");
+						td[4].classList.add("hidden");
+					} else {
+						td[2].classList.remove("hidden");
+						td[4].classList.remove("hidden");
+					}
+				}
+			}, 100);
 		},
 		async play(row, col) {
 			if(Player.mode != "") await Player.wait(1);

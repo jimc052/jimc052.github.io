@@ -19,6 +19,13 @@
 	<script src="../statics/iview/iview.js"></script>
 	<script src="../statics/iview/zh-TW.min.js"></script>
 
+
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
+	<script src="../VOA/system/fireStore.js"></script>
+	<script src="../VOA/system/system.js"></script>
+
 	<script src="./system.js"></script>
 	<script src="./TTX.js"></script>
 	<script src="./Player.js"></script>
@@ -56,10 +63,6 @@
 				font-size: 24px;
 			}
 
-			#tbl50 td > div {
-				font-size: 20px;
-			}
-
 			#tbl50 tr:first-child td, #tbl50 td:first-child {
 				font-size: 24px !important;
 			}
@@ -68,10 +71,6 @@
 		@media screen and (min-width: 800px) {
 			#tbl50 td {
 				font-size: 30px;
-			}
-
-			#tbl50 td > div {
-				font-size: 24px;
 			}
 
 			#tbl50 tr:first-child td, #tbl50 td:first-child {
@@ -88,6 +87,9 @@
 		#tbl50 {
       /* margin: 10px; */
     }
+		#tbl50 td * {
+			font-size: inherit;
+		}
 
     #tbl50 td {
       font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
@@ -108,10 +110,14 @@
       width: 18%;
       cursor: pointer;
     }
-		#tbl50 td.active {
-      color: white;
+		#tbl50 *.active {
+      color: white !important;
 			background-color: rgb(45, 140, 240);
     }
+
+		#tbl50 td.hidden {
+			display: none;
+		}
 
 		.ivu-table-header thead tr th, .ivu-table-fixed-header thead tr th{
 			padding: 0px;
@@ -242,6 +248,29 @@
 <script>
 	var vm = null;
 	window.onload = async function(){
+		let email =  window.localStorage["email"];
+		let password =  window.localStorage["password"];
+		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
+			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
+			let s = location.href.substr(location.href.indexOf(key) + key.length)
+			let arr = s.split("&");
+			s = arr[0].replace(key, "");
+			s = atob(s)
+			arr = s.split("\t")
+			email = arr[0];
+			password = arr[1];
+		}
+		if(typeof email == "string" && email.length > 0 ) {
+			try {
+				FireStore.initial();
+				await FireStore.signIn(email, password)
+				console.log("FireStore.mail: " + FireStore.mail())
+			} catch(e) {
+				console.log(e)
+				alert(e.message)
+			}
+		}
+
 		Vue.prototype.$storage = function (key, value) {
 			if(typeof key == "string" && typeof value == "undefined"){
 				let s = window.localStorage[key];

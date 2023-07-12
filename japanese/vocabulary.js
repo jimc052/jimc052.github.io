@@ -257,8 +257,9 @@ Vue.component('vocabulary', {
 			// let sk = event.shiftKey, code = event.keyCode;
 			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
-			/*
 			if(o.tagName == "BODY" && pk && char == "C") { // 因為第一行沒有行號，而其他行又多了行號，所以無法用；2023-06-26
+
+				/*
 				const selection = window.getSelection();
 				let arr = selection.toString().split("\n")
 				let s = "", cols = 8;
@@ -279,13 +280,14 @@ Vue.component('vocabulary', {
 				el.select();
 				document.execCommand('copy');
 				// document.body.removeChild(el);
+				*/
 			} else {
 				return;
 			}
 			event.preventDefault();
 			event.stopImmediatePropagation();
 			event.stopPropagation();
-			*/
+			
 		},
 		onColumnResize(width, start, col) { // 還沒寫...............
 			// console.log(col)
@@ -523,6 +525,56 @@ Vue.component('vocabulary', {
 			else {
 				this.$appendScript("./datas/單字.js");
 			}
+
+			// this.upload();
+			// this.download();
+		}, 
+		async upload() {
+			let awaitSecond = () => {
+				return new Promise(async (success, error) => { 
+					setTimeout(() => {
+						success();
+					}, 1000);
+				});
+			}
+			let cols = "語	級	舊	漢	註	重	中	類".split("\t");
+			let arr = words.split("\n");
+			let date = (new Date()).getTime()
+			for(let index1 = 0; index1 < arr.length; index1++) {
+				let row = arr[index1].split("\t");
+				let json = {};
+				row.forEach((el2, index2) => {
+					if(cols[index2] != "舊") json[cols[index2]] = el2;
+				});
+				json["date"] = date;
+				try {
+					let ref = FireStore.db.collection("japanese-vocabulary").doc((index1 + "").leftPadding(5));
+					let x = await ref.set(json);
+					// await awaitSecond();
+					console.log(index1)
+				} catch(e) {
+					console.log(e)
+					break;
+				}
+				// if(index1 > 100) break;
+			}
+		},
+		async download() {
+			return new Promise(async (success, error)  => {
+				try {
+					let snapshot1 = await FireStore.db.collection("japanese-vocabulary")
+						.where("類", "==", "數字")
+						.get();
+					// console.log(snapshot1.docs)
+					snapshot1.forEach(doc => {
+						console.log(doc.id)
+						console.log(doc.data())
+					});
+					// success(self.datas);
+				} catch(e) {
+					error(e)
+				}
+			});
 		}
 	},
 	watch: {
