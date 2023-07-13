@@ -10,9 +10,10 @@ Vue.component('pronounce', {
 				<Radio label="2">拗音</Radio>
 			</RadioGroup>
 			<div :style="{flex: width < 400 ? 1 : null, width: width < 400 ? null : '20px'}" />
-			<RadioGroup v-if="width < 600" v-model="word" type="button" style="margin-left: 10px;">
+			<RadioGroup v-model="word" type="button" style="margin-left: 10px;">
 				<Radio label="平">平假</Radio>
 				<Radio label="片">片假</Radio>
+				<Radio v-if="width > 600" label="全">全部</Radio>
 			</RadioGroup>
 		</div>
 
@@ -25,20 +26,20 @@ Vue.component('pronounce', {
 			</tr>
 			<tr v-for="(item1, index1) in datas[index]" :key="index1">
 				<td @click="playRow(index1)" style="cursor: pointer;">
-					{{item1[0][word].substr(0, 1)}}
+					{{item1[0][word == "全" ? "平" : word].substr(0, 1)}}
 				</td>
 				<td v-for="(item2, index2) in item1" :key="index2" 
 					:class="{cell: item2 != null, active: active == index1 + '-' + index2}"
 					@click="play(index1, index2)"
 				>
-
-					<div v-if="width < 600" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-						{{item2 == null ? "" : item2[word]}}
-					</div>
-					<div v-else style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+					<div v-if="word == '全'" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
 						<span>{{item2 == null ? "" : item2["平"]}}</span>
 						<span style="margin-left: 5px; color: orange;">{{item2 == null ? "" : item2["片"]}}</span>
 					</div>
+					<div v-else style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+						{{item2 == null ? "" : item2[word]}}
+					</div>
+					
 
 					<div style="color: #2d8cf0" :class="{active: active == index1 + '-' + index2}">
 						{{item2 == null ? "" : item2["mp3"]}}
@@ -80,7 +81,7 @@ Vue.component('pronounce', {
 			// document.querySelector("#tbl50").innerHTML = "";
 			this.active = "";
 			if(this.index != "0") {
-				this.word = "平"
+				// this.word = "平"
 			}
 			setTimeout(() => {
 				let tr = document.querySelectorAll("#tbl50 tr");
