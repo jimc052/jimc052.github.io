@@ -13,7 +13,7 @@ Vue.component('letter', {
 	created(){
 	},
 	async mounted () {
-		if(document.body.clientWidth < 400) {
+		if(document.body.clientWidth < 500) {
 			this.page = 1;
 		} else {
 			let page = window.localStorage["japanese-letter"];

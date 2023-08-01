@@ -33,6 +33,7 @@
 	<script src="./letter.js"></script>
 	<script src="./letter-1.js"></script>
 	<script src="./letter-all.js"></script>
+	<script src="./letter-exam.js"></script>
 	<script src="./vocabulary.js"></script>
 	<script src="./vocabulary-editor.js"></script>
 	<script src="./canvas.js"></script>
@@ -176,7 +177,7 @@
 			background-color: #2d8cf0; 
 		}
 		.button + .button {
-			margin-left: 3px;
+			margin-left: 30px;
 		}
 		span.accent {
 			margin-top: 2px;
@@ -229,7 +230,7 @@
 				<Icon v-else type="ios-arrow-forward" size="30" style="cursor: pointer; color: white;" @click="width = 180"></Icon>
 			</div>
 			<ul v-if="width > 30" class="ivu-menu" style="flex: 1;">
-				<li v-for="(item1, index1) in ['五十音', '筆順練習','字典']" :key="index1" class="ivu-menu-item"
+				<li v-for="(item1, index1) in ['五十音', '五十音測驗', '筆順練習','字典']" :key="index1" class="ivu-menu-item"
 					:class="{'ivu-menu-item-active': item1 == page}"
 					@click="onClick(item1);"
 				>
@@ -239,6 +240,7 @@
 		</div>
 		<div style="flex: 1;">
 			<pronounce v-if="page == '五十音'"></pronounce>
+			<letter-exam v-else-if="page == '五十音測驗'"></letter-exam>
 			<vocabulary v-else-if="page == '字典'"></vocabulary>
 			<lesson v-else-if="page == '大家的日本語'"></lesson>
 			<letter v-else></letter>
