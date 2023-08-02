@@ -20,7 +20,7 @@ Vue.component('letter-exam', {
         <li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
 					<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
 					<div style="flex: 1;">{{el.char}}</div>
-					<div style="width: 40px;">{{el.mp3}}</div>
+					<div v-if="el.mp3 != el.answer" style="width: 40px;">{{el.mp3}}</div>
 					<div style="width: 40px;" :style="{color: el.mp3 != el.answer ? '#c01921' : '#2d8cf0'}">{{el.answer}}</div>
         </li>
       </ul>
