@@ -13,15 +13,15 @@ Vue.component('letter-exam', {
       />
       <div class="button"><Icon type="md-volume-up" size="25" @click="play()" /></div>
     </div>
-    <div style="flex: 1; margin-bottom: 5px; padding: 5px; border: 1px solid red;" 
+    <div style="flex: 1; margin-bottom: 5px; padding: 5px; overflow: auto;" 
       :style="{width: (size + 80) + 'px'}"
     >
       <ul style="list-style-type: none;" class="ul-exam">
         <li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
-					<div style="font-size: 20px; width: 40px; text-align: right; margin-right: 5px">{{index - (i)}}</div>
+					<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
 					<div style="flex: 1;">{{el.char}}</div>
-					<div style="width: 40px;">{{el.answer}}</div>
-					<div></div>
+					<div style="width: 40px;">{{el.mp3}}</div>
+					<div style="width: 40px;" :style="{color: el.mp3 != el.answer ? '#c01921' : '#2d8cf0'}">{{el.answer}}</div>
         </li>
       </ul>
     </div>
@@ -114,7 +114,7 @@ Vue.component('letter-exam', {
 		execute() {
 			this.index++;
 			this.play();
-			console.log(JSON.stringify(this.datas[this.index]), this.index)
+			// console.log(JSON.stringify(this.datas[this.index]), this.index)
 		}
 	},
 	computed: {
