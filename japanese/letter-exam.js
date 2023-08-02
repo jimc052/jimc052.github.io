@@ -1,34 +1,36 @@
-/*
-<RadioGroup v-model="tone" type="button" style="" @on-change="onChangeTone">
-					<Radio label="0">清音</Radio>
-					<Radio label="1">濁音</Radio>
-					<Radio label="2">全部</Radio>
-				</RadioGroup>
-
-				<div style="flex: 1"></div>
-
-				<RadioGroup v-model="word" type="button" @on-change="onChangeWord">
-					<Radio label="平">平假</Radio>
-					<Radio label="片">片假</Radio>
-					<Radio label="全">全部</Radio>
-				</RadioGroup>
-*/
 Vue.component('letter-exam', { 
-	template:  `<div style="height: 100%; padding: 5px;">
-		<div v-if="index > -1" id="frame-letter-exam" style="height: 100%; width: 100%; overflow: auto; 
-      display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-			<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
-			<div  :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
-				<Input ref="input1" element-id="input1" v-model="input1"
-					style="font-size: 20px; flex: 1; margin-right: 10px; "
-					size="large"
-				/>
-				<div class="button"><Icon type="md-volume-up" size="25" @click="play()" /></div>
+	template:  `<div id='letter-exam' style="height: 100%; padding: 5px 10px;">
+		<div v-if="index > -1" id="frame-letter-exam" 
+			style="height: 100%; overflow: hidden; display: flex;"
+			:style="{
+				width: isSmall ? '100%' : '600px', 
+				flexDirection: isSmall ? 'column' : 'row',
+				justifyContent: isSmall ? 'flex-start' : 'center',
+				alignItems: isSmall ? 'center' : 'flex-start'
+			}"
+		>
+			<div>
+				<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
+				<div :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+					<Input ref="input1" element-id="input1" v-model="input1"
+						style="font-size: 20px; flex: 1; margin-right: 10px; "
+						size="large"
+					/>
+					<div class="button"><Icon type="md-volume-up" size="25" @click="play()" /></div>
+				</div>
 			</div>
-			<div style="flex: 1; margin-bottom: 5px; padding: 5px; overflow: auto;" 
-				:style="{width: (size + 80) + 'px'}"
+
+			<div style="margin-bottom: 5px;  overflow: auto;" 
+				:style="{
+					width: isSmall ? (size + 80) + 'px' : (600 - size - 20) + 'px', 
+					marginLeft: (isSmall ? '0' : '10') + 'px',
+					flex: isSmall ? 1 : 'none',
+					height: isSmall ? 'none' : '100%',
+					padding: isSmall ? '5px' : '0px',
+
+				}"
 			>
-				<ul style="list-style-type: none;" class="ul-exam">
+				<ul style="list-style-type: none; " class="ul-exam">
 					<li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
 						<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
 						<div style="flex: 1;">{{el.char}}</div>
@@ -64,13 +66,13 @@ Vue.component('letter-exam', {
 			tone: ["清音"],
       index: -1,
 			datas: [],
-      input1: ""
+      input1: "",
+			isSmall: true
 		};
 	},
 	created(){
 	},
 	async mounted () {
-		window.addEventListener('keydown', this.onKeydown, false);
 		let tone = window.localStorage["japanese-letter-exam-tone"] //  = JSON.stringify(this.options)
 		if(typeof tone == "string" && tone.length > 0){
 			this.tone = JSON.parse(tone);
@@ -79,15 +81,18 @@ Vue.component('letter-exam', {
 		if(typeof word == "string" && word.length > 0){
 			this.word = JSON.parse(word);
 		}
-
-    setTimeout(() => {
-			// this.sample();
-    }, 300);
+		window.addEventListener('keydown', this.onKeydown, false);
+		this.broadcast.$on('onResize', this.onResize);
+		this.onResize();
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
+		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		onResize() {
+			this.isSmall = document.body.clientWidth  < 600 ? true : false;
+		},
     onKeydown(event) {
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
