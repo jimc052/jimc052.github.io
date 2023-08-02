@@ -39,7 +39,6 @@ class Player {
 			audio.addEventListener("canplay", () => {
 				Player.mode = "playing";
 				audio.play();
-				// console.log("canplay")
 			}, true);
 			audio.addEventListener("durationchange", () => {
 				// console.log("durationchange")
@@ -53,7 +52,6 @@ class Player {
 					resolve();
 				}, 1000);
     	}, true);
-
 		});
 	}
 
