@@ -46,7 +46,8 @@ Vue.component('letter-exam', {
 					display: flex; flex-direction: row;"
 				>
 					<div style="font-size: 20px; flex: 1;">{{"答對：" + answered}}</div>
-					<div style="font-size: 20px; flex: 1;">{{"題數：" + datas.length}}</div>	
+					<div style="font-size: 20px; flex: 1;">{{"題數：" + datas.length}}</div>
+					<div style="font-size: 20px; flex: 1;">{{"分數：" + rate}}</div>
 				</div>
 			</div>
 		</div>
@@ -213,6 +214,17 @@ Vue.component('letter-exam', {
 				return el.mp3 == el.answer;
 			});
 			return arr.length;
+		},
+		rate() {
+			let correct = 0, total = 0;
+			for(let i = 0; i <= this.datas.length; i++) {
+				if(typeof this.datas[i].answer == "undefined") break;
+				total++;
+				if(this.datas[i].mp3 == this.datas[i].answer) {
+					correct++;
+				}
+			}
+			return Math.floor((correct / total) * 100)
 		}
 	},
 	watch: {
