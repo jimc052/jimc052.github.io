@@ -9,7 +9,7 @@ Vue.component('letter-exam', {
 				alignItems: isSmall ? 'center' : 'flex-start'
 			}"
 		>
-			<div>
+			<div v-if="index < datas.length">
 				<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
 				<div :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
@@ -19,8 +19,9 @@ Vue.component('letter-exam', {
 					<div class="button"><Icon type="md-volume-up" size="25" @click="play()" /></div>
 				</div>
 			</div>
+			<Button  v-else type="primary" size="large"  @click="sample" style="">開始</Button>
 
-			<div style="margin-bottom: 5px;  overflow: auto;" 
+			<div style="margin-bottom: 5px; display: flex; flex-direction: column; overflow: auto; " 
 				:style="{
 					width: isSmall ? (size + 80) + 'px' : (600 - size - 20) + 'px', 
 					marginLeft: (isSmall ? '0' : '10') + 'px',
@@ -30,14 +31,23 @@ Vue.component('letter-exam', {
 
 				}"
 			>
-				<ul style="list-style-type: none; " class="ul-exam">
-					<li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
-						<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
-						<div style="flex: 1;">{{el.char}}</div>
-						<div v-if="el.mp3 != el.answer" style="width: 40px; color: #c01921; ">{{el.answer}}</div>
-						<div style="width: 40px;" :style="{color: '#2d8cf0'}">{{el.mp3}}</div>
-					</li>
-				</ul>
+				<div style="overflow: auto; flex: 1; border: 1px white solid;" >
+					<ul style="list-style-type: none; " class="ul-exam">
+						<li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
+							<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
+							<div style="flex: 1;">{{el.char}}</div>
+							<div v-if="el.mp3 != el.answer" style="width: 40px; color: #c01921; ">{{el.answer}}</div>
+							<div style="width: 40px;" :style="{color: '#2d8cf0'}">{{el.mp3}}</div>
+						</li>
+					</ul>
+				</div>
+
+				<div style="margin-top: 5px; background: white; font-size: 20px; padding: 5px 10px; 
+					display: flex; flex-direction: row;"
+				>
+					<div style="font-size: 20px; flex: 1;">{{"答對：" + answered}}</div>
+					<div style="font-size: 20px; flex: 1;">{{"題數：" + datas.length}}</div>	
+				</div>
 			</div>
 		</div>
 
@@ -103,10 +113,14 @@ Vue.component('letter-exam', {
 
 			if(o.tagName == "INPUT"){
 				if(code == 13) {
-					this.datas[this.index].answer = this.input1.trim().length == 0 ? "X" : this.input1.toLowerCase();
-					this.$set(this.datas, this.index, this.datas[this.index]);
-					this.input1 = "";
-					this.execute();
+					if(this.index <= this.datas.length - 1) {
+						this.datas[this.index].answer = this.input1.trim().length == 0 ? "X" : this.input1.toLowerCase();
+						this.$set(this.datas, this.index, this.datas[this.index]);
+						this.input1 = "";
+						this.execute();
+					} else {
+						this.index = -1;
+					}
 				} else if(code == 27) {
 
 				} else {
@@ -115,9 +129,15 @@ Vue.component('letter-exam', {
 			}
     },
     async play() {
-      document.querySelector("#input1").focus();
-			if(Player.mode != "") await Player.wait(1);
-			await Player.play(this.datas[this.index].mp3);
+			if(this.index < this.datas.length - 1) {
+				document.querySelector("#input1").focus();
+				if(Player.mode != "") await Player.wait(1);
+				try {
+					await Player.play(this.datas[this.index].mp3);
+				} catch (e) {
+
+				}
+			}
     },
 		sample() {
 			this.datas = []; this.index = -1;
@@ -159,6 +179,7 @@ Vue.component('letter-exam', {
 				if(index < arr.length) {
 					let data = arr.splice(index, 1);
 					this.datas.push(data[0])
+					if(this.datas.length == 30) break;
 				}
 			}
 			this.execute();
@@ -186,6 +207,12 @@ Vue.component('letter-exam', {
 			} else {
 				return [];
 			}
+		}, 
+		answered() {
+			let arr = this.datas.filter((el, index) => {
+				return el.mp3 == el.answer;
+			});
+			return arr.length;
 		}
 	},
 	watch: {
