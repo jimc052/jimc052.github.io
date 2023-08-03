@@ -103,7 +103,7 @@ Vue.component('letter-exam', {
 
 			if(o.tagName == "INPUT"){
 				if(code == 13) {
-					this.datas[this.index].answer = this.input1.toLowerCase();
+					this.datas[this.index].answer = this.input1.trim().length == 0 ? "X" : this.input1.toLowerCase();
 					this.$set(this.datas, this.index, this.datas[this.index]);
 					this.input1 = "";
 					this.execute();
