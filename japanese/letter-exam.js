@@ -224,7 +224,7 @@ Vue.component('letter-exam', {
 					correct++;
 				}
 			}
-			return Math.floor((correct / total) * 100)
+			return total == 0 ? 0 : Math.floor((correct / total) * 100);
 		}
 	},
 	watch: {
