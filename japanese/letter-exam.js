@@ -125,6 +125,7 @@ Vue.component('letter-exam', {
 						this.execute();
 					}
 				} else if(code == 27) {
+					this.input1 = "";
 				} else if((code >=65 && code <=90) || (code >=97 && code <=122)) {
 					let s = "aeioukstnhmyrwncf";
 					let char = String.fromCharCode(code).toLowerCase();
