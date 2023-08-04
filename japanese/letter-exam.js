@@ -19,7 +19,10 @@ Vue.component('letter-exam', {
 					<div class="button"><Icon type="md-volume-up" size="25" @click="play()" /></div>
 				</div>
 			</div>
-			<Button  v-else type="primary" size="large"  @click="sample" style="">開始</Button>
+			<div v-else style="display: flex; flex-direction: row;">
+				<Button id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
+				<Button size="large" @click="index = -1" style="margin-left: 20px;">設定</Button>
+			</div>
 
 			<div style="margin-bottom: 5px; display: flex; flex-direction: column; overflow: auto; " 
 				:style="{
@@ -28,7 +31,6 @@ Vue.component('letter-exam', {
 					flex: isSmall ? 1 : 'none',
 					height: isSmall ? 'none' : '100%',
 					padding: isSmall ? '5px' : '0px',
-
 				}"
 			>
 				<div style="overflow: auto; flex: 1; border: 1px white solid;" >
@@ -119,18 +121,14 @@ Vue.component('letter-exam', {
 						this.$set(this.datas, this.index, this.datas[this.index]);
 						this.input1 = "";
 						this.execute();
-					} else {
-						this.index = -1;
 					}
 				} else if(code == 27) {
-
 				} else {
-
         }
 			}
     },
     async play() {
-			if(this.index < this.datas.length - 1) {
+			if(this.index < this.datas.length) {
 				document.querySelector("#input1").focus();
 				if(Player.mode != "") await Player.wait(1);
 				try {
@@ -187,9 +185,16 @@ Vue.component('letter-exam', {
 		},
 		execute() {
 			this.index++;
-			setTimeout(() => {
-				this.play();	
-			}, 300);
+			
+			if(this.index == this.datas.length) {
+				setTimeout(() => {
+					document.querySelector("#btnRestart").focus();
+				}, 600);
+			}else {
+				setTimeout(() => {
+					this.play();	
+				}, 300);				
+			}
 		},
 		onChangeTone() {
 			window.localStorage["japanese-letter-exam-tone"]= JSON.stringify(this.tone);
@@ -217,7 +222,7 @@ Vue.component('letter-exam', {
 		},
 		rate() {
 			let correct = 0, total = 0;
-			for(let i = 0; i <= this.datas.length; i++) {
+			for(let i = 0; i < this.datas.length; i++) {
 				if(typeof this.datas[i].answer == "undefined") break;
 				total++;
 				if(this.datas[i].mp3 == this.datas[i].answer) {
