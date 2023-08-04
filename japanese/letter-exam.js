@@ -68,6 +68,8 @@ Vue.component('letter-exam', {
 			</div>
 			<Button :disabled="word.length == 0 || tone.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
+			<div style="flex: 1" />
+			<div style="color: #2d8cf0; font-size: 20px;">2023-08-04 12:00</div>
 		</div>
   </div>`,
 	props: {
