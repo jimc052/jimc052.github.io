@@ -69,7 +69,7 @@ Vue.component('letter-exam', {
 			<Button :disabled="word.length == 0 || tone.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2023-08-04 12:00</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2023-08-04 12:10</div>
 		</div>
   </div>`,
 	props: {
@@ -126,7 +126,7 @@ Vue.component('letter-exam', {
 					}
 				} else if(code == 27) {
 				} else if((code >=65 && code <=90) || (code >=97 && code <=122)) {
-					let s = "aeioukstnhmyrwn";
+					let s = "aeioukstnhmyrwncf";
 					let char = String.fromCharCode(code).toLowerCase();
 					if(s.indexOf(char) == -1){
 						event.preventDefault();
