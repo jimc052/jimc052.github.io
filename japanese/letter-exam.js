@@ -13,10 +13,13 @@ Vue.component('letter-exam', {
 				<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
 				<div :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
-						style="font-size: 20px; flex: 1; margin-right: 10px; "
+						style="font-size: 20px; flex: 1;"
 						size="large"
 					/>
-					<div class="button"><Icon type="md-volume-up" size="25" @click="play()" /></div>
+					
+					<div v-if="volumeOn" class="button" style="margin-left: 10px;">
+						<Icon type="md-play" size="25" @click="play()" />
+					</div>
 				</div>
 			</div>
 			<div v-else style="display: flex; flex-direction: row;">
@@ -38,7 +41,15 @@ Vue.component('letter-exam', {
 						<li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
 							<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
 							<div style="flex: 1;">{{el.char}}</div>
-							<div v-if="el.mp3 != el.answer" style="width: 40px; color: #c01921; ">{{el.answer}}</div>
+							<div  style="width: 40px;">
+								<span v-if="el.mp3 != el.answer" style="color: #c4c4c4;
+									font-size: inherit;
+									text-decoration-line: line-through; 
+									text-decoration-color: #c01921;"
+								>
+									{{" " + el.answer + " "}}
+								</span>
+							</div>
 							<div style="width: 40px;" :style="{color: '#2d8cf0'}">{{el.mp3}}</div>
 						</li>
 					</ul>
@@ -66,6 +77,11 @@ Vue.component('letter-exam', {
 					<Checkbox label="片假"></Checkbox>
 				</CheckboxGroup>
 			</div>
+
+			<div class="button">
+				<Icon :type="volumeOn ? 'md-volume-up' : 'md-volume-off'" size="25" @click="changeVolume()" />
+			</div>
+			
 			<Button :disabled="word.length == 0 || tone.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
@@ -82,7 +98,8 @@ Vue.component('letter-exam', {
       index: -1,
 			datas: [],
       input1: "",
-			isSmall: true
+			isSmall: true,
+			volumeOn: true
 		};
 	},
 	created(){
@@ -96,6 +113,10 @@ Vue.component('letter-exam', {
 		if(typeof word == "string" && word.length > 0){
 			this.word = JSON.parse(word);
 		}
+
+		let volume = window.localStorage["japanese-letter-exam-volume"] //  = JSON.stringify(this.options)
+		this.volumeOn = volume == "N" ? false : true;
+
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
 		this.onResize();
@@ -105,6 +126,10 @@ Vue.component('letter-exam', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		changeVolume() {
+			this.volumeOn = ! this.volumeOn;
+			window.localStorage["japanese-letter-exam-volume"] = this.volumeOn ? "Y" : "N";
+		},
 		onResize() {
 			this.isSmall = document.body.clientWidth  < 600 ? true : false;
 		},
@@ -144,6 +169,7 @@ Vue.component('letter-exam', {
     async play() {
 			if(this.index < this.datas.length) {
 				document.querySelector("#input1").focus();
+				if(! this.volumeOn) return;
 				if(Player.mode != "") await Player.wait(1);
 				try {
 					await Player.play(this.datas[this.index].mp3);
