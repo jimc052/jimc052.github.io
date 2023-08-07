@@ -58,9 +58,9 @@ Vue.component('letter-exam', {
 				<div style="margin-top: 5px; background: white; font-size: 20px; padding: 5px 10px; 
 					display: flex; flex-direction: row;"
 				>
-					<div style="font-size: 20px; flex: 1;">{{"答對：" + answered}}</div>
-					<div style="font-size: 20px; flex: 1;">{{"題數：" + datas.length}}</div>
-					<div style="font-size: 20px; flex: 1;">{{"分數：" + rate}}</div>
+					<div style="font-size: 20px;">{{"答對：" + answered}}</div>
+					<div style="font-size: 20px; flex: 1; text-align: center;">{{"題數：" + datas.length}}</div>
+					<div style="font-size: 20px;">{{"分數：" + rate}}</div>
 				</div>
 			</div>
 		</div>
@@ -85,7 +85,7 @@ Vue.component('letter-exam', {
 			<Button :disabled="word.length == 0 || tone.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2023-08-04 12:10</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2023-08-07 09:30</div>
 		</div>
   </div>`,
 	props: {
