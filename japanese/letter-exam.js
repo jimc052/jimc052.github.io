@@ -210,6 +210,8 @@ Vue.component('letter-exam', {
 				
 			}
 
+			let max = this.tone.length + this.word.length > 2 ? 50 : 30;
+
 			while (arr.length > 0) {
 				let index = 0;
 				if(arr.length > 1) {
@@ -218,7 +220,7 @@ Vue.component('letter-exam', {
 				if(index < arr.length) {
 					let data = arr.splice(index, 1);
 					this.datas.push(data[0])
-					if(this.datas.length == 30) break;
+					if(this.datas.length == max) break;
 				}
 			}
 			this.execute();
