@@ -13,7 +13,8 @@ Vue.component('letter-exam', {
 				<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
 				<div :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
-						style="font-size: 20px; flex: 1;"
+						style="font-size: 20px; flex: 1; text-transform: lowercase;"
+						autocapitalize="none"
 						size="large"
 					/>
 					
@@ -85,7 +86,7 @@ Vue.component('letter-exam', {
 			<Button :disabled="word.length == 0 || tone.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2023-08-07 09:30</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2023-08-07 10:30</div>
 		</div>
   </div>`,
 	props: {
