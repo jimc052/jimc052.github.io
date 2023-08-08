@@ -42,12 +42,14 @@ Vue.component('letter-exam', {
 							<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
 							<div style="flex: 1;">{{el.char}}</div>
 							<div  style="width: 40px;">
-								<span v-if="el.mp3 != el.answer" style="color: #c4c4c4;
-									font-size: inherit;
-									text-decoration-line: line-through; 
-									text-decoration-color: #c01921;"
+								<span v-if="el.mp3 != el.answer" 
+									style="
+									  font-size: inherit;
+									  text-decoration-line: line-through; 
+									  text-decoration-color: #f55f67;
+									"
 								>
-									{{" " + el.answer + " "}}
+									{{el.answer}}
 								</span>
 							</div>
 							<div style="width: 40px;" :style="{color: '#2d8cf0'}">{{el.mp3}}</div>
@@ -153,6 +155,8 @@ Vue.component('letter-exam', {
 					this.input1 = "";
 				} else if((code >=65 && code <=90) || (code >=97 && code <=122)) {
 					let s = "aeioukstnhmyrwncf";
+					if(this.tone.join(",").indexOf("濁") > -1)
+						s += "gdzjbp";
 					let char = String.fromCharCode(code).toLowerCase();
 					if(s.indexOf(char) == -1){
 						event.preventDefault();
