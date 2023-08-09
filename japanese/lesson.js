@@ -20,6 +20,9 @@ Vue.component('lesson', {
 				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
 			</Select>
 			<div style="flex: 1;" ></div>
+			<a class="button" href="./index.html?mode=字典" target="_blank" style="width: 60px;">
+				字典
+			</a>
 		</div>
 
     <div ref="frame" class="lesson-frame" v-html="html" @scroll="onScroll"
@@ -89,8 +92,8 @@ Vue.component('lesson', {
 					frame.classList.add("big-screen");
 					frame.classList.remove("small-screen");
 				} else if((this.mode == "單字" && frame.clientWidth > 600)) {
-						frame.classList.add("big-screen");
-						frame.classList.remove("small-screen");
+					frame.classList.add("big-screen");
+					frame.classList.remove("small-screen");
 				} else {
 					frame.classList.add("small-screen");
 					frame.classList.remove("big-screen")
