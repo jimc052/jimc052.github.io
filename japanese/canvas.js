@@ -6,7 +6,9 @@ Vue.component('vm-canvas', {
 			{{char}}
 		</div>
 		<canvas ref="canvas" :width="size" :height="size" style="position: absolute;  z-index: 100; background: transparent;"></canvas>
-		<div style="position: absolute;  z-index: 100; left: 5px; bottom: 0px;">{{mp3}}</div>
+		<div style="position: absolute;  z-index: 100; left: 5px; bottom: 0px;">{{
+			mp3.indexOf(",") > -1 ? mp3.split(",")[0] : mp3
+		}}</div>
   </div>`,
 	props: {
 		size: {
@@ -34,7 +36,6 @@ Vue.component('vm-canvas', {
 	created(){
 	},
 	async mounted () {
-		// console.log(this.char + ", " + this.mp3)
 		if(this.char.length > 0) {
 			this.drawGrid();
 			this.render();			

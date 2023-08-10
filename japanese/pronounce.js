@@ -39,10 +39,10 @@ Vue.component('pronounce', {
 					<div v-else style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
 						{{item2 == null ? "" : item2[word]}}
 					</div>
-					
 
 					<div style="color: #2d8cf0" :class="{active: active == index1 + '-' + index2}">
-						{{item2 == null ? "" : item2["mp3"]}}
+						{{item2 == null ? "" 
+							: item2["mp3"].indexOf(",") ? item2["mp3"].split(",")[0] : item2["mp3"]}}
 					</div>
 				</td>
 			</tr>

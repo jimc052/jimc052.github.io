@@ -7,26 +7,11 @@ class Player {
 	static play(mp3) {
 		return new Promise(async (resolve, reject) => {
 			let audio = new Audio();
-			if(mp3 == "chi") 
-				mp3 = "ci";
-			else if(mp3 == "cha" || mp3 == "cho" || mp3 == "chu") 
-				mp3 = mp3.replace("ch", "cy");
-			else if(mp3 == "sha" || mp3 == "sho" || mp3 == "shu") 
-				mp3 = mp3.replace("sh", "sy");
-			else if(mp3 == "tsu") 
-				mp3 = "cu"
-			else if(mp3 == "shi") 
-				mp3 = "si"
-			else if(mp3 == "ji") 
-				mp3 = "zi"
-			else if(mp3 == "ja") 
-				mp3 = "zya"
-			else if(mp3 == "ju") 
-				mp3 = "zyu"
-			else if(mp3 == "jo") 
-				mp3 = "zyo"
-			else if(mp3 == "fu") 
-				mp3 = "hu"
+			if(mp3.indexOf(",") > -1) {
+				let arr = mp3.split(",");
+				mp3 = arr[arr.length - 1];
+			}
+
 			audio.src = Player.url + mp3 + ".mp3";
 			audio.autoplay = false;
 			audio.addEventListener("loadstart", () => {

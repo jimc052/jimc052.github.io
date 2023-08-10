@@ -42,7 +42,7 @@ Vue.component('letter-exam', {
 							<div style="width: 40px; text-align: right;">{{(index - i) + '.'}}</div>
 							<div style="flex: 1;">{{el.char}}</div>
 							<div  style="width: 40px;">
-								<span v-if="el.mp3 != el.answer" 
+								<span v-if="el.rome != el.answer" 
 									style="
 									  font-size: inherit;
 									  text-decoration-line: line-through; 
@@ -52,7 +52,7 @@ Vue.component('letter-exam', {
 									{{el.answer}}
 								</span>
 							</div>
-							<div style="width: 40px;" :style="{color: '#2d8cf0'}">{{el.mp3}}</div>
+							<div style="width: 40px;" :style="{color: '#2d8cf0'}">{{el.rome}}</div>
 						</li>
 					</ul>
 				</div>
@@ -87,7 +87,7 @@ Vue.component('letter-exam', {
 			<Button :disabled="word.length == 0 || tone.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2023-08-07 12:00</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2023-08-10 12:00</div>
 		</div>
   </div>`,
 	props: {
@@ -204,10 +204,11 @@ Vue.component('letter-exam', {
 					for(let k = 0; k < datas3.length; k++) {
 						let data = datas3[k];
 						if(data != null) {
+							let rome = (data["mp3"].indexOf(",") > -1) ? data["mp3"].split(",")[0] : data["mp3"];
 							if(word.indexOf("平") > -1)
-								arr.push({char: data["平"], mp3: data["mp3"]});
+								arr.push({char: data["平"], mp3: data["mp3"], rome});
 							if(word.indexOf("片") > -1)
-								arr.push({char: data["片"], mp3: data["mp3"]});							
+								arr.push({char: data["片"], mp3: data["mp3"], rome});							
 						}
 					}
 				}
@@ -272,7 +273,7 @@ Vue.component('letter-exam', {
 		}, 
 		answered() {
 			let arr = this.datas.filter((el, index) => {
-				return el.mp3 == el.answer;
+				return el.rome == el.answer;
 			});
 			return arr.length;
 		},
@@ -281,7 +282,7 @@ Vue.component('letter-exam', {
 			for(let i = 0; i < this.datas.length; i++) {
 				if(typeof this.datas[i].answer == "undefined") break;
 				total++;
-				if(this.datas[i].mp3 == this.datas[i].answer) {
+				if(this.datas[i].rome == this.datas[i].answer) {
 					correct++;
 				}
 			}
