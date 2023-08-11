@@ -4,8 +4,8 @@ Vue.component('editor', {
     :width="width"
     @on-ok="save"
 	>
-    <div v-for="(item, index) in colTitle" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-      <div style="width: 120px; text-align: right;">{{item + "："}}</div>
+    <div v-for="(item, index) in colKey" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+      <div style="width: 120px; text-align: right;">{{colTitle[index] + "："}}</div>
       <Input v-if="visible == true" v-model="target[item]"
 				style="flex: 1; font-size: 20px; padding: 5px;" size="large" 
         clearable
@@ -26,7 +26,10 @@ Vue.component('editor', {
 		},
     colTitle: {
       type: Array
-    }
+    },
+		colKey: {
+      type: Array
+    },
 	},
 	data() {
 		return {

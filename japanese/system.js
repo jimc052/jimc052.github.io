@@ -1,6 +1,6 @@
-window.renderAccent = (語, 重音) => {
+window.renderAccent = (語, 重) => {
   let values = 語.split("//");
-  let accnets = 重音.split("//");
+  let accnets = 重.split("//");
   let voicedSound = "ゃャゅュょョ"; // 拗音
   let results = "";
 

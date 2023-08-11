@@ -43,6 +43,7 @@ Vue.component('vocabulary', {
 		</div>
 		<editor ref="editor" :colTitle="colTitle.split('\t')"
 			:word="activeIndex > -1 ? dsTable[activeIndex] : undefined" @onClose="onCloseEditor"
+			:colKey="colKey.split('\t')"
 		/>
 	</div>`,
 	props: {
@@ -61,6 +62,7 @@ Vue.component('vocabulary', {
 			row: {},
 			currentPage: 0, 
 			colTitle: "語	級別	舊	漢字・原文	備註	重音	中文	分類",
+			colKey:  "語	級	舊	漢	註	重	中	類",
 			option: "",
 			options: ["家族", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字", "動詞", "形容詞"],
 			activeIndex: -1,
@@ -105,10 +107,11 @@ Vue.component('vocabulary', {
 			}
 		});
 
-		this.colTitle.split("\t").forEach(el => {
+		let keys = this.colKey.split("\t");
+		this.colTitle.split("\t").forEach((el, index) => {
 			let json = {
 				title: el, 
-				key: el, 
+				key: keys[index], 
 				ellipsis: true, 
 				// tooltip: true,
 				resizable: true,
@@ -157,6 +160,9 @@ Vue.component('vocabulary', {
 				}
 			}
 		}
+
+		this.isEdge = navigator.userAgent.indexOf("Edg/") > -1 ? true : false;
+		console.log("isEdge: " + this.isEdge);
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
@@ -168,7 +174,7 @@ Vue.component('vocabulary', {
 	methods: {
 		renderAccent(h, p){
 			let values = p.row["語"];
-			let accnets = p.row["重音"];
+			let accnets = p.row["重"];
 			return h('span', 
 				{
 					domProps: {
@@ -327,7 +333,7 @@ Vue.component('vocabulary', {
 						: (this.search.indexOf("%") > -1 ? "%" : "");
 					let strLenLimit = -1; // 99: 有值即可，-1: 忽略
 					let search = "", searchCols = [0, 3, 4, 6, 7];
-					let cols = this.colTitle.split("\t");
+					let cols = this.colKey.split("\t");
 					
 					if(equal.length > 0) {
 						let arrSearch = this.search.split(equal);
@@ -411,7 +417,7 @@ Vue.component('vocabulary', {
 			this.currentPage = -1; this.activeIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
-				let cols = this.colTitle.split("\t");
+				let cols = this.colKey.split("\t");
 				let arr = words.split("\n");
 
 				arr.forEach((el1, index1) => {
@@ -443,13 +449,12 @@ Vue.component('vocabulary', {
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.activeIndex = -1;
 			this.sortKey = "語";
-			let colTitle = this.colTitle.split("\t");
 			setTimeout(() => {
-				let cols = this.colTitle.split("\t");
+				let cols = this.colKey.split("\t");
 				let arr = words.split("\n");
 				arr.forEach((el1, index1) => {
 					let row = el1.split("\t");
-					if(colTitle.length == row.length && row[row.length - 1] == this.option) {
+					if(cols.length == row.length && row[row.length - 1] == this.option) {
 						let json = {index: index1};
 						row.forEach((el2, index2) => {
 							if(cols[index2] != "舊") json[cols[index2]] = el2;
@@ -469,9 +474,8 @@ Vue.component('vocabulary', {
 			this.search = "";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1;
-			let cols = this.colTitle.split("\t");
+			let cols = this.colKey.split("\t");
 			let arr = words.split("\n");
-
 			arr.forEach((el1, index1) => {
 				let row = el1.split("\t");
 				if(row[4].length > 0) { // 備註
@@ -493,7 +497,7 @@ Vue.component('vocabulary', {
 			});
 
 			this.dataStore.sort(function(a, b){
-				return a["備註"] < b["備註"] ? 1 : -1;
+				return a["備"] < b["備"] ? 1 : -1;
 			});
 			this.onChangePage(1, this.sortKey);
 		},
@@ -501,10 +505,10 @@ Vue.component('vocabulary', {
 			if(typeof word == "object") {
 				this.$set(this.dsTable, this.activeIndex, word);
 				let index = typeof word.index == "number" ? word.index : -1;
-				let colTitle = this.colTitle.split("\t");
+				let colKey = this.colKey.split("\t");
 				let result = "";
-				for(let i = 0; i < colTitle.length; i++) {
-					let val = word[colTitle[i]];
+				for(let i = 0; i < colKey.length; i++) {
+					let val = word[colKey[i]];
 					result += (result.length > 0 ? "\t" : "") +
 						(typeof val == "string" ? val : "");
 				}
@@ -537,7 +541,7 @@ Vue.component('vocabulary', {
 					}, 1000);
 				});
 			}
-			let cols = "語	級	舊	漢	註	重	中	類".split("\t");
+			let cols = this.colKey.split("\t");
 			let arr = words.split("\n");
 			let date = (new Date()).getTime()
 			for(let index1 = 0; index1 < arr.length; index1++) {
