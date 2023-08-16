@@ -76,8 +76,7 @@ Vue.component('vocabulary', {
 		}
 	},
 	async mounted () {
-		this.isEdge = navigator.userAgent.indexOf("Edg/") > -1 ? true : false;
-		await this.vocabularyRestore();
+		await this.download();
 
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
@@ -108,6 +107,7 @@ Vue.component('vocabulary', {
 			}
 		});
 
+		// this.columns.push({title: "id", key: "id", width: 60})
 		let keys = this.colKey.split("\t");
 		this.colTitle.split("\t").forEach((el, index) => {
 			let json = {
@@ -327,135 +327,57 @@ Vue.component('vocabulary', {
 			this.sortKey = "語";
 			setTimeout(() => {
 				if(this.search.length > 0) {
-					if(this.isEdge) {
-						let equal = this.search.indexOf("=") > -1 ? "=" 
-						: (this.search.indexOf("%") > -1 ? "%" : "");
-						let strLenLimit = -1; // 99: 有值即可，-1: 忽略
-						let search = "", searchCols = ["語", "中", "漢", "註", "類"];
-						if(equal.length > 0) {
-							let arrSearch = this.search.split(equal);
-							if(arrSearch[0].length > 0) {
-								searchCols = [arrSearch[0]];
-							}
-
-							if(arrSearch.length == 2 && arrSearch[1].length > 0) {
-								if(!isNaN(arrSearch[1])) {
-									strLenLimit = parseInt(arrSearch[1], 10)
-								} else {
-									search = arrSearch[1]
-								}
-							}
-						} else {
-							search = this.search;
-						}
-						if(strLenLimit != -1 && searchCols.length > 1) {
-							alert("請指定欄位")
-							return;
+					let equal = this.search.indexOf("=") > -1 ? "=" 
+					: (this.search.indexOf("%") > -1 ? "%" : "");
+					let strLenLimit = -1; // 99: 有值即可，-1: 忽略
+					let search = "", searchCols = ["語", "中", "漢", "註", "類"];
+					if(equal.length > 0) {
+						let arrSearch = this.search.split(equal);
+						if(arrSearch[0].length > 0) {
+							searchCols = [arrSearch[0]];
 						}
 
-						words.forEach((el1, index1) => {
-							if(strLenLimit != -1 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") { // 某欄位字串長度
-								if( (strLenLimit == 99 && el1[searchCols[0]].length > 0) || (el1[searchCols[0]].length == strLenLimit) ) {
-									this.dataStore.push(el1)
-								}
-							} else if(equal.length == 1 && search.length > 0 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") {
-								if(equal == "=" && search == el1[searchCols[0]])
-									this.dataStore.push(el1)
-								else if(equal == "%" && el1[searchCols[0]].indexOf(search) > -1)
-									this.dataStore.push(el1)
-							} else if(search.length > 0) {
-								for(let i = 0; i < searchCols.length; i++) {
-									let str = el1[searchCols[i]];
-									if(typeof str == "string") {
-										if(equal == "=" && search == str) {
-											this.dataStore.push(el1)
-											break;
-										} else if(equal != "=" && str.indexOf(search) > -1) {
-											this.dataStore.push(el1)
-											break;
-										}
-									}
-								}
+						if(arrSearch.length == 2 && arrSearch[1].length > 0) {
+							if(!isNaN(arrSearch[1])) {
+								strLenLimit = parseInt(arrSearch[1], 10)
+							} else {
+								search = arrSearch[1]
 							}
-							///----------------------
-						});		
+						}
 					} else {
-						let equal = this.search.indexOf("=") > -1 ? "=" 
-							: (this.search.indexOf("%") > -1 ? "%" : "");
-						let strLenLimit = -1; // 99: 有值即可，-1: 忽略
-						let search = "", searchCols = [0, 3, 4, 6, 7];
-						let cols = this.colKey.split("\t");
-						
-						if(equal.length > 0) {
-							let arrSearch = this.search.split(equal);
-							if(arrSearch[0].length > 0) {
-								for(let i = 0; i < cols.length; i++) {
-									if(cols[i].indexOf(arrSearch[0]) == 0) {
-										searchCols = [i];
+						search = this.search;
+					}
+					if(strLenLimit != -1 && searchCols.length > 1) {
+						alert("請指定欄位")
+						return;
+					}
+					console.log(typeof words)
+					words.forEach((el1, index1) => {
+						if(strLenLimit != -1 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") { // 某欄位字串長度
+							if( (strLenLimit == 99 && el1[searchCols[0]].length > 0) || (el1[searchCols[0]].length == strLenLimit) ) {
+								this.dataStore.push(el1)
+							}
+						} else if(equal.length == 1 && search.length > 0 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") {
+							if(equal == "=" && search == el1[searchCols[0]])
+								this.dataStore.push(el1)
+							else if(equal == "%" && el1[searchCols[0]].indexOf(search) > -1)
+								this.dataStore.push(el1)
+						} else if(search.length > 0) {
+							for(let i = 0; i < searchCols.length; i++) {
+								let str = el1[searchCols[i]];
+								if(typeof str == "string") {
+									if(equal == "=" && search == str) {
+										this.dataStore.push(el1)
+										break;
+									} else if(equal != "=" && str.indexOf(search) > -1) {
+										this.dataStore.push(el1)
 										break;
 									}
 								}
 							}
-
-							if(arrSearch.length == 2 && arrSearch[1].length > 0) {
-								if(!isNaN(arrSearch[1])) {
-									strLenLimit = parseInt(arrSearch[1], 10)
-								} else {
-									search = arrSearch[1]
-								}
-							}
-						} else {
-							search = this.search;
 						}
-						if(strLenLimit != -1 && searchCols.length > 1) {
-							alert("請指定欄位")
-							return;
-						}
-						// console.log(`equal: ${equal}, strLenLimit: ${strLenLimit}, search: ${search}, searchCols: ${searchCols}`)
-
-						let arr = words.split("\n");
-						arr.forEach((el1, index1) => {
-							let setData = (row, type) => {
-								// console.log(`type: ${type}`)
-								let json = {index: index1};
-								row.forEach((el2, index2) => {
-									if(cols[index2] != "舊") json[cols[index2]] = el2;
-								});
-								this.dataStore.push(json)
-							}
-							let row = el1.split("\t");
-							if(strLenLimit != -1 && searchCols.length == 1 && typeof row[searchCols[0]] == "string") { // 某欄位字串長度
-								if( (strLenLimit == 99 && row[searchCols[0]].length > 0)  ||  (row[searchCols[0]].length == strLenLimit) ) {
-									setData(row, 1);
-								}
-							} else if(equal.length == 1 && search.length > 0 && searchCols.length == 1 && typeof row[searchCols[0]] == "string") {
-								if(equal == "=" && search == row[searchCols[0]])
-									setData(row, 2);
-								else if(equal == "%" && row[searchCols[0]].indexOf(search) > -1)
-									setData(row, 3);
-							} else if(search.length > 0) {
-								for(let i = 0; i < searchCols.length; i++) {
-									let str = row[searchCols[i]];
-									if(typeof str == "string") {
-										if(equal == "=" && search == str) {
-											setData(row, 4);
-											break;
-										} else if(equal != "=" && str.indexOf(search) > -1) {
-											setData(row, 5);
-											break;
-										}
-									}
-								}
-							}
-						});
-
-						if(searchCols.length == 1){
-							let colName = cols[searchCols[0]];
-							this.dataStore.sort(function(a, b){
-								return a[colName] < b[colName] ? 1 : -1;
-							});
-						}			
-					}
+						///----------------------
+					});
 				}
 				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
@@ -469,28 +391,11 @@ Vue.component('vocabulary', {
 			this.currentPage = -1; this.activeIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
-				if(this.isEdge) {
-					words.forEach((el1, index1) => {
-						if(this.level <= 4 && el1["級"] == this.level) {
-							this.dataStore.push(el1)
-						}  
-					});		
-				} else {
-					let cols = this.colKey.split("\t");
-					let arr = words.split("\n");
-					arr.forEach((el1, index1) => {
-						let row = el1.split("\t");
-						if(this.level <= 4 && row[1] == this.level) {
-							let json = {index: index1};
-							row.forEach((el2, index2) => {
-								if(cols[index2] != "舊") json[cols[index2]] = el2;
-							});
-							this.dataStore.push(json)
-						}  
-					});					
-				}
-
-				// console.log(this.dataStore[0])
+				words.forEach((el1, index1) => {
+					if(this.level <= 4 && el1["級"] == this.level) {
+						this.dataStore.push(el1)
+					}  
+				});
 				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-level"] = this.level;
 				window.localStorage["japanese-vocabulary-search"] = "";
@@ -510,26 +415,11 @@ Vue.component('vocabulary', {
 			this.currentPage = -1; this.activeIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
-				if(this.isEdge) {
-					words.forEach((el1, index1) => {
-						if(el1["類"] ==  this.option) {
-							this.dataStore.push(el1)
-						}  
-					});		
-				} else {
-					let cols = this.colKey.split("\t");
-					let arr = words.split("\n");
-					arr.forEach((el1, index1) => {
-						let row = el1.split("\t");
-						if(cols.length == row.length && row[row.length - 1] == this.option) {
-							let json = {index: index1};
-							row.forEach((el2, index2) => {
-								if(cols[index2] != "舊") json[cols[index2]] = el2;
-							});
-							this.dataStore.push(json)
-						}  
-					});
-				}
+				words.forEach((el1, index1) => {
+					if(el1["類"] ==  this.option) {
+						this.dataStore.push(el1)
+					}  
+				});		
 				// console.log(this.dataStore[0])
 				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-level"] = "";
@@ -573,48 +463,18 @@ Vue.component('vocabulary', {
 			if(typeof word == "object") {
 				word.date = (new Date()).getTime();
 				this.$set(this.dsTable, this.activeIndex, word);
-				if(this.isEdge) {
-					console.log(JSON.stringify(word));
-					let id = word.id;
-					if(typeof id == "undefined") {
-						id = (word.length).leftPadding(5);
-					}
-					let json = Object.assign({}, word);
-					delete json.id;
-					let ref = FireStore.db.collection("japanese-vocabulary")
-						.doc(id);
-					let x = await ref.set(json);
-				} else {
-					let index = typeof word.index == "number" ? word.index : -1;
-					let colKey = this.colKey.split("\t");
-					let result = "";
-					for(let i = 0; i < colKey.length; i++) {
-						let val = word[colKey[i]];
-						result += (result.length > 0 ? "\t" : "") +
-							(typeof val == "string" ? val : "");
-					}
-					let arr = words.split("\n");
-					if(index == -1)
-						arr.push(result);
-					else 
-						arr[index] = result
-					words = arr.join("\n");
-					window.localStorage["japanese-vocabulary"] = words;	
+				let id = word.id;
+				if(typeof id == "undefined") {
+					id = (word.length).leftPadding(5);
 				}
+				let json = Object.assign({}, word);
+				delete json.id;
+				let ref = FireStore.db.collection("japanese-vocabulary")
+					.doc(id);
+				let x = await ref.set(json);
 			}
 			this.activeIndex = -1;
 		},
-		async vocabularyRestore() {
-			let s = window.localStorage["japanese-vocabulary"];
-			if(typeof s != "undefined" && s.length > 0)
-				words = s;
-			else if(this.isEdge)
-				await this.download();
-			else {
-				this.$appendScript("./datas/單字.js");
-			}
-			// this.upload();
-		}, 
 		async upload() {
 			let awaitSecond = () => {
 				return new Promise(async (success, error) => { 
@@ -646,7 +506,7 @@ Vue.component('vocabulary', {
 			}
 		},
 		async download() {
-			let s = window.localStorage["japanese-vocabulary-edge"];	
+			let s = window.localStorage["japanese-vocabulary"];	
 			words = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
 			s = window.localStorage["japanese-vocabulary-last-date"];
 			let last = typeof s != "undefined" && s.length > 0 ? parseInt(s, 10) : 0;
@@ -671,7 +531,7 @@ Vue.component('vocabulary', {
 
 					if(max > 0) {
 						window.localStorage["japanese-vocabulary-last-date"] = max;
-						window.localStorage["japanese-vocabulary-edge"] = JSON.stringify(words, null, 2);
+						window.localStorage["japanese-vocabulary"] = JSON.stringify(words, null, 2);
 					}
 					success();
 				} catch(e) {
