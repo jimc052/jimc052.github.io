@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>時雨-轉檔 2023-08-17</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+  <style>
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      /* user-select: none; */
+      font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    body {
+      /* margin: 10px; */
+      background-color: #ebecf0;
+      padding: 0px 0px;
+      color: rgb(0, 0, 0);
+    }
+
+    html,
+    body {
+      min-height: 100% !important;
+      height: 100%;
+    }
+
+    body {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    table thead tr:first-child td {
+      text-align: center;
+      color: blue;
+      font-weight: 700;
+      background: #eee;
+    }
+
+    td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+    }
+
+    tr.no-data {
+      background-color: red;
+      color: white;
+    }
+    button {
+      /* font-size: 20px; */
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="padding: 5px 0;">
+    <select id="level" onchange="levelChange(this.value)" style="width: 100px; height: 35px; font-size: 20px;">
+      <option></option>
+      <option>N5</option>
+      <option>N4</option>
+      <option>N3</option>
+    </select>
+    <select id="kind" onchange="kindChange(this.value)" style="width: 200px; height: 35px; font-size: 20px;">
+    </select>
+  </div>
+  <div style="flex: 1; overflow: scroll">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</body>
+<script>
+  // let mode = "", 刪除記錄 = "";
+  let cols1 = "假名,漢字,中文,級別,重音,分類,來源".split(",");
+  let cols2 = "語,漢,中,級,重,類,id".split(",");
+  let ds時雨 = [], vocabularys = [], dsBuffer = [];
+  let btnRemove  = `<button style="color: white; background: red;" onclick='update()'>更新</button>`;
+  // let btnRemove  = `<button style="color: white; background: red;" onclick='remove({item}, {index})'>刪除</button>`;
+  // let btnRecover  = `<button style="color: white; background: green;" onclick='recover({item}, {index})'>復原</button>`;
+
+  window.onload = async function () {
+    let s = window.localStorage["japanese-vocabulary"];	
+    vocabularys = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+
+    s = window.localStorage["japanese-時雨-buffer"];	
+    dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+
+    let thead = document.querySelector("thead");
+    let header = thead.querySelectorAll("td");
+    if(header.length == 0) {
+      let row = thead.insertRow();
+      let cell = row.insertCell();
+      cell.innerHTML = "項次";
+      for (let j = 0; j < cols1.length; j++) {
+        cell = row.insertCell();
+        cell.innerHTML = cols1[j];
+      }
+      cell = row.insertCell();
+      cell.innerHTML = "新增";
+    }
+    s = window.localStorage["japanese-時雨-level"];
+    if(typeof s != "undefined" && s.length > 0) {
+      document.querySelector("#level").value = s;
+      levelChange(s);
+
+      s = window.localStorage["japanese-時雨-kind"];
+      if(typeof s != "undefined" && s.length > 0) {
+        document.querySelector("#kind").value = s;
+        kindChange(s)
+      }
+    }
+  }
+
+  function levelChange(params) {
+    let tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+    window.localStorage["japanese-時雨-level"] = params;
+
+    if(params.length > 0) {
+      let s = window.localStorage["japanese-時雨-" + params];
+      ds時雨 = JSON.parse(`[${s}]`);
+      s = "";
+      ds時雨.forEach(el => {
+        // if(typeof el["分類"] == "undefined") console.log(el)
+        if(typeof el["分類"] == "string" && s.indexOf(el["分類"]) == -1)
+          s += (s.length == 0 ? "" : ",") + el["分類"]
+      });
+      let kind = document.querySelector("#kind");
+      kind.innerHTML = "";
+
+      var option = document.createElement("option");
+      option.text = "";
+      kind.add(option);
+
+      s.split(",").forEach(el => {
+        option = document.createElement("option");
+        option.text = el;
+        kind.add(option);
+      });
+    }
+  }
+
+  function kindChange(params) {
+    let tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+    tbody.scrollTop = 0;
+    window.localStorage["japanese-時雨-kind"] = params;
+
+    ds時雨.forEach((el, index) => {
+      // console.log(el)
+      if(el["分類"] == params) {
+        let filter = vocabularys.filter(el2 => {
+          return el2["語"] == el["假名"] 
+            || el2["語"].indexOf(el["假名"] + "（") > -1
+            || el2["語"].indexOf("）" + el["假名"]) > -1
+        });
+
+        let row = tbody.insertRow();
+        row.id = index + 1;
+        let cell1 = row.insertCell();
+        cell1.innerHTML = index + 1;
+        for (let j = 0; j < cols1.length; j++) {
+          let col = cols1[j];
+          let cell = row.insertCell();
+          cell.innerHTML = typeof el[col] == "string" ? el[col] : "";
+        }
+
+        let cellLast = row.insertCell();
+        // cell.innerHTML = typeof el[col] == "string" ? el[col] : "";
+        if(filter.length > 0) {
+          let index2 = filter.findIndex(el2 => {
+            return el["漢字"] == el2["漢"] 
+          })
+          if(index2 > -1) filter = [filter[index2]]
+          cell1.rowSpan = filter.length + 1;
+          for(let i = 0; i < filter.length; i++) {
+            let row = tbody.insertRow();
+            row.style.color = "red";
+            for (let j = 0; j < cols2.length; j++) {
+              let col = cols2[j];
+              let cell = row.insertCell();
+              if(col == "類" && (
+                (typeof filter[i][col] == "undefined") 
+                || (typeof filter[i][col] == "string" && filter[i][col].length == 0)
+                ) ) {
+                  let index2 = dsBuffer.findIndex(el2 => {
+                    return el2["語"] == el["假名"];
+                  })
+                  if(index2 == -1) {
+                    filter[i]["類"] = el["分類"];
+                    cell.innerHTML = `<button id="btn${index}" style="background: red;" onclick='update(${index}, ${JSON.stringify(filter[i])})'>更新</button>`;
+                  } else {
+                    cell.innerHTML = "buffer";
+                    cell.color = "red"
+                  }
+              } else 
+                cell.innerHTML = typeof filter[i][col] == "string" ? filter[i][col] : "";
+            }
+            let cellLast = row.insertCell();
+          }
+        } 
+        else {
+          let index2 = dsBuffer.findIndex(el2 => {
+            return el2["語"] == el["假名"];
+          })
+          if(index2 == -1) {
+            row.classList.add("no-data");
+            let json = {
+              "語": el["假名"],	
+              "漢": el["漢字"],	
+              "中": el["中文"], 
+              "重": el["重音"],
+              "類": el["分類"]
+            }
+            cellLast.innerHTML = `<button id="btn${index}" style="background: green;" onclick='update(${index}, ${JSON.stringify(json)})'>新增</button>`;
+          } else {
+            cellLast.innerHTML = "buffer";
+            cellLast.style.color = "red";
+          }
+        }
+      }
+    });
+  }
+
+  function update(index, data) {
+    let node = document.getElementById(`btn${index}`);
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+    if(data["類"] == "場所、地點") data["類"] = "地點";
+    for(let key in data) {
+      if("註,詞,類".indexOf(key) > -1) {
+        if(typeof data[key] == "string" && data[key].trim().length == 0) {
+          delete data[key];
+        }
+      }
+    }
+    delete data.date;
+
+    dsBuffer.push(data)
+    window.localStorage["japanese-時雨-buffer"] = JSON.stringify(dsBuffer);
+    console.log(JSON.stringify(data))
+  }
+</script>
+
+</html>

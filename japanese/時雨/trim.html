@@ -63,6 +63,7 @@
 </head>
 
 <body>
+  不要了 2023-08-17
   <div style="padding: 5px 0;">
     <input type="radio" name="時雨" id="時雨1" value="時雨1" onchange="trim_時雨(1);" />
     <label for="時雨1" style="margin-right: 10px;">全部</label>
@@ -87,14 +88,7 @@
   let btnRecover  = `<button style="color: white; background: green;" onclick='recover({item}, {index})'>復原</button>`;
 
   window.onload = async function () {
-    // trim_時雨()
-    let radio = "1";
-    if (typeof window.localStorage["japanese-時雨-radio"] == "string") {
-      radio = window.localStorage["japanese-時雨-radio"];
-    }
-    let input = document.querySelectorAll("input[type='radio']")
-    input[radio - 1].checked = true;
-    trim_時雨(radio);
+    
   }
 
   function trim_時雨(_mode) {

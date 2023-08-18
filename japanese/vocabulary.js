@@ -64,7 +64,7 @@ Vue.component('vocabulary', {
 			row: {},
 			currentPage: 0, 
 			option: "",
-			options: ["家族", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字"],
+			options: ["家族", "身體", "職稱", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字"],
 			activeIndex: -1,
 			sortKey: "語"
 		};
@@ -78,6 +78,19 @@ Vue.component('vocabulary', {
 	async mounted () {
 		let s = window.localStorage["japanese-vocabulary"];	
 		vocabularys = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+		// console.log((vocabularys.length).leftPadding(5))
+		s = window.localStorage["japanese-時雨-buffer"];	
+    let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+		for(let i = dsBuffer.length - 1; i >= 0; i--) {
+			try {
+				await this.onCloseEditor(dsBuffer[i]);
+				dsBuffer.splice(i, 1);
+				window.localStorage["japanese-時雨-buffer"] = JSON.stringify(dsBuffer)
+			} catch (err) {
+				console.log(err)
+				break;
+			}
+		}
 		// s = "";
 		// vocabularys.forEach(el => {
 		// 	if(typeof el["註"] == "string" && el["註"].trim().length > 0 && s.indexOf(el["註"]) == -1) {
@@ -480,7 +493,9 @@ Vue.component('vocabulary', {
 						}
 					}
 				}
-				this.$set(this.dsTable, this.activeIndex, word);
+				if(this.activeIndex > -1) {
+					this.$set(this.dsTable, this.activeIndex, word);
+				}
 
 				let id = word.id;
 				if(typeof id == "undefined") {
