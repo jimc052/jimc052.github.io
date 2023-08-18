@@ -64,7 +64,7 @@ Vue.component('vocabulary', {
 			row: {},
 			currentPage: 0, 
 			option: "",
-			options: ["家族", "身體", "職稱", "地點", "食物", "飲料", "物品", "服裝", "方位", "數字"],
+			options: ["家族", "身體", "職稱", "地點", "食物", "飲料", "大自然", "交通", "物品", "文具", "電器", "服裝", "方位", "數字"],
 			activeIndex: -1,
 			sortKey: "語"
 		};
