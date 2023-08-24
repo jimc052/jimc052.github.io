@@ -239,19 +239,30 @@ Vue.component('lesson', {
 					let arr = 單字[option], result = "";
 					for(let i = 0; i < arr.length; i++) {
 						let td = arr[i].split("\t");
-						if(i == 0) console.log(td)
+						// if(i == 0) console.log(td)
 						let accent = window.renderAccent(td[0], td[3]);
+						let ruby = td[0].ruby(td[1]);
+						let s = "";
+						if(ruby == null) {
+							s = `<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+									<div style="font-size: 20px;">${accent}</div>
+									<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
+								</div>
+								<div style="min-height: 24px;">${td[1]}</div>`;
+						} else {
+							s = `<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+									<div style="min-height: 0px;">${ruby}</div>
+									<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
+								</div>`;
+						}
+
 						result += `<div class="card ${this.print == 'N' ? '' : 'print'}" style="font-size: 20px;">
 								<div style="min-width: 25px; font-size: 20px;">${i + 1}.</div>
 								<div style="flex: 1; font-size: 20px;">
-									<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
-										<div style="font-size: 20px;">${accent}</div>
-										<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
-									</div>
+									${s}
 									<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
 										${window.rome(td[0])}
 									</a>
-									<div style="min-height: 24px;">${td[1]}</div>
 									<div>${td[2]}</div>
 								</div>
 							</div>`;

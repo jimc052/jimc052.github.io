@@ -27,8 +27,8 @@
 			height: 100%;
 		}
     body {
-      display: flex;
-      flex-direction: column;
+      /* display: flex; */
+      /* flex-direction: column; */
       overflow: hidden;
     }
     div {
@@ -37,175 +37,103 @@
       border: 1px #c01921 solid;
       padding: 5px;
     }
-    table {
-      border-collapse: collapse; width: 100%; 
-      font-size: 16px;
-    }
-    td {
-      border: 1px solid black;padding: 5px;
-    }
+    
 	</style>
 </head>
 <body>
-  <div style="margin: 5px;"><table id="table1"></table></div>
-  <div style="margin: 5px;"><table id="table2"></table></div>
+  <div>
+    <span>から</span><ruby><span>来</span><rt>き</rt><span>ました</span></ruby>
+  </div>
 </body>
 <script>
-  let btnFind = `<button onclick="find({index})" style="color: #c01921; border-color: #c01921;">find</button>`;
-  let ds1, ds2, table1, table2;
+    String.prototype.ruby = function(漢字) {
+      let kana = this.toString();
+      if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
+        漢字 = 漢字.split("・")[0]
+      }
+      let code = kana.charCodeAt(0);
+      if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
+        return null;
+      else {
+        let arr = [], mode = "";
+        for(let i = 0; i < 漢字.length; i++) {
+          code = 漢字.charCodeAt(i);
+          if(code >= 12353 && code <= 12438){
+            if(mode != "kana") arr.push("");
+            arr[arr.length -1] += 漢字.substr(i, 1);
+            mode = "kana"
+          } else { 
+            if(mode != "漢") arr.push("");
+            arr[arr.length -1] += 漢字.substr(i, 1);
+            mode = "漢"
+          }          
+        }
+        let r = "";
+        for(let i = 0; i < arr.length; i++) {
+          code = arr[i].charCodeAt(0);
+          if(code >= 12353 && code <= 12438){
+            r += `<span>${arr[i]}</span>`;
+            kana = kana.replace(arr[i], "")
+          } else {
+            let s = "";
+            if(i < arr.length - 1) {
+              let index = kana.indexOf(arr[i + 1]);
+              s = kana.substr(0, index);
+              kana = kana.replace(s, "");
+              // console.log("s: " + s + ", kana: " + kana + ", index: " + index )
+            } else {
+              s = kana;
+            }
+            r += `<ruby><span>${arr[i]}</span><rt>${s}</rt></ruby>`;
+          }
+        }
+        // let div = document.createElement("div")
+        // div.innerHTML = r;
+        // document.body.appendChild(div)
+        return r;
+      }
+    }
 	window.onload = async function(){
-    ds1 = localStorage["japan-workspace1"].split("\n");
-    ds2 = localStorage["japan-workspace2"].split("\n");
-    table1 = document.querySelector("#table1");
-    table2 = document.querySelector("#table2");
-    retrieve();
+    let arr = [{
+        kana: "わたし", 漢: "私"
+      }, {
+        kana: "はじめまして", 漢: "初めまして・始めまして" // 
+      }, {
+        kana: "どうぞよろしくおねがいします", 漢: "どうぞ宜しくお願いします"
+      }, {
+        kana: "しつれいですが", 漢: "失礼ですが"  
+      }, {
+        kana: "おなまえは", 漢: "お名前は"  
+      }, {
+        kana: "からきました", 漢: "から来ました"
+      }, {
+        kana: "インド", 漢: "巴西"
+      }, {
+        kana: "はい" 
+    }]
 
-    // turnColumn();
+    for(let i = 0; i < arr.length; i++) {
+      arr[i].kana.ruby(arr[i]["漢"])
+    }
 	}
 
-  function turnColumn() { // 調整欄位
-    let result = "";
-    ds2.forEach((el1, index1) => {
-      let cells = el1.split("\t");
-      result += (result.length > 0 ? "\n" : "") +
-        cells[3] + "\t" + cells[2] + "\t" + cells[1] + "\t" + cells[4] + "\t" + cells[0];
-    });
-    console.log(result)
-  }
 
-  function retrieve() {
-    // 語	級別	舊	漢字・原文	備註	發音	中文意
-    ds1.forEach((el1, index1) => {
-      let tr = table1.insertRow(index1);
-      tr.id = `tr1_${index1}`;
+/*
+}, {
+      kana: "", 漢: ""  
 
-      let td = tr.insertCell(0);
-      td.innerText = index1 + 1;
 
-      let cells = el1.split("\t");
-      cells.forEach((el2, index2) => {
-        let td = tr.insertCell(index2 + 1);
-        td.innerText = cells[index2];
-      });
-      if(cells.length == 7) tr.insertCell(cells.length + 1);
-    });
-
-    // 平假名讀音	日文	中文	羅馬拼音打字	類型
-    ds2.forEach((el1, index1) => {
-      let tr = table2.insertRow(index1);
-      tr.id = `tr2_${index1}`;
-      let cells = el1.split("\t");
-      cells.forEach((el2, index2) => {
-        let td = tr.insertCell(index2);
-        if(index2 == 5) {
-          td.innerHTML = btnFind.replace("{index}", index1);
-        } else 
-          td.innerText = cells[index2];
-      });
-      if(cells.length == 5) {
-        let td = tr.insertCell(cells.length);
-        // if(index1 == 0) {
-          td.innerHTML = btnFind.replace("{index}", "undefined");
-        // }
-      }
-    });
-  }
-
-  function find(index) {
-    // index = typeof index == "undefined" ? 0 : index;
-    let row2 = ds2[typeof index == "undefined" ? 0 : index].split("\t");
-    let 日文 = row2[1], 假名 = row2[0], b = false;
-    for(let i = 0; i < ds1.length; i++){
-      let cells = ds1[i].split("\t");
-      if(cells[0] == 假名 || cells[3] == 日文 || cells[0] == 日文) { //
-        b = true;
-        document.querySelector(`#tr1_${i}`).scrollIntoView({ block: "center" });
-        document.querySelector(`#tr1_${i}`).style.backgroundColor = "orange";
-        if(cells[0] == 假名 && cells[3] == 日文) {
-          setTimeout(() => {
-            let rowSplice = ds2.splice(typeof index == "undefined" ? 0 : index, 1);
-            var yes = confirm('寫入!!\n' + 假名 + ", " + 日文);
-            let td = document.querySelectorAll(`#tr1_${i} > td`);
-            td[td.length -1].innerText = row2[4];
-
-            document.querySelector(`#tr1_${i}`).style.backgroundColor = "#D5EBF2";
-            ds1[i] += "\t" + row2[4];
-            save(ds1, 1);
-            if(typeof index == "undefined")
-              nextFind();
-            else {
-              rowSplice[0] += "\tOK";
-              ds2.push(rowSplice[0])
-              save(ds2, 2);
-            }
-          }, 300);
-        } else {
-          let repeat = false;
-          if(i < ds1.length -1) {
-            let cells2 = ds1[i + 1].split("\t");
-            repeat = (cells[0] == cells2[0] || cells[3] == cells2[3]) 
-          }
-          setTimeout(() => {
-            let rowSplice = ds2.splice(typeof index == "undefined" ? 0 : index, 1);
-            var yes = confirm('你確定寫入嗎？\n' 
-              + (repeat == true ? "有重複..........\n\n" : "") 
-              + cells[0] + ", " + cells[3]);
-            if (yes) {
-              let td = document.querySelectorAll(`#tr1_${i} > td`);
-              td[td.length -1].innerText = row2[4];
-
-              document.querySelector(`#tr1_${i}`).style.backgroundColor = "#D5EBF2";
-              ds1[i] += "\t" + row2[4];
-              save(ds1, 1);
-              if(typeof index == "undefined")
-                nextFind();
-              else {
-                rowSplice[0] += "\tOK";
-                ds2.push(rowSplice[0])
-                save(ds2, 2);
-              }
-              return;
-            } else {
-              document.querySelector(`#tr1_${i}`).style.backgroundColor = "#eee";
-              if(typeof index == "undefined") {
-                rowSplice[0] += "\t?";
-                ds2.push(rowSplice[0])
-                nextFind();              
-              }
-              return;
-            }          
-          }, 300);
-        }
-        break;
-      }
+平假名(ひらがな)：編碼 12353 - 12438
+片假名(カタカナ)：編碼  12449 - 12531
+ASCII 編碼：12353 - 12531
+let s = "わ"
+    let i = s.charCodeAt(0)
+    console.log(i);
+    
+    for(let x = 12353; x  <= 12531; x++) {
+        console.log(x + ": " + String.fromCharCode(x))
     }
-    if(b == false) {
-      alert('找不到!!\n' + 假名 + ", " + 日文);
-      if(typeof index == "undefined") {
-        let rowSplice = ds2.splice(0, 1);
-        rowSplice[0] += "\t?";
-        ds2.push(rowSplice[0])
-        nextFind();
-      } else {
-        document.querySelector(`#tr2_${index}`).style.backgroundColor = "orange";
-      }
-    }
-  }
 
-  function nextFind() {
-    save(ds2, 2);
-
-    table2.deleteRow(0);
-    let tr = table2.querySelector("tr:first-child");
-    let td = tr.querySelector("td:last-child");
-    if(td.innerHTML.length == 0) {
-      td.innerHTML = btnFind.replace("{index}", "undefined"); 
-    } else {
-      
-    }
-  }
-  function save(ds, index) {
-    localStorage["japan-workspace" + index] = ds.join("\n");
-  }
+*/
 </script>
 </html>
