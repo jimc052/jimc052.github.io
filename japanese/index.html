@@ -353,66 +353,7 @@
 		}
 		Vue.prototype.broadcast = new Vue(); // 廣播用元件
 
-		String.prototype.ruby = function(漢字) {
-      let kana = this.toString();
-			if(typeof 漢字 == "string") {
-				// let b = false;
-				// for(let i = 0; i < 漢字.length; i++) {
-				// 	let code = 漢字.charCodeAt(i);
-				// 	if(code >= 12353 && code <= 12438) {
-				// 		b = true;
-				// 		break;
-				// 	}
-				// }
-				// if(b == false) return null;
-			}
-      if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
-        漢字 = 漢字.split("・")[0]
-      }
-      let code = kana.charCodeAt(0);
-			// console.log(kana.substr(0, 1) + ": " + code)
-      if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
-        return null;
-      else {
-        let arr = [], mode = "";
-        for(let i = 0; i < 漢字.length; i++) {
-          code = 漢字.charCodeAt(i);
-          if(code >= 12353 && code <= 12438){
-            if(mode != "kana") arr.push("");
-            arr[arr.length -1] += 漢字.substr(i, 1);
-            mode = "kana"
-          } else { 
-            if(mode != "漢") arr.push("");
-            arr[arr.length -1] += 漢字.substr(i, 1);
-            mode = "漢"
-          }          
-        }
-        let r = "";
-        for(let i = 0; i < arr.length; i++) {
-          code = arr[i].charCodeAt(0);
-          if(code >= 12353 && code <= 12438){
-            r += `<span style="font-size: 22px;">${arr[i]}</span>`;
-            kana = kana.replace(arr[i], "")
-          } 
-					else {
-            let s = "";
-            if(i < arr.length - 1) {
-              let index = kana.indexOf(arr[i + 1]);
-              s = kana.substr(0, index);
-              kana = kana.replace(s, "");
-              // console.log("s: " + s + ", kana: " + kana + ", index: " + index )
-            } else {
-              s = kana;
-            }
-            r += `<ruby><span style="font-size: 20px;">${arr[i]}</span><rt style="font-size: 12px;">${s}</rt></ruby>`;
-          }
-        }
-        // let div = document.createElement("div")
-        // div.innerHTML = r;
-        // document.body.appendChild(div)
-        return r;
-      }
-    }
+
 		vm = new Vue({
 			el: '#app',
 			data() {
@@ -458,6 +399,60 @@
 				}
 			}
 		});
+	}
+
+	String.prototype.ruby = function(漢字) {
+		let kana = this.toString();
+		if(typeof 漢字 == "string") {
+		}
+		if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
+			漢字 = 漢字.split("・")[0]
+		}
+		let code = kana.charCodeAt(0);
+		// console.log(kana.substr(0, 1) + ": " + code)
+		if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
+			return null;
+		else {
+			let arr = [], mode = "";
+			for(let i = 0; i < 漢字.length; i++) {
+				code = 漢字.charCodeAt(i);
+				if(code >= 12353 && code <= 12438){
+					if(mode != "kana") arr.push("");
+					arr[arr.length -1] += 漢字.substr(i, 1);
+					mode = "kana"
+				} else { 
+					if(mode != "漢") arr.push("");
+					arr[arr.length -1] += 漢字.substr(i, 1);
+					mode = "漢"
+				}          
+			}
+			let r = "";
+			for(let i = 0; i < arr.length; i++) {
+				code = arr[i].charCodeAt(0);
+				if(code >= 12353 && code <= 12438){
+					r += `<span style="font-size: 22px;">${arr[i]}</span>`;
+					kana = kana.replace(arr[i], "")
+				} else if(code < 12438){
+					r += `<span style="font-size: 22px;">${arr[i]}</span>`;
+					kana = kana.replace(arr[i], "")
+				} else {
+					let s = "";
+					if(i < arr.length - 1) {
+						let index = kana.indexOf(arr[i + 1]);
+						s = kana.substr(0, index);
+						kana = kana.replace(s, "");
+						// console.log("s: " + s + ", kana: " + kana + ", index: " + index )
+					} else {
+						s = kana;
+					}
+					r += `<ruby><span style="font-size: 20px;">${arr[i]}</span><rt style="font-size: 12px;">${s}</rt></ruby>`;
+				}
+			}
+			// let div = document.createElement("div")
+			// div.innerHTML = r;
+			// document.body.appendChild(div)
+			return r;
+		}
 	}
 </script>
 </html>
