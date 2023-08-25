@@ -19,9 +19,16 @@ Vue.component('lesson', {
 			>
 				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
 			</Select>
+
+			<div style="flex: 1;" ></div>
+
+			<Checkbox v-if="mode == '單字'" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
 			<div style="flex: 1;" ></div>
 			<a class="button" href="./index.html?mode=字典" target="_blank" style="width: 60px;">
 				字典
+			</a>
+			<a class="button" v-if="mode == '單字'" href="./index.html?mode=單字測驗" target="_blank" style="width: 80px;">
+				單字測驗
 			</a>
 		</div>
 
@@ -43,6 +50,7 @@ Vue.component('lesson', {
 			scrollTop: 0, // 不要用了，2023-06-27
 			mode: "課文",
 			print: "N",
+			isRuby: false
 		};
 	},
 	created(){
@@ -69,9 +77,9 @@ Vue.component('lesson', {
 		else if(typeof s == "string") {
 			this.mode = s;
 			this.$refs["frame"].style.overflow = "auto";
-		} 
-		// console.log(this.$queryString("print"))
-		// console.log("overflow: " + this.$refs["frame"].style.overflow)
+		}
+		s = window.localStorage["japanese-大家的日本語-ruby"];
+		this.isRuby = typeof s == "string" && s == "Y" ? true : false;
 
 		this.$refs["radio-group"].$children[this.mode == "課文" ? 0 : 1].currentValue = true;
 		this.onChangeMode();
@@ -129,6 +137,17 @@ Vue.component('lesson', {
 				}, (this.mode == "課文") ? 600 : 1000);
 			}, 600);
     },
+		onChangeRuby() {
+			window.localStorage["japanese-大家的日本語-ruby"] = this.isRuby == true ? "Y" : "N";
+			this.html = "";
+			this.$refs["frame"].style.visibility = "hidden";
+			this.$refs["frame"].scrollTop = 0;
+
+			this.parseWord();
+			setTimeout(() => {
+				this.changeWidth();
+			}, 1000);
+		},
 		changeWidth() {
 			let frame = this.$refs["frame"];
 			let arr = frame.querySelectorAll("div" + 
@@ -241,24 +260,24 @@ Vue.component('lesson', {
 						let td = arr[i].split("\t");
 						// if(i == 0) console.log(td)
 						let accent = window.renderAccent(td[0], td[3]);
-						let ruby = td[0].ruby(td[1]);
+						let ruby = this.print == 'Y' ? null : td[0].ruby(td[1]);
 						let s = "";
-						if(ruby == null) {
+						if(this.isRuby == true && ruby != null) {
 							s = `<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
-									<div style="font-size: 20px;">${accent}</div>
-									<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
-								</div>
-								<div style="min-height: 24px;">${td[1]}</div>`;
+								<div style="min-height: 0px;">${ruby}</div>
+								<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
+							</div>`;
 						} else {
 							s = `<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
-									<div style="min-height: 0px;">${ruby}</div>
-									<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
-								</div>`;
+								<div style="font-size: 20px;">${accent}</div>
+								<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
+							</div>
+							<div style="flex: 1;">${td[1]}</div>`;
 						}
 
 						result += `<div class="card ${this.print == 'N' ? '' : 'print'}" style="font-size: 20px;">
 								<div style="min-width: 25px; font-size: 20px;">${i + 1}.</div>
-								<div style="flex: 1; font-size: 20px;">
+								<div style="flex: 1; font-size: 20px; display: flex; flex-direction: column;">
 									${s}
 									<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
 										${window.rome(td[0])}
