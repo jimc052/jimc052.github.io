@@ -212,7 +212,6 @@ Vue.component('letter-exam', {
 						}
 					}
 				}
-				
 			}
 
 			let max = this.tone.length + this.word.length > 2 ? 50 : 30;
