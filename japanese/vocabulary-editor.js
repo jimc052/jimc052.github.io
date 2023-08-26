@@ -13,6 +13,7 @@ Vue.component('editor', {
 				style="flex: 1; font-size: 20px; padding: 5px;" size="large" 
         clearable
         @on-change="onKeyChange" 
+				:disabled="! $isDebug()"
       />
     </div>
 		<div slot="footer" style="display: flex; padding: 0px;">

@@ -31,13 +31,17 @@ Vue.component('vocabulary', {
 				:width="width"
 				border :columns="columns" :data="dsTable"
 				@on-column-width-resize="onColumnResize"
+				@on-cell-click="onCellClick"
+				@on-row-click="onRowClick"
 			></Table>
 		</div>
 		<div style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
-		 	2023-08-17 09:00
+		 	2023-08-26 18:00
 			<div style="flex: 1;" />
-			<Button id="btnVocabChange" type="primary" size="large"  @click="onButtonClick" 
-				style="width: 100px; visibility: hidden;">修正</Button>
+
+			<Button v-if="$isDebug()" type="primary" size="large"  @click="onBtnAdd" 
+				style="width: 100px;">新增</Button>
+		
 			<div style="flex: 1;" />
 			<Page :total="dataStore.length" 
 				:page-size="pageSize" :page-size-opts="pageOpts" show-elevator show-sizer 
@@ -45,7 +49,7 @@ Vue.component('vocabulary', {
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 			
 		</div>
-		<editor ref="editor" :columns="columns" :word="activeIndex > -1 ? dsTable[activeIndex] : undefined" @onClose="onCloseEditor"
+		<editor ref="editor" :columns="columns" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor"
 		/>
 	</div>`,
 	props: {
@@ -64,8 +68,16 @@ Vue.component('vocabulary', {
 			row: {},
 			currentPage: 0, 
 			option: "",
-			options: ["家族", "身體", "職稱", "地點", "食物", "飲料", "大自然", "交通", "物品", "文具", "電器", "服裝", "方位", "數字"],
-			activeIndex: -1,
+			options: [
+				"家族", "身體", "職稱", "飲料", "食物",  
+				"交通", "服飾", "費用", 
+				"電器家具", "廚房器具", "文具", "物品",
+				"專業領域", "抽象", "顏色、明暗",
+				"大自然", "休閒",
+				"國家、城市", "建築物", "場所", "方位",
+				"數字", "時間", "數學",  "季節"
+			],
+			editIndex: -1,
 			sortKey: "語"
 		};
 	},
@@ -78,26 +90,82 @@ Vue.component('vocabulary', {
 	async mounted () {
 		let s = window.localStorage["japanese-vocabulary"];	
 		vocabularys = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+		vocabularys.sort((a, b) => {
+			return a.id > b.id ? 1 : -1;
+		});
+
 		// console.log((vocabularys.length).leftPadding(5))
-		s = window.localStorage["japanese-時雨-buffer"];	
-    let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
-		for(let i = dsBuffer.length - 1; i >= 0; i--) {
-			try {
-				await this.onCloseEditor(dsBuffer[i]);
-				dsBuffer.splice(i, 1);
-				window.localStorage["japanese-時雨-buffer"] = JSON.stringify(dsBuffer)
-			} catch (err) {
-				console.log(err)
-				break;
+		{ // 時雨-buffer
+			// s = window.localStorage["japanese-時雨-buffer"];
+			// let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+			// for(let i = dsBuffer.length - 1; i >= 0; i--) {
+			// 	delete dsBuffer[i].id;
+			// 	delete dsBuffer[i].date;
+			// 	let index = vocabularys.findIndex(el => {
+			// 		return el.語 == dsBuffer[i].語 && el.漢 == dsBuffer[i].漢;
+			// 	});
+			// 	console.log(index + `=>  ${dsBuffer[i].語}, ${dsBuffer[i].漢}`);
+			// 	if(index == -1) {
+			// 		try {
+			// 			await this.onCloseEditor(dsBuffer[i]);
+			// 		} catch (err) {
+			// 			console.log(err)
+			// 			break;
+			// 		}					
+			// 	}
+			// 	dsBuffer.splice(i, 1);
+			// 	window.localStorage["japanese-時雨-buffer"] = JSON.stringify(dsBuffer)
+			// }
+		}
+		{ // 刪除 fireStore
+			// for(let i = 8283; i <= 8385; i++) {
+			// 	let id = i.leftPadding(5);
+			// 	let ref = FireStore.db.collection("japanese-vocabulary")
+			// 		.doc(id).delete();				
+			// }
+		}
+		{ // 更新詞類
+			// for(let i = 0; i < vocabularys.length; i++) {
+			// 	let row = vocabularys[i];
+			// 	if(row.類 == "副詞" && (typeof row.詞 == "undefined" || row.詞.length == 0)) {
+			// 		row.詞 = row.類;
+			// 		delete row.類;
+			// 		try {
+			// 			await this.onCloseEditor(row);
+			// 		} catch (err) {
+			// 			console.log(err)
+			// 			break;
+			// 		}	
+			// 	}
+			// }
+			// 更新類
+			for(let i = 0; i < vocabularys.length; i++) {
+				let row = vocabularys[i];
+				if(row.類 == "電器" ) {
+					row.類 = "電器家具";
+					try {
+						await this.onCloseEditor(row);
+					} catch (err) {
+						console.log(err)
+						break;
+					}	
+				}
 			}
 		}
-		// s = "";
-		// vocabularys.forEach(el => {
-		// 	if(typeof el["註"] == "string" && el["註"].trim().length > 0 && s.indexOf(el["註"]) == -1) {
-		// 		s += "," + el["註"].trim();
-		// 	}
-		// });
-		// console.log(s)
+		{ // 找出類
+			// let result = "";
+			// for(let i = 0; i < vocabularys.length; i++) {
+			// 	let row = vocabularys[i];
+			// 	if(typeof row.類 == "string" && row.類.length > 0) {
+			// 		if(result.indexOf(`"${row.類}"`) == -1) {
+			// 			result += (result.length > 0 ? ", " : "")
+			// 				+ `"${row.類}"`
+			// 		}
+			// 	}
+			// }
+			// console.log(result)
+		
+		}
 
 		if(FireStore.login == true)
 			await this.download();
@@ -125,12 +193,16 @@ Vue.component('vocabulary', {
 						},
 						on: {
 							click:  (event) => {
-								this.activeIndex = p.index;
+								this.editIndex = p.index;
 							}
 						}
 					};
 					return h('div', json, p.index + 1);
 				}
+			// }, {
+			// 	"title": "ID",
+			// 	"key": "id",
+			// 	renderHeader: this.renderHeader,
 			}, {
 				"title": "語",
 				"key": "語",
@@ -230,31 +302,32 @@ Vue.component('vocabulary', {
 			);
 		},
 		renderPronounce(h, p){
-			// let key = p.column.key;
-			let values = p.row["語"].split("//");
 			let results = [];
-			for(let x = 0; x < values.length; x++) {
-				let s = window.rome(values[x]);
-				// console.log(values[x] + ", " + s)
-				if(x > 0) results.push(h('span', "，"))
-				let json = {
-					// attrs: {id: 'foo'}, // ok
-					// 'class': {pronounce: true}, // ok
-					domProps: {
-					// 	value: s,
-						// innerHTML: "<span style='color: red'>" + s + "<span>" // OK
-					},
-					// style: { // OK
-					// 	color: 'red',
-					// 	// fontSize: '28px'
-					// },
-					on: {
-						click: function (event) {
-							TTX.speak(values[x])
+			if(typeof p.row["語"] == "string") {
+				let values = p.row["語"].split("//");
+				for(let x = 0; x < values.length; x++) {
+					let s = window.rome(values[x]);
+					// console.log(values[x] + ", " + s)
+					if(x > 0) results.push(h('span', "，"))
+					let json = {
+						// attrs: {id: 'foo'}, // ok
+						// 'class': {pronounce: true}, // ok
+						domProps: {
+						// 	value: s,
+							// innerHTML: "<span style='color: red'>" + s + "<span>" // OK
+						},
+						// style: { // OK
+						// 	color: 'red',
+						// 	// fontSize: '28px'
+						// },
+						on: {
+							click: function (event) {
+								TTX.speak(values[x])
+							}
 						}
-					}
-				};
-				results.push(h('a', json, s))
+					};
+					results.push(h('a', json, s))
+				}				
 			}
 			return h('span', {}, results);
 		},
@@ -320,9 +393,21 @@ Vue.component('vocabulary', {
 		onColumnResize(width, start, col) { // 還沒寫...............
 			// console.log(col)
 		},
+		onCellClick(row, column, data, event) { // 有 bug，要值才會有觸發
+			// console.log(column.key)
+			// console.log(row)
+			// console.log(row._index)
+		},
+		async onRowClick(data, index) { // ok 但沒有寫
+			// if(this.option2.length > 0) {
+			// 	data.類 = this.option2;
+			// 	this.onCloseEditor(data)
+			// 	this.$set(this.dsTable, index, data);
+			// }
+		},
 		onChangePage(e, sortKey) {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
-			this.currentPage = e; this.activeIndex = -1;
+			this.currentPage = e; this.editIndex = -1;
 			this.dsTable = [];
 			if(typeof sortKey == "string") {
 				this.dataStore.sort((a, b) => {
@@ -339,7 +424,7 @@ Vue.component('vocabulary', {
 			table.scrollTop = 0;
 		},
 		onPageSizeChange(e) {
-			this.currentPage = 0; this.activeIndex = -1;
+			this.currentPage = 0; this.editIndex = -1;
 			this.pageSize = e;
 			this.onChangePage(1, this.sortKey);
 			window.localStorage["japanese-vocabulary-pageSize"] = e;
@@ -347,7 +432,7 @@ Vue.component('vocabulary', {
 		onSearch() {
 			this.option = ""; this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
-			this.currentPage = -1; this.activeIndex = -1;
+			this.currentPage = -1; this.editIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
 				if(this.search.length > 0) {
@@ -411,7 +496,7 @@ Vue.component('vocabulary', {
 		onChangeLevel() {
 			this.search = ""; this.option = "";
 			this.dataStore = []; this.dsTable = [];
-			this.currentPage = -1; this.activeIndex = -1;
+			this.currentPage = -1; this.editIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
 				vocabularys.forEach((el1, index1) => {
@@ -435,7 +520,7 @@ Vue.component('vocabulary', {
 			if(typeof this.option == "undefined" || this.option == "" || this.option == "undefined") return;
 			this.search = "";   this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
-			this.currentPage = -1; this.activeIndex = -1;
+			this.currentPage = -1; this.editIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
 				vocabularys.forEach((el1, index1) => {
@@ -451,40 +536,45 @@ Vue.component('vocabulary', {
 			}, 300);
 		},
 		onDebugSearch() {
-			// this.search = "";
+			this.search = "";
 			this.sortKey = "類";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1;
-			vocabularys.forEach((el1, index1) => {
-				// if(typeof el1["註"] == "string" && el1["註"].length > 0){ //  && el1["註"].indexOf("挨拶語") > -1
-				// 	this.dataStore.push(el1)
-				// }
-				if(typeof el1["類"] == "string" && (el1["類"] == "動詞" || el1["類"] == "形容詞") ){ //  && el1["註"].indexOf("挨拶語") > -1
-						this.dataStore.push(el1)
-					}
-			});
-			// "動詞", "形容詞"
+			{
+				// vocabularys = vocabularys.filter(el => {
+				// 	return el.id <= "08074";
+				// })
+				// vocabularys.sort((a, b) => {
+				// 	return a.id < b.id ? 1 : -1;
+				// });
+				// window.localStorage["japanese-vocabulary"] =  JSON.stringify(vocabularys)
+				// this.dataStore = vocabularys;				
+			}
 
-			this.dataStore.sort((a, b) => {
-				return a["註"] < b["註"] ? 1 : -1;
-			});
+			// this.dataStore = vocabularys.filter(el => {
+			// 	return  typeof el.類 == "string" && el.類.length > 0 && this.options.join().indexOf(el.類) == -1 ? true : false;
+			// })
+			// this.dataStore.sort((a, b) => {
+			// 	// return a["語"] + a.id < b["語"] + b.id ? 1 : -1;
+			// 	return a.id < b.id ? 1 : -1;
+			// });
+			// window.localStorage["japanese-時雨-buffer"] = JSON.stringify(this.dataStore)
+
 			this.onChangePage(1, this.sortKey);
 			if(this.dataStore.length > 0) {
-				document.querySelector("#btnVocabChange").style.visibility = "visible";
+				// document.querySelector("#btnVocabChange").style.visibility = "visible";
 			}
 		},
-		async onButtonClick(){
-			for(let i = 0; i < this.dsTable.length; i++) { // 
-				// this.dsTable[i]["詞"] = this.dsTable[i]["註"].replace("//", "；");
-				// delete this.dsTable[i]["註"];
-				this.dsTable[i]["詞"] = this.dsTable[i]["類"].replace("//", "；");
-				delete this.dsTable[i]["類"];
-				await this.onCloseEditor(this.dsTable[i])				
-			}
-			// , "動詞", "形容詞"
+		async onBtnAdd() {
+			this.dsTable.push({"類": this.option})
+			this.editIndex = this.dsTable.length - 1;
 		},
 		async onCloseEditor(word) {
 			if(typeof word == "object") {
+				if(typeof word.語 == "undefined" || word.語.trim().length == 0) {
+					alert("請輸入'語'欄位");
+					return;
+				}
 				word.date = (new Date()).getTime();
 				for(let key in word) {
 					if("註,詞,類".indexOf(key) > -1) {
@@ -493,13 +583,14 @@ Vue.component('vocabulary', {
 						}
 					}
 				}
-				if(this.activeIndex > -1) {
-					this.$set(this.dsTable, this.activeIndex, word);
+				if(this.editIndex > -1) {
+					this.$set(this.dsTable, this.editIndex, word);
 				}
 
 				let id = word.id;
 				if(typeof id == "undefined") {
-					id = (vocabularys.length).leftPadding(5);
+					let last = vocabularys[vocabularys.length - 1];
+					id = (parseInt(last.id, 10) + 1).leftPadding(5);
 					word.id = id;
 					vocabularys.push(word)
 				} else {
@@ -516,14 +607,14 @@ Vue.component('vocabulary', {
 						vocabularys[index] = word;
 					}
 				}
-				
+				window.localStorage["japanese-vocabulary"] = JSON.stringify(vocabularys);
 				let json = Object.assign({}, word);
 				delete json.id;
 				let ref = FireStore.db.collection("japanese-vocabulary")
 					.doc(id);
 				let x = await ref.set(json);
 			}
-			this.activeIndex = -1;
+			this.editIndex = -1;
 		},
 		async download() {
 			let s = window.localStorage["japanese-vocabulary-last-date"];
@@ -556,7 +647,7 @@ Vue.component('vocabulary', {
 					error(e)
 				}
 			});
-		}
+		},
 	},
 	watch: {
 	},

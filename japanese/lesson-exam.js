@@ -137,6 +137,8 @@ Vue.component('lesson-exam', {
 					}
 				} else if(code == 27) {
 					this.input1 = "";
+				} else if(pk) {
+					this.play();
         }
 			}
     },
@@ -151,7 +153,18 @@ Vue.component('lesson-exam', {
           let i = arr.findIndex(el => {
             return el == data.answer;
           });
-          if(i > -1) return "Y";
+          if(i > -1){
+						return "Y";
+					} else {
+						question = data.漢.replace("~", " ");
+						arr = question.split("・");
+						i = arr.findIndex(el => {
+							return el == data.answer;
+						});
+						if(i > -1){
+							return "Y";
+						} 
+					}
         }
         return "N";
       }

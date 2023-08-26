@@ -1,8 +1,8 @@
 window.renderAccent = (語, 重) => {
-  let values = 語.split("//");
-  let accnets = 重.split("//");
-  let voicedSound = "ゃャゅュょョ"; // 拗音
   let results = "";
+  let values = typeof 語 == "string" ? 語.split("//") :[];
+  let accnets = typeof 重 == "string" ? 重.split("//") : [];
+  let voicedSound = "ゃャゅュょョ"; // 拗音
 
   for(let x = 0; x < values.length; x++) {
     let value = values[x];
@@ -63,7 +63,7 @@ window.renderAccent = (語, 重) => {
       result = arr.join("");
     }
     results += (results.length > 0 ? "，" : "") + result;
-  }
+  }    
   return results;
 }
 
