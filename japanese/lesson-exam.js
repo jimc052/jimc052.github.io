@@ -55,9 +55,14 @@ Vue.component('lesson-exam', {
 					<ul style="list-style-type: none; " class="ul-exam">
 						<li v-for="(el, i) in reverseData" style="display: flex; flex-direction: row;">
               <div style="width: 30px; text-align: right;">{{(index - i) + '.'}}</div>
-              <div style="flex: 1;">
-                <div>{{el.語}}</div>
-                <div style="min-height: 22px">{{el.漢}}</div>
+              <div style="flex: 1; margin-right: 5px; margin-top: 5px;">
+								<div class="ruby" v-if="el.ruby != null" v-html="el.ruby  + ' ' + el.重" />
+								<div v-else>                
+									<div>{{el.語 + ' ' + el.重}}</div>
+                	<div>{{el.漢}}</div>
+								</div>
+
+								<div v-html="el.rome" style="color: #2d8cf0;"></div>
                 <div>{{el.中}}</div>
                 <div>
                   <span v-if="el.correct != 'Y' " 
@@ -215,6 +220,8 @@ Vue.component('lesson-exam', {
           漢: cells[1],
           中: cells[2],
           重: cells[3],
+					rome: window.rome(cells[0]),
+					ruby: cells[0].ruby(cells[1])
         }
       }
 

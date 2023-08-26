@@ -244,13 +244,15 @@ Vue.component('vocabulary', {
 				"key": "類",
 				"ellipsis": true,
 				"resizable": true,
-				"width": 100
+				"width": 100,
+				renderHeader: this.renderHeader,
 			}, {
 				"title": "詞態",
 				"key": "詞",
 				"ellipsis": true,
 				"resizable": true,
-				"width": 100
+				"width": 100,
+				renderHeader: this.renderHeader,
 			}, {
 				"title": "級別",
 				"key": "級",
