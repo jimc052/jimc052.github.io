@@ -86,19 +86,17 @@
   </div>
 </body>
 <script>
-  // let mode = "", 刪除記錄 = "";
+  // 還沒改 2023-08-27
   let cols1 = "假名,漢字,中文,級別,重音,分類,來源".split(",");
   let cols2 = "語,漢,中,級,重,類,id".split(",");
-  let ds時雨 = [], vocabularys = [], dsBuffer = [];
+  let dataStore = [], vocabularys = [], dsBuffer = [];
   let btnRemove  = `<button style="color: white; background: red;" onclick='update()'>更新</button>`;
-  // let btnRemove  = `<button style="color: white; background: red;" onclick='remove({item}, {index})'>刪除</button>`;
-  // let btnRecover  = `<button style="color: white; background: green;" onclick='recover({item}, {index})'>復原</button>`;
 
   window.onload = async function () {
     let s = window.localStorage["japanese-vocabulary"];	
     vocabularys = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
 
-    s = window.localStorage["japanese-時雨-buffer"];	
+    s = window.localStorage["japanese-buffer"];	
     dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
 
     let thead = document.querySelector("thead");
@@ -134,9 +132,9 @@
 
     if(params.length > 0) {
       let s = window.localStorage["japanese-時雨-" + params];
-      ds時雨 = JSON.parse(`[${s}]`);
+      dataStore = JSON.parse(`[${s}]`);
       s = "";
-      ds時雨.forEach(el => {
+      dataStore.forEach(el => {
         // if(typeof el["分類"] == "undefined") console.log(el)
         if(typeof el["分類"] == "string" && s.indexOf(el["分類"]) == -1)
           s += (s.length == 0 ? "" : ",") + el["分類"]
@@ -162,7 +160,7 @@
     tbody.scrollTop = 0;
     window.localStorage["japanese-時雨-kind"] = params;
 
-    ds時雨.forEach((el, index) => {
+    dataStore.forEach((el, index) => {
       // console.log(el)
       if(el["分類"] == params) {
         let filter = vocabularys.filter(el2 => {
@@ -254,7 +252,7 @@
     delete data.date;
 
     dsBuffer.push(data)
-    window.localStorage["japanese-時雨-buffer"] = JSON.stringify(dsBuffer);
+    window.localStorage["japanese-buffer"] = JSON.stringify(dsBuffer);
     console.log(JSON.stringify(data))
   }
 </script>

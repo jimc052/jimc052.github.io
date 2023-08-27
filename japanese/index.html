@@ -290,6 +290,10 @@
 			}
 		}
 
+		Vue.prototype.$isLogin = function() {
+			return typeof email == "string" && email.length > 0 && FireStore.login == true;
+		}
+
 		Vue.prototype.$storage = function (key, value) {
 			if(typeof key == "string" && typeof value == "undefined"){
 				let s = window.localStorage[key];

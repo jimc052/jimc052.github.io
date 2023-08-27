@@ -14,7 +14,7 @@ Vue.component('lesson', {
 				<Radio label="單字">單字</Radio>
 			</RadioGroup>
 
-			<Select v-model="option"  size="large" @on-change="onChangeLesson"
+			<Select v-model="option" size="large" @on-change="onChangeLesson"
 				style="margin-left: 20px; width:120px; margin-bottom: 5px;"
 			>
 				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
@@ -22,13 +22,13 @@ Vue.component('lesson', {
 
 			<div style="flex: 1;" ></div>
 
-			<Checkbox v-if="mode == '單字'" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
+			<Checkbox v-if="mode == '單字' && width > 400" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
 			<div style="flex: 1;" ></div>
-			<a class="button" href="./index.html?mode=字典" target="_blank" style="width: 60px;">
-				字典
-			</a>
-			<a class="button" v-if="mode == '單字'" href="./index.html?mode=單字測驗" target="_blank" style="width: 80px;">
+			<a class="button" v-if="mode == '單字' && width > 400" href="./index.html?mode=單字測驗" target="_blank" style="width: 80px;">
 				單字測驗
+			</a>
+			<a v-if="$isLogin() && width > 400" class="button" href="./index.html?mode=字典" target="_blank" style="width: 60px;">
+				字典
 			</a>
 		</div>
 
@@ -50,7 +50,8 @@ Vue.component('lesson', {
 			scrollTop: 0, // 不要用了，2023-06-27
 			mode: "課文",
 			print: "N",
-			isRuby: false
+			isRuby: false,
+			width: 0
 		};
 	},
 	created(){
@@ -96,6 +97,7 @@ Vue.component('lesson', {
 		onResize(){
 			let frame = this.$refs["frame"];
 			if(typeof frame == "object") {
+				this.width = frame.clientWidth;
 				if((this.mode == "課文" && frame.clientWidth > 1000)) {
 					frame.classList.add("big-screen");
 					frame.classList.remove("small-screen");
