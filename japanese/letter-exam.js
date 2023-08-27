@@ -15,6 +15,7 @@ Vue.component('letter-exam', {
 					<Input ref="input1" element-id="input1" v-model="input1"
 						style="font-size: 20px; flex: 1;"
 						size="large"
+						placeholder="請輸入羅馬拼音"
 					/>
 					
 					<div v-if="volumeOn" class="button" style="margin-left: 10px;">
@@ -215,8 +216,8 @@ Vue.component('letter-exam', {
 			}
 
 			let max = this.tone.length + this.word.length > 2 ? 50 : 30;
-
-			while (arr.length > 0) {
+			let cycle = 500;
+			while (arr.length > 0 && cycle >= 0) {
 				let index = 0;
 				if(arr.length > 1) {
 					index = getRandom(0, arr.length)
@@ -226,6 +227,7 @@ Vue.component('letter-exam', {
 					this.datas.push(data[0])
 					if(this.datas.length == max) break;
 				}
+				cycle--;
 			}
 			this.execute();
 		},

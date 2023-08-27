@@ -30,6 +30,7 @@ Vue.component('lesson-exam', {
 					<Input ref="input1" element-id="input1" v-model="input1"
 						style="font-size: 20px; flex: 1;"
 						size="large"
+						placeholder="請輸入日文"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
@@ -225,7 +226,8 @@ Vue.component('lesson-exam', {
         }
       }
 
-      while (arr.length > 0) {
+			let cycle = 500;
+      while (arr.length > 0 && cycle >= 0) {
 				let index = 0;
 				if(arr.length > 1) {
 					index = getRandom(0, arr.length)
@@ -235,6 +237,7 @@ Vue.component('lesson-exam', {
 					this.datas.push(data[0])
 					if(this.datas.length == 30) break;
 				}
+				cycle--;
 			}
       this.execute();
     }

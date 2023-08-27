@@ -96,7 +96,7 @@ Vue.component('vocabulary', {
 
 		// console.log((vocabularys.length).leftPadding(5))
 		{ // 時雨-buffer
-			// s = window.localStorage["japanese-時雨-buffer"];
+			// s = window.localStorage["japanese-buffer"];
 			// let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
 			// for(let i = dsBuffer.length - 1; i >= 0; i--) {
 			// 	delete dsBuffer[i].id;
@@ -114,7 +114,7 @@ Vue.component('vocabulary', {
 			// 		}					
 			// 	}
 			// 	dsBuffer.splice(i, 1);
-			// 	window.localStorage["japanese-時雨-buffer"] = JSON.stringify(dsBuffer)
+			// 	window.localStorage["japanese-buffer"] = JSON.stringify(dsBuffer)
 			// }
 		}
 		{ // 刪除 fireStore
@@ -560,7 +560,7 @@ Vue.component('vocabulary', {
 			// 	// return a["語"] + a.id < b["語"] + b.id ? 1 : -1;
 			// 	return a.id < b.id ? 1 : -1;
 			// });
-			// window.localStorage["japanese-時雨-buffer"] = JSON.stringify(this.dataStore)
+			// window.localStorage["japanese-buffer"] = JSON.stringify(this.dataStore)
 
 			this.onChangePage(1, this.sortKey);
 			if(this.dataStore.length > 0) {
