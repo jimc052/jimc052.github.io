@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>轉檔 2023-08-17</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+  <style>
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      /* user-select: none; */
+      font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    body {
+      /* margin: 10px; */
+      background-color: #ebecf0;
+      padding: 0px 0px;
+      color: rgb(0, 0, 0);
+    }
+
+    html,
+    body {
+      min-height: 100% !important;
+      height: 100%;
+    }
+
+    body {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    table thead tr:first-child td {
+      text-align: center;
+      color: blue;
+      font-weight: 700;
+      background: #eee;
+    }
+
+    td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+    }
+
+    tr.no-data {
+      background-color: red;
+      color: white;
+    }
+    button {
+      /* font-size: 20px; */
+      color: white;
+    }
+  </style>
+  <script src="./大家的日本語/單字.js"></script>
+</head>
+
+<body>
+  <div style="padding: 5px 0;">
+    
+  </div>
+  <div style="flex: 1; overflow: scroll">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</body>
+<script>
+  //  2023-08-27 轉完了
+  let cols1 = "語,漢,中,重,來源".split(",");
+  let cols2 = "語,漢,中,重,id".split(",");
+  let dataStore = [], vocabularys = [], dsBuffer = [];
+  let btnRemove  = `<button style="color: white; background: red;" onclick='update()'>更新</button>`;
+
+  window.onload = async function () {
+    
+    let s = window.localStorage["japanese-vocabulary"];	
+    vocabularys = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+
+    s = window.localStorage["japanese-buffer"];	
+    dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+
+    let thead = document.querySelector("thead");
+    let header = thead.querySelectorAll("td");
+    if(header.length == 0) {
+      let row = thead.insertRow();
+      let cell = row.insertCell();
+      cell.innerHTML = "項次";
+      for (let j = 0; j < cols1.length; j++) {
+        cell = row.insertCell();
+        cell.innerHTML = cols1[j];
+      }
+      cell = row.insertCell();
+      cell.innerHTML = "新增";
+    }
+    render();
+  }
+
+  function render() {
+    let tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+    tbody.scrollTop = 0;
+
+    for(let key in 單字) {
+      let arr = 單字[key];
+      for(let i = 0; i < arr.length; i++) {
+        let cells = arr[i].split("\t");
+        cells.push(key)
+        let json = {};
+        for(let j = 0; j < cols1.length; j++) {
+          json[cols1[j]] = cells[j]
+        }
+        dataStore.push(json)
+      }
+    }
+    
+
+    let x = 1;
+    dataStore.forEach((el, index) => {
+      let filter = vocabularys.filter(el2 => {
+        return el2["語"] == el["語"] || (el["漢"].length > 0 && ["漢"] == el2["漢"])
+      });
+
+      let row = tbody.insertRow();
+      row.id = x;
+      let cell1 = row.insertCell();
+      cell1.innerHTML = x;
+      for (let j = 0; j < cols1.length; j++) {
+        let col = cols1[j];
+        let cell = row.insertCell();
+        cell.innerHTML = typeof el[col] == "string" ? el[col] : "";
+      }
+      x++;
+
+      let cellLast = row.insertCell();
+      // cell.innerHTML = typeof el[col] == "string" ? el[col] : "";
+      if(filter.length > 0) {
+        let index2 = filter.findIndex(el2 => {
+          return el["漢"] == el2["漢"] 
+        })
+        if(index2 > -1) filter = [filter[index2]]
+        cell1.rowSpan = filter.length + 1;
+        for(let i = 0; i < filter.length; i++) {
+          let row = tbody.insertRow();
+          row.style.color = "red";
+          for (let j = 0; j < cols2.length; j++) {
+            let col = cols2[j];
+            let cell = row.insertCell();
+            cell.innerHTML = typeof filter[i][col] == "string" ? filter[i][col] : "";
+          }
+          let cellLast = row.insertCell();
+        }
+      } 
+      else {
+          let index2 = dsBuffer.findIndex(el2 => {
+            return el2["語"] == el["語"];
+          })
+          if(index2 == -1) {
+            row.classList.add("no-data");
+            let json = {
+              "語": el["語"],	
+              "漢": el["漢"],	
+              "中": el["中"], 
+              "重": el["重"],
+            }
+            cellLast.innerHTML = `<button id="btn${x}" style="background: green;" onclick='update(${x}, ${JSON.stringify(json)})'>新增</button>`;
+          } else {
+            cellLast.innerHTML = "buffer";
+            cellLast.style.color = "red";
+          }
+        }
+    });
+  }
+  function update(index, data) {
+    let node = document.getElementById(`btn${index}`);
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+    delete data.date;
+
+    dsBuffer.push(data)
+    window.localStorage["japanese-buffer"] = JSON.stringify(dsBuffer);
+  }
+  function  transAccent(params) { // 重 ⓪ 轉換，還沒寫呢 2023-08-28
+    let s = "";
+    for(let i = 0; i < data.重.length; i++) {
+      let accent = data.重.substr(i, 1);
+      if(accent == "⓪")
+        accent = "0";
+      else {
+        let c = (accent.charCodeAt(0) - 9311);
+        if(c > 10 || c < 1) {
+          accent = null;
+        } else
+          accent = c + "";
+      }
+    
+      if(accent != null)
+        s += (s.length > 0 ? "," : "") + accent;
+    }
+    data.重 = s;
+  }
+</script>
+
+</html>

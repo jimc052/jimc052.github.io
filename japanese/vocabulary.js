@@ -41,6 +41,14 @@ Vue.component('vocabulary', {
 
 			<Button v-if="$isDebug()" type="primary" size="large"  @click="onBtnAdd" 
 				style="width: 100px;">新增</Button>
+
+			<!--
+			<div style="flex: 1;" />
+			<Select v-model="option2" style="width:150px" size="large">
+				<Option value=""></Option>
+				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
+			</Select>
+			-->
 		
 			<div style="flex: 1;" />
 			<Page :total="dataStore.length" 
@@ -49,7 +57,7 @@ Vue.component('vocabulary', {
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 			
 		</div>
-		<editor ref="editor" :columns="columns" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor"
+		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor"
 		/>
 	</div>`,
 	props: {
@@ -68,6 +76,7 @@ Vue.component('vocabulary', {
 			row: {},
 			currentPage: 0, 
 			option: "",
+			option2: "",
 			options: [
 				"家族", "身體", "職稱", "飲料", "食物",  
 				"交通", "服飾", "費用", 
@@ -94,28 +103,32 @@ Vue.component('vocabulary', {
 			return a.id > b.id ? 1 : -1;
 		});
 
-		// console.log((vocabularys.length).leftPadding(5))
-		{ // 時雨-buffer
-			// s = window.localStorage["japanese-buffer"];
-			// let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
-			// for(let i = dsBuffer.length - 1; i >= 0; i--) {
+		// console.log(vocabularys[vocabularys.length -1].id)
+		{ // 轉檔 - buffer; 08288 
+			/*
+			s = window.localStorage["japanese-buffer"];
+			// console.log(s)
+			let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+			for(let i = dsBuffer.length - 1; i >= 0; i--) {
+					if(dsBuffer[i].語 == "なに") continue;
 			// 	delete dsBuffer[i].id;
 			// 	delete dsBuffer[i].date;
-			// 	let index = vocabularys.findIndex(el => {
-			// 		return el.語 == dsBuffer[i].語 && el.漢 == dsBuffer[i].漢;
-			// 	});
-			// 	console.log(index + `=>  ${dsBuffer[i].語}, ${dsBuffer[i].漢}`);
-			// 	if(index == -1) {
-			// 		try {
-			// 			await this.onCloseEditor(dsBuffer[i]);
-			// 		} catch (err) {
-			// 			console.log(err)
-			// 			break;
-			// 		}					
-			// 	}
-			// 	dsBuffer.splice(i, 1);
-			// 	window.localStorage["japanese-buffer"] = JSON.stringify(dsBuffer)
-			// }
+				let index = vocabularys.findIndex(el => {
+					return el.語 == dsBuffer[i].語 && el.漢 == dsBuffer[i].漢;
+				});
+				console.log(index + `=>  ${dsBuffer[i].語}, ${dsBuffer[i].漢}`);
+				if(index == -1) {
+					try {
+						await this.onCloseEditor(dsBuffer[i]);
+					} catch (err) {
+						console.log(err)
+						break;
+					}					
+				}
+				dsBuffer.splice(i, 1);
+				window.localStorage["japanese-buffer"] = JSON.stringify(dsBuffer)
+			}
+			*/
 		}
 		{ // 刪除 fireStore
 			// for(let i = 8283; i <= 8385; i++) {
@@ -199,10 +212,12 @@ Vue.component('vocabulary', {
 					};
 					return h('div', json, p.index + 1);
 				}
-			// }, {
-			// 	"title": "ID",
-			// 	"key": "id",
-			// 	renderHeader: this.renderHeader,
+			}, {
+				"title": "ID",
+				"key": "id",
+				"width": 60,
+				"align": "center",
+				renderHeader: this.renderHeader,
 			}, {
 				"title": "語",
 				"key": "語",
@@ -263,7 +278,7 @@ Vue.component('vocabulary', {
 			}
 		];
 
-		// if(this.$isDebug()) { this.onDebugSearch(); return; }
+		if(this.$isDebug()) { this.onDebugSearch(); return; }
 
 		s = window.localStorage["japanese-vocabulary-search"];
 		if(typeof s != "undefined" && s.length > 0) {
@@ -400,12 +415,33 @@ Vue.component('vocabulary', {
 			// console.log(row)
 			// console.log(row._index)
 		},
-		async onRowClick(data, index) { // ok 但沒有寫
-			// if(this.option2.length > 0) {
-			// 	data.類 = this.option2;
-			// 	this.onCloseEditor(data)
-			// 	this.$set(this.dsTable, index, data);
-			// }
+		async onRowClick(data, index) { // ok，只是作為暫時作資料轉換的
+			return;
+			if(this.option2.length > 0) {
+				data.類 = this.option2;
+				this.onCloseEditor(data)
+				this.$set(this.dsTable, index, data);
+			} else if( typeof data.重 == "string" && data.重.length > 0) {
+				let s = "";
+				for(let i = 0; i < data.重.length; i++) {
+					let accent = data.重.substr(i, 1);
+					if(accent == "⓪")
+						accent = "0";
+					else {
+						let c = (accent.charCodeAt(0) - 9311);
+						if(c > 10 || c < 1) {
+							accent = null;
+						} else
+							accent = c + "";
+					}
+				
+					if(accent != null)
+						s += (s.length > 0 ? "," : "") + accent;
+				}
+				data.重 = s;
+				this.$set(this.dsTable, index, data);
+				this.onCloseEditor(data);
+			}
 		},
 		onChangePage(e, sortKey) {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
@@ -539,12 +575,12 @@ Vue.component('vocabulary', {
 		},
 		onDebugSearch() {
 			this.search = "";
-			this.sortKey = "類";
+			this.sortKey = "id";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1;
 			{
 				// vocabularys = vocabularys.filter(el => {
-				// 	return el.id <= "08074";
+				// 	return el.id >= "08288";
 				// })
 				// vocabularys.sort((a, b) => {
 				// 	return a.id < b.id ? 1 : -1;
@@ -553,9 +589,9 @@ Vue.component('vocabulary', {
 				// this.dataStore = vocabularys;				
 			}
 
-			// this.dataStore = vocabularys.filter(el => {
-			// 	return  typeof el.類 == "string" && el.類.length > 0 && this.options.join().indexOf(el.類) == -1 ? true : false;
-			// })
+			this.dataStore = vocabularys.filter(el => {
+				return el.id >= "08288";
+			})
 			// this.dataStore.sort((a, b) => {
 			// 	// return a["語"] + a.id < b["語"] + b.id ? 1 : -1;
 			// 	return a.id < b.id ? 1 : -1;
@@ -583,6 +619,8 @@ Vue.component('vocabulary', {
 						if(typeof word[key] == "string" && word[key].trim().length == 0) {
 							delete word[key];
 						}
+					} else if(typeof word[key] == "undefined") {
+						delete word[key];
 					}
 				}
 				if(this.editIndex > -1) {
