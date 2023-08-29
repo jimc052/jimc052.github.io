@@ -87,8 +87,8 @@ function show(index) {
     }
   }, 300);
 }
-exportData()
-// list();
+// exportData()
+list();
 
 let style = document.createElement('style');
 style.innerHTML = `

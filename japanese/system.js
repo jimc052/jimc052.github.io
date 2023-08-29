@@ -7,11 +7,17 @@ window.renderAccent = (語, 重) => {
   for(let x = 0; x < values.length; x++) {
     let value = values[x];
     let accent = accnets.length > x ? accnets[x] : accnets[0];
-    if(typeof accent == "string" && accent.length > 1) {
-      accent = accent.substr(0, 1);
-    } else if(accent.length == 0) {
-      accent = null;
+    try {
+      if(typeof accent == "string" && accent.length > 1) {
+        accent = accent.substr(0, 1);
+      } else if(typeof accent == "undefined" || accent.length == 0) {
+        accent = null;
+      }
+    } catch(e) {
+      console.log(語, 重)
+      throw e;
     }
+
     if(isNaN(accent)) {
       if(accent == "⓪")
         accent = "0";

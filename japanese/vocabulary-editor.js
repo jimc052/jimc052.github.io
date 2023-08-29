@@ -28,6 +28,9 @@ Vue.component('editor', {
 			</div>
     </div>
 		<div slot="footer" style="display: flex; padding: 0px;">
+			<div v-if="visible == true && typeof target.date != 'undefined'" style="">
+				{{ new Date(target.date)}}
+			</div>
 			<div style="flex: 1;" />
 			<Button type="default" size="large"  @click="cancel" style="width: 100px;">取消</Button>
 			<Button v-if="dirty == true" type="primary" size="large"  @click="save" style="width: 100px;">確定</Button>
