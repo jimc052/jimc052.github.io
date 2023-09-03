@@ -369,7 +369,7 @@ Vue.component('blood', {
 				}
 			}
 			// console.log(this.yymm + this.datas[0]).key;
-			console.log(JSON.stringify(this.datas[0]))
+			// console.log(JSON.stringify(this.datas[0]))
 		},
 		beautify(){
 			for(let i = 1; i < this.table.length; i++) {

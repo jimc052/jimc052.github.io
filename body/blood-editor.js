@@ -9,21 +9,21 @@ Vue.component('blood-editor', {
 			<span>早上：</span>
 			<Input ref="inputTime1" v-model="time1"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				:disabled="!isMorning || day != today"  type="number"
+				:disabled="!isMorning || day != today"
 				/>
 			<Input ref="inputData1" v-model="data1" element-id="blood1"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-change="onKeyChange"  type="number"
+				@on-change="onKeyChange"
 				:disabled="!isMorning || day != today" />
 		</div>
 
 		<div>
 			<span>晚上：</span>
-			<Input ref="inputTime2" v-model="time2"  type="number"
+			<Input ref="inputTime2" v-model="time2"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
 				:disabled="isMorning || day != today"
 			/>
-			<Input ref="inputData2" v-model="data2" element-id="blood2"  type="number"
+			<Input ref="inputData2" v-model="data2" element-id="blood2"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
 				@on-change="onKeyChange"
 				:disabled="isMorning || day != today"/>
