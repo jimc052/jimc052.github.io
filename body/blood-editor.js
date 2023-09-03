@@ -1,7 +1,7 @@
 Vue.component('blood-editor', {
 	template:  `<modal title="血壓" v-model="visible" @on-visible-change="onVisibleChange">
 		<span>日期：</span>
-		<Input ref="inputDay" v-model="day"
+		<Input ref="inputDay" v-model="day" 
 			style="width: 80px; font-size: 20px; padding: 5px;" size="large" 
 			clearable :disabled="day.length > 0 && day != today"
 		/>
@@ -9,21 +9,21 @@ Vue.component('blood-editor', {
 			<span>早上：</span>
 			<Input ref="inputTime1" v-model="time1"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
-				:disabled="!isMorning || day != today"
+				:disabled="!isMorning || day != today"  type="number"
 				/>
 			<Input ref="inputData1" v-model="data1" element-id="blood1"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
-				@on-change="onKeyChange" 
+				@on-change="onKeyChange"  type="number"
 				:disabled="!isMorning || day != today" />
 		</div>
 
 		<div>
 			<span>晚上：</span>
-			<Input ref="inputTime2" v-model="time2"
+			<Input ref="inputTime2" v-model="time2"  type="number"
 				style="width: 100px; font-size: 20px; padding: 5px;" size="large" clearable 
 				:disabled="isMorning || day != today"
 			/>
-			<Input ref="inputData2" v-model="data2" element-id="blood2"
+			<Input ref="inputData2" v-model="data2" element-id="blood2"  type="number"
 				style="width: 140px; font-size: 20px; padding: 5px;" size="large" clearable 
 				@on-change="onKeyChange"
 				:disabled="isMorning || day != today"/>

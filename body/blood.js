@@ -133,8 +133,8 @@ Vue.component('blood', {
 				
 			></i-button>
 
-			<i-button v-if="calendar == 'ios-calendar' && (canEdit == true || table.length > 0)" type="error" shape="circle" 
-				:icon="table.length > 0 ? 'md-checkmark' : 'md-add'" 
+			<i-button type="error" shape="circle" :icon="table.length > 0 ? 'md-checkmark' : 'md-add'" 
+				v-if="canAdd == true && calendar == 'ios-calendar' && (canEdit == true || table.length > 0)" 
 				circle @click.native="table.length > 0 ? onSaveTable() : onAdd()" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
@@ -154,7 +154,8 @@ Vue.component('blood', {
 			canEdit: false,
 			recorder: undefined,
 			active: -1,
-			calendar: "ios-calendar"
+			calendar: "ios-calendar",
+			canAdd: true
 		};
 	},
 	created(){
@@ -360,7 +361,15 @@ Vue.component('blood', {
 			this.datas.sort(function(a, b){
 				return a.key < b.key ? 1 : -1;
 			});
-			// console.log(JSON.stringify(this.datas))
+			this.canAdd = true;
+			if(this.datas.length > 0) {
+				let today = (new Date()).toString("yyyy-mm-dd");
+				if(today == this.yymm + "-" + this.datas[0].key) {
+					this.canAdd = false;
+				}
+			}
+			// console.log(this.yymm + this.datas[0]).key;
+			console.log(JSON.stringify(this.datas[0]))
 		},
 		beautify(){
 			for(let i = 1; i < this.table.length; i++) {
