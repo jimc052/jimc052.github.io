@@ -39,8 +39,16 @@ Vue.component('vocabulary', {
 		 	2023-08-26 18:00
 			<div style="flex: 1;" />
 
-			<Button v-if="$isDebug()" type="primary" size="large"  @click="onBtnAdd" 
+			<Button v-if="$isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
 				style="width: 100px;">新增</Button>
+			
+			<Button v-if="rowIndex > -1" size="large" @click="onBtnAddNote" 
+				style="min-width: 100px; margin-left: 5px;"
+				:type="note.indexOf(dsTable[rowIndex].id) == -1 ? 'success' : 'warning' "
+			>
+				<span v-if="note.indexOf(dsTable[rowIndex].id) == -1">加入筆記</span>
+				<span v-else>移除筆記</span>
+			</Button>
 
 			<!--
 			<div style="flex: 1;" />
@@ -90,7 +98,9 @@ Vue.component('vocabulary', {
 
 			],
 			editIndex: -1,
-			sortKey: "語"
+			rowIndex: -1,
+			sortKey: "語",
+			note: ""
 		};
 	},
 	created(){
@@ -106,14 +116,14 @@ Vue.component('vocabulary', {
 			return a.id > b.id ? 1 : -1;
 		});
 
-		if(vocabularys.length > 0) console.log(vocabularys[vocabularys.length -1].id)
+		// if(vocabularys.length > 0) console.log(vocabularys[vocabularys.length -1].id)
 		{ // 轉檔 - buffer; 08370 - 08699
 			s = window.localStorage["japanese-buffer"];
 			// s = ""; // 故意的
 			// console.log(s)
 			let dsBuffer = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
 			for(let i = dsBuffer.length - 1; i >= 0; i--) {
-				console.log(i + `=>  ${dsBuffer[i].語}, ${dsBuffer[i].漢}`);
+				// console.log(i + `=>  ${dsBuffer[i].語}, ${dsBuffer[i].漢}`);
 					try {
 						delete dsBuffer[i].id;
 						await this.onCloseEditor(dsBuffer[i]);
@@ -148,8 +158,27 @@ Vue.component('vocabulary', {
 			// console.log(result)
 		}
 
-		if(FireStore.login == true)
+		if(FireStore.login == true) {
 			await this.download();
+			let ref = FireStore.db.collection("users").doc(FireStore.uid())
+						.collection("japanese").doc("note")
+			try {
+				// let ref = doc.where("note", "==", "預設")
+				let snapshot = await ref.get();
+				let data = snapshot.data();
+				if(typeof data == "object" && typeof data.預設 == "string") {
+					this.note = data.預設;
+				}
+			} catch(e) {
+				console.log(e)
+			} finally {
+				// setTimeout(() => {
+				// 	this.spinShow = false;
+				// 	success();
+				// }, 600);
+			}
+		}
+			
 
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
@@ -162,9 +191,10 @@ Vue.component('vocabulary', {
 				"width": 60,
 				"align": "center",
 				render: (h, p) => {
+					let i = this.note.indexOf(p.row["id"]);
 					let json = {
 						// attrs: {id: 'foo'}, // ok
-						// 'class': {pronounce: true}, // ok
+						'class': {'note-mark': i != -1 ? true : false},
 						domProps: {
 						// 	value: s,
 						},
@@ -178,7 +208,7 @@ Vue.component('vocabulary', {
 							}
 						}
 					};
-					return h('div', json, p.index + 1);
+					return h('div', json, (p.index + 1));
 				}
 			}, {
 				"title": "ID",
@@ -384,7 +414,10 @@ Vue.component('vocabulary', {
 			// console.log(row._index)
 		},
 		async onRowClick(data, index) { // ok，只是作為暫時作資料轉換的
+			this.rowIndex = index;
+
 			return;
+			// ok，只是作為暫時作資料轉換的
 			if(this.option2.length > 0) {
 				data.類 = this.option2;
 				this.onCloseEditor(data)
@@ -413,7 +446,7 @@ Vue.component('vocabulary', {
 		},
 		onChangePage(e, sortKey) {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
-			this.currentPage = e; this.editIndex = -1;
+			this.currentPage = e; this.editIndex = -1; this.rowIndex = -1;
 			this.dsTable = [];
 			if(typeof sortKey == "string") {
 				this.dataStore.sort((a, b) => {
@@ -430,7 +463,7 @@ Vue.component('vocabulary', {
 			table.scrollTop = 0;
 		},
 		onPageSizeChange(e) {
-			this.currentPage = 0; this.editIndex = -1;
+			this.currentPage = 0; this.editIndex = -1;  this.rowIndex = -1;
 			this.pageSize = e;
 			this.onChangePage(1, this.sortKey);
 			window.localStorage["japanese-vocabulary-pageSize"] = e;
@@ -438,7 +471,7 @@ Vue.component('vocabulary', {
 		onSearch() {
 			this.option = ""; this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
-			this.currentPage = -1; this.editIndex = -1;
+			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
 				if(this.search.length > 0) {
@@ -467,7 +500,12 @@ Vue.component('vocabulary', {
 						return;
 					}
 					vocabularys.forEach((el1, index1) => {
-						if(strLenLimit != -1 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") { // 某欄位字串長度
+						if(this.search.indexOf("=筆記") > -1) {
+							if(this.note.indexOf(el1.id) > -1) {
+								this.dataStore.push(el1)
+							}
+						}
+						else if(strLenLimit != -1 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") { // 某欄位字串長度
 							if( (strLenLimit == 99 && el1[searchCols[0]].length > 0) || (el1[searchCols[0]].length == strLenLimit) ) {
 								this.dataStore.push(el1)
 							}
@@ -502,7 +540,7 @@ Vue.component('vocabulary', {
 		onChangeLevel() {
 			this.search = ""; this.option = "";
 			this.dataStore = []; this.dsTable = [];
-			this.currentPage = -1; this.editIndex = -1;
+			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
 				vocabularys.forEach((el1, index1) => {
@@ -526,7 +564,7 @@ Vue.component('vocabulary', {
 			if(typeof this.option == "undefined" || this.option == "" || this.option == "undefined") return;
 			this.search = "";   this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
-			this.currentPage = -1; this.editIndex = -1;
+			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = "語";
 			setTimeout(() => {
 				vocabularys.forEach((el1, index1) => {
@@ -546,7 +584,7 @@ Vue.component('vocabulary', {
 			this.sortKey = "id";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1;
-			let id = "08370";
+			// let id = "08370";
 			{
 				/*
 				vocabularys = vocabularys.filter(el => {
@@ -588,9 +626,33 @@ Vue.component('vocabulary', {
 				// document.querySelector("#btnVocabChange").style.visibility = "visible";
 			}
 		},
-		async onBtnAdd() {
+		searchSymbole() { // 還沒寫
+
+		},
+		async onBtnAddWord() {
 			this.dsTable.push({"類": this.option})
 			this.editIndex = this.dsTable.length - 1;
+		},
+		async onBtnAddNote() {
+			let data = this.dsTable[this.rowIndex];
+			if(this.note.indexOf(data.id) > -1) {
+				this.note = this.note.replace(data.id + ",", "");
+			} else {
+				this.note += data.id + ","
+			}
+
+			let ref = FireStore.db.collection("users").doc(FireStore.uid())
+						.collection("japanese").doc("note")
+			try {
+				let x = await ref.set({"預設": this.note});
+			} catch(e) {
+				console.log(e)
+			} finally {
+				// setTimeout(() => {
+				// 	this.spinShow = false;
+				// 	success();
+				// }, 600);
+			}
 		},
 		async onCloseEditor(word) {
 			if(typeof word == "object") {
