@@ -280,12 +280,14 @@
 			arr = s.split("\t")
 			email = arr[0];
 			password = arr[1];
+			
 		}
+		// console.log(btoa(email + "\t" + password));
 		if(typeof email == "string" && email.length > 0 ) {
 			try {
 				FireStore.initial();
 				await FireStore.signIn(email, password)
-				console.log("FireStore.mail: " + FireStore.mail())
+				console.log("FireStore.mail: " + FireStore.mail() + "\n  id: " )
 			} catch(e) {
 				console.log(e)
 				alert(e.message)

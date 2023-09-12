@@ -115,9 +115,12 @@ Vue.component('vocabulary', {
 		vocabularys.sort((a, b) => {
 			return a.id > b.id ? 1 : -1;
 		});
+		/* 重複的字
+		*/
 
 		// if(vocabularys.length > 0) console.log(vocabularys[vocabularys.length -1].id)
 		{ // 轉檔 - buffer; 08370 - 08699
+			/*
 			s = window.localStorage["japanese-buffer"];
 			// s = ""; // 故意的
 			// console.log(s)
@@ -134,16 +137,28 @@ Vue.component('vocabulary', {
 				dsBuffer.splice(i, 1);
 				window.localStorage["japanese-buffer"] = JSON.stringify(dsBuffer)
 			}
-			/**/
+			*/
+		}
+		{ // 更新
+			// 、
+			/*
+			let col = "中"; //漢, 中
+			for(let i = 0; i < vocabularys.length; i++) {
+				let row = vocabularys[i];
+				if(typeof row[col] == "string" && row[col].indexOf("〔") > -1) {
+					row[col] = row[col].replace("〔", "("); //.replace("〕", ") ")
+					console.log(i + `=>  ${row.語}, ${row.漢}, ${row.中}`);
+					try {
+						await this.onCloseEditor(row);
+					} catch (err) {
+						console.log(err)
+						break;
+					}
+				}
+			}
+			*/
 		}
 
-		{ // 刪除 fireStore; 
-			// for(let i = 8579; i <= 8699; i++) {
-			// 	let id = i.leftPadding(5);
-			// 	let ref = FireStore.db.collection("japanese-vocabulary")
-			// 		.doc(id).delete();				
-			// }
-		}
 		{ // 找出類
 			// let result = "";
 			// for(let i = 0; i < vocabularys.length; i++) {
@@ -178,7 +193,6 @@ Vue.component('vocabulary', {
 				// }, 600);
 			}
 		}
-			
 
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
@@ -655,7 +669,28 @@ Vue.component('vocabulary', {
 			}
 		},
 		async onCloseEditor(word) {
-			if(typeof word == "object") {
+			if(typeof word == "string") { // 刪除
+				if(this.editIndex > -1) {
+					// this.$set(this.dsTable, this.editIndex, word);
+					this.dsTable.splice(this.editIndex, 1);
+				}
+				let index = this.dataStore.findIndex(el => {
+					return el.id == word;
+				});
+				if(index > -1) {
+					this.dataStore.splice(index, 1);
+				}
+				index = vocabularys.findIndex(el => {
+					return el.id == word;
+				});
+				if(index > -1) {
+					vocabularys.splice(index, 1);
+				}
+				window.localStorage["japanese-vocabulary"] = JSON.stringify(vocabularys);
+				let ref = FireStore.db.collection("japanese-vocabulary")
+					.doc(word).delete();
+			}
+			else if(typeof word == "object") {
 				if(typeof word.語 == "undefined" || word.語.trim().length == 0) {
 					alert("請輸入'語'欄位");
 					return;
