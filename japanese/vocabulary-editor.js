@@ -10,7 +10,7 @@ Vue.component('editor', {
 				{{item.title + "："}}
 			</div>
 			<div v-if="visible == true" style="flex: 1;">
-				<Select v-if="! $isDebug() && item.key == '類'" v-model="target[item.key]" 
+				<Select v-if="$isDebug() && item.key == '類'" v-model="target[item.key]" 
 					style="padding: 5px; width: 200px" size="large" 
 					@on-change="onKeyChange" 
 				>
@@ -34,7 +34,7 @@ Vue.component('editor', {
 			<div style="flex: 1;" />
 			<Button type="default" size="large"  @click="cancel" style="width: 100px;">取消</Button>
 			<Button v-if="visible == true && $isDebug() && typeof target.id != 'undefined' " type="error" size="large"  @click="onDelete" style="width: 100px;">刪除</Button>
-			<Button v-if="dirty == true" type="primary" size="large"  @click="save" style="width: 100px;">確定</Button>
+			<Button v-if="dirty == true && $isDebug()" type="primary" size="large"  @click="save" style="width: 100px;">確定</Button>
 		</div>
 	</modal>`,
 	props: {
