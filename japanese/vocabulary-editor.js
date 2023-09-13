@@ -72,10 +72,6 @@ Vue.component('editor', {
 			this.$emit("onClose", this.target.id);
 		},
     save() {
-			// console.log(this.target); return;
-			if(typeof this.target["類"] == "undefined") 
-				delete this.target["類"];
-
       this.$emit("onClose", this.target);
     },
     onKeyChange() {

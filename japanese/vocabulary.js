@@ -36,7 +36,7 @@ Vue.component('vocabulary', {
 			></Table>
 		</div>
 		<div style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
-		 	2023-08-26 18:00
+		 	2023-09-13 09:30
 			<div style="flex: 1;" />
 
 			<Button v-if="$isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
@@ -115,6 +115,7 @@ Vue.component('vocabulary', {
 		vocabularys.sort((a, b) => {
 			return a.id > b.id ? 1 : -1;
 		});
+		
 		/* 重複的字
 		*/
 
@@ -142,18 +143,42 @@ Vue.component('vocabulary', {
 		{ // 更新
 			// 、
 			/*
-			let col = "中"; //漢, 中
 			for(let i = 0; i < vocabularys.length; i++) {
-				let row = vocabularys[i];
-				if(typeof row[col] == "string" && row[col].indexOf("〔") > -1) {
-					row[col] = row[col].replace("〔", "("); //.replace("〕", ") ")
-					console.log(i + `=>  ${row.語}, ${row.漢}, ${row.中}`);
-					try {
-						await this.onCloseEditor(row);
-					} catch (err) {
-						console.log(err)
-						break;
+				if(1 == 0) { // 刪除空白 tag
+					let word = vocabularys[i];
+					let b = false;
+					for(let key in word) {
+						if("註,詞,類,漢,重,級".indexOf(key) > -1) {
+							if(typeof word[key] == "string" && word[key].trim().length == 0) {
+								delete word[key];
+								b = true;
+							}
+						}
 					}
+					if(b == true) {
+						console.log(i + `=>  ${word.語}, ${word.漢}, ${word.中}`);
+						try {
+							await this.onCloseEditor(word);
+						} catch (err) {
+							console.log(err)
+							break;
+						}
+					}
+				}
+				if(1 == 0) {
+					// let col = "語"; //漢, 中
+					// let char1 = "。", char2 = "";
+					// let row = vocabularys[i];
+					// if(typeof row[col] == "string" && row[col].indexOf(char1) > -1) {
+					// 	row[col] = row[col].replace(char1, char2); //.replace("〕", ") ")
+					// 	console.log(i + `=>  ${row.語}, ${row.漢}, ${row.中}`);
+					// 	try {
+					// 		await this.onCloseEditor(row);
+					// 	} catch (err) {
+					// 		console.log(err)
+					// 		break;
+					// 	}
+					// }
 				}
 			}
 			*/
@@ -697,7 +722,7 @@ Vue.component('vocabulary', {
 				}
 				word.date = (new Date()).getTime();
 				for(let key in word) {
-					if("註,詞,類".indexOf(key) > -1) {
+					if("註,詞,類,漢,重,級".indexOf(key) > -1) {
 						if(typeof word[key] == "string" && word[key].trim().length == 0) {
 							delete word[key];
 						}
