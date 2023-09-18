@@ -6,11 +6,11 @@ Vue.component('editor', {
 	>
     <div v-for="(item, index) in columns" v-if="typeof item.key == 'string' "
 				style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-      <div style="width: 120px; text-align: right; user-select: none; color: #2d8cf0;">
+      <div style="width: 120px; font-size: 20px; text-align: right; user-select: none; color: #2d8cf0;">
 				{{item.title + "："}}
 			</div>
 			<div v-if="visible == true" style="flex: 1;">
-				<Select v-if="$isDebug() && item.key == '類'" v-model="target[item.key]" 
+				<Select v-if="$isLogin() && $isDebug() && item.key == '類'" v-model="target[item.key]" 
 					style="padding: 5px; width: 200px" size="large" 
 					@on-change="onKeyChange" 
 				>
@@ -19,11 +19,16 @@ Vue.component('editor', {
 						{{ item2 }}
 					</Option>
 				</Select>
+				<div v-else-if="! ($isLogin() && $isDebug()) || item.key == 'id'"
+					style="font-size: 20px; padding: 5px;"
+				>
+					{{target[item.key]}}
+				</div>
 				<Input v-else v-model="target[item.key]"
 					style="font-size: 20px; padding: 5px;" size="large" 
 					clearable
 					@on-change="onKeyChange" 
-					:disabled="! $isDebug() || item.key == 'id'"
+					:disabled="! ($isLogin() && $isDebug()) || item.key == 'id'"
 				/>
 			</div>
     </div>
@@ -33,8 +38,8 @@ Vue.component('editor', {
 			</div>
 			<div style="flex: 1;" />
 			<Button type="default" size="large"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button v-if="visible == true && $isDebug() && typeof target.id != 'undefined' " type="error" size="large"  @click="onDelete" style="width: 100px;">刪除</Button>
-			<Button v-if="dirty == true && $isDebug()" type="primary" size="large"  @click="save" style="width: 100px;">確定</Button>
+			<Button v-if="visible == true && $isLogin() && $isDebug() && typeof target.id != 'undefined' " type="error" size="large"  @click="onDelete" style="width: 100px;">刪除</Button>
+			<Button v-if="dirty == true && $isLogin() && $isDebug()" type="primary" size="large"  @click="save" style="width: 100px;">確定</Button>
 		</div>
 	</modal>`,
 	props: {

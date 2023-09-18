@@ -6,6 +6,7 @@ Vue.component('vocabulary', {
 				size="large"
 				@on-change="onChangeLevel"
 				ref="radio-group"
+				v-if="isBigScreen == true"
 			>
 				<Radio label="1" true-value="true"></Radio>
 				<Radio label="2"></Radio>
@@ -14,10 +15,16 @@ Vue.component('vocabulary', {
 			</RadioGroup>
 			
 			<div style="flex: 1;" />
-			分類：
-			<Select v-model="option" style="width:150px" size="large" @on-change="onChangeOption">
-				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
-			</Select>
+
+			<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; 
+					justify-content: center; align-items: center;"
+			>
+				分類：
+				<Select v-model="option" style="width:150px" size="large" @on-change="onChangeOption">
+					<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
+				</Select>
+			</div>
+
 			<div style="flex: 1;" />
 
 			<Input ref="input" v-model="search" search 
@@ -25,7 +32,7 @@ Vue.component('vocabulary', {
 				@on-search="onSearch" 
 			/>
 		</div>
-		<div ref="frame" style="flex: 1;">
+		<div v-if="isBigScreen == true" ref="frame" style="flex: 1;">
 			<Table id="table" ref="table" highlight-row 
 				:height="height"
 				:width="width"
@@ -35,18 +42,18 @@ Vue.component('vocabulary', {
 				@on-row-click="onRowClick"
 			></Table>
 		</div>
-		<div style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
+		<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
 		 	2023-09-13 09:30
 			<div style="flex: 1;" />
 
-			<Button v-if="$isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
+			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
 				style="width: 100px;">新增</Button>
 			
 			<Button v-if="$isLogin() && rowIndex > -1" size="large" @click="onBtnAddNote" 
 				style="min-width: 100px; margin-left: 5px;"
 				:type="note.indexOf(dsTable[rowIndex].id) == -1 ? 'success' : 'warning' "
 			>
-				<span v-if="note.indexOf(dsTable[rowIndex].id) == -1">加入筆記</span>
+				<span v-if="$isLogin() && note.indexOf(dsTable[rowIndex].id) == -1">加入筆記</span>
 				<span v-else>移除筆記</span>
 			</Button>
 
@@ -63,7 +70,12 @@ Vue.component('vocabulary', {
 				:page-size="pageSize" :page-size-opts="pageOpts" show-elevator show-sizer 
 				style="" 
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
-			
+		</div>
+		<div v-else ref="frame" style="flex: 1; overflow: auto;">
+			<ul style="padding: 5px;">
+				<li v-for="(item, index) in dsTable" class="lesson-frame" v-html="renderWord(item, index)">
+				</li>
+			</ul>
 		</div>
 		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor"
 		/>
@@ -100,7 +112,8 @@ Vue.component('vocabulary', {
 			editIndex: -1,
 			rowIndex: -1,
 			sortKey: "語",
-			note: ""
+			note: "",
+			isBigScreen: true,
 		};
 	},
 	created(){
@@ -315,7 +328,7 @@ Vue.component('vocabulary', {
 			}
 		];
 
-		// if(this.$isDebug()) { this.onDebugSearch(); return; }
+		// if(this.isBigScreen == true && this.$isDebug()) { this.onDebugSearch(); return; }
 
 		s = window.localStorage["japanese-vocabulary-search"];
 		if(typeof s != "undefined" && s.length > 0) {
@@ -358,7 +371,9 @@ Vue.component('vocabulary', {
 		renderPronounce(h, p){
 			let results = [];
 			if(typeof p.row["語"] == "string") {
-				let values = p.row["語"].split("//");
+				let values = p.row["語"].indexOf("，") > -1 
+					? p.row["語"].split("，") 
+					: p.row["語"].split("//");
 				for(let x = 0; x < values.length; x++) {
 					let s = window.rome(values[x]);
 					// console.log(values[x] + ", " + s)
@@ -428,6 +443,7 @@ Vue.component('vocabulary', {
 				this.width = frame.clientWidth;
 				frame.style.height = this.height + "px";
 			}
+			this.isBigScreen = document.body.clientWidth > 600 ? true : false;
 		},
 		onKeydown(event){
 			let o = document.activeElement;
@@ -499,7 +515,8 @@ Vue.component('vocabulary', {
 				this.dsTable.push(this.dataStore[i]);
 			}	
 			let table = document.querySelector(".ivu-table-body");
-			table.scrollTop = 0;
+			if(table != null)
+				table.scrollTop = 0;
 		},
 		onPageSizeChange(e) {
 			this.currentPage = 0; this.editIndex = -1;  this.rowIndex = -1;
@@ -594,10 +611,12 @@ Vue.component('vocabulary', {
 			}, 300);
 		},
 		clearLevel() {
-			this.level = "";
-			this.$refs["radio-group"].$children.forEach(el => {
-				el.currentValue = false;
-			});
+			if(this.isBigScreen == true) {
+				this.level = "";
+				this.$refs["radio-group"].$children.forEach(el => {
+					el.currentValue = false;
+				});				
+			}
 		},
 		onChangeOption() {
 			if(typeof this.option == "undefined" || this.option == "" || this.option == "undefined") return;
@@ -623,19 +642,41 @@ Vue.component('vocabulary', {
 			this.sortKey = "id";
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1;
-			// let id = "08370";
+			
 			{
-				/*
-				vocabularys = vocabularys.filter(el => {
-					return el.id < id;
-				})
-				vocabularys.sort((a, b) => {
-					return a.id < b.id ? 1 : -1;
-				});
-				window.localStorage["japanese-vocabulary"] =  JSON.stringify(vocabularys)
-				this.dataStore = vocabularys;
-				*/ 
+				// vocabularys.sort((a, b) => {
+				// 	let A = a["語"] + "\t" + (typeof a["漢"] == "undefined" ? "" : a["漢"]);
+				// 	let B = b["語"] + "\t" + (typeof b["漢"] == "undefined" ? "" : b["漢"]);
+				// 	return A < B ? 1 : -1;
+				// 	// return a.id < b.id ? 1 : -1;
+				// });
+				
+				// for(let i = vocabularys.length - 1; i > 0; i--) {
+				// 	let A = (typeof vocabularys[i]["漢"] == "undefined" ? "" : vocabularys[i]["漢"] ) 
+				// 		+ "\t" + vocabularys[i]["語"];
+				// 	let B = (typeof vocabularys[i - 1]["漢"] == "undefined" ? "" : vocabularys[i - 1]["漢漢"] ) 
+				// 		+ "\t" + vocabularys[i - 1]["語"];
+				// 	if(A == B) {
+				// 		this.dataStore.push( vocabularys[i])
+				// 	}
+				// }
 			}
+			{
+				if(1 == 1) {
+					let cols = "詞,漢,語".split(",");
+					for(let i = 0; i < vocabularys.length; i++) {
+						let row = vocabularys[i];
+						for(let j = 0; j < cols.length; j++) {
+							if(typeof row[cols[j]] == "string" && row[cols[j]].indexOf("//") > -1) {
+								this.dataStore.push(row);
+								break;							
+							}
+
+						}	
+					}					
+				}
+			}
+
 			{
 				/*
 				this.dataStore = vocabularys.filter(el => {
@@ -795,6 +836,38 @@ Vue.component('vocabulary', {
 				}
 			});
 		},
+		renderWord(item, index) {
+			let accent = window.renderAccent(item.語, item.重);
+			let 漢 = typeof item.漢 == "string" && item.漢.length > 0
+				? (`<div style="min-height: 0px;"> ${item.漢}</div>`)
+				: "";
+
+			return (
+				`<div class="card " style="font-size: 20px; width: auto; background: white; ">
+					<div style="min-width: 25px; font-size: 20px; margin-right: 5px;">${(index + 1) + "."}</div>
+					
+					<div style="flex: 1; font-size: 20px; display: flex; flex-direction: column;">
+						<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+							<div style="min-height: 0px;">
+							${accent}
+							</div>
+							<div style="color: #2d8cf0; margin-left: 20px;">
+								${typeof item.重 == "string" ? item.重 : ""}
+							</div>
+						</div>
+						${漢}
+						<a styl href="javascript: TTX.speak('${item.語}');" 
+							style="font-size: 20px;"
+						>
+							${window.rome(item.語)}
+						</a>
+						<div>${item.中}</div>
+					</div>
+				</div>`);
+		}
+	},
+	computed: {
+		
 	},
 	watch: {
 	},
@@ -803,13 +876,13 @@ Vue.component('vocabulary', {
 
 /*
 やめて(呀灭爹) 不行
-気持ちいい（ki mo chi ii）舒服,爽死了  
-いやだ(一呀达)不要  
+// 気持ちいい（ki mo chi ii）舒服,爽死了  
+// いやだ(一呀达)不要  
 はなして(ha na shi te)住手  
-だめだ(da me da)不行了  
+// だめだ(da me da)不行了  
 ほしい(hoshii)想要  
-すごい(su go i)好厉害  
-ぃく(i ku )要去了  
+// すごい(su go i)好厉害  
+いく(i ku )要去了  
 
 手を放せ（te o ha na se) 放手，放开我  
 放して(ha na shi te)放开我
