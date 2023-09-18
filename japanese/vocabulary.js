@@ -77,6 +77,9 @@ Vue.component('vocabulary', {
 				</li>
 			</ul>
 		</div>
+		<span v-if="! isBigScreen" style="text-align: center; padding: 5px; font-size: 20px;">
+			{{$storage("email")}}
+		</span>
 		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor"
 		/>
 	</div>`,
@@ -129,8 +132,6 @@ Vue.component('vocabulary', {
 			return a.id > b.id ? 1 : -1;
 		});
 		
-		/* 重複的字
-		*/
 
 		// if(vocabularys.length > 0) console.log(vocabularys[vocabularys.length -1].id)
 		{ // 轉檔 - buffer; 08370 - 08699
