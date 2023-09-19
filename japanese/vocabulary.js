@@ -1,6 +1,8 @@
 // open -a Google\ Chrome "index.html"
 Vue.component('vocabulary', {
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
+		<Spin size="large" fix v-if="spinShow"></Spin>
+
 		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
 			<RadioGroup v-model="level" type="button" button-style="solid" 
 				size="large"
@@ -117,9 +119,11 @@ Vue.component('vocabulary', {
 			sortKey: "語",
 			note: "",
 			isBigScreen: null,
+			spinShow: false
 		};
 	},
 	created(){
+		this.isBigScreen = document.body.clientWidth > 600 ? true : false;
 		let s = window.localStorage["japanese-vocabulary-pageSize"];
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
@@ -213,10 +217,11 @@ Vue.component('vocabulary', {
 		}
 
 		if(FireStore.login == true) {
-			await this.download();
-			let ref = FireStore.db.collection("users").doc(FireStore.uid())
-						.collection("japanese").doc("note")
+			this.spinShow = true;
 			try {
+				await this.download();
+				let ref = FireStore.db.collection("users").doc(FireStore.uid())
+							.collection("japanese").doc("note")
 				// let ref = doc.where("note", "==", "預設")
 				let snapshot = await ref.get();
 				let data = snapshot.data();
@@ -226,10 +231,9 @@ Vue.component('vocabulary', {
 			} catch(e) {
 				console.log(e)
 			} finally {
-				// setTimeout(() => {
-				// 	this.spinShow = false;
-				// 	success();
-				// }, 600);
+				setTimeout(() => {
+					this.spinShow = false;
+				}, 600);
 			}
 		}
 
@@ -444,7 +448,7 @@ Vue.component('vocabulary', {
 				this.width = frame.clientWidth;
 				frame.style.height = this.height + "px";
 			}
-			this.isBigScreen = document.body.clientWidth > 600 ? true : false;
+			
 		},
 		onKeydown(event){
 			let o = document.activeElement;
