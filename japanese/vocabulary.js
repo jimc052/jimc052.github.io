@@ -43,7 +43,7 @@ Vue.component('vocabulary', {
 			></Table>
 		</div>
 		<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
-		 	2023-09-13 09:30
+			2023-09-19 16:00
 			<div style="flex: 1;" />
 
 			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
@@ -116,7 +116,7 @@ Vue.component('vocabulary', {
 			rowIndex: -1,
 			sortKey: "語",
 			note: "",
-			isBigScreen: true,
+			isBigScreen: null,
 		};
 	},
 	created(){
@@ -530,7 +530,6 @@ Vue.component('vocabulary', {
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = "語";
-			if(!this.isBigScreen) alert(this.search);
 			setTimeout(() => {
 				if(this.search.length > 0) {
 					let equal = this.search.indexOf("=") > -1 ? "=" 
