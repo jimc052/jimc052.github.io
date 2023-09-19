@@ -95,8 +95,8 @@
 			arr = s.split("\t")
 			email = arr[0];
 			password = arr[1];
-			// window.localStorage["email"] = email;
-			// window.localStorage["password"] = password;
+			window.localStorage["email"] = email;
+			window.localStorage["password"] = password;
 		}
 		if(typeof email == "string" && email.length > 0 ) {
 			try {
@@ -118,7 +118,7 @@
 				if(typeof s == "undefined"){
 					return {};
 				}
-				return JSON.parse(s);
+				return s.indexOf("{") == 0 ? JSON.parse(s) : s;
 			} 
 			else {
 				if(value == null)

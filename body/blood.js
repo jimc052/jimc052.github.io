@@ -125,6 +125,9 @@ Vue.component('blood', {
 					</tr>
 				</table>
 			</div>
+			<div style="text-align: center; padding: 5px 0; font-size: 20px;">
+				{{$storage("email")}}
+			</div>
 			<i-button v-if="table.length > 0"  shape="circle"
 				:type="filter == false ? 'primary' : 'warning'" 
 				:icon="filter == false ? 'md-color-filter' : 'md-close'" 
