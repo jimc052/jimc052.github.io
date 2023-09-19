@@ -157,16 +157,34 @@ Vue.component('dlg-list', {
 						}
 					} else if(id == "editStart" || id == "editEnd") {
 						let editStart = document.getElementById("editStart").value.trim();
-						if(editStart.length > 0 && this.isNumber(editStart)) {
-							if(this.rows[this.cursor].start != parseFloat(editStart)) {
-								this.rows[this.cursor].start = parseFloat(editStart);
+						if(editStart.length > 0) {
+							let start = 0;
+							if(editStart.indexOf(":") > -1) {
+								let arr = editStart.split(":");
+								start = (parseFloat("0" + arr[0]) * 60) + 
+									(arr.length == 2 ? parseFloat("0" + arr[1]) : 0);
+								document.getElementById("editStart").value = start;
+							} else if(this.isNumber(editStart)) {
+								start = parseFloat(editStart)
+							}
+							if(this.rows[this.cursor].start != start) {
+								this.rows[this.cursor].start = start;
 								this.dirty = true;
 							}
 						}
 						let editEnd = document.getElementById("editEnd").value.trim();
-						if(editEnd.length > 0 && this.isNumber(editEnd)) {
-							if(this.rows[this.cursor].end != parseFloat(editEnd)) {
-								this.rows[this.cursor].end = parseFloat(editEnd);
+						if(editEnd.length > 0) {
+							let end = 0;
+							if(editEnd.indexOf(":") > -1) {
+								let arr = editEnd.split(":");
+								end = (parseFloat("0" + arr[0]) * 60) + 
+									(arr.length == 2 ? parseFloat("0" + arr[1]) : 0);
+								document.getElementById("editEnd").value = end;
+							} else if(this.isNumber(editEnd)) {
+								end = parseFloat(editEnd)
+							}
+							if(this.rows[this.cursor].end != end) {
+								this.rows[this.cursor].end = end;
 								this.dirty = true;
 							}
 						}
