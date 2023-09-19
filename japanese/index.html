@@ -269,8 +269,8 @@
 <script>
 	var vm = null;
 	window.onload = async function(){
-		let email =  window.localStorage["email"];
-		let password =  window.localStorage["password"];
+		let email = window.localStorage["email"];
+		let password = window.localStorage["password"];
 		if(location.href.indexOf("anonymous=") > -1 || location.href.indexOf("user=") > -1) {
 			let key = location.href.indexOf("anonymous=") > -1 ? "anonymous=" : "user="
 			let s = location.href.substr(location.href.indexOf(key) + key.length)
@@ -280,7 +280,8 @@
 			arr = s.split("\t")
 			email = arr[0];
 			password = arr[1];
-			
+			window.localStorage["email"] = email;
+			window.localStorage["password"] = password;
 		}
 		// console.log(btoa(email + "\t" + password));
 		if(typeof email == "string" && email.length > 0 ) {
