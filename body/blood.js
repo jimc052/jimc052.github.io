@@ -270,9 +270,9 @@ Vue.component('blood', {
 
 				for(let i = 0; i <= 11; i++) { // 只要1年的資料
 					let yymm = date.addMonths(i  * -1).toString("yyyy-mm");
+					if(yymm <= "2022-12") break;
 					// console.log(yymm)
 					let data = await this.fetch2(yymm), empty = 0;
-					// if(yymm == "2023-02") 
 					for(let key in data) {
 						let arr = [[], []];
 						for(let key2 in data[key]) {
@@ -301,28 +301,32 @@ Vue.component('blood', {
 					// console.log(yymm + ": " + empty)
 				}
 				// console.log(JSON.stringify(ds, null, 2));s
-				let result = {}, span = "", arr = [], yymmdd = "";
+				let result = {}, span = "", arr = [];
 				for(let i = 0; i <= 365; i++) {
 					let today = date.addDays(i * -1);
-					yymmdd = today.toString("yyyy-mm-dd");
+					let yymmdd = today.toString("yyyy-mm-dd");
+					if(yymmdd <= "2022-12-31") break;
 					// console.log(yymmdd)
+
 					if(span.length == 0) span = yymmdd;
 					if(typeof ds[yymmdd] != "undefined") {
 						arr.push(ds[yymmdd]);
 					}
-					if((today.getDay() == 0 || i == 365) && arr.length > 0) {
-						span = yymmdd + "~" + span;
-						let arr2 = [0, 0, 0];
-						for(let j = 0; j < arr.length; j++) {
-							let arr3 = arr[j].split("/")
-							for(let k = 0; k < arr3.length; k++) {
-								arr2[k] += parseInt(arr3[k], 10);
+					if(today.getDay() == 0 || i == 365) {
+						if(arr.length > 0) {
+							span = yymmdd + "~" + span;
+							let arr2 = [0, 0, 0];
+							for(let j = 0; j < arr.length; j++) {
+								let arr3 = arr[j].split("/")
+								for(let k = 0; k < arr3.length; k++) {
+									arr2[k] += parseInt(arr3[k], 10);
+								}
 							}
+							for(let j = 0; j < arr2.length; j++) {
+								arr2[j] = Math.floor(arr2[j] / arr.length);
+							}
+							result[span] = arr2.join("/")							
 						}
-						for(let j = 0; j < arr2.length; j++) {
-							arr2[j] = Math.floor(arr2[j] / arr.length);
-						}
-						result[span] = arr2.join("/")
 						span = ""; 
 						arr = [];
 					}
