@@ -100,31 +100,6 @@ Vue.component('blood', {
 					</div>
 				</div>
 			</div>
-			<div v-else style="flex: 1; overflow-y: auto; background: white;" class="container">
-				<table style="border-collapse: collapse; width: 100%;" >
-					<tr v-for="(item, index) in table" style="cursor: pointer;"
-						:style="{background: item[6] == 'Y' ? '#eee' : 'white'}"
-						v-if="index == 0 || (filter == true && item[6] == 'N') ||  filter == false"
-					>
-						<td :id="'td_' + index + '_' + index2" v-for="(item2, index2) in item" @click.stop="onChange(index)"
-						>
-							<div v-if="index > 0 && index2 == 0">
-								<Icon :type="item[0].substr(10).trim() <= '12' ? 'ios-sunny' : 'ios-moon' " 
-									:size="item[0].substr(10).trim() <= '12' ? 20 : 16"
-									:style="{color: item[0].substr(10).trim() <= '12' ? '#c01921' : 'dimgray'}"
-								>
-								</Icon>
-								<span :style="{color: item[0].substr(10).trim() <= '12' ? '#c01921' : 'dimgray'}">{{item2}}</span>
-							</div>
-							<Icon v-else-if="index > 0 && index2 == 6 && item2 == 'Y' " 
-								type="ios-trash" size="16" color='#c01921'> </Icon>
-							<div v-else>
-								{{item2}}
-							</div>
-						</td>
-					</tr>
-				</table>
-			</div>
 			<div style="text-align: center; padding: 5px 20px; display: flex; flex-direction: row; align-items: center; justify-content: center;">
 				<span style="font-size: 20px;">{{$storage("email")}}</span>
 				<div style="flex: 1;"/>
@@ -141,7 +116,7 @@ Vue.component('blood', {
 			></i-button>
 
 			<i-button type="error" shape="circle" :icon="table.length > 0 ? 'md-checkmark' : 'md-add'" 
-				v-if="canAdd == true && calendar == 'ios-calendar' && (canEdit == true || table.length > 0)" 
+				v-if="canAdd == true && calendar == 'ios-calendar' && (canEdit == true)" 
 				circle @click.native="table.length > 0 ? onSaveTable() : onAdd()" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
@@ -170,45 +145,8 @@ Vue.component('blood', {
 	async mounted () {
 		document.title = "血壓記錄";
 
-		window.ondrop = (e) => {
-			e.preventDefault();
-      e.stopPropagation();
-      if (e.dataTransfer.items) {
-        const data = e.dataTransfer.items;
-        for (var i = 0; i < data.length; i++) {
-          // console.log(data[i]);
-          if (data[i].kind === "file") {
-            var file = data[i].getAsFile();
-            // console.log('file[' + i + '].name = ' + file.name);
-            let reader = new FileReader();
-            reader.onload = (event) => {
-              // let json = JSON.parse(event.target.result);
-              if (file.name.indexOf(".csv") > -1 ) {
-                // console.log(event.target.result);
-								localStorage["blood-table-drop"] = event.target.result;
-								this.onDrop(event.target.result)
-              }
-            };
-            reader.readAsText(file);
-						break;
-          }
-        }
-      }
-    };
-
-		window.ondragover = (e) =>{
-      e.preventDefault();
-    }
 		await  this.fetch();
 
-		if(typeof localStorage["blood-table-drop"] == "string") {
-			this.onDrop(localStorage["blood-table-drop"]);
-		} else if(typeof localStorage["blood-table-array"] == "string") {
-			this.table = JSON.parse(localStorage["blood-table-array"]);
-			setTimeout(() => {
-				this.beautify();
-			}, 600);
-		}
 		this.broadcast.$on('onResize', this.onResize);
 
 		this.onResize();
@@ -267,33 +205,6 @@ Vue.component('blood', {
 			this.yymm = arr[0] + "-" + (arr[1] < 10 ? "0" : "") + arr[1];
 			this.canEdit = this.yymm == (new Date()).toString("yyyy-mm");
 			await this.fetch();
-		},
-		async onDrop(result) {
-			let arr = result.split("\n"), count = 0;
-			// console.log(arr)
-			this.table = [];
-			arr.forEach((el, index) => {
-				if(el.trim().length > 0 && (el.indexOf("測量日期") > -1 || el.indexOf(this.yymm) == 0)) {
-					let row = el.split(","), date = null;
-					if(el.indexOf("測量日期") == -1){
-						date = new Date(row[0]);
-						row[0] = date.toString("yyyy-mm-dd hh:MM");
-					} 
-					if(el.indexOf("測量日期") == 0){ //  
-						let col6 = "刪除";
-						row.push(col6);
-						this.table.push(row)						
-					} else if(row[4] >= 65 || date.getHours() <= 5 || date.getHours() > 18){ //  
-						let col6 =(row[4] < 65 ? "Y" : "N");
-						row.push(col6);
-						this.table.push(row)						
-					}
-				}
-			});
-			// console.log(this.table)
-			setTimeout(() => {
-				this.beautify();
-			}, 600);
 		},
 		async fetch() {
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
@@ -378,20 +289,6 @@ Vue.component('blood', {
 			// console.log(this.yymm + this.datas[0]).key;
 			// console.log(JSON.stringify(this.datas[0]))
 		},
-		beautify(){
-			for(let i = 1; i < this.table.length; i++) {
-				let td3 = document.getElementById(`td_${i}_2`);
-				let value = this.table[i][2];
-				td3.style.color = this.colorSBP(value);
-
-				let td4 = document.getElementById(`td_${i}_3`)
-				value = this.table[i][3];
-				td4.style.color = this.colorDBP(value);
-
-				let td5 = document.getElementById(`td_${i}_4`)
-				if(this.table[i][4] < 70) td5.style.color = "#c01921";
-			}
-		}, 
 		onClickRow(item, index) {
 			if(this.canEdit == true) {
 				this.recorder = item; 
