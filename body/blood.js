@@ -22,7 +22,7 @@ Vue.component('blood', {
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
-			<div v-if="table.length == 0 && calendar == 'ios-calendar' " style="flex: 1; overflow-y: auto; background: white;" class="container">
+			<div v-if="calendar == 'ios-calendar' " style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
@@ -70,7 +70,7 @@ Vue.component('blood', {
 				</div>
 			</div>
 			
-			<div v-else-if="table.length == 0 && calendar == 'ios-calendar-outline' " style="flex: 1; overflow-y: auto; background: white;" class="container">
+			<div v-else-if="calendar == 'ios-calendar-outline' " style="flex: 1; overflow-y: auto; background: white;" class="container">
 				<div v-for="(item, index) in datas" 
 					style="padding: 5px 10px;
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
@@ -107,18 +107,11 @@ Vue.component('blood', {
 					{{"2023-09-20"}}
 				</span>
 			</div>
-			<i-button v-if="table.length > 0"  shape="circle"
-				:type="filter == false ? 'primary' : 'warning'" 
-				:icon="filter == false ? 'md-color-filter' : 'md-close'" 
-				circle @click.native="filter = !filter" size="large"
-				style="position: absolute; bottom: 60px; right: 10px;"
-				
-			></i-button>
 
-			<i-button type="error" shape="circle" :icon="table.length > 0 ? 'md-checkmark' : 'md-add'" 
-				v-if="canAdd == true && calendar == 'ios-calendar' && (canEdit == true)" 
-				circle @click.native="table.length > 0 ? onSaveTable() : onAdd()" size="large"
+			<i-button type="error" shape="circle" circle icon="md-add" 
 				style="position: absolute; bottom: 10px; right: 10px;"
+				v-if="canAdd == true && calendar == 'ios-calendar' && (canEdit == true)" 
+				@click.native="onAdd()" size="large"
 			></i-button>
 			<blood-editor :recorder="recorder" @onChange="onChangeRecorder"></blood-editor>
 		</div>
@@ -131,8 +124,6 @@ Vue.component('blood', {
 			spinShow: false, 
 			datas: [],
 			firebaseData: {},
-			table: [],
-			filter: false,
 			canEdit: false,
 			recorder: undefined,
 			active: -1,
@@ -164,15 +155,6 @@ Vue.component('blood', {
 			let container = document.querySelector(".container");
 			container.style.zoom = document.body.clientWidth > 500 ? 1.4 : 0.9;
 			// console.log(document.body.clientWidth + ": " + container.style.zoom)
-		},
-		onChange(index){
-			if(index > 0){
-				let item = this.table[index]
-				item[6] = item[6] == "Y" ? "N" : "Y";
-				this.$set(this.table, index, item);
-				delete localStorage["blood-table-drop"];
-				localStorage["blood-table-array"] = JSON.stringify(this.table);
-			}
 		},
 		onChangeRecorder(data) {
 			if(typeof data == "object" && data != null) {
@@ -230,25 +212,6 @@ Vue.component('blood', {
 					}, 600);
 				}
 			}
-		},
-		async onSaveTable() {
-			let json = {};
-			for(let i = 1; i < this.table.length; i++){
-				let row = this.table[i];
-				if(row[6] == "Y") continue;
-				let arr2 = row[0].split(" ")
-				let key = arr2[0].substr(8);
-				if(arr2[1].length == 4) arr2[1] = "0" + arr2[1];
-				if(typeof json[key] == "undefined") json[key] = {};
-				json[key][arr2[1]] = row[2] + "/" + row[3] + "/" + row[4];
-			}
-			this.firebaseData = Object.assign(this.firebaseData, json);
-			await this.onSave();
-
-			this.table = [];
-			this.retrieve();
-			delete localStorage["blood-table-drop"];
-			delete localStorage["blood-table-array"];
 		},
 		async onSave() {
 			let ref = FireStore.db.collection("users").doc(FireStore.uid())
