@@ -125,8 +125,12 @@ Vue.component('blood', {
 					</tr>
 				</table>
 			</div>
-			<div style="text-align: center; padding: 5px 0; font-size: 20px;">
-				{{$storage("email")}}
+			<div style="text-align: center; padding: 5px 20px; display: flex; flex-direction: row; align-items: center; justify-content: center;">
+				<span style="font-size: 20px;">{{$storage("email")}}</span>
+				<div style="flex: 1;"/>
+				<span style="font-size: 20px;">
+					{{"2023-09-20"}}
+				</span>
 			</div>
 			<i-button v-if="table.length > 0"  shape="circle"
 				:type="filter == false ? 'primary' : 'warning'" 
@@ -234,7 +238,7 @@ Vue.component('blood', {
 		},
 		onChangeRecorder(data) {
 			if(typeof data == "object" && data != null) {
-				console.log(JSON.stringify(data))
+				// console.log(JSON.stringify(data))
 				if(this.active == -1) {
 					this.datas.push(data)
 				} else {
@@ -406,6 +410,7 @@ Vue.component('blood', {
 
 				for(let i = 0; i <= 11; i++) { // 只要1年的資料
 					let yymm = date.addMonths(i  * -1).toString("yyyy-mm");
+					// console.log(yymm)
 					let data = await this.fetch2(yymm), empty = 0;
 					// if(yymm == "2023-02") 
 					for(let key in data) {
@@ -435,46 +440,34 @@ Vue.component('blood', {
 					if(empty == 0) break;
 					// console.log(yymm + ": " + empty)
 				}
-
-				let today = date.addDays(-1), result = {};
-				for(let i = 0; i < 52; i++) { // 週
-					let span = "", arr = [], yymmdd = "";
-					for(let j = 0; j < 7; j++) {
-						yymmdd = today.toString("yyyy-mm-dd");
-						if(j == 0) 
-							span = yymmdd;
-						else if(j == 6)
-							span = yymmdd + "~" + span;
-						if(typeof ds[yymmdd] != "undefined") {
-							arr.push(ds[yymmdd]);
-						}
-						today = today.addDays(-1);
+				// console.log(JSON.stringify(ds, null, 2));s
+				let result = {}, span = "", arr = [], yymmdd = "";
+				for(let i = 0; i <= 365; i++) {
+					let today = date.addDays(i * -1);
+					yymmdd = today.toString("yyyy-mm-dd");
+					// console.log(yymmdd)
+					if(span.length == 0) span = yymmdd;
+					if(typeof ds[yymmdd] != "undefined") {
+						arr.push(ds[yymmdd]);
 					}
-					// if(i < 3) console.log(span + ": " + JSON.stringify(arr, null, 2))
-					if(arr.length > 0) {
+					if((today.getDay() == 0 || i == 365) && arr.length > 0) {
+						span = yymmdd + "~" + span;
 						let arr2 = [0, 0, 0];
 						for(let j = 0; j < arr.length; j++) {
 							let arr3 = arr[j].split("/")
-							// console.log("arr3: " + (j) + " => " + JSON.stringify(arr3));
 							for(let k = 0; k < arr3.length; k++) {
 								arr2[k] += parseInt(arr3[k], 10);
 							}
 						}
 						for(let j = 0; j < arr2.length; j++) {
-								arr2[j] = Math.floor(arr2[j] / arr.length);
+							arr2[j] = Math.floor(arr2[j] / arr.length);
 						}
-						// arr[0][j] = (parseInt(arr[0][j], 10) + parseInt(arr[1][j], 10)) / 2;
-						// console.log("區間：" + span)
-						// console.log(JSON.stringify(arr2));
 						result[span] = arr2.join("/")
-					} else {
-						// console.log(span + ": none")
-						if(yymmdd <= "2022-12-30") break;
+						span = ""; 
+						arr = [];
 					}
 				}
 				this.datas = result;
-				// console.log(JSON.stringify(result, 2, null));
-				// console.log(today)
 				setTimeout(() => {
 					this.spinShow = false;
 				}, 600);
