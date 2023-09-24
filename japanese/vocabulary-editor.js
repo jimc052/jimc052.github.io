@@ -10,9 +10,10 @@ Vue.component('editor', {
 				{{item.title + "："}}
 			</div>
 			<div v-if="visible == true" style="flex: 1;">
-				<Select v-if="$isLogin() && $isDebug() && item.key == '類'" v-model="target[item.key]" 
+				<Select v-if="$isLogin() && $isDebug() && item.key == '類'" 
+					v-model="target[item.key]" 
 					style="padding: 5px; width: 200px" size="large" 
-					@on-change="onKeyChange" 
+					@on-change="onSelectChange" 
 				>
 					<Option value=""></Option>
 					<Option v-for="item2 in options" :value="item2" :key="item2">
@@ -81,13 +82,24 @@ Vue.component('editor', {
     },
     onKeyChange() {
       this.dirty = true;
-    }
+    },
+		onSelectChange() {
+			this.onKeyChange();
+			if(typeof this.target.id == "undefined")
+				window.sessionStorage["japanese-vocabulary-editor-option"] = this.target.類;	
+		}
 	},
 	watch: {
 		word(value) {
       this.dirty = false;
       this.target = value == null || typeof value == "undefined" ? {} : Object.assign({}, this.word);
 			this.visible = value == null || typeof value == "undefined" ? false : true;
+			if(this.visible == true && typeof this.target.id == "undefined") {
+				let s = window.sessionStorage["japanese-vocabulary-editor-option"];
+				if(typeof s == "string" && s.length > 0) {
+					this.target.類 = s;
+				}
+			}
 		}
 	},
 });
