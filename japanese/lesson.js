@@ -31,7 +31,6 @@ Vue.component('lesson', {
 				字典
 			</a>
 		</div>
-		<div>{{width}}</div>
     <div ref="frame" class="lesson-frame" v-html="html" @scroll="onScroll"
 			style="background: white; flex: 1;"
 			:style="{
