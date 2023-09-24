@@ -22,16 +22,16 @@ Vue.component('lesson', {
 
 			<div style="flex: 1;" ></div>
 
-			<Checkbox v-if="mode == '單字' && width > 400" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
+			<Checkbox v-if="mode == '單字' && width > 600" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
 			<div style="flex: 1;" ></div>
-			<a class="button" v-if="mode == '單字' && width > 400" href="./index.html?mode=單字測驗" target="_blank" style="width: 80px;">
+			<a class="button" v-if="mode == '單字' && width > 600" href="./index.html?mode=單字測驗" target="_blank" style="width: 80px;">
 				單字測驗
 			</a>
-			<a v-if="$isLogin() && width > 400" class="button" href="./index.html?mode=字典" target="_blank" style="width: 60px;">
+			<a v-if="$isLogin() && width > 600" class="button" href="./index.html?mode=字典" target="_blank" style="width: 60px;">
 				字典
 			</a>
 		</div>
-
+		<div>{{width}}</div>
     <div ref="frame" class="lesson-frame" v-html="html" @scroll="onScroll"
 			style="background: white; flex: 1;"
 			:style="{
