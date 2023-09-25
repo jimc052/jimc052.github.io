@@ -534,6 +534,7 @@ Vue.component('vocabulary', {
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = "語";
+			this.search = this.search.trim();
 			setTimeout(() => {
 				if(this.search.length > 0) {
 					let equal = this.search.indexOf("=") > -1 ? "=" 
