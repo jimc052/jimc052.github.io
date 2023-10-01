@@ -19,7 +19,6 @@
 	<script src="../statics/iview/iview.js"></script>
 	<script src="../statics/iview/zh-TW.min.js"></script>
 
-
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-app.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-firestore.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/7.2.1/firebase-auth.js"></script>
@@ -36,6 +35,7 @@
 	<script src="./letter-exam.js"></script>
 	<script src="./vocabulary.js"></script>
 	<script src="./vocabulary-editor.js"></script>
+	<script src="./preview.js"></script>
 	<script src="./canvas.js"></script>
 	<script src="./lesson.js"></script>
 	<script src="./lesson-exam.js"></script>
@@ -426,18 +426,22 @@
 		else {
 			let arr = [], mode = "";
 			for(let i = 0; i < 漢字.length; i++) {
-				code = 漢字.charCodeAt(i);
-				if(code >= 12353 && code <= 12438){
-					if(mode != "kana") arr.push("");
-					arr[arr.length -1] += 漢字.substr(i, 1);
-					mode = "kana"
-				} else { 
+				code = 漢字.charCodeAt(i); //  
+				let char = 漢字.substr(i, 1);
+				if(code == 126 || !(code >= 12353 && code <= 12438) ){
 					if(mode != "漢") arr.push("");
-					arr[arr.length -1] += 漢字.substr(i, 1);
-					mode = "漢"
-				}          
+					arr[arr.length -1] += char;
+					mode = code == 126 ? "s" : "漢";
+				} else {
+					if(mode != "kana") arr.push("");
+					arr[arr.length -1] += char;
+					mode = code == 126 ? "s" : "kana"
+				}
+				// if(漢字.indexOf("~") > -1) console.log("mode: " + mode + ", " + char + ": " + code);
 			}
+			// if(漢字.indexOf("~") > -1) console.log(arr);
 			let r = "";
+			if(arr.length == 1 && 漢字.indexOf("~") == 0) return null;
 			for(let i = 0; i < arr.length; i++) {
 				code = arr[i].charCodeAt(0);
 				if(code >= 12353 && code <= 12438){
@@ -464,6 +468,22 @@
 			// document.body.appendChild(div)
 			return r;
 		}
+	}
+
+	String.prototype.trimChinese = function() { // 只要漢字，英文的不要
+		let 漢字 = this.toString();
+		let mode = "";
+		for(let i = 0; i < 漢字.length; i++) {
+			code = 漢字.charCodeAt(i); //  
+			let char = 漢字.substr(i, 1);
+			
+			let regex = /[a-zA-Z0-9]/i;
+			if(regex.test(char)) {
+				// console.log(char)
+				return "";
+			}
+		}
+		return 漢字;
 	}
 </script>
 </html>

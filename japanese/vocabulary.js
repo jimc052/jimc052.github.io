@@ -49,10 +49,13 @@ Vue.component('vocabulary', {
 			<div style="flex: 1;" />
 
 			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
-				style="width: 100px;">新增</Button>
-			
+				style="width: 80px;">新增</Button>
+
+			<Button v-if="dataStore.length > 0" type="primary" size="large"  @click="dsPreview = dataStore;" 
+				style="width: 80px; margin-left: 5px;">預覧</Button>
+
 			<Button v-if="$isLogin() && rowIndex > -1" size="large" @click="onBtnAddNote" 
-				style="min-width: 100px; margin-left: 5px;"
+				style="min-width: 80px; margin-left: 5px;"
 				:type="note.indexOf(dsTable[rowIndex].id) == -1 ? 'success' : 'warning' "
 			>
 				<span v-if="$isLogin() && note.indexOf(dsTable[rowIndex].id) == -1">加入筆記</span>
@@ -82,8 +85,8 @@ Vue.component('vocabulary', {
 		<span v-if="! isBigScreen" style="text-align: center; padding: 5px; font-size: 20px;">
 			{{$storage("email")}}
 		</span>
-		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor"
-		/>
+		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor" />
+		<preview ref="preview" :datastore="dsPreview" @onClose="onClosePreview" />
 	</div>`,
 	props: {
 	},
@@ -112,14 +115,14 @@ Vue.component('vocabulary', {
 				"國家、城市", "建築物", "場所", "方位",
 				"數字", "時間", "數學",  "季節",
 				"陸上動物", "水生動物", "飛行動物", "昆蟲"
-
 			],
 			editIndex: -1,
 			rowIndex: -1,
 			sortKey: "語",
 			note: "",
 			isBigScreen: null,
-			spinShow: false
+			spinShow: false,
+			dsPreview: undefined
 		};
 	},
 	created(){
@@ -809,6 +812,9 @@ Vue.component('vocabulary', {
 				let x = await ref.set(json);
 			}
 			this.editIndex = -1;
+		},
+		onClosePreview() {
+			this.dsPreview = undefined;
 		},
 		async download() {
 			let s = window.localStorage["japanese-vocabulary-last-date"];

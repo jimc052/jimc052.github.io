@@ -263,7 +263,7 @@ Vue.component('lesson', {
 						let accent = window.renderAccent(td[0], td[3]);
 						let ruby = this.print == 'Y' ? null : td[0].ruby(td[1]);
 						let s = "";
-						if(this.isRuby == true && ruby != null) {
+						if(this.isRuby == true && typeof ruby == "string" && ruby.length > 0) {
 							s = `<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 								<div style="min-height: 0px;">${ruby}</div>
 								<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
@@ -273,7 +273,7 @@ Vue.component('lesson', {
 								<div style="font-size: 20px;">${accent}</div>
 								<div style="color: #2d8cf0; margin-left: 10px;">${td[3]}</div>
 							</div>
-							<div style="flex: 1;">${td[1]}</div>`;
+							<div style="flex: 1;">${td[1].trimChinese()}</div>`;
 						}
 
 						result += `<div class="card ${this.print == 'N' ? '' : 'print'}" style="font-size: 20px;">
