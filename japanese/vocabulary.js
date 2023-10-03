@@ -3,7 +3,7 @@ Vue.component('vocabulary', {
 	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<Spin size="large" fix v-if="spinShow"></Spin>
 
-		<div style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
+		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
 			<RadioGroup v-model="level" type="button" button-style="solid" 
 				size="large"
 				@on-change="onChangeLevel"
@@ -34,7 +34,7 @@ Vue.component('vocabulary', {
 				@on-search="onSearch" 
 			/>
 		</div>
-		<div v-if="isBigScreen == true" ref="frame" style="flex: 1;">
+		<div v-if="isBigScreen == true && dsPreview == undefined" ref="frame" style="flex: 1;">
 			<Table id="table" ref="table" highlight-row 
 				:height="height"
 				:width="width"
@@ -44,7 +44,7 @@ Vue.component('vocabulary', {
 				@on-row-click="onRowClick"
 			></Table>
 		</div>
-		<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
+		<div v-if="isBigScreen == true && dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
 			2023-09-19 16:00
 			<div style="flex: 1;" />
 
@@ -76,13 +76,13 @@ Vue.component('vocabulary', {
 				style="" 
 				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
 		</div>
-		<div v-else ref="frame" style="flex: 1; overflow: auto;">
+		<div v-else-if="isBigScreen == false  && dsPreview == undefined" ref="frame" style="flex: 1; overflow: auto;">
 			<ul style="padding: 5px;">
 				<li v-for="(item, index) in dsTable" class="lesson-frame" v-html="renderWord(item, index)">
 				</li>
 			</ul>
 		</div>
-		<span v-if="! isBigScreen" style="text-align: center; padding: 5px; font-size: 20px;">
+		<span v-if="! isBigScreen  && dsPreview == undefined" style="text-align: center; padding: 5px; font-size: 20px;">
 			{{$storage("email")}}
 		</span>
 		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor" />
@@ -337,7 +337,6 @@ Vue.component('vocabulary', {
 		];
 
 		// if(this.isBigScreen == true && this.$isDebug()) { this.onDebugSearch(); return; }
-
 		s = window.localStorage["japanese-vocabulary-search"];
 		if(typeof s != "undefined" && s.length > 0) {
 			this.search = s;
@@ -356,6 +355,11 @@ Vue.component('vocabulary', {
 				}
 			}
 		}
+
+		setTimeout(() => {
+			if(this.dataStore.length > 0) 
+				this.dsPreview = this.dataStore;
+		}, 1000);
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
@@ -460,7 +464,11 @@ Vue.component('vocabulary', {
 			// let sk = event.shiftKey, code = event.keyCode;
 			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toUpperCase() : "";
 			// console.log(event.keyCode + ", " + this.active)
-			if(o.tagName == "BODY" && pk && char == "C") { // 因為第一行沒有行號，而其他行又多了行號，所以無法用；2023-06-26
+			if(event.keyCode == 27 && Array.isArray(this.dsPreview)) {
+				this.dsPreview = undefined;
+				return false;
+			}
+			else if(o.tagName == "BODY" && pk && char == "C") { // 因為第一行沒有行號，而其他行又多了行號，所以無法用；2023-06-26
 			} else {
 				return;
 			}
@@ -851,7 +859,7 @@ Vue.component('vocabulary', {
 		renderWord(item, index) {
 			let accent = window.renderAccent(item.語, item.重);
 			let 漢 = typeof item.漢 == "string" && item.漢.length > 0
-				? (`<div style="min-height: 0px;"> ${item.漢}</div>`)
+				? (`<div style="min-height: 0px;"> ${item.漢.trimChinese()}</div>`)
 				: "";
 
 			return (
