@@ -1,17 +1,6 @@
 Vue.component('preview', { 
-	template:  `<modal v-model="visible" class-name="vertical-center-modal" 
-		id="preview" :fullscreen="true" :closable="false" style="overflow: hidden;"
-	>
-
-		<div slot="footer" style="display: flex; padding: 0px; height: 0px;">
-			
-		</div>
-	</modal>`,
-	/*
-		<div style="flex: 1;" />
-			<Button type="default" size="large"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button  type="primary" size="large"  @click="print" style="width: 100px; margin-left: 10px;">列印</Button>
-	*/
+	template:  ` <div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px;">
+	</div>`,
 	props: {
 		datastore: {
 			type: Array,
@@ -22,58 +11,90 @@ Vue.component('preview', {
 	data() {
 		return {
 			visible: false,
-
 		};
 	},
 	created(){
 	},
 	mounted () {
-		let footer = document.querySelector("#preview .ivu-modal-footer");
-		footer.style.display = "none";
 
-		let body = document.querySelector("#preview .ivu-modal-body");
-		body.style.bottom = 0;
-		body.style.overflow = "none";
 	},
 	destroyed() {
+		
   },
 	methods: {
+		onBeforePrint() {
+			let body = document.querySelector("#preview");
+			body.style.overflow = "none";
+			body.style.position = "absolute";
+
+			let cards = document.querySelectorAll("#preview .card");
+			for(let i = 0; i < cards.length; i++) {
+				// cards[i].style.border = "0px";
+			}
+
+			let pages = document.querySelectorAll("#preview .page");
+			for(let i = 0; i < pages.length; i++) {
+				// pages[i].style.border = "0px";
+				// pages[i].style.marginTop = "0px";
+			}
+		},
+		onAfterPrint() {
+			let body = document.querySelector("#preview");
+			body.style.overflow = "auto";
+			body.style.position = ""; 
+
+			let cards = document.querySelectorAll("#preview .card");
+			for(let i = 0; i < cards.length; i++) {
+				// cards[i].style.border = "2px #eee solid";
+			}
+
+			let pages = document.querySelectorAll("#preview .page");
+			for(let i = 0; i < pages.length; i++) {
+				// pages[i].style.border = "1px solid rgb(45, 140, 240)";
+				// if(i > 0)  pages[i].style.marginTop = "10px";
+			}
+		},
     cancel() {
 			this.$emit("onClose");
 		},
-    print() {
-      // this.$emit("onClose", this.target);
-    },
     render() {
-      let body = document.querySelector("#preview .ivu-modal-body");
+      let body = document.querySelector("#preview");
 			
-			let createPage = () => {
+			let createPage = (index) => {
 				let page = document.createElement("div");
 				page.style.display = "flex";
 				page.style.flexWrap = "wrap";
 				page.classList.add("page");
-				// page.style.width = "1100px";
+				page.style.backgroundColor = "white";
+				if(index > 0) {
+					page.style.pageBreakBefore = "always";
+				}
+				page.style.width = "780px";
 				body.appendChild(page);
 				return page;
 			}
-      // body.style.overflow = "auto";
-      console.log(body)
       if(this.visible == true){
 				let page = createPage();
-				
 				// page.style.height = "20cm";
 				for(let i = 0; i < this.datastore.length; i++) {
 					let html = this.renderWord(this.datastore[i], i);
 					let div = document.createElement("div");
 					div.classList.add("card");
-					div.style.width = "370px";
+					div.style.minWidth = "385px";
 					div.style.fontSize = "20px";
+					div.style.border = "none"; // 為了算列印時的高度
+					
 					div.innerHTML = html;
-					page.appendChild(div)
-					if(page.clientHeight > 400) {
-						page = createPage();
+					page.appendChild(div);
+					if(page.clientHeight > 1090) {
+						page.removeChild(div)
+						page = createPage(i);
+						page.appendChild(div);
 					}
 				}
+				setTimeout(() => {
+					this.onAfterPrint();
+				}, 1000);
       } else {
 				body.innerHTML = "";
       }
@@ -83,7 +104,6 @@ Vue.component('preview', {
 			let 漢 = typeof item.漢 == "string" && item.漢.length > 0
 				? (`<div style="min-height: 0px;"> ${item.漢.trimChinese()}</div>`)
 				: "";
- // <div class="card " style="font-size: 20px; width: auto; background: white; ">
 			return (
 				`
 					<div style="min-width: 25px; font-size: 20px; margin-right: 5px;">${(index + 1) + "."}</div>
@@ -112,6 +132,13 @@ Vue.component('preview', {
 		datastore(value) {
 			this.visible = value == null || typeof value == "undefined" ? false : true;
       this.render();
+			if(this.visible == true) {
+				window.addEventListener("beforeprint", this.onBeforePrint);
+				window.addEventListener("afterprint", this.onAfterPrint);
+			} else {
+				window.removeEventListener("beforeprint", this.onBeforePrint);
+				window.removeEventListener("afterprint", this.onAfterPrint);
+			}
 		}
 	},
 });

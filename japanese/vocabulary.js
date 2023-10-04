@@ -1,6 +1,6 @@
 // open -a Google\ Chrome "index.html"
 Vue.component('vocabulary', {
-	template:  `<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
+	template:  `<div id="vocabulary" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<Spin size="large" fix v-if="spinShow"></Spin>
 
 		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
@@ -356,10 +356,10 @@ Vue.component('vocabulary', {
 			}
 		}
 
-		setTimeout(() => {
-			if(this.dataStore.length > 0) 
-				this.dsPreview = this.dataStore;
-		}, 1000);
+		// setTimeout(() => {
+		// 	if(this.dataStore.length > 0) 
+		// 		this.dsPreview = this.dataStore;
+		// }, 1000);
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
