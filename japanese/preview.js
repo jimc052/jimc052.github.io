@@ -19,7 +19,6 @@ Vue.component('preview', {
 
 	},
 	destroyed() {
-		
   },
 	methods: {
 		onBeforePrint() {
@@ -37,6 +36,8 @@ Vue.component('preview', {
 				// pages[i].style.border = "0px";
 				// pages[i].style.marginTop = "0px";
 			}
+			let btn = document.querySelector("#btnClose");
+			btn.style.visibility = "hidden";
 		},
 		onAfterPrint() {
 			let body = document.querySelector("#preview");
@@ -53,12 +54,17 @@ Vue.component('preview', {
 				// pages[i].style.border = "1px solid rgb(45, 140, 240)";
 				// if(i > 0)  pages[i].style.marginTop = "10px";
 			}
+			let btn = document.querySelector("#btnClose");
+			if(btn != null)
+				btn.style.visibility = "visible";
 		},
     cancel() {
 			this.$emit("onClose");
 		},
     render() {
       let body = document.querySelector("#preview");
+			let vocabulary = document.querySelector("#vocabulary");
+			vocabulary.style.backgroundColor =  this.visible == true ? "white" : "transparent";
 			
 			let createPage = (index) => {
 				let page = document.createElement("div");
@@ -95,9 +101,26 @@ Vue.component('preview', {
 				setTimeout(() => {
 					this.onAfterPrint();
 				}, 1000);
+
+				page.insertAdjacentHTML("afterend", 
+					`<button type="button" id="btnClose"
+						class="ivu-btn ivu-btn-success ivu-btn-circle ivu-btn-large ivu-btn-icon-only"
+						circle="" style="position: absolute; bottom: 10px; right: 10px;">
+						<i class="ivu-icon ivu-icon-md-close"></i>
+					</button>`);
       } else {
 				body.innerHTML = "";
       }
+
+			setTimeout(() => {
+				let btn = document.querySelector("#btnClose");
+				if(btn != null) {
+					if(this.visible == true)
+						btn.addEventListener("click", this.cancel)
+					else 
+						btn.removeEventListener("click", this.cancel)					
+				}
+			}, 600);
     },
 		renderWord(item, index) {
 			let accent = window.renderAccent(item.語, item.重);
