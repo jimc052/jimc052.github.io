@@ -18,7 +18,7 @@ Vue.component('letter-exam', {
 						placeholder="請輸入羅馬拼音"
 					/>
 					
-					<div v-if="volumeOn" class="button" style="margin-left: 10px;">
+					<div class="button" style="margin-left: 10px;">
 						<Icon type="md-play" size="25" @click="play()" />
 					</div>
 				</div>
@@ -154,6 +154,8 @@ Vue.component('letter-exam', {
 					}
 				} else if(code == 27) {
 					this.input1 = "";
+				} else if(pk == true) {
+					this.play();
 				} else if((code >=65 && code <=90) || (code >=97 && code <=122)) {
 					let s = "aeioukstnhmyrwncf";
 					if(this.tone.join(",").indexOf("濁") > -1)
@@ -174,7 +176,7 @@ Vue.component('letter-exam', {
     async play() {
 			if(this.index < this.datas.length) {
 				document.querySelector("#input1").focus();
-				if(! this.volumeOn) return;
+				// if(! this.volumeOn) return;
 				if(Player.mode != "") await Player.wait(1);
 				try {
 					await Player.play(this.datas[this.index].mp3);
@@ -249,9 +251,11 @@ Vue.component('letter-exam', {
 						}
 					}, 300);
 				}
-				setTimeout(() => {
-					this.play();	
-				}, 300);
+				if(this.volumeOn) {
+					setTimeout(() => {
+						this.play();	
+					}, 300);					
+				}
 			}
 		},
 		onChangeTone() {
