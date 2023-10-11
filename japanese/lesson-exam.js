@@ -136,6 +136,8 @@ Vue.component('lesson-exam', {
 			let sk = event.shiftKey, code = event.keyCode;
 			let id = event.target.id;
 
+			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toLocaleLowerCase() : "";
+			// console.log(char)
 			if(o.tagName == "INPUT"){
 				if(code == 13) {
 					if(this.index <= this.datas.length - 1) {
@@ -148,9 +150,9 @@ Vue.component('lesson-exam', {
         }
 			}
     },
-    compare() {
+    compare() { // 
       let data = this.datas[this.index];
-      function correct() {
+      let  correct = () => {
         if(data.answer == data.語)
           return "Y";
         else {
@@ -174,7 +176,45 @@ Vue.component('lesson-exam', {
         }
         return "N";
       }
-      data.answer = this.input1.trim().length == 0 ? "X" : this.input1;
+      let answer = "";
+			this.input1 = this.input1.trim();
+			if(this.input1.length == 0) 
+				answer = "X";
+			else {
+				let ascii = this.input1.charCodeAt(0);
+				if(ascii >= 97 && ascii <= 122) {
+					let datas = window.japanese();
+
+					let findKana = (el)=> {
+						for(let x = 0; x < datas.length; x++){
+							for(let y = 0; y < datas[x].length; y++){
+								for(let z = 0; z < datas[x][y].length; z++){
+									if(datas[x][y][z] == null) continue;
+									if(datas[x][y][z]["mp3"] === el) {
+										return datas[x][y][z][kana];
+									}
+								}
+							}
+						}
+						return null;
+					}
+
+
+					let code = data.語.charCodeAt(0);
+					let kana = "平";
+					if(code >= 12449 && code <= 12531){
+						kana = "片";
+					}
+
+					let arr = this.input1.split(" ");
+					arr.forEach(el => {
+						let char = findKana(el)
+						answer += char == null ? el : char;
+					});
+				}
+			} 
+
+			data.answer = answer;
       data.correct = correct();
       
       this.$set(this.datas, this.index, data);
@@ -222,7 +262,7 @@ Vue.component('lesson-exam', {
           中: cells[2],
           重: cells[3],
 					rome: window.rome(cells[0]),
-					ruby: cells[0].ruby(cells[1])
+					// ruby: cells[0].ruby(cells[1])
         }
       }
 

@@ -2,8 +2,8 @@ let token = Date.now
 // open -a Google\ Chrome "index.html"
 Vue.component('pronounce', { 
 	template:  `
-	<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding-right: 5px;">
-		<div style="display: flex; flex-direction: row; margin: 5px 0px;">
+	<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 0px 5px;">
+		<div style="display: flex; flex-direction: row; padding: 5px 0px;" ref="header">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
@@ -68,12 +68,22 @@ Vue.component('pronounce', {
 		this.onResize();
 		this.broadcast.$on('onResize', this.onResize);
 		window.addEventListener('keydown', this.onKeydown, false);
+		window.addEventListener("beforeprint", this.onBeforePrint);
+		window.addEventListener("afterprint", this.onAfterPrint);
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
 		window.removeEventListener('keydown', this.onKeydown, false);
+		window.removeEventListener("beforeprint", this.onBeforePrint);
+		window.removeEventListener("afterprint", this.onAfterPrint);
   },
 	methods: {
+		onBeforePrint() {
+			this.$refs.header.style.display = "none";
+		},
+		onAfterPrint() {
+			this.$refs.header.style.display = "flex";
+		},
 		onResize(){
 			this.width = document.body.clientWidth;
 		},

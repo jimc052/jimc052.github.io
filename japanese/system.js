@@ -1,10 +1,13 @@
 window.renderAccent = (語, 重) => {
   let results = "";
   let values = typeof 語 == "string"
-    ? (語.indexOf("，") > -1 ? 語.split("，") : 語.split("//")) 
+    ? (語.indexOf("，") > -1 ? 語.split("，") : 
+        (語.indexOf("、") > -1 ? 語.split("、") : 語.split("//"))
+      ) 
     : [];
   let accnets = typeof 重 == "string" //? 重.split("//") : [];
-    ? (重.indexOf("，") > -1 ? 重.split("，") : 重.split("//")) 
+    ? (重.indexOf("，") > -1 ? 重.split("，") : 
+      (重.indexOf("、") > -1 ? 重.split("、") : 重.split("//"))) 
     : [];
   let voicedSound = "ゃャゅュょョ"; // 拗音
 
@@ -72,7 +75,7 @@ window.renderAccent = (語, 重) => {
     } else {
       result = arr.join("");
     }
-    results += (results.length > 0 ? "，" : "") + result;
+    results += (results.length > 0 ? "、" : "") + result;
   }    
   return results;
 }

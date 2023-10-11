@@ -385,7 +385,7 @@ Vue.component('vocabulary', {
 			if(typeof p.row["語"] == "string") {
 				let values = p.row["語"].indexOf("，") > -1 
 					? p.row["語"].split("，") 
-					: p.row["語"].split("//");
+					: (p.row["語"].indexOf("、") > -1  ? p.row["語"].split("、") : p.row["語"].split("//"));
 				for(let x = 0; x < values.length; x++) {
 					let s = window.rome(values[x]);
 					// console.log(values[x] + ", " + s)
