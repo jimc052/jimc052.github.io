@@ -29,10 +29,55 @@ Vue.component('vocabulary', {
 
 			<div style="flex: 1;" />
 
-			<Input ref="input" v-model="search" search 
-				style="width: 200px; font-size: 20px; padding: 5px; margin-right: 10px;" size="large"
-				@on-search="onSearch" 
-			/>
+			<!--
+			<AutoComplete @on-search="onSearch" icon="ios-search" placeholder="請輸入查詢條件"
+        v-model="search"
+        style="width: 200px; font-size: 20px; padding: 5px; margin-right: 10px;" size="large"
+				@on-clear="alert('clear')"
+			>
+        <div v-for="item in dataAutoComplete" style="padding: 4px 0; border-bottom: 1px solid #F6F6F6;">
+            <div style="padding: 4px 6px;">
+							<span style="font-size: 16px;">{{ item.title }}</span>
+            </div>
+            <Option v-for="option in item.children" :value="option.title" :key="option.title">
+                <span style="font-size: 14px;">{{ option.title }}</span>
+                <span style="font-size: 14px; float: right; color: #999;">{{ option.memo }}</span>
+            </Option>
+        </div>
+    	</AutoComplete>
+			-->
+
+			<div style="margin-right: 10px; position: relative; ">
+				<Input ref="input" v-model="search" size="large" search 
+					@on-search="onSearch"
+					@on-focus="showAutoComplete = true"
+					@on-blur="onAutoCompleteBlur"
+					style="width: 200px; font-size: 20px;"
+				/>
+				<div style="position: absolute; 
+					 max-height: 300px; width: 100%; border: 1px solid #eee; z-index: 100;
+					border-radius: 5px; padding: 5px; overflow: auto; background: white;"
+					v-if="showAutoComplete == true"
+				>
+					<div v-for="(item, index1) in dataAutoComplete" 
+					  style="padding: 4px 0; border-bottom: 1px solid #F6F6F6;"
+						v-if="item.children.length > 0"
+					>
+						<div style="padding: 4px 6px;">
+							<span style="font-size: 16px;">{{ item.title }}</span>
+						</div>
+
+						<div v-for="(option, index2) in item.children" :value="option.title" :key="option.title"
+							style=""
+						>
+							<div @click="onClickRow(index1, index2);" class="hover" style="font-size: 14px; padding: 5px 10px; ">
+								{{ option.title }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 		<div v-if="isBigScreen == true && dsPreview == undefined" ref="frame" style="flex: 1;">
 			<Table id="table" ref="table" highlight-row 
@@ -45,7 +90,7 @@ Vue.component('vocabulary', {
 			></Table>
 		</div>
 		<div v-if="isBigScreen == true && dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
-			2023-09-19 16:00
+			2023-10-13 09:00
 			<div style="flex: 1;" />
 
 			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
@@ -122,7 +167,31 @@ Vue.component('vocabulary', {
 			note: "",
 			isBigScreen: null,
 			spinShow: false,
-			dsPreview: undefined
+			dsPreview: undefined,
+			value4: '',
+			dataAutoComplete: [
+				{
+					title: '預設',
+					children: [{
+							title: '筆記',
+							value: "=筆記",
+						}, {
+								title: '長度',
+								value: "語=2",
+						}
+					]
+				},
+				{
+					title: '記錄',
+					children: [
+						// {
+						// 		title: 'View UI Plus 是啥',
+						// 		value: 30010,
+						// }
+					]
+				}
+			],
+			showAutoComplete: false
 		};
 	},
 	created(){
@@ -138,8 +207,7 @@ Vue.component('vocabulary', {
 		vocabularys.sort((a, b) => {
 			return a.id > b.id ? 1 : -1;
 		});
-		
-
+	
 		// if(vocabularys.length > 0) console.log(vocabularys[vocabularys.length -1].id)
 		{ // 轉檔 - buffer; 08370 - 08699
 			/*
@@ -336,6 +404,11 @@ Vue.component('vocabulary', {
 			}
 		];
 
+		s = window.localStorage["japanese-vocabulary-search-record"];
+		if(typeof s != "undefined" && s.length > 0) {
+			this.dataAutoComplete[1].children = JSON.parse(s);
+		}
+
 		// if(this.isBigScreen == true && this.$isDebug()) { this.onDebugSearch(); return; }
 		s = window.localStorage["japanese-vocabulary-search"];
 		if(typeof s != "undefined" && s.length > 0) {
@@ -356,6 +429,8 @@ Vue.component('vocabulary', {
 			}
 		}
 
+
+
 		// setTimeout(() => {
 		// 	if(this.dataStore.length > 0) 
 		// 		this.dsPreview = this.dataStore;
@@ -369,6 +444,16 @@ Vue.component('vocabulary', {
 		this.dataStore = undefined;
   },
 	methods: {
+		onAutoCompleteBlur() {
+			setTimeout(() => {
+				this.showAutoComplete = false;
+			}, 300);
+		},
+		onClickRow(index1, index2) {
+			let row = this.dataAutoComplete[index1].children[index2];
+			this.search = typeof row.value == "string" && row.value.length > 0 ? row.value : row.title;
+			this.onSearch();
+		},
 		renderAccent(h, p){
 			let values = p.row["語"];
 			let accnets = p.row["重"];
@@ -541,6 +626,7 @@ Vue.component('vocabulary', {
 			window.localStorage["japanese-vocabulary-pageSize"] = e;
 		},
 		onSearch() {
+			this.showAutoComplete = false;
 			this.option = ""; this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
@@ -609,6 +695,17 @@ Vue.component('vocabulary', {
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
 			}, 300);
+
+			// s = window.localStorage["japanese-vocabulary-search-record"];
+			if(this.search.length > 0) {
+				let arr = this.dataAutoComplete[1].children.filter(el => {
+					return el.title != this.search;
+				})
+				arr.unshift({title: this.search});
+				this.dataAutoComplete[1].children = arr;
+				// console.log(JSON.stringify(arr, null, 2))
+				window.localStorage["japanese-vocabulary-search-record"] = JSON.stringify(arr);
+			}
 		},
 		onChangeLevel() {
 			this.search = ""; this.option = "";
@@ -893,20 +990,16 @@ Vue.component('vocabulary', {
 	},
 });
 
+// https://www.iviewui.com/view-ui-plus/component/form/auto-complete
 
 /*
-やめて(呀灭爹) 不行
-// 気持ちいい（ki mo chi ii）舒服,爽死了  
-// いやだ(一呀达)不要  
 はなして(ha na shi te)住手  
 // だめだ(da me da)不行了  
 ほしい(hoshii)想要  
-// すごい(su go i)好厉害  
 いく(i ku )要去了  
 
 手を放せ（te o ha na se) 放手，放开我  
 放して(ha na shi te)放开我
-痛ぃ（yi ta yi) 痛  
 速く（ha ya ku) 快一点  
 いや(i ya)不要  
 止めろ(ya me ro)住手  
@@ -915,6 +1008,4 @@ Vue.component('vocabulary', {
 耻しい(ha zu ka shi i)tsu=zu,这句也是羞死人了  
 あたしの奥に（a ta shi no o ku ni）到人家的身体里了  
 何が欲しぃ？言て.话して (na ni ga ho si yi?yi te. ha na shi te)想要什么说出来  
-
-
 */

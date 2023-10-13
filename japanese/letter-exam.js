@@ -80,12 +80,21 @@ Vue.component('letter-exam', {
 					<Checkbox label="片假"></Checkbox>
 				</CheckboxGroup>
 			</div>
+			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
+				<CheckboxGroup v-model="alpha" size="large"  @on-change="onChangeAlpha">
+					<Checkbox label="a"></Checkbox>
+					<Checkbox label="i"></Checkbox>
+					<Checkbox label="u"></Checkbox>
+					<Checkbox label="e"></Checkbox>
+					<Checkbox label="o"></Checkbox>
+				</CheckboxGroup>
+			</div>
 
-			<div class="button">
+			<div class="button" style="margin-top: 15px;">
 				<Icon :type="volumeOn ? 'md-volume-up' : 'md-volume-off'" size="25" @click="changeVolume()" />
 			</div>
 			
-			<Button :disabled="word.length == 0 || tone.length == 0" 
+			<Button :disabled="word.length == 0 || tone.length == 0 || alpha.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
 			<div style="color: #2d8cf0; font-size: 20px;">2023-08-10 12:00</div>
@@ -98,6 +107,7 @@ Vue.component('letter-exam', {
       size: 250,
 			word: ["平假"],
 			tone: ["清音"],
+			alpha: ["a", "i", "u", "e", "o"],
       index: -1,
 			datas: [],
       input1: "",
@@ -108,16 +118,20 @@ Vue.component('letter-exam', {
 	created(){
 	},
 	async mounted () {
-		let tone = window.localStorage["japanese-letter-exam-tone"] //  = JSON.stringify(this.options)
+		let tone = window.localStorage["japanese-letter-exam-tone"]
 		if(typeof tone == "string" && tone.length > 0){
 			this.tone = JSON.parse(tone);
 		}
-		let word = window.localStorage["japanese-letter-exam-word"] //  = JSON.stringify(this.options)
+		let word = window.localStorage["japanese-letter-exam-word"]
 		if(typeof word == "string" && word.length > 0){
 			this.word = JSON.parse(word);
 		}
+		let alpha = window.localStorage["japanese-letter-exam-alpha"]
+		if(typeof alpha == "string" && alpha.length > 0){
+			this.alpha = JSON.parse(alpha);
+		}
 
-		let volume = window.localStorage["japanese-letter-exam-volume"] //  = JSON.stringify(this.options)
+		let volume = window.localStorage["japanese-letter-exam-volume"]
 		this.volumeOn = volume == "N" ? false : true;
 
 		window.addEventListener('keydown', this.onKeydown, false);
@@ -193,6 +207,19 @@ Vue.component('letter-exam', {
 
 			let tone = this.tone.join(",");
 			let word = this.word.join(",");
+			let alpha = "";
+			this.alpha.forEach(el=> {
+				if(el == "a")
+					alpha += "0";
+				else if(el == "i")
+					alpha += "1";
+				else if(el == "u")
+					alpha += "2";
+				else if(el == "e")
+					alpha += "3";
+				else if(el == "0")
+					alpha += "4";
+			});
 
 			let datas1 = this.$japanese(), arr = [];
 			for(let i = 0; i < datas1.length - 1; i++) {
@@ -205,6 +232,7 @@ Vue.component('letter-exam', {
 				for(let j = 0; j < datas2.length; j++) {
 					let datas3 = datas2[j];
 					for(let k = 0; k < datas3.length; k++) {
+						if(alpha.indexOf(k) == -1) continue;
 						let data = datas3[k];
 						if(data != null) {
 							let rome = (data["mp3"].indexOf(",") > -1) ? data["mp3"].split(",")[0] : data["mp3"];
@@ -248,6 +276,7 @@ Vue.component('letter-exam', {
 							clearInterval(idTime);
 							input.setAttribute("autocapitalize","off");
 							input.style.textTransform = "lowercase";
+							input.focus();
 						}
 					}, 300);
 				}
@@ -263,6 +292,9 @@ Vue.component('letter-exam', {
 		},
 		onChangeWord() {
 			window.localStorage["japanese-letter-exam-word"]= JSON.stringify(this.word);
+		},
+		onChangeAlpha() {
+			window.localStorage["japanese-letter-exam-alpha"]= JSON.stringify(this.alpha);
 		}
 	},
 	computed: {
