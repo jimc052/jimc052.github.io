@@ -217,7 +217,7 @@ Vue.component('letter-exam', {
 					alpha += "2";
 				else if(el == "e")
 					alpha += "3";
-				else if(el == "0")
+				else if(el == "o")
 					alpha += "4";
 			});
 
