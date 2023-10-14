@@ -29,25 +29,8 @@ Vue.component('vocabulary', {
 
 			<div style="flex: 1;" />
 
-			<!--
-			<AutoComplete @on-search="onSearch" icon="ios-search" placeholder="請輸入查詢條件"
-        v-model="search"
-        style="width: 200px; font-size: 20px; padding: 5px; margin-right: 10px;" size="large"
-				@on-clear="alert('clear')"
+			<div style="margin-right: 10px; position: relative;"
 			>
-        <div v-for="item in dataAutoComplete" style="padding: 4px 0; border-bottom: 1px solid #F6F6F6;">
-            <div style="padding: 4px 6px;">
-							<span style="font-size: 16px;">{{ item.title }}</span>
-            </div>
-            <Option v-for="option in item.children" :value="option.title" :key="option.title">
-                <span style="font-size: 14px;">{{ option.title }}</span>
-                <span style="font-size: 14px; float: right; color: #999;">{{ option.memo }}</span>
-            </Option>
-        </div>
-    	</AutoComplete>
-			-->
-
-			<div style="margin-right: 10px; position: relative; ">
 				<Input ref="input" v-model="search" size="large" search 
 					@on-search="onSearch"
 					@on-focus="showAutoComplete = true"
@@ -55,24 +38,33 @@ Vue.component('vocabulary', {
 					style="width: 200px; font-size: 20px;"
 				/>
 				<div style="position: absolute; 
-					 max-height: 300px; width: 100%; border: 1px solid #eee; z-index: 100;
-					border-radius: 5px; padding: 5px; overflow: auto; background: white;"
+					 max-height: 450px; width: 100%; border: 1px solid #eee; z-index: 100;
+					border-radius: 5px; padding: 2px 5px; overflow: auto; background: white;"
 					v-if="showAutoComplete == true"
 				>
 					<div v-for="(item, index1) in dataAutoComplete" 
-					  style="padding: 4px 0; border-bottom: 1px solid #F6F6F6;"
+					  style="padding: 4px 0;"
+						:style="{borderBottom: (index1 < dataAutoComplete.length - 1) ? '2px solid #F6F6F6' : ''}"
 						v-if="item.children.length > 0"
 					>
-						<div style="padding: 4px 6px;">
-							<span style="font-size: 16px;">{{ item.title }}</span>
+						<div style="padding: 0px 2px;">
+							<span style="font-size: 12px; color: #c5c8ce;">{{ item.title }}</span>
 						</div>
 
 						<div v-for="(option, index2) in item.children" :value="option.title" :key="option.title"
-							style=""
+							style="display: flex; flex-direction: row; align-items: center;"
+							class="hover" 
 						>
-							<div @click="onClickRow(index1, index2);" class="hover" style="font-size: 14px; padding: 5px 10px; ">
+							<div @click="onAutoCompleteClick(index1, index2);"
+								style="flex: 1; font-size: 14px; padding: 5px 10px; "
+							>
 								{{ option.title }}
 							</div>
+							<Icon type="md-close" size="16" 
+								v-if="index1 > 0"
+								@click.native="onAutoCompleteDel(index1, index2)" 
+								style="cursor: pointer; color: #eee; padding: 5px;"
+							/>
 						</div>
 					</div>
 				</div>
@@ -428,9 +420,6 @@ Vue.component('vocabulary', {
 				}
 			}
 		}
-
-
-
 		// setTimeout(() => {
 		// 	if(this.dataStore.length > 0) 
 		// 		this.dsPreview = this.dataStore;
@@ -449,10 +438,15 @@ Vue.component('vocabulary', {
 				this.showAutoComplete = false;
 			}, 300);
 		},
-		onClickRow(index1, index2) {
+		onAutoCompleteClick(index1, index2) {
 			let row = this.dataAutoComplete[index1].children[index2];
 			this.search = typeof row.value == "string" && row.value.length > 0 ? row.value : row.title;
 			this.onSearch();
+		},
+		onAutoCompleteDel(index1, index2) {
+			this.dataAutoComplete[index1].children.splice(index2, 1);
+			window.localStorage["japanese-vocabulary-search-record"] = 
+				JSON.stringify(this.dataAutoComplete[index1].children);
 		},
 		renderAccent(h, p){
 			let values = p.row["語"];
@@ -702,6 +696,9 @@ Vue.component('vocabulary', {
 					return el.title != this.search;
 				})
 				arr.unshift({title: this.search});
+				if(arr.length > 10) {
+					arr = arr.splice(0, 10);
+				}
 				this.dataAutoComplete[1].children = arr;
 				// console.log(JSON.stringify(arr, null, 2))
 				window.localStorage["japanese-vocabulary-search-record"] = JSON.stringify(arr);
