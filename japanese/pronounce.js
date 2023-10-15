@@ -2,12 +2,13 @@ let token = Date.now
 // open -a Google\ Chrome "index.html"
 Vue.component('pronounce', { 
 	template:  `
-	<div style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 0px 5px;">
+	<div id="pronounce" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 0px 5px;">
 		<div style="display: flex; flex-direction: row; padding: 5px 0px;" ref="header">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
 				<Radio label="2">拗音</Radio>
+				<Radio v-if="width > 600" label="3">全部</Radio>
 			</RadioGroup>
 			<div :style="{flex: width < 400 ? 1 : null, width: width < 400 ? null : '20px'}" />
 			<RadioGroup v-model="word" type="button" style="margin-left: 10px;">
@@ -24,7 +25,7 @@ Vue.component('pronounce', {
 				{{item1}}
 				</td>
 			</tr>
-			<tr v-for="(item1, index1) in datas[index]" :key="index1">
+			<tr v-for="(item1, index1) in datas" :key="index1">
 				<td @click="playRow(index1)" style="cursor: pointer;">
 					{{item1[0][word == "全" ? "平" : word].substr(0, 1)}}
 				</td>
@@ -58,7 +59,7 @@ Vue.component('pronounce', {
 			active: "",
 			mode: "",
 			width: 0,
-			datas: this.$japanese(),
+			datas: [],
 			// mp3: false
 		};
 	},
@@ -70,6 +71,7 @@ Vue.component('pronounce', {
 		window.addEventListener('keydown', this.onKeydown, false);
 		window.addEventListener("beforeprint", this.onBeforePrint);
 		window.addEventListener("afterprint", this.onAfterPrint);
+		this.onChangeIndex();
 	},
 	destroyed() {
 		this.broadcast.$off('onResize', this.onResize);
@@ -80,15 +82,35 @@ Vue.component('pronounce', {
 	methods: {
 		onBeforePrint() {
 			this.$refs.header.style.display = "none";
+			let body = document.querySelector("#pronounce");
+			body.style.overflow = "none";
+			body.style.height = "auto";
+			body.style.position = "absolute";
+			console.log("onBeforePrint: " + body.style.overflow)
 		},
 		onAfterPrint() {
 			this.$refs.header.style.display = "flex";
+			let body = document.querySelector("#pronounce");
+			body.style.overflow = "auto";
+			body.style.height = "100%";
+			body.style.position = "";
+			console.log("onAfterPrint: " + body.style.overflow)
 		},
 		onResize(){
 			this.width = document.body.clientWidth;
 		},
 		onChangeIndex(e) {
+			token = Date.now();
 			// document.querySelector("#tbl50").innerHTML = "";
+			if(this.index == 3) {
+				this.datas = [];
+				this.$japanese().forEach(el => {
+					this.datas = this.datas.concat(el)
+				})
+
+			} else {
+				this.datas = this.$japanese()[this.index];
+			}
 			this.active = "";
 			if(this.index != "0") {
 				// this.word = "平"
@@ -112,23 +134,21 @@ Vue.component('pronounce', {
 			this.mode = "";
 			token = Date.now();
 			this.active = row + "-" + col;
-			let data = this.datas[this.index];
-			if(data[row][col] != null) {
-				await Player.play(data[row][col].mp3);
+			if(this.datas[row][col] != null) {
+				await Player.play(this.datas[row][col].mp3);
 			}
 		},
 		async playColumn(col) {
 			if(Player.mode != "") await Player.wait(1);
 			this.mode = "col";
-			let data = this.datas[this.index];
 			let now = token = Date.now();
 
-			for(let i = 0; i < data.length; i++){
+			for(let i = 0; i < this.datas.length; i++){
 				// console.log("playRow: " + now + ", " + token)
 				if(now != token) break;
-				if(data[i][col] != null ) {
+				if(this.datas[i][col] != null ) {
 					this.active = i + "-" + col;
-					await Player.play(data[i][col].mp3);
+					await Player.play(this.datas[i][col].mp3);
 				}
 			}
 			setTimeout(() => {
@@ -139,7 +159,7 @@ Vue.component('pronounce', {
 			if(Player.mode != "") await Player.wait(1);
 			this.mode = "row";
 			let now = token = Date.now();
-			let data = this.datas[this.index];
+			let data = this.datas;
 			do {
 				for(let i = 0; i < data.length; i++){
 					if(now != token) break;
@@ -156,7 +176,7 @@ Vue.component('pronounce', {
 			if(Player.mode != "") await Player.wait(1);
 			this.mode = "all";
 			let now = token = Date.now();
-			let data = this.datas[this.index];
+			let data = this.datas;
 			for(let i = 0; i < data.length; i++){
 				let row = data[i];
 				for(let j = 0; j < row.length; j++){
@@ -189,8 +209,7 @@ Vue.component('pronounce', {
 				this.play(0, 0, true);
 				return;
 			}
-			let datas = this.datas[this.index];
-
+			let datas = this.datas;
 			if(event.keyCode == 37) { // left
 				do {
 					col--;

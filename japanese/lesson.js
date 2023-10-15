@@ -46,7 +46,6 @@ Vue.component('lesson', {
 			options: [],
       option: "",
 			html: "",
-			scrollTop: 0, // 不要用了，2023-06-27
 			mode: "課文",
 			print: "N",
 			isRuby: false,
@@ -112,7 +111,6 @@ Vue.component('lesson', {
 		},
 		onScroll(e) {
 			if(document.body.clientWidth < 600 && this.print == "N"){
-				// this.scrollTop = e.srcElement.scrollTop;  // 不要用了，2023-06-27
 				window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`] = e.srcElement.scrollTop;
 			}
 		},

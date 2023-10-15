@@ -15,7 +15,7 @@ Vue.component('letter-exam', {
 					<Input ref="input1" element-id="input1" v-model="input1"
 						style="font-size: 20px; flex: 1;"
 						size="large"
-						placeholder="請輸入羅馬拼音"
+						placeholder="請輸入羅馬拼音後, 按 enter 確認"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
@@ -81,7 +81,7 @@ Vue.component('letter-exam', {
 				</CheckboxGroup>
 			</div>
 			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
-				<CheckboxGroup v-model="alpha" size="large"  @on-change="onChangeAlpha">
+				<CheckboxGroup id="letter-alpha" v-model="alpha" size="large"  @on-change="onChangeAlpha">
 					<Checkbox label="a"></Checkbox>
 					<Checkbox label="i"></Checkbox>
 					<Checkbox label="u"></Checkbox>
@@ -97,7 +97,7 @@ Vue.component('letter-exam', {
 			<Button :disabled="word.length == 0 || tone.length == 0 || alpha.length == 0" 
 				type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2023-08-10 12:00</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2023-10-15 09:00</div>
 		</div>
   </div>`,
 	props: {
@@ -137,6 +137,13 @@ Vue.component('letter-exam', {
 		window.addEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$on('onResize', this.onResize);
 		this.onResize();
+
+		let arr = document.querySelectorAll("#letter-alpha label span:last-child")
+		arr.forEach(el => {
+			// console.log(el)
+			el.style.padding = "0 5px 0 2px";
+			el.style.fontSize = "25px";
+		})
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
