@@ -2,7 +2,7 @@ let token = Date.now
 // open -a Google\ Chrome "index.html"
 Vue.component('pronounce', { 
 	template:  `
-	<div id="pronounce" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; padding: 0px 5px;">
+	<div id="pronounce" style="height: 100%; width: 100%; display: flex; flex-direction: column; padding: 0px 5px;">
 		<div style="display: flex; flex-direction: row; padding: 5px 0px;" ref="header">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
@@ -17,37 +17,38 @@ Vue.component('pronounce', {
 				<Radio v-if="width > 600" label="全">全部</Radio>
 			</RadioGroup>
 		</div>
+		<div id="pronounce-body" style="flex: 1; overflow: auto; width: 100%;">
+			<table id="tbl50" style="border-collapse:collapse; width: 100%;">
+				<tr>
+					<td @click="playAll()" style="cursor: pointer;" />
+					<td v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1" @click="playColumn(index1)" style="cursor: pointer;">
+					{{item1}}
+					</td>
+				</tr>
+				<tr v-for="(item1, index1) in datas" :key="index1">
+					<td @click="playRow(index1)" style="cursor: pointer;">
+						{{item1[0][word == "全" ? "平" : word].substr(0, 1)}}
+					</td>
+					<td v-for="(item2, index2) in item1" :key="index2" 
+						:class="{cell: item2 != null, active: active == index1 + '-' + index2}"
+						@click="play(index1, index2)"
+					>
+						<div v-if="word == '全'" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+							<span>{{item2 == null ? "" : item2["平"]}}</span>
+							<span style="margin-left: 5px; color: orange;">{{item2 == null ? "" : item2["片"]}}</span>
+						</div>
+						<div v-else style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+							{{item2 == null ? "" : item2[word]}}
+						</div>
 
-		<table id="tbl50" style="border-collapse:collapse; width: 100%;">
-			<tr>
-				<td @click="playAll()" style="cursor: pointer;" />
-				<td v-for="(item1, index1) in ['a','i','u','e','o']" :key="index1" @click="playColumn(index1)" style="cursor: pointer;">
-				{{item1}}
-				</td>
-			</tr>
-			<tr v-for="(item1, index1) in datas" :key="index1">
-				<td @click="playRow(index1)" style="cursor: pointer;">
-					{{item1[0][word == "全" ? "平" : word].substr(0, 1)}}
-				</td>
-				<td v-for="(item2, index2) in item1" :key="index2" 
-					:class="{cell: item2 != null, active: active == index1 + '-' + index2}"
-					@click="play(index1, index2)"
-				>
-					<div v-if="word == '全'" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-						<span>{{item2 == null ? "" : item2["平"]}}</span>
-						<span style="margin-left: 5px; color: orange;">{{item2 == null ? "" : item2["片"]}}</span>
-					</div>
-					<div v-else style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-						{{item2 == null ? "" : item2[word]}}
-					</div>
-
-					<div style="color: #2d8cf0" :class="{active: active == index1 + '-' + index2}">
-						{{item2 == null ? "" 
-							: item2["mp3"].indexOf(",") ? item2["mp3"].split(",")[0] : item2["mp3"]}}
-					</div>
-				</td>
-			</tr>
-		</table>
+						<div style="color: #2d8cf0" :class="{active: active == index1 + '-' + index2}">
+							{{item2 == null ? "" 
+								: item2["mp3"].indexOf(",") ? item2["mp3"].split(",")[0] : item2["mp3"]}}
+						</div>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>`,
 	//
 	props: {
@@ -82,19 +83,19 @@ Vue.component('pronounce', {
 	methods: {
 		onBeforePrint() {
 			this.$refs.header.style.display = "none";
-			let body = document.querySelector("#pronounce");
+			let body = document.querySelector("#pronounce-body");
 			body.style.overflow = "none";
 			body.style.height = "auto";
 			body.style.position = "absolute";
-			console.log("onBeforePrint: " + body.style.overflow)
+			// console.log("onBeforePrint: " + body.style.overflow)
 		},
 		onAfterPrint() {
 			this.$refs.header.style.display = "flex";
-			let body = document.querySelector("#pronounce");
+			let body = document.querySelector("#pronounce-body");
 			body.style.overflow = "auto";
 			body.style.height = "100%";
 			body.style.position = "";
-			console.log("onAfterPrint: " + body.style.overflow)
+			// console.log("onAfterPrint: " + body.style.overflow)
 		},
 		onResize(){
 			this.width = document.body.clientWidth;
