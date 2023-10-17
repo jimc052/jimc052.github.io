@@ -21,7 +21,7 @@
 			flex-wrap: wrap;
 		}
 		a {
-			min-width: 80px;
+			min-width: 120px;
 			height: 40px;
 			/* font-size: 20px; */
 			background-color: #4CAF50; /* Green */
@@ -58,10 +58,11 @@
 			{title: "VUE-JSON", path: "VUE-JSON"},
 		], [
 			{ path: "japanese", mode: "五十音", title: "五十音" }, 
-			{ path: "japanese", mode: "五十音測驗", title: "五十音測驗" }, 
 			{ path: "japanese", mode: "筆順練習", title: "筆順練習" }, 
 			{ path: "japanese", mode: "字典", title: "日文字典" }, 
 			{ path: "japanese", mode: "大家的日本語", title: "大家的日本語"},
+		], [
+			{ path: "japanese", mode: "五十音測驗", title: "五十音測驗" }, 
 			{ path: "japanese", mode: "單字測驗", title: "單字測驗"},
 		], [
 			{ title: "日語筆記", href: "https://docs.google.com/document/d/19hoPOqtPwmYEruZORJrgBcoq2u-YExddY69UC4XLs0A/edit"},
@@ -100,8 +101,7 @@
 					}
 					a.setAttribute("href", `./${path}/index.html` + para)					
 				}
-				
-				if(width + 100 > document.body.clientWidth) {
+				if(width + 120 > document.body.clientWidth) {
 					div = document.createElement("div");
 					document.body.appendChild(div);
 					width = 0;
