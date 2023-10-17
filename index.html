@@ -17,6 +17,8 @@
 			flex-direction: row;
 			justify-content: flex-start;
 			align-items: center;
+			width: 100%;
+			flex-wrap: wrap;
 		}
 		a {
 			min-width: 80px;
@@ -44,7 +46,7 @@
 		}
 	</style>
 </head>
-<body> 
+<body style="width: 100%;"> 
 </body>
 <script>
 	let Links = [
@@ -74,9 +76,10 @@
 
 	function createLink() {
 		let local = location.href.indexOf("file:///") > -1 || location.href.indexOf("192.168") > -1;
-
 		for(let i = 0; i < Links.length; i++) {
 			let div = document.createElement("div");
+			document.body.appendChild(div);
+			let width = 0;
 			for(let j = 0; j < Links[i].length; j++) {
 				let a = document.createElement("a");
 				a.innerHTML = Links[i][j].title;
@@ -97,9 +100,15 @@
 					}
 					a.setAttribute("href", `./${path}/index.html` + para)					
 				}
+				
+				if(width + 100 > document.body.clientWidth) {
+					div = document.createElement("div");
+					document.body.appendChild(div);
+					width = 0;
+				}
 				div.appendChild(a);
+				width += a.clientWidth;
 			}
-			document.body.appendChild(div);
 		}
 	}
 </script>
