@@ -28,7 +28,6 @@ Vue.component('lesson-exam', {
 						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
 						placeholder="請輸入日文或羅馬拼音加空白"
-						autocapitalize="none"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
@@ -241,6 +240,8 @@ Vue.component('lesson-exam', {
         let input = document.querySelector("#input1");
         if(input != null) {
           clearInterval(idTime);
+					input.setAttribute("autocapitalize","off");
+					input.style.textTransform = "lowercase";
           input.focus();
         }
       }, 300);

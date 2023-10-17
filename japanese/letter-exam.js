@@ -16,7 +16,6 @@ Vue.component('letter-exam', {
 						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
 						placeholder="請輸入羅馬拼音後, 按 enter 確認"
-						autocapitalize="none"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
