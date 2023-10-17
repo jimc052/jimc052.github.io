@@ -28,9 +28,10 @@ Vue.component('lesson-exam', {
 				<div
           style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
-						style="font-size: 20px; flex: 1;"
+						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
 						placeholder="請輸入日文或羅馬拼音加空白"
+						autocapitalize="none"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
@@ -139,8 +140,9 @@ Vue.component('lesson-exam', {
 			let sk = event.shiftKey, code = event.keyCode;
 			let id = event.target.id;
 
-			let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toLocaleLowerCase() : "";
+			// let char = (event.keyCode >=48 && event.keyCode <=122) ? String.fromCharCode(event.keyCode).toLocaleLowerCase() : "";
 			// console.log(char)
+			// console.log(code + ", " + char)
 			if(o.tagName == "INPUT"){
 				if(code == 13) {
 					if(this.index <= this.datas.length - 1) {
@@ -150,6 +152,8 @@ Vue.component('lesson-exam', {
 					this.input1 = "";
 				} else if(pk) {
 					this.play();
+				// } else if((code >=65 && code <=90)) { // 
+				// 	this.input1 = this.input1.toLowerCase();
         }
 			}
     },
@@ -176,7 +180,7 @@ Vue.component('lesson-exam', {
       };
 
       let answer = "";
-			this.input1 = this.input1.trim();
+			this.input1 = this.input1.trim().toLowerCase();
 			if(this.input1.length == 0) 
 				answer = "X";
 			else {

@@ -13,9 +13,10 @@ Vue.component('letter-exam', {
 				<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
 				<div :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
-						style="font-size: 20px; flex: 1;"
+						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
 						placeholder="請輸入羅馬拼音後, 按 enter 確認"
+						autocapitalize="none"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
