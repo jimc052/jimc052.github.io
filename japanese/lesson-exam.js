@@ -30,13 +30,15 @@ Vue.component('lesson-exam', {
 					<Input ref="input1" element-id="input1" v-model="input1"
 						style="font-size: 20px; flex: 1;"
 						size="large"
-						placeholder="請輸入日文"
+						placeholder="請輸入日文或羅馬拼音加空白"
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
 						<Icon type="md-play" size="25" @click="play()" />
 					</div>
 				</div>
+				<div style="padding: 5px; min-height: 40px;">{{
+					index > -1 && index < datas.length ? datas[index].中 : ""}}</div>
 			</div>
       <div v-else style="display: flex; flex-direction: row;">
 				<Button id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
@@ -102,7 +104,8 @@ Vue.component('lesson-exam', {
       index: -1,
       datas: [],
       size: 250,
-      input1: ""
+      input1: "",
+			chinese: ""
 		};
 	},
 	created(){
@@ -152,30 +155,26 @@ Vue.component('lesson-exam', {
     },
     compare() { // 
       let data = this.datas[this.index];
-      let  correct = () => {
+      let correct = () => {
         if(data.answer == data.語)
           return "Y";
         else {
-          let question = data.漢.replace("~", "");
-          let arr = question.split("・");
-          let i = arr.findIndex(el => {
-            return el == data.answer;
-          });
-          if(i > -1){
+					if(correctWord(data.語) == "Y") 
 						return "Y";
-					} else {
-						question = data.漢.replace("~", " ");
-						arr = question.split("・");
-						i = arr.findIndex(el => {
-							return el == data.answer;
-						});
-						if(i > -1){
-							return "Y";
-						} 
-					}
+					else if(correctWord(data.漢) == "Y") 
+						return "Y";
         }
         return "N";
-      }
+      };
+			let correctWord = (word) => {
+				let arr = word.indexOf("・") > -1 ? word.split("・") : word.split("、");
+				for(let i = 0; i < arr.length; i++) {
+					if(arr[i].replace("〜", "~") == data.answer) 
+						return "Y";
+				}
+        return "N";
+      };
+
       let answer = "";
 			this.input1 = this.input1.trim();
 			if(this.input1.length == 0) 
@@ -190,15 +189,21 @@ Vue.component('lesson-exam', {
 							for(let y = 0; y < datas[x].length; y++){
 								for(let z = 0; z < datas[x][y].length; z++){
 									if(datas[x][y][z] == null) continue;
-									if(datas[x][y][z]["mp3"] === el) {
+
+									if(datas[x][y][z]["mp3"] === el ) {
 										return datas[x][y][z][kana];
+									} else if(datas[x][y][z]["mp3"].indexOf(",") > -1){
+										let arr = datas[x][y][z]["mp3"].split(",");
+										let b = arr.some(el2 => {
+											return el2 == el;
+										});
+										if(b == true) return datas[x][y][z][kana];
 									}
 								}
 							}
 						}
 						return null;
 					}
-
 
 					let code = data.語.charCodeAt(0);
 					let kana = "平";
@@ -208,9 +213,15 @@ Vue.component('lesson-exam', {
 
 					let arr = this.input1.split(" ");
 					arr.forEach(el => {
-						let char = findKana(el)
-						answer += char == null ? el : char;
+						if(el == "~")
+							answer += el;
+						else {
+							let char = findKana(el)
+							answer += char == null ? el : char;
+						}
 					});
+				} else {
+
 				}
 			} 
 

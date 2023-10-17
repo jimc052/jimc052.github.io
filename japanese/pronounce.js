@@ -33,6 +33,7 @@ Vue.component('pronounce', {
 						:class="{cell: item2 != null, active: active == index1 + '-' + index2}"
 						@click="play(index1, index2)"
 					>
+					
 						<div v-if="word == '全'" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
 							<span>{{item2 == null ? "" : item2["平"]}}</span>
 							<span style="margin-left: 5px; color: orange;">{{item2 == null ? "" : item2["片"]}}</span>
@@ -87,7 +88,14 @@ Vue.component('pronounce', {
 			body.style.overflow = "none";
 			body.style.height = "auto";
 			body.style.position = "absolute";
-			// console.log("onBeforePrint: " + body.style.overflow)
+			body.style.padding = "0 10px";
+			// let row = document.querySelectorAll("#tbl50 tr")
+			// if(row.length >= 12) { // 有問題
+			// 	row[11].style.pageBreakAfter = "always";
+			// 	row[11].style.marginTop = "20px";
+			// 	row[11].style.border = "2px solid red";
+			// }
+			document.querySelector("#pronounce").style.backgroundColor = "white";
 		},
 		onAfterPrint() {
 			this.$refs.header.style.display = "flex";
@@ -95,7 +103,8 @@ Vue.component('pronounce', {
 			body.style.overflow = "auto";
 			body.style.height = "100%";
 			body.style.position = "";
-			// console.log("onAfterPrint: " + body.style.overflow)
+			body.style.padding = "0px";
+			document.querySelector("#pronounce").style.backgroundColor = "transparent";
 		},
 		onResize(){
 			this.width = document.body.clientWidth;
