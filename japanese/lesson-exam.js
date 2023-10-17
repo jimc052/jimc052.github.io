@@ -13,11 +13,8 @@ Vue.component('lesson-exam', {
         style="margin-left: 10px;">開始</Button>
 		</div>
 
-    <div v-else style="margin-bottom: 0px; 
-      display: flex; flex-direction: column; overflow: hidden;
-       " 
+    <div v-else style="max-width: 600px; margin-bottom: 0px; display: flex; flex-direction: column; overflow: hidden;" 
 				:style="{
-					width: (size + 80) + 'px' , 
 					marginLeft: '0px',
 					flex:  1,
 					height: 'none',
@@ -48,7 +45,6 @@ Vue.component('lesson-exam', {
 
       <div style="margin-bottom: 5px; display: flex; flex-direction: column; overflow: hidden; " 
 				:style="{
-					width: (size + 80) + 'px', 
 					marginLeft: '0px',
 					flex: 1,
 					height:'none' ,
@@ -104,7 +100,7 @@ Vue.component('lesson-exam', {
       option: "",
       index: -1,
       datas: [],
-      size: 250,
+      // size: 250,
       input1: "",
 			chinese: ""
 		};
