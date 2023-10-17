@@ -46,6 +46,7 @@ Vue.component('lesson', {
 			options: [],
       option: "",
 			html: "",
+			scrollTop: 0,
 			mode: "課文",
 			print: "N",
 			isRuby: false,
@@ -80,6 +81,7 @@ Vue.component('lesson', {
 		s = window.localStorage["japanese-大家的日本語-ruby"];
 		this.isRuby = typeof s == "string" && s == "Y" ? true : false;
 
+		// console.log(this.$refs["radio-group"].$children[this.mode == "課文" ? 0 : 1].currentValue)
 		this.$refs["radio-group"].$children[this.mode == "課文" ? 0 : 1].currentValue = true;
 		this.onChangeMode();
 	},
