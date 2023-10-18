@@ -9,9 +9,10 @@ Vue.component('letter-exam', {
 				alignItems: isSmall ? 'center' : 'flex-start'
 			}"
 		>
-			<div v-if="index < datas.length">
-				<vm-canvas ref="canvas" :size="size" :char="datas[index]['char']" />
-				<div :style="{width: size + 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+			<div v-if="index < datas.length" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
+				<vm-canvas ref="canvas" :size="150" :char="datas[index]['char']" />
+
+				<div :style="{width: (size + 80)+ 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
 						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
@@ -275,7 +276,7 @@ Vue.component('letter-exam', {
 				setTimeout(() => {
 					document.querySelector("#btnRestart").focus();
 				}, 600);
-			}else {
+			} else {
 				if(this.index == 0) {
 					let idTime = setInterval(() => {
 						let input = document.querySelector("#input1");
@@ -283,6 +284,7 @@ Vue.component('letter-exam', {
 							clearInterval(idTime);
 							input.setAttribute("autocapitalize","off");
 							input.style.textTransform = "lowercase";
+							input.style.fontSize = "20px";
 							input.focus();
 						}
 					}, 300);

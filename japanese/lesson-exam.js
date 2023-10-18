@@ -66,9 +66,9 @@ Vue.component('lesson-exam', {
                 <div>
                   <span v-if="el.correct != 'Y' " 
                     style="
-                      font-size: inherit;
                       text-decoration-line: line-through; 
                       text-decoration-color: #f55f67;
+											font-size: 20px;
                     "
                   >
                     {{el.answer}}
@@ -88,7 +88,6 @@ Vue.component('lesson-exam', {
 					<div style="font-size: 20px;">{{"分數：" + rate}}</div>
 				</div>
 			</div>
-    
     </div>
 	</div>`,
 	props: {
@@ -177,7 +176,7 @@ Vue.component('lesson-exam', {
       let answer = "";
 			this.input1 = this.input1.trim().toLowerCase();
 			if(this.input1.length == 0) 
-				answer = "X";
+				answer = "XXXXXXX";
 			else {
 				let ascii = this.input1.charCodeAt(0);
 				if(ascii >= 97 && ascii <= 122) {
@@ -235,16 +234,14 @@ Vue.component('lesson-exam', {
 			window.localStorage["japanese-大家的日本語-exam-option"] = this.option;
     },
     play() {
-      TTX.speak(this.datas[this.index].語);
       let idTime = setInterval(() => {
         let input = document.querySelector("#input1");
         if(input != null) {
           clearInterval(idTime);
-					input.setAttribute("autocapitalize","off");
-					input.style.textTransform = "lowercase";
           input.focus();
         }
       }, 300);
+      TTX.speak(this.datas[this.index].語);
     },
     execute() {
       this.index++;
@@ -291,6 +288,16 @@ Vue.component('lesson-exam', {
 				}
 				cycle--;
 			}
+
+			let idTime = setInterval(() => {
+        let input = document.querySelector("#input1");
+        if(input != null) {
+          clearInterval(idTime);
+					input.setAttribute("autocapitalize","off");
+					input.style.textTransform = "lowercase";
+					input.style.fontSize = "20px";
+        }
+      }, 100);
       this.execute();
     }
 	},
