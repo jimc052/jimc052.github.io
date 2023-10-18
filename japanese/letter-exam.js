@@ -3,7 +3,7 @@ Vue.component('letter-exam', {
 		<div v-if="index > -1" id="frame-letter-exam" 
 			style="height: 100%; overflow: hidden; display: flex;"
 			:style="{
-				width: isSmall ? '100%' : '600px', 
+				width: isSmall ? '100%' : '700px', 
 				flexDirection: isSmall ? 'column' : 'row',
 				justifyContent: isSmall ? 'flex-start' : 'center',
 				alignItems: isSmall ? 'center' : 'flex-start'
