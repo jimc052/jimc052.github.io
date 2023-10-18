@@ -181,29 +181,6 @@ Vue.component('lesson-exam', {
 			else {
 				let ascii = this.input1.charCodeAt(0);
 				if(ascii >= 97 && ascii <= 122) {
-					let datas = window.japanese();
-
-					let findKana = (el)=> {
-						for(let x = 0; x < datas.length; x++){
-							for(let y = 0; y < datas[x].length; y++){
-								for(let z = 0; z < datas[x][y].length; z++){
-									if(datas[x][y][z] == null) continue;
-
-									if(datas[x][y][z]["mp3"] === el ) {
-										return datas[x][y][z][kana];
-									} else if(datas[x][y][z]["mp3"].indexOf(",") > -1){
-										let arr = datas[x][y][z]["mp3"].split(",");
-										let b = arr.some(el2 => {
-											return el2 == el;
-										});
-										if(b == true) return datas[x][y][z][kana];
-									}
-								}
-							}
-						}
-						return null;
-					}
-
 					let code = data.語.charCodeAt(0);
 					let kana = "平";
 					if(code >= 12449 && code <= 12531){
@@ -215,7 +192,7 @@ Vue.component('lesson-exam', {
 						if(el == "~")
 							answer += el;
 						else {
-							let char = findKana(el)
+							let char = el.transferToKana(kana);
 							answer += char == null ? el : char;
 						}
 					});

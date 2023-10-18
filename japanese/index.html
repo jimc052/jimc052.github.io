@@ -495,6 +495,32 @@
 		}
 		return 漢字;
 	}
+
+	String.prototype.transferToKana =  function (kana) {
+		if(typeof kana == "undefined") kana = "平";
+		let el = this.toString();
+				// kana = "片";
+		let datas = window.japanese();
+		for(let x = 0; x < datas.length; x++){
+			for(let y = 0; y < datas[x].length; y++){
+				for(let z = 0; z < datas[x][y].length; z++){
+					if(datas[x][y][z] == null) continue;
+
+					if(datas[x][y][z]["mp3"] === el) {
+						return datas[x][y][z][kana];
+					} else if(datas[x][y][z]["mp3"].indexOf(",") > -1){
+						let arr = datas[x][y][z]["mp3"].split(",");
+						let b = arr.some(el2 => {
+							return el2 == el;
+						});
+						if(b == true) return datas[x][y][z][kana];
+					}
+				}
+			}
+		}
+		return null;
+	}
+
 </script>
 </html>
 <!-- 
