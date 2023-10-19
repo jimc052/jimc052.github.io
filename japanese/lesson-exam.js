@@ -2,7 +2,7 @@
 Vue.component('lesson-exam', { 
 	template:  `<div style="padding: 10px; height: 100%; width: 100%; display: flex; flex-direction: column;"
 		>
-		<div v-if="index == -1" style="padding: 10px;">
+		<div v-if="index == -1" style="height: 100%; padding: 10px; display: flex; flex-direction: column;">
 			<div style="display: flex; flex-direction: row;">
 				<Select v-model="option"  size="large" @on-change="onChangeLesson"
 					style="width:120px; margin-bottom: 5px;"
@@ -20,6 +20,8 @@ Vue.component('lesson-exam', {
 					</Checkbox>
 				</CheckboxGroup>
 			</div>
+			<div style="flex: 1" />
+			<div style="text-align: center; font-size: 20px;">2023-10-19</div>
 		</div>
 
     <div v-else style="max-width: 600px; margin-bottom: 0px; display: flex; flex-direction: column; overflow: hidden;" 
