@@ -2,8 +2,8 @@
 Vue.component('lesson-exam', { 
 	template:  `<div style="padding: 10px; height: 100%; width: 100%; display: flex; flex-direction: column;"
 		>
-		<div v-if="index == -1">
-			<div  style="display: flex; flex-direction: row;">
+		<div v-if="index == -1" style="padding: 10px;">
+			<div style="display: flex; flex-direction: row;">
 				<Select v-model="option"  size="large" @on-change="onChangeLesson"
 					style="width:120px; margin-bottom: 5px;"
 				>
@@ -13,7 +13,7 @@ Vue.component('lesson-exam', {
 				<Button type="success" size="large"  @click="sample" :disabled="this.range.length == 0"
 					style="margin-left: 10px;">開始</Button>
 			</div>
-			<div>
+			<div style="margin-top: 10px;">
 				<CheckboxGroup id="lesson-range" v-model="range" size="large">
 					<Checkbox v-for="(item, index) in ranges" :label="index" :key="index">
 						<span class="range">{{item}}</span>
