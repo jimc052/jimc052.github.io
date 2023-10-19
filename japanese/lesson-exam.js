@@ -2,15 +2,24 @@
 Vue.component('lesson-exam', { 
 	template:  `<div style="padding: 10px; height: 100%; width: 100%; display: flex; flex-direction: column;"
 		>
-		<div v-if="index == -1" style="display: flex; flex-direction: row;">
-			<Select v-model="option"  size="large" @on-change="onChangeLesson"
-				style="margin-left: 20px; width:120px; margin-bottom: 5px;"
-			>
-				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
-			</Select>
+		<div v-if="index == -1">
+			<div  style="display: flex; flex-direction: row;">
+				<Select v-model="option"  size="large" @on-change="onChangeLesson"
+					style="width:120px; margin-bottom: 5px;"
+				>
+					<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
+				</Select>
 
-      <Button type="success" size="large"  @click="sample" 
-        style="margin-left: 10px;">開始</Button>
+				<Button type="success" size="large"  @click="sample" :disabled="this.range.length == 0"
+					style="margin-left: 10px;">開始</Button>
+			</div>
+			<div>
+				<CheckboxGroup id="lesson-range" v-model="range" size="large">
+					<Checkbox v-for="(item, index) in ranges" :label="index" :key="index">
+						<span class="range">{{item}}</span>
+					</Checkbox>
+				</CheckboxGroup>
+			</div>
 		</div>
 
     <div v-else style="max-width: 600px; margin-bottom: 0px; display: flex; flex-direction: column; overflow: hidden;" 
@@ -100,7 +109,9 @@ Vue.component('lesson-exam', {
       datas: [],
       // size: 250,
       input1: "",
-			chinese: ""
+			chinese: "",
+			range: [],
+			ranges: ["1-10", "11-20"]
 		};
 	},
 	created(){
@@ -119,6 +130,7 @@ Vue.component('lesson-exam', {
       if(this.option == "") this.option = key;
       this.options.push(key)
     }
+		this.renderRange();
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -126,6 +138,34 @@ Vue.component('lesson-exam', {
 		單字 = undefined;
   },
 	methods: {
+		renderRange(){
+			this.ranges = [];
+			this.range = [];
+			let s = window.localStorage["japanese-大家的日本語-exam-range"];
+			if(typeof s == "string" && s.length > 0)
+				this.range = JSON.parse(s);
+
+			let arr = 單字[this.option];
+			let x = Math.ceil(arr.length / 10)
+			for(let i = 0; i < x; i++) {
+				let j = (i * 10) + 1;
+				let k = i == x - 1 ? arr.length : j + 9; 
+				this.ranges.push(j + "~" + k);
+			}
+			let id = setInterval(() => {
+				arr = document.querySelectorAll("#lesson-range span.range");
+				if(arr != null) {
+					clearInterval(id);
+					arr.forEach(el => {
+						// console.log(el)
+						el.style.padding = "0 5px 0 2px";
+						el.style.fontSize = "20px";
+					});
+					document.querySelector("#lesson-range").style.width = "400px"
+				}
+
+			}, 300);
+		},
     onKeydown(event) {
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
@@ -209,6 +249,7 @@ Vue.component('lesson-exam', {
     },
 		onChangeLesson(event) {
 			window.localStorage["japanese-大家的日本語-exam-option"] = this.option;
+			this.renderRange();
     },
     play() {
       let idTime = setInterval(() => {
@@ -235,31 +276,41 @@ Vue.component('lesson-exam', {
     },
     sample() {
       this.datas = []; this.index = -1;
+			window.localStorage["japanese-大家的日本語-exam-range"] = JSON.stringify(this.range);
 			function getRandom(min,max){
 				return Math.floor(Math.random()*max)+min;
 			};
 
-      let arr = 單字[this.option];
-      for(let i = 0; i < arr.length; i++) {
-        let cells = arr[i].split("\t");
-        arr[i] = {
+      let arr1 = 單字[this.option];
+			let arr2 = [];
+      for(let i = 0; i < arr1.length; i++) {
+        let cells = arr1[i].split("\t");
+        arr2.push({
+					index: i,
           語: cells[0],
           漢: cells[1],
           中: cells[2],
           重: cells[3],
 					rome: window.rome(cells[0]),
 					// ruby: cells[0].ruby(cells[1])
-        }
+        })
       }
+			let arr3 = [];
+			for(let i = this.range.length - 1; i >= 0; i--){
+				let a = arr2.splice(this.range[i] * 10, 10);
+				arr3 = arr3.concat(a)
+			}
+			arr2 = arr3;
+			// console.log(JSON.stringify(arr2, null, 2))
 
 			let cycle = 500;
-      while (arr.length > 0 && cycle >= 0) {
+      while (arr2.length > 0 && cycle >= 0) {
 				let index = 0;
-				if(arr.length > 1) {
-					index = getRandom(0, arr.length)
+				if(arr2.length > 1) {
+					index = getRandom(0, arr2.length)
 				}
-				if(index < arr.length) {
-					let data = arr.splice(index, 1);
+				if(index < arr2.length) {
+					let data = arr2.splice(index, 1);
 					this.datas.push(data[0])
 					if(this.datas.length == 30) break;
 				}
