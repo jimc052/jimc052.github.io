@@ -499,7 +499,11 @@
 	String.prototype.transferToKana =  function (kana) {
 		if(typeof kana == "undefined") kana = "平";
 		let el = this.toString();
-				// kana = "片";
+		let short = "";
+		if(el.length >= 3 && el.substr(0, 1) == el.substr(1, 1)) {
+			el = el.substr(1);
+			short = kana == "平" ?  "っ" : "ッ";
+		}
 		let datas = window.japanese();
 		for(let x = 0; x < datas.length; x++){
 			for(let y = 0; y < datas[x].length; y++){
@@ -507,13 +511,17 @@
 					if(datas[x][y][z] == null) continue;
 
 					if(datas[x][y][z]["mp3"] === el) {
-						return datas[x][y][z][kana];
+						// console.log(short + datas[x][y][z][kana])
+						return short + datas[x][y][z][kana];
 					} else if(datas[x][y][z]["mp3"].indexOf(",") > -1){
 						let arr = datas[x][y][z]["mp3"].split(",");
 						let b = arr.some(el2 => {
 							return el2 == el;
 						});
-						if(b == true) return datas[x][y][z][kana];
+						if(b == true) {
+							// console.log(short + datas[x][y][z][kana])
+							return short + datas[x][y][z][kana];
+						}
 					}
 				}
 			}

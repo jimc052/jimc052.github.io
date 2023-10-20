@@ -82,7 +82,7 @@ Vue.component('vocabulary', {
 			></Table>
 		</div>
 		<div v-if="isBigScreen == true && dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
-			2023-10-15 09:00
+			2023-10-20 08:30
 			<div style="flex: 1;" />
 
 			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
@@ -646,19 +646,39 @@ Vue.component('vocabulary', {
 							}
 						}
 					} else {
-						search = this.search;
+						search = this.search.trim().toLowerCase();
 					}
 					if(strLenLimit != -1 && searchCols.length > 1) {
 						alert("請指定欄位")
 						return;
 					}
+
+					let 平 = "", 片 = "";
+					let ascii = search.charCodeAt(0);
+					if(ascii >= 97 && ascii <= 122) {
+						let arr = search.split(" ");
+						arr.forEach(el => {
+							if(el == "~") {
+								平 += el;
+								片 += el;
+							}
+							else {
+								let char = el.transferToKana("平");
+								平 += char == null ? el : char;
+								char = el.transferToKana("片");
+								片 += char == null ? el : char;
+							}
+						});
+					}
+
 					vocabularys.forEach((el1, index1) => {
 						if(this.search.indexOf("=筆記") > -1) {
 							if(this.note.indexOf(el1.id) > -1) {
 								this.dataStore.push(el1)
 							}
 						}
-						else if(strLenLimit != -1 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") { // 某欄位字串長度
+						else if(strLenLimit != -1 && searchCols.length == 1 && typeof el1[searchCols[0]] == "string") { 
+							// 某欄位字串長度
 							if( (strLenLimit == 99 && el1[searchCols[0]].length > 0) || (el1[searchCols[0]].length == strLenLimit) ) {
 								this.dataStore.push(el1)
 							}
@@ -671,10 +691,13 @@ Vue.component('vocabulary', {
 							for(let i = 0; i < searchCols.length; i++) {
 								let str = el1[searchCols[i]];
 								if(typeof str == "string") {
-									if(equal == "=" && search == str) {
+									if(equal == "=" && (search == str || 平 == str || 片 == str)) {
 										this.dataStore.push(el1)
 										break;
-									} else if(equal != "=" && str.indexOf(search) > -1) {
+									} else if(equal != "=" && (str.indexOf(search) > -1)
+										|| (平.length > 0 && str.indexOf(平) > -1) 
+										|| (片.length > 0 && str.indexOf(片) > -1)
+									) {
 										this.dataStore.push(el1)
 										break;
 									}
