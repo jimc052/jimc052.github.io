@@ -45,7 +45,7 @@ Vue.component('lesson-exam', {
 						<Icon type="md-play" size="25" @click="play()" />
 					</div>
 				</div>
-				<div style="padding: 5px; min-height: 40px;">{{
+				<div style="padding: 5px; min-height: 40px; font-size: 20px;">{{
 					index > -1 && index < datas.length ? datas[index].中 : ""}}</div>
 			</div>
       <div v-else style="display: flex; flex-direction: row;">
@@ -298,6 +298,7 @@ Vue.component('lesson-exam', {
         })
       }
 			let arr3 = [];
+			this.range.sort()
 			for(let i = this.range.length - 1; i >= 0; i--){
 				let a = arr2.splice(this.range[i] * 10, 10);
 				arr3 = arr3.concat(a)
