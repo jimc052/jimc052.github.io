@@ -496,7 +496,7 @@
 		return 漢字;
 	}
 
-	String.prototype.transferToKana =  function (kana) {
+	String.prototype.transferToKana = function (kana) { // 英文轉假名
 		if(typeof kana == "undefined") kana = "平";
 		let el = this.toString();
 		let short = "";
@@ -523,6 +523,23 @@
 							return short + datas[x][y][z][kana];
 						}
 					}
+				}
+			}
+		}
+		return null;
+	}
+
+	String.prototype.shiftKana = function () { // 假名對換
+		let el = this.toString();
+		let datas = window.japanese();
+		for(let x = 0; x < datas.length; x++){
+			for(let y = 0; y < datas[x].length; y++){
+				for(let z = 0; z < datas[x][y].length; z++){
+					if(datas[x][y][z] == null) continue;
+					if(datas[x][y][z]["片"] == el)
+						return datas[x][y][z]["平"];
+					else if(datas[x][y][z]["平"] == el)
+						return datas[x][y][z]["片"];
 				}
 			}
 		}

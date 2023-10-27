@@ -26,6 +26,7 @@ Vue.component('editor', {
 					{{target[item.key]}}
 				</div>
 				<Input v-else v-model="target[item.key]"
+					:element-id="'editor' + index"
 					style="font-size: 20px; padding: 5px;" size="large" 
 					clearable
 					@on-change="onKeyChange" 
@@ -87,6 +88,51 @@ Vue.component('editor', {
 			this.onKeyChange();
 			if(typeof this.target.id == "undefined")
 				window.sessionStorage["japanese-vocabulary-editor-option"] = this.target.類;	
+		},
+		onKeydown(event) { // 還沒寫
+			let o = document.activeElement;
+			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
+			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
+			let sk = event.shiftKey, code = event.keyCode;
+			
+			if(pk && event.keyCode == 13) {
+				let value = this.target.語.trim();
+				if(value.length == 0) return;
+
+				let ascii = value.charCodeAt(0);
+				if(ascii >= 97 && ascii <= 122) {
+					let arr = value.split(" "), 平 = "";
+					arr.forEach(el => {
+						if(el == "~") {
+							平 += el;
+						}
+						else {
+							let char = el.transferToKana("平");
+							平 += char == null ? el : char;
+						}
+					});
+					this.target.語 = 平;
+				} else if(ascii >= 12353 && ascii <= 12438) { // 平假名
+					let txt = "";
+					for(let i = 0; i < value.length; i++) {
+						let c1 = value.substr(i, 1);
+						let c2 = c1.shiftKana();
+						txt += c2 != null ? c2 : c1;
+					}
+					this.target.語 = txt;
+				} else if(ascii >= 12449 && ascii <= 12531) { // 片假名
+					let txt = "";
+					for(let i = 0; i < value.length; i++) {
+						let c1 = value.substr(i, 1);
+						let c2 = c1.shiftKana();
+						txt += c2 != null ? c2 : c1;
+					}
+					this.target.語 = txt;
+				}
+			}
+			// event.preventDefault();
+			// event.stopImmediatePropagation();
+			// event.stopPropagation();
 		}
 	},
 	watch: {
@@ -100,6 +146,20 @@ Vue.component('editor', {
 					this.target.類 = s;
 				}
 			}
+
+			let id = setInterval(() => {
+				let editor2 = document.querySelector("#editor2");
+				if(editor2 != null) {
+					clearInterval(id);
+					if(this.visible == true) {
+						editor2.focus();
+						editor2.addEventListener('keydown', this.onKeydown, false);
+					} else {
+						editor2.removeEventListener('keydown', this.onKeydown, false);
+					}			
+				}
+			}, 300);
+
 		}
 	},
 });

@@ -537,6 +537,9 @@ Vue.component('vocabulary', {
 			
 		},
 		onKeydown(event){
+			if(this.editIndex != -1) {
+				return;
+			}
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			// let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;
