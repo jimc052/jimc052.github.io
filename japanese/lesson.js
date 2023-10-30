@@ -4,7 +4,7 @@ Vue.component('lesson', {
 			:style="{
 				padding: (print == 'N' ? '10' : '0') + 'px'}"
 		>
-		<div v-if="print == 'N' && scrollTop < 200" style="display: flex; flex-direction: row;">
+		<div v-if="print == 'N' && scrollTop < 200" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
 			<RadioGroup v-model="mode" type="button" button-style="solid" 
 				size="large"
 				@on-change="onChangeMode"
@@ -22,8 +22,10 @@ Vue.component('lesson', {
 
 			<div style="flex: 1;" ></div>
 
-			<Checkbox v-if="mode == '單字' && width > 600" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
-			<div style="flex: 1;" ></div>
+			<Checkbox v-if="mode == '單字'" v-model="isRuby" @on-change="onChangeRuby">假名標注</Checkbox>
+			
+			<div v-if="width > 600" style="flex: 1;"></div>
+			
 			<a class="button" v-if="mode == '單字' && width > 600" href="./index.html?mode=單字測驗" target="_blank" style="width: 80px;">
 				單字測驗
 			</a>
