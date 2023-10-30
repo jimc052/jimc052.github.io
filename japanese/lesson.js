@@ -4,7 +4,7 @@ Vue.component('lesson', {
 			:style="{
 				padding: (print == 'N' ? '10' : '0') + 'px'}"
 		>
-		<div v-if="print == 'N' && scrollTop < 200" style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+		<div v-if="print == 'N' && scrollTop < 200" style="padding-bottom: 5px; display: flex; flex-direction: row; justify-content: center; align-items: center;">
 			<RadioGroup v-model="mode" type="button" button-style="solid" 
 				size="large"
 				@on-change="onChangeMode"
@@ -15,7 +15,7 @@ Vue.component('lesson', {
 			</RadioGroup>
 
 			<Select v-model="option" size="large" @on-change="onChangeLesson"
-				style="margin-left: 20px; width:120px; margin-bottom: 5px;"
+				style="margin-left: 20px; width:120px; margin-bottom: 0px;"
 			>
 				<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
 			</Select>

@@ -202,6 +202,7 @@ Vue.component('vocabulary', {
 		if(typeof s != "undefined") {
 			this.pageSize = parseInt(s, 10);
 		}
+		if(! this.isBigScreen) this.pageSize = 500;
 	},
 	async mounted () {
 		let s = window.localStorage["japanese-vocabulary"];	
