@@ -3,7 +3,10 @@ Vue.component('vocabulary', {
 	template:  `<div id="vocabulary" style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column;">
 		<Spin size="large" fix v-if="spinShow"></Spin>
 
-		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; padding: 5px 10px;">
+		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; 
+			padding: 5px 10px; position: relative; "
+			:style="{paddingBottom: isBigScreen ? '5px' : '45px'}"
+			>
 			<RadioGroup v-model="level" type="button" button-style="solid" 
 				size="large"
 				@on-change="onChangeLevel"
@@ -19,7 +22,7 @@ Vue.component('vocabulary', {
 			<div style="flex: 1;" />
 
 			<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; 
-					justify-content: center; align-items: center;"
+				justify-content: center; align-items: center;"
 			>
 				分類：
 				<Select v-model="option" style="width:150px" size="large" @on-change="onChangeOption">
@@ -29,7 +32,9 @@ Vue.component('vocabulary', {
 
 			<div style="flex: 1;" />
 
-			<div style="margin-right: 10px; position: relative;"
+			<div style="margin-right: 10px; position: absolute; right: 0px; top: 5px;
+				z-index: 100"
+				@mouseenter="onMouseEnter" @mouseleave="onMouseLeave"
 			>
 				<Input ref="input" v-model="search" size="large" search 
 					@on-search="onSearch"
@@ -37,7 +42,7 @@ Vue.component('vocabulary', {
 					@on-blur="onAutoCompleteBlur"
 					style="width: 200px; font-size: 20px;"
 				/>
-				<div style="position: absolute; 
+				<div style="
 					 max-height: 450px; width: 100%; border: 1px solid #eee; z-index: 100;
 					border-radius: 5px; padding: 2px 5px; overflow: auto; background: white;"
 					v-if="showAutoComplete == true"
@@ -47,8 +52,13 @@ Vue.component('vocabulary', {
 						:style="{borderBottom: (index1 < dataAutoComplete.length - 1) ? '2px solid #F6F6F6' : ''}"
 						v-if="item.children.length > 0"
 					>
-						<div style="padding: 0px 2px;">
-							<span style="font-size: 12px; color: #c5c8ce;">{{ item.title }}</span>
+						<div style="padding: 0px 2px; display: flex; flex-direction: row; align-items: center; ">
+							<span style="font-size: 12px; color: #c5c8ce; flex: 1; ">{{ item.title }}</span>
+							<Icon type="md-trash" size="16" 
+								v-if="index1 > 0"
+								@click.native="onAutoCompleteDelAll(index1)" 
+								style="cursor: pointer; padding: 5px;"
+							/>
 						</div>
 
 						<div v-for="(option, index2) in item.children" :value="option.title" :key="option.title"
@@ -433,10 +443,18 @@ Vue.component('vocabulary', {
 		this.dataStore = undefined;
   },
 	methods: {
+		onMouseEnter() {
+			this.showAutoComplete = true;
+		},
+		onMouseLeave() {
+			this.showAutoComplete = false;
+		},
 		onAutoCompleteBlur() {
-			setTimeout(() => {
-				this.showAutoComplete = false;
-			}, 300);
+			if(! this.isBigScreen) {
+				setTimeout(() => {
+					this.showAutoComplete = false;
+				}, 300);
+			}
 		},
 		onAutoCompleteClick(index1, index2) {
 			let row = this.dataAutoComplete[index1].children[index2];
@@ -445,6 +463,11 @@ Vue.component('vocabulary', {
 		},
 		onAutoCompleteDel(index1, index2) {
 			this.dataAutoComplete[index1].children.splice(index2, 1);
+			window.localStorage["japanese-vocabulary-search-record"] = 
+				JSON.stringify(this.dataAutoComplete[index1].children);
+		},
+		onAutoCompleteDelAll(index1) {
+			this.dataAutoComplete[index1].children = [];
 			window.localStorage["japanese-vocabulary-search-record"] = 
 				JSON.stringify(this.dataAutoComplete[index1].children);
 		},
