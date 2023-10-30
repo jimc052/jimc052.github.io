@@ -89,7 +89,7 @@ Vue.component('editor', {
 			if(typeof this.target.id == "undefined")
 				window.sessionStorage["japanese-vocabulary-editor-option"] = this.target.類;	
 		},
-		onKeydown(event) { // 還沒寫
+		onKeydown(event) {
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
 			let ak = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey;

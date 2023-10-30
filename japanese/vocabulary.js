@@ -1014,21 +1014,3 @@ Vue.component('vocabulary', {
 });
 
 // https://www.iviewui.com/view-ui-plus/component/form/auto-complete
-
-/*
-はなして(ha na shi te)住手  
-// だめだ(da me da)不行了  
-ほしい(hoshii)想要  
-いく(i ku )要去了  
-
-手を放せ（te o ha na se) 放手，放开我  
-放して(ha na shi te)放开我
-速く（ha ya ku) 快一点  
-いや(i ya)不要  
-止めろ(ya me ro)住手  
-そんな事が话せゐか？ （so n na ko to ga ha na se ru ka?) 这种话怎么说得出口？  
-はつかし(ha tsu ka shi)羞死人了  
-耻しい(ha zu ka shi i)tsu=zu,这句也是羞死人了  
-あたしの奥に（a ta shi no o ku ni）到人家的身体里了  
-何が欲しぃ？言て.话して (na ni ga ho si yi?yi te. ha na shi te)想要什么说出来  
-*/
