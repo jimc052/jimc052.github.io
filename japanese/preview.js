@@ -1,5 +1,5 @@
 Vue.component('preview', { 
-	template:  ` <div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px;">
+	template:  `<div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px;">
 	</div>`,
 	props: {
 		datastore: {

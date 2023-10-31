@@ -109,6 +109,13 @@ Vue.component('vocabulary', {
 				<span v-else>移除筆記</span>
 			</Button>
 
+			<Button v-if="$isLogin() && this.search == '=筆記' " size="large" @click="onBtnSort" 
+				style="min-width: 80px; margin-left: 5px;"
+				type="success"
+			>
+				排版
+			</Button>
+
 			<!--
 			<div style="flex: 1;" />
 			<Select v-model="option2" style="width:150px" size="large">
@@ -133,6 +140,7 @@ Vue.component('vocabulary', {
 			{{$storage("email")}}
 		</span>
 		<editor ref="editor" :columns="columns" :options="options" :word="editIndex > -1 ? dsTable[editIndex] : undefined" @onClose="onCloseEditor" />
+		<sortable ref="sortable" :note="note" :ds="dataStore" :visible="sorting" @onClose="onCloseSortable" />
 		<preview ref="preview" :datastore="dsPreview" @onClose="onClosePreview" />
 	</div>`,
 	props: {
@@ -193,7 +201,8 @@ Vue.component('vocabulary', {
 					]
 				}
 			],
-			showAutoComplete: false
+			showAutoComplete: false,
+			sorting: false
 		};
 	},
 	created(){
@@ -895,6 +904,9 @@ Vue.component('vocabulary', {
 				// }, 600);
 			}
 		},
+		async onBtnSort() {
+			this.sorting = true;
+		},
 		async onCloseEditor(word) {
 			if(typeof word == "string") { // 刪除
 				if(this.editIndex > -1) {
@@ -968,6 +980,24 @@ Vue.component('vocabulary', {
 		onClosePreview() {
 			this.dsPreview = undefined;
 		},
+		async onCloseSortable(sort){
+			if(typeof sort == "string") {
+				this.note = sort;
+				let ref = FireStore.db.collection("users").doc(FireStore.uid())
+						.collection("japanese").doc("note")
+				try {
+					let x = await ref.set({"預設": this.note});
+				} catch(e) {
+					console.log(e)
+				} finally {
+					// setTimeout(() => {
+					// 	this.spinShow = false;
+					// 	success();
+					// }, 600);
+				}
+			}
+			this.sorting = false;
+		},
 		async download() {
 			let s = window.localStorage["japanese-vocabulary-last-date"];
 			let last = typeof s != "undefined" && s.length > 0 ? parseInt(s, 10) : 0;
@@ -1031,7 +1061,6 @@ Vue.component('vocabulary', {
 		}
 	},
 	computed: {
-		
 	},
 	watch: {
 	},
