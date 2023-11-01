@@ -37,6 +37,7 @@ Vue.component('vocabulary', {
 				@mouseenter="onMouseEnter" @mouseleave="onMouseLeave"
 			>
 				<Input ref="input" v-model="search" size="large" search 
+					element-id="inp-search"
 					@on-search="onSearch"
 					@on-focus="showAutoComplete = true"
 					@on-blur="onAutoCompleteBlur"
@@ -127,8 +128,9 @@ Vue.component('vocabulary', {
 			<div style="flex: 1;" />
 			<Page :total="dataStore.length" 
 				:page-size="pageSize" :page-size-opts="pageOpts" show-elevator show-sizer 
-				style="" 
-				@on-change="onChangePage" @on-page-size-change="onPageSizeChange" />
+				@on-change="onChangePage" 
+				@on-page-size-change="onPageSizeChange" 
+			/>
 		</div>
 		<div v-else-if="isBigScreen == false  && dsPreview == undefined" ref="frame" style="flex: 1; overflow: auto;">
 			<ul style="padding: 5px;">
@@ -391,7 +393,8 @@ Vue.component('vocabulary', {
 				"key": "註",
 				"ellipsis": true,
 				"resizable": true,
-				"width": 150				
+				"width": 150,
+				renderHeader: this.renderHeader,
 			}, {
 				"title": "分類",
 				"key": "類",
@@ -412,7 +415,8 @@ Vue.component('vocabulary', {
 				"ellipsis": true,
 				"resizable": true,
 				"align": "center",
-				"width": 60
+				"width": 70,
+				renderHeader: this.renderHeader,
 			}
 		];
 
@@ -532,13 +536,12 @@ Vue.component('vocabulary', {
 					size: 20
 				},
 				style:{
-						marginLeft: "0px",
-						// marginTop: "10px"
+					marginLeft: "0px",
+					// marginTop: "10px"
 				},
 				//调用点击的方法
 				on:{
 					click:()=>{
-						// doPassword();
 					}
 				}
 			});
@@ -581,6 +584,9 @@ Vue.component('vocabulary', {
 			// console.log(event.keyCode + ", " + this.active)
 			if(event.keyCode == 27 && Array.isArray(this.dsPreview)) {
 				this.dsPreview = undefined;
+				return false;
+			} else if(o.id == "inp-search" && event.keyCode == 27) {
+				this.search = "";
 				return false;
 			}
 			else if(o.tagName == "BODY" && pk && char == "C") { // 因為第一行沒有行號，而其他行又多了行號，所以無法用；2023-06-26
