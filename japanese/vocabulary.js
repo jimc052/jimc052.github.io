@@ -109,7 +109,7 @@ Vue.component('vocabulary', {
 				<span v-else>移除筆記</span>
 			</Button>
 
-			<Button v-if="$isLogin() && this.search == '=筆記' " size="large" @click="onBtnSort" 
+			<Button v-if="$isLogin() && search == '=筆記' " size="large" @click="onBtnSort" 
 				style="min-width: 80px; margin-left: 5px;"
 				type="success"
 			>
@@ -634,7 +634,7 @@ Vue.component('vocabulary', {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
 			this.currentPage = e; this.editIndex = -1; this.rowIndex = -1;
 			this.dsTable = [];
-			if(typeof sortKey == "string") {
+			if(this.search.indexOf("=筆記") == -1 && typeof sortKey == "string") {
 				this.dataStore.sort((a, b) => {
 					return a[sortKey] < b[sortKey] ? -1 : 1;
 				})
@@ -742,6 +742,19 @@ Vue.component('vocabulary', {
 						}
 						///----------------------
 					});
+					if(this.search.indexOf("=筆記") > -1) {
+						let list = [];
+						this.note.split(",").forEach(el => {
+							if(el.trim().length > 0) {
+								let index = this.dataStore.findIndex(el2 => {
+									return el2.id == el;
+								});
+								if(index > -1) 
+									list.push(this.dataStore[index])
+							}
+						});
+						this.dataStore = list;
+					}
 				}
 				this.onChangePage(1, this.sortKey);
 				window.localStorage["japanese-vocabulary-search"] = this.search;

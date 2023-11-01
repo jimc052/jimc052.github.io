@@ -92,10 +92,14 @@ Vue.component('preview', {
 					
 					div.innerHTML = html;
 					page.appendChild(div);
+					div.style.paddingTop = "0px";
+					// console.log(div.clientWidth)
 					if(page.clientHeight > 1090) {
 						page.removeChild(div)
 						page = createPage(i);
 						page.appendChild(div);
+					} else {
+						
 					}
 				}
 				setTimeout(() => {
@@ -154,7 +158,6 @@ Vue.component('preview', {
 	watch: {
 		datastore(value) {
 			this.visible = value == null || typeof value == "undefined" ? false : true;
-      this.render();
 			if(this.visible == true) {
 				window.addEventListener("beforeprint", this.onBeforePrint);
 				window.addEventListener("afterprint", this.onAfterPrint);
@@ -162,6 +165,7 @@ Vue.component('preview', {
 				window.removeEventListener("beforeprint", this.onBeforePrint);
 				window.removeEventListener("afterprint", this.onAfterPrint);
 			}
+			this.render();
 		}
 	},
 });
