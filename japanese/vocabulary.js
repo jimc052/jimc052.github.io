@@ -129,7 +129,8 @@ Vue.component('vocabulary', {
 			<Page :total="dataStore.length" 
 				:page-size="pageSize" :page-size-opts="pageOpts" show-elevator show-sizer 
 				@on-change="onChangePage" 
-				@on-page-size-change="onPageSizeChange" 
+				@on-page-size-change="onPageSizeChange"
+				ref="pager"
 			/>
 		</div>
 		<div v-else-if="isBigScreen == false  && dsPreview == undefined" ref="frame" style="flex: 1; overflow: auto;">
@@ -204,7 +205,8 @@ Vue.component('vocabulary', {
 				}
 			],
 			showAutoComplete: false,
-			sorting: false
+			sorting: false,
+			orderBy: "asc"
 		};
 	},
 	created(){
@@ -444,7 +446,8 @@ Vue.component('vocabulary', {
 				}
 			}
 		}
-		// setTimeout(() => {
+
+		
 		// 	if(this.dataStore.length > 0) 
 		// 		this.dsPreview = this.dataStore;
 		// }, 1000);
@@ -531,13 +534,13 @@ Vue.component('vocabulary', {
 		renderHeader(h, params) {
 			let icon = h("Icon",{
 				props:{
-					type:`md-arrow-dropdown`,
+					type: this.orderBy == "asc" ? `md-arrow-dropdown` : `md-arrow-dropup`,
 					color:"#c8c8c8",
-					size: 20
+					size: 22
 				},
 				style:{
 					marginLeft: "0px",
-					// marginTop: "10px"
+					marginTop: "5px"
 				},
 				//调用点击的方法
 				on:{
@@ -552,13 +555,18 @@ Vue.component('vocabulary', {
 				arr.push(icon)
 
 			return h(
-				this.dataStore.length > 0 && this.sortKey != params.column.key ? "a" : "div",
+				this.dataStore.length > 0 && this.sortKey != params.column.key ? "a" : "a",
 				{ 
 				style: { },
 				on: {
 					click:  (event) => {
+						if(this.sortKey != params.column.key) {
+							this.orderBy = "asc";
+						} else {
+							this.orderBy = this.orderBy == "asc" ? "desc" : "asc";
+						}
 						this.sortKey = params.column.key;
-						this.onChangePage(1, this.sortKey);
+						this.onChangePage(1, this.sortKey, this.orderBy);
 					}
 				} 
 			}, arr);
@@ -636,13 +644,16 @@ Vue.component('vocabulary', {
 				this.onCloseEditor(data);
 			}
 		},
-		onChangePage(e, sortKey) {
+		onChangePage(e, sortKey, orderBy) {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
 			this.currentPage = e; this.editIndex = -1; this.rowIndex = -1;
 			this.dsTable = [];
-			if(this.search.indexOf("=筆記") == -1 && typeof sortKey == "string") {
+			if(typeof sortKey == "string") {
 				this.dataStore.sort((a, b) => {
-					return a[sortKey] < b[sortKey] ? -1 : 1;
+					let x = typeof a[sortKey] == "undefined" ? "" : a[sortKey];
+					let	y = typeof b[sortKey] == "undefined" ? "" : b[sortKey];
+					
+					return typeof orderBy == "undefined" || orderBy == "asc" ? (x < y ? -1 : 1) : (x > y ? -1 : 1);
 				})
 			}
 			
@@ -654,6 +665,9 @@ Vue.component('vocabulary', {
 			let table = document.querySelector(".ivu-table-body");
 			if(table != null)
 				table.scrollTop = 0;
+
+			if(typeof orderBy == "string" && e == 1 && this.$refs.pager != null)
+				this.$refs.pager.currentPage = 1;
 		},
 		onPageSizeChange(e) {
 			this.currentPage = 0; this.editIndex = -1;  this.rowIndex = -1;
@@ -667,6 +681,7 @@ Vue.component('vocabulary', {
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = "語";
+			this.orderBy = "asc"
 			this.search = this.search.trim();
 			setTimeout(() => {
 				if(this.search.length > 0) {
@@ -762,7 +777,7 @@ Vue.component('vocabulary', {
 						this.dataStore = list;
 					}
 				}
-				this.onChangePage(1, this.sortKey);
+				this.onChangePage(1, this.search.indexOf("=筆記") > -1 ? undefined : this.sortKey);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
