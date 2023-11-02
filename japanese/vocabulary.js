@@ -93,7 +93,7 @@ Vue.component('vocabulary', {
 			></Table>
 		</div>
 		<div v-if="isBigScreen == true && dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; padding: 5px 10px;">
-			2023-10-20 08:30
+			2023-11-02 18:00
 			<div style="flex: 1;" />
 
 			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
