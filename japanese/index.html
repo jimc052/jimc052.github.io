@@ -551,6 +551,11 @@
 		return null;
 	}
 
+	Date.prototype.addDays = function (days = 0) {
+		let d = new Date(this.getTime());
+		d.setDate(d.getDate() + days);
+		return d;
+	};
 </script>
 </html>
 <!-- 

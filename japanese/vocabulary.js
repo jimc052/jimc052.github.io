@@ -191,6 +191,9 @@ Vue.component('vocabulary', {
 						}, {
 								title: '長度',
 								value: "語=2",
+						}, {
+							title: '本週異動',
+							value: "=本週異動",
 						}
 					]
 				},
@@ -680,7 +683,7 @@ Vue.component('vocabulary', {
 			this.option = ""; this.clearLevel();
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
-			this.sortKey = "語";
+			this.sortKey = this.search == "=本週異動" ? "date" : "語";
 			this.orderBy = "asc"
 			this.search = this.search.trim();
 			setTimeout(() => {
@@ -728,9 +731,15 @@ Vue.component('vocabulary', {
 						});
 					}
 
+					let date = (new Date()).addDays(-7).getTime();
 					vocabularys.forEach((el1, index1) => {
-						if(this.search.indexOf("=筆記") > -1) {
+						if(this.search == "=筆記") {
 							if(this.note.indexOf(el1.id) > -1) {
+								this.dataStore.push(el1)
+							}
+						}
+						else if(this.search == "=本週異動") {
+							if(el1.date > date) {
 								this.dataStore.push(el1)
 							}
 						}
@@ -763,7 +772,7 @@ Vue.component('vocabulary', {
 						}
 						///----------------------
 					});
-					if(this.search.indexOf("=筆記") > -1) {
+					if(this.search == "=筆記") {
 						let list = [];
 						this.note.split(",").forEach(el => {
 							if(el.trim().length > 0) {
@@ -777,7 +786,7 @@ Vue.component('vocabulary', {
 						this.dataStore = list;
 					}
 				}
-				this.onChangePage(1, this.search.indexOf("=筆記") > -1 ? undefined : this.sortKey);
+				this.onChangePage(1, this.search == "=筆記" > -1 ? undefined : this.sortKey);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
