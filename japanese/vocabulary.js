@@ -786,7 +786,7 @@ Vue.component('vocabulary', {
 						this.dataStore = list;
 					}
 				}
-				this.onChangePage(1, this.search == "=筆記" > -1 ? undefined : this.sortKey);
+				this.onChangePage(1, this.search == "=筆記" ? undefined : this.sortKey);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
