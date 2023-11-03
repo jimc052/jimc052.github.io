@@ -48,15 +48,20 @@ Vue.component('vocabulary', {
 					border-radius: 5px; padding: 2px 5px; overflow: auto; background: white;"
 					v-if="showAutoComplete == true"
 				>
-					<div v-for="(item, index1) in dataAutoComplete" 
+					<div v-for="(item, index1) in dataAutoComplete"
 					  style="padding: 4px 0;"
 						:style="{borderBottom: (index1 < dataAutoComplete.length - 1) ? '2px solid #F6F6F6' : ''}"
 						v-if="item.children.length > 0"
 					>
 						<div style="padding: 0px 2px; display: flex; flex-direction: row; align-items: center; ">
 							<span style="font-size: 12px; color: #c5c8ce; flex: 1; ">{{ item.title }}</span>
-							<Icon type="md-trash" size="16" 
-								v-if="index1 > 0"
+							<a v-if="index1 == 0">
+							 	<Icon :type="showDefault == true ? 'ios-arrow-up' : 'ios-arrow-down'" size="16" 
+									@click.native="showDefault = !showDefault" 
+									style="cursor: pointer; padding: 5px;"
+								/>
+							</a>
+							<Icon v-else type="md-trash" size="16" 
 								@click.native="onAutoCompleteDelAll(index1)" 
 								style="cursor: pointer; padding: 5px;"
 							/>
@@ -68,13 +73,14 @@ Vue.component('vocabulary', {
 						>
 							<div @click="onAutoCompleteClick(index1, index2);"
 								style="flex: 1; font-size: 14px; padding: 5px 10px; "
+								v-if="index1 > 0 || showDefault == true"
 							>
 								{{ option.title }}
 							</div>
 							<Icon type="md-close" size="16" 
 								v-if="index1 > 0"
 								@click.native="onAutoCompleteDel(index1, index2)" 
-								style="cursor: pointer; color: #eee; padding: 5px;"
+								style="cursor: pointer; color: #c5c8ce; padding: 5px;"
 							/>
 						</div>
 					</div>
@@ -209,7 +215,8 @@ Vue.component('vocabulary', {
 			],
 			showAutoComplete: false,
 			sorting: false,
-			orderBy: "asc"
+			orderBy: "asc",
+			showDefault: true
 		};
 	},
 	created(){
@@ -651,6 +658,7 @@ Vue.component('vocabulary', {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
 			this.currentPage = e; this.editIndex = -1; this.rowIndex = -1;
 			this.dsTable = [];
+			console.log(sortKey + "," + orderBy)
 			if(typeof sortKey == "string") {
 				this.dataStore.sort((a, b) => {
 					let x = typeof a[sortKey] == "undefined" ? "" : a[sortKey];
@@ -684,7 +692,7 @@ Vue.component('vocabulary', {
 			this.dataStore = []; this.dsTable = [];
 			this.currentPage = -1; this.editIndex = -1;  this.rowIndex = -1;
 			this.sortKey = this.search == "=本週異動" ? "date" : "語";
-			this.orderBy = "asc"
+			this.orderBy =  this.search == "=本週異動" ? "desc" : "asc"
 			this.search = this.search.trim();
 			setTimeout(() => {
 				if(this.search.length > 0) {
@@ -786,7 +794,10 @@ Vue.component('vocabulary', {
 						this.dataStore = list;
 					}
 				}
-				this.onChangePage(1, this.search == "=筆記" ? undefined : this.sortKey);
+				this.onChangePage(1, 
+					this.search == "=筆記" ? undefined : this.sortKey,
+					this.search == "=本週異動" ? this.orderBy : undefined
+				);
 				window.localStorage["japanese-vocabulary-search"] = this.search;
 				window.localStorage["japanese-vocabulary-level"] = "";
 				window.localStorage["japanese-vocabulary-option"] = "";
