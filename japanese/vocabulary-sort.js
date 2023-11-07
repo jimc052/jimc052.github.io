@@ -2,18 +2,20 @@ Vue.component('sortable', {
 	template:  `<modal v-model="visible" class-name="vertical-center-modal" 
 		id="sortable"  :fullscreen="true" :closable="false" style="overflow: hidden;"
 	>
-    <div id="sortable-body" style="display: flex; flex-direction: row; align-items: center; justify-content: center;"
-      v-if="visible"
+    <div id="sortable-body" v-if="visible"
+      style="display: flex; flex-direction: row; align-items: center; justify-content: center; overflow-y: hidden;"
     >
-    <draggable v-model="list" @start="drag=true" @end="drag=false; dirty = true;">
+    <draggable v-model="list" @start="drag=true" @end="drag=false; dirty = true;" v-bind="dragOptions">
       <div v-for="(item, index) in list" :key="item.id"
-        style="background: white; border-radius: 5px; padding: 10px;"
+        style="background: white; border-radius: 5px; padding: 5px 10px; cursor: pointer;
+          display: flex; flex-direction: row; align-items: center; justify-content: center;
+        "
         :style="{marginTop: index == 0 ? '0px' : '5px'}"
       >
-        <div>{{item.語}}</div>
-        <div>{{item.漢}}</div>
-        <div>{{item.中}}</div>
-
+        <div style="width: 25px; margin-right: 5px; font-size: 14px;">{{index + 1}}</div>
+        <div style="flex: 1; margin-right: 20px; font-size: 14px;">{{item.語}}</div>
+        <div style="flex: 1; margin-right: 20px; font-size: 14px;">{{item.漢}}</div>
+        <div style="width: 250px; font-size: 14px;">{{item.中}}</div>
       </div>
     </draggable>
     </div>
@@ -44,12 +46,13 @@ Vue.component('sortable', {
 		return {
       drag: false,
       list: [],
-      dirty: false
+      dirty: false,
 		};
 	},
 	created(){
 	},
 	mounted () {
+    
 	},
 	destroyed() {
   },
@@ -65,6 +68,16 @@ Vue.component('sortable', {
       this.$emit("onClose", sort);
     },
 	},
+  computed: {
+    dragOptions() {
+      return {
+        animation: 200,
+        group: "description",
+        disabled: false,
+        ghostClass: "ghost"
+      };
+    }
+  },
 	watch: {
 		visible(value) {
       this.dirty = false;
@@ -80,6 +93,12 @@ Vue.component('sortable', {
               this.list.push(this.ds[index])
           }
         });
+
+        // setTimeout(() => {
+        //   console.log(document.querySelector("#sortable").clientWidth)
+        //   let width = document.querySelector("#sortable").clientWidth;
+        //   document.querySelector("#sortable-body").style.width = (width -30) + "px"
+        // }, 300);
       } else {
         this.list = [];
       }

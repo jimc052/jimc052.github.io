@@ -658,7 +658,6 @@ Vue.component('vocabulary', {
 			if(this.currentPage == e && typeof sortKey == "undefined") return;
 			this.currentPage = e; this.editIndex = -1; this.rowIndex = -1;
 			this.dsTable = [];
-			console.log(sortKey + "," + orderBy)
 			if(typeof sortKey == "string") {
 				this.dataStore.sort((a, b) => {
 					let x = typeof a[sortKey] == "undefined" ? "" : a[sortKey];
