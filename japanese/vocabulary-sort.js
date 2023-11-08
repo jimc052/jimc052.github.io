@@ -52,7 +52,6 @@ Vue.component('sortable', {
 	created(){
 	},
 	mounted () {
-    
 	},
 	destroyed() {
   },
