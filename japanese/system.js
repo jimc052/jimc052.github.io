@@ -1,4 +1,10 @@
 window.renderAccent = (語, 重) => {
+  /*
+  () 
+  , => 常用
+  ~ => 連接
+  ; => 2個單字 
+  */
   let results = "";
   let values = typeof 語 == "string"
     ? (語.indexOf("，") > -1 ? 語.split("，") : 
@@ -80,7 +86,12 @@ window.renderAccent = (語, 重) => {
   return results;
 }
 
-window.rome = (value) => { // 羅馬拼音
+window.rome = (value) => { // 羅馬拼音來
+  /*
+  () 
+  ~ => 連接
+  ; ；=> 2個單字 
+  */
   let datas = window.japanese();
   let voicedSound = "ゃャゅュょョ"; // 拗音
   let doubleConsonan = "っッ"; // 促音, 雙寫後面第一個假名的字母

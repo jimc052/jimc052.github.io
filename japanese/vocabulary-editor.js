@@ -9,7 +9,7 @@ Vue.component('editor', {
       <div style="width: 120px; font-size: 20px; text-align: right; user-select: none; color: #2d8cf0;">
 				{{item.title + "："}}
 			</div>
-			<div v-if="visible == true" style="flex: 1;">
+			<div v-if="visible == true" style="flex: 1; display: flex; flex-direction: row; align-items: center; ">
 				<Select v-if="$isLogin() && $isDebug() && item.key == '類'" 
 					v-model="target[item.key]" 
 					style="padding: 5px; width: 200px" size="large" 
@@ -32,6 +32,11 @@ Vue.component('editor', {
 					@on-change="onKeyChange" 
 					:disabled="! ($isLogin() && $isDebug()) || item.key == 'id'"
 				/>
+				
+				<a v-if="item.key == '語' && typeof target[item.key] == 'string' && target[item.key].length > 0" target="_blank" :href="'https://dict.youdao.com/result?word=' + target[item.key] + '&lang=ja' ">
+					<Icon type="md-globe" size="30" style="cursor: pointer;"></Icon>
+				</a>
+				
 			</div>
     </div>
 		<div slot="footer" style="display: flex; padding: 0px;">
