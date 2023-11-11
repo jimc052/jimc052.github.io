@@ -5,7 +5,6 @@ Vue.component('vocabulary', {
 
 		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; 
 			padding: 5px 10px; position: relative; "
-			:style="{paddingBottom: isBigScreen ? '5px' : '45px'}"
 			>
 			<RadioGroup v-model="level" type="button" button-style="solid" 
 				size="large"
@@ -19,9 +18,9 @@ Vue.component('vocabulary', {
 				<Radio label="4"></Radio>
 			</RadioGroup>
 			
-			<div style="flex: 1;" />
+			<div v-if="isBigScreen == true" style="flex: 1;" />
 
-			<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; 
+			<div style="display: flex; flex-direction: row; 
 				justify-content: center; align-items: center;"
 			>
 				分類：
@@ -456,8 +455,6 @@ Vue.component('vocabulary', {
 				}
 			}
 		}
-
-		
 		// 	if(this.dataStore.length > 0) 
 		// 		this.dsPreview = this.dataStore;
 		// }, 1000);
@@ -1083,15 +1080,24 @@ Vue.component('vocabulary', {
 				}
 			});
 		},
+		onClickCreate(index) {
+			this.editIndex = index;
+		},
 		renderWord(item, index) {
 			let accent = window.renderAccent(item.語, item.重);
 			let 漢 = typeof item.漢 == "string" && item.漢.length > 0
 				? (`<div style="min-height: 0px;"> ${item.漢.trimChinese()}</div>`)
 				: "";
+			let cls = this.note.indexOf(item["id"]) > -1 ? "note-mark" : "";
 
 			return (
-				`<div class="card " style="font-size: 20px; width: auto; background: white; ">
-					<div style="min-width: 25px; font-size: 20px; margin-right: 5px;">${(index + 1) + "."}</div>
+				`<div class="card" style="font-size: 20px; width: auto; background: white; position: relative; ">
+					<div style="min-width: 25px; font-size: 20px; margin-right: 5px;"
+						class="${cls}"
+						
+					>
+						${(index + 1) + "."}
+					</div>
 					
 					<div style="flex: 1; font-size: 20px; display: flex; flex-direction: column;">
 						<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
@@ -1110,6 +1116,14 @@ Vue.component('vocabulary', {
 						</a>
 						<div>${item.中}</div>
 					</div>
+					<a style="padding: 5px 10px; cursor: pointer;  border: 1px solid #eee;
+						border-radius: 5px; position: absolute; right: 10px; bottom: 10px;" 
+						onclick="vm.$refs['vocabulary'].onClickCreate(${index}) "
+					>
+						<i class="ivu-icon ivu-icon-md-create" 
+							style="font-size: 20px; color: #2d8cf0;" 
+						></i>
+					</a>
 				</div>`);
 		}
 	},

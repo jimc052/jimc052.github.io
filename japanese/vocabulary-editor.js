@@ -40,7 +40,7 @@ Vue.component('editor', {
 			</div>
     </div>
 		<div slot="footer" style="display: flex; padding: 0px;">
-			<div v-if="visible == true && typeof target.date != 'undefined'" style="">
+			<div v-if="isBigScreen && visible == true && typeof target.date != 'undefined'" style="">
 				{{ new Date(target.date)}}
 			</div>
 			<div style="flex: 1;" />
@@ -71,8 +71,10 @@ Vue.component('editor', {
 		};
 	},
 	created(){
+		this.isBigScreen = document.body.clientWidth > 600 ? true : false;
 	},
 	mounted () {
+
 	},
 	destroyed() {
   },

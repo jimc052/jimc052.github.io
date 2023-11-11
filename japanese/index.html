@@ -279,7 +279,7 @@
 		<div style="flex: 1;">
 			<pronounce v-if="page == '五十音'"></pronounce>
 			<letter-exam v-else-if="page == '五十音測驗'"></letter-exam>
-			<vocabulary v-else-if="page == '字典'"></vocabulary>
+			<vocabulary ref="vocabulary" v-else-if="page == '字典'"></vocabulary>
 			<lesson v-else-if="page == '大家的日本語'"></lesson>
 			<lesson-exam v-else-if="page == '單字測驗'"></lesson-exam>
 			<letter v-else></letter>
