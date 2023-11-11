@@ -4,7 +4,8 @@ Vue.component('vocabulary', {
 		<Spin size="large" fix v-if="spinShow"></Spin>
 
 		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; 
-			padding: 5px 10px; position: relative; "
+			padding: 5px 10px; position: relative; " 
+			:style="{paddingBottom: isBigScreen ? '5px' : '45px'}"
 			>
 			<RadioGroup v-model="level" type="button" button-style="solid" 
 				size="large"
@@ -20,7 +21,7 @@ Vue.component('vocabulary', {
 			
 			<div v-if="isBigScreen == true" style="flex: 1;" />
 
-			<div style="display: flex; flex-direction: row; 
+			<div v-if="isBigScreen == true" style="display: flex; flex-direction: row; 
 				justify-content: center; align-items: center;"
 			>
 				分類：
