@@ -105,6 +105,12 @@ Vue.component('vocabulary', {
 			<Button v-if="$isLogin() && $isDebug()" type="primary" size="large"  @click="onBtnAddWord" 
 				style="width: 80px;">新增</Button>
 
+			<Button v-if="$isLogin() && rowIndex > -1" size="large" @click="onBtnDuplicate" 
+				style="min-width: 80px; margin-left: 5px;" type="error"
+			>
+				複製
+			</Button>
+
 			<Button v-if="dataStore.length > 0" type="primary" size="large"  @click="dsPreview = dataStore;" 
 				style="width: 80px; margin-left: 5px;">預覧</Button>
 
@@ -934,7 +940,14 @@ Vue.component('vocabulary', {
 			this.dsTable.push({"類": this.option})
 			this.editIndex = this.dsTable.length - 1;
 		},
-		async onBtnAddNote() {
+		onBtnDuplicate() { // 複製
+			let json = Object.assign({}, this.dsTable[this.rowIndex]);
+			delete json.id;
+			this.editIndex = -1;
+			this.onCloseEditor(json)
+			this.dsTable.push(json)
+		},
+		async onBtnAddNote() { //筆記
 			let data = this.dsTable[this.rowIndex];
 			if(this.note.indexOf(data.id) > -1) {
 				this.note = this.note.replace(data.id + ",", "");
