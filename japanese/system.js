@@ -1,9 +1,9 @@
-window.renderAccent = (語, 重) => {
+window.renderAccent = (語, 重) => { // 重音
   /*
   () 
   , => 常用
   ~ => 連接
-  ; => 2個單字 
+  - => 句子中的各單字，間隔符號
   */
   let results = "";
   let values = typeof 語 == "string"
@@ -86,11 +86,11 @@ window.renderAccent = (語, 重) => {
   return results;
 }
 
-window.rome = (value) => { // 羅馬拼音來
+window.rome = (value) => { // 羅馬拼音
   /*
   () 
   ~ => 連接
-  ; ；=> 2個單字 
+  - => 句子中的各單字，間隔符號
   */
   let datas = window.japanese();
   let voicedSound = "ゃャゅュょョ"; // 拗音
@@ -229,6 +229,136 @@ window.japanese = function() {
     ]
   ];
 }
+
+String.prototype.ruby = function(漢字) {
+  let kana = this.toString();
+  if(typeof 漢字 == "string") {
+  }
+  if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
+    漢字 = 漢字.split("・")[0]
+  }
+  let code = kana.charCodeAt(0);
+  // console.log(kana.substr(0, 1) + ": " + code)
+  if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
+    return null;
+  else {
+    let arr = [], mode = "";
+    for(let i = 0; i < 漢字.length; i++) {
+      code = 漢字.charCodeAt(i); //  
+      let char = 漢字.substr(i, 1);
+      if(code == 126 || !(code >= 12353 && code <= 12438) ){
+        if(mode != "漢") arr.push("");
+        arr[arr.length -1] += char;
+        mode = code == 126 ? "s" : "漢";
+      } else {
+        if(mode != "kana") arr.push("");
+        arr[arr.length -1] += char;
+        mode = code == 126 ? "s" : "kana"
+      }
+      // if(漢字.indexOf("~") > -1) console.log("mode: " + mode + ", " + char + ": " + code);
+    }
+    // if(漢字.indexOf("~") > -1) console.log(arr);
+    let r = "";
+    if(arr.length == 1 && 漢字.indexOf("~") == 0) return null;
+    for(let i = 0; i < arr.length; i++) {
+      code = arr[i].charCodeAt(0);
+      if(code >= 12353 && code <= 12438){
+        r += `<span style="font-size: 22px;">${arr[i]}</span>`;
+        kana = kana.replace(arr[i], "")
+      } else if(code < 12438){
+        r += `<span style="font-size: 22px;">${arr[i]}</span>`;
+        kana = kana.replace(arr[i], "")
+      } else {
+        let s = "";
+        if(i < arr.length - 1) {
+          let index = kana.indexOf(arr[i + 1]);
+          s = kana.substr(0, index);
+          kana = kana.replace(s, "");
+          // console.log("s: " + s + ", kana: " + kana + ", index: " + index )
+        } else {
+          s = kana;
+        }
+        r += `<ruby><span style="font-size: 20px;">${arr[i]}</span><rt style="font-size: 12px;">${s}</rt></ruby>`;
+      }
+    }
+    // let div = document.createElement("div")
+    // div.innerHTML = r;
+    // document.body.appendChild(div)
+    return r;
+  }
+}
+
+String.prototype.trimChinese = function() { // 只要漢字，英文的不要
+  let 漢字 = this.toString();
+  let mode = "";
+  for(let i = 0; i < 漢字.length; i++) {
+    code = 漢字.charCodeAt(i); //  
+    let char = 漢字.substr(i, 1);
+    
+    let regex = /[a-zA-Z0-9]/i;
+    if(regex.test(char)) {
+      // console.log(char)
+      return "";
+    }
+  }
+  return 漢字;
+}
+
+String.prototype.transferToKana = function (kana) { // 英文轉假名
+  if(typeof kana == "undefined") kana = "平";
+  let el = this.toString();
+  let short = "";
+  if(el.length >= 3 && el.substr(0, 1) == el.substr(1, 1)) {
+    el = el.substr(1);
+    short = kana == "平" ?  "っ" : "ッ";
+  }
+  let datas = window.japanese();
+  for(let x = 0; x < datas.length; x++){
+    for(let y = 0; y < datas[x].length; y++){
+      for(let z = 0; z < datas[x][y].length; z++){
+        if(datas[x][y][z] == null) continue;
+
+        if(datas[x][y][z]["mp3"] === el) {
+          // console.log(short + datas[x][y][z][kana])
+          return short + datas[x][y][z][kana];
+        } else if(datas[x][y][z]["mp3"].indexOf(",") > -1){
+          let arr = datas[x][y][z]["mp3"].split(",");
+          let b = arr.some(el2 => {
+            return el2 == el;
+          });
+          if(b == true) {
+            // console.log(short + datas[x][y][z][kana])
+            return short + datas[x][y][z][kana];
+          }
+        }
+      }
+    }
+  }
+  return null;
+}
+
+String.prototype.shiftKana = function () { // 假名對換
+  let el = this.toString();
+  let datas = window.japanese();
+  for(let x = 0; x < datas.length; x++){
+    for(let y = 0; y < datas[x].length; y++){
+      for(let z = 0; z < datas[x][y].length; z++){
+        if(datas[x][y][z] == null) continue;
+        if(datas[x][y][z]["片"] == el)
+          return datas[x][y][z]["平"];
+        else if(datas[x][y][z]["平"] == el)
+          return datas[x][y][z]["片"];
+      }
+    }
+  }
+  return null;
+}
+
+Date.prototype.addDays = function (days = 0) {
+  let d = new Date(this.getTime());
+  d.setDate(d.getDate() + days);
+  return d;
+};
 
 // window.japanese().forEach(el1 => {
 //   el1.forEach(el2 => {

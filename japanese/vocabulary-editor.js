@@ -39,14 +39,31 @@ Vue.component('editor', {
 				
 			</div>
     </div>
-		<div slot="footer" style="display: flex; padding: 0px;">
+		<div slot="footer" style="display: flex; align-items: center; justify-content: center; padding: 0px;">
 			<div v-if="isBigScreen && visible == true && typeof target.date != 'undefined'" style="">
 				{{ new Date(target.date)}}
 			</div>
+			
 			<div style="flex: 1;" />
-			<Button type="default" size="large"  @click="cancel" style="width: 100px;">取消</Button>
-			<Button v-if="visible == true && $isLogin() && $isDebug() && typeof target.id != 'undefined' " type="error" size="large"  @click="onDelete" style="width: 100px;">刪除</Button>
-			<Button v-if="dirty == true && $isLogin() && $isDebug()" type="primary" size="large"  @click="save" style="width: 100px;">確定</Button>
+
+			<Button v-if="visible == true && typeof target.id != 'undefined'" 
+				type="primary" size="large"  
+				@click="onCopyTo" style="width: 60px;">
+				複製
+			</Button>
+
+			<div style="flex: 1;" />
+			
+			<Button v-if="visible == true && $isLogin() && $isDebug() && typeof target.id != 'undefined' " 
+				type="error" size="large"  @click="onDelete" style="width: 60px;">
+				刪除
+			</Button>
+			<Button v-if="dirty == true && $isLogin() && $isDebug()" type="primary" size="large"  
+				@click="save" style="width: 60px;">
+				確定
+			</Button>
+
+			<Button type="default" size="large"  @click="cancel" style="width: 60px;">取消</Button>
 		</div>
 	</modal>`,
 	props: {
@@ -140,6 +157,9 @@ Vue.component('editor', {
 			// event.preventDefault();
 			// event.stopImmediatePropagation();
 			// event.stopPropagation();
+		},
+		onCopyTo() {
+			navigator.clipboard.writeText(JSON.stringify(this.target));
 		}
 	},
 	watch: {
