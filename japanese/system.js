@@ -15,6 +15,7 @@ window.renderAccent = (語, 重) => { // 重音
     ? (重.indexOf("，") > -1 ? 重.split("，") : 
       (重.indexOf("、") > -1 ? 重.split("、") : 重.split("//"))) 
     : [];
+  let symboles = [",", "，", ",", "、"]
   let voicedSound = "ゃャゅュょョ"; // 拗音
 
   for(let x = 0; x < values.length; x++) {
@@ -86,7 +87,7 @@ window.renderAccent = (語, 重) => { // 重音
   return results;
 }
 
-window.rome = (value) => { // 羅馬拼音
+window.rome = (text) => { // 羅馬拼音
   /*
   () 
   ~ => 連接
@@ -98,78 +99,81 @@ window.rome = (value) => { // 羅馬拼音
   let longSound = {a: "ā", i: "ī", u: "ū", e: "ē", o: "ō"}; // 長音
   let voiceN = "んン";
 
-  let arr1 = [];
-  for (let i = 0; i < value.length; i++) {
-    let char = value.substr(i, 1);
-    if(char == "。")
-      continue;
-    else if (voicedSound.indexOf(char) > -1) { // 拗音
-      arr1[arr1.length - 1] += char;
-    } else if (doubleConsonan.indexOf(char) > -1 && i == value.length - 1) { // 促音, 在最後一個字；不發音
 
-    } else {
-      arr1.push(char);
+  function segment(value) {
+    let arr1 = [];
+    for (let i = 0; i < value.length; i++) {
+      let char = value.substr(i, 1);
+      if(char == "。")
+        continue;
+      else if (voicedSound.indexOf(char) > -1) { // 拗音
+        arr1[arr1.length - 1] += char;
+      } else if (doubleConsonan.indexOf(char) > -1 && i == value.length - 1) { // 促音, 在最後一個字；不發音
+
+      } else {
+        arr1.push(char);
+      }
     }
-  }
 
-  let indexDoubleConsonan = -1;
-  let i = 0;
-  while(i < arr1.length) {
-    let char = arr1[i];
-    if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
-      arr1[i] = "n"
-    } else if (doubleConsonan.indexOf(char) > -1) { // 促音
+    let indexDoubleConsonan = -1;
+    let i = 0;
+    while(i < arr1.length) {
+      let char = arr1[i];
+      if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
+        arr1[i] = "n"
+      } else if (doubleConsonan.indexOf(char) > -1) { // 促音
 
-    } else if (char == "ィ") { // 不知怎麼用，只好寫死
-      let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
-        ? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-      let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
-        ? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-      if (c2 == "e" || c2 == "u") { // 長音
-        arr1[i - 1] = c1 + longSound["i"];
+      } else if (char == "ィ") { // 不知怎麼用，只好寫死
+        let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
+          ? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+        let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
+          ? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+        if (c2 == "e" || c2 == "u") { // 長音
+          arr1[i - 1] = c1 + longSound["i"];
+          arr1.splice(i, 1); continue;
+        } else {
+          arr1[i] = "i";
+        }
+      } else if (char == "ー") { // 長音
+        let c1 = arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+        let c2 = arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+        let c3 = longSound[c2];
+        if(typeof c3 != "undefined" )
+          arr1[i - 1] = c1 + c3;
         arr1.splice(i, 1); continue;
       } else {
-        arr1[i] = "i";
-      }
-    } else if (char == "ー") { // 長音
-      let c1 = arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-      let c2 = arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-      let c3 = longSound[c2];
-      if(typeof c3 != "undefined" )
-        arr1[i - 1] = c1 + c3;
-      arr1.splice(i, 1); continue;
-    } else {
-      let mp3 = match(char); // char == "ィ" ? "i" : 
-      if (mp3.length > 0) {
-        if (i > 0 && doubleConsonan.indexOf(arr1[i - 1]) > -1) { // 促音
-          arr1[i] = mp3.substring(0, 1) + mp3;
-          arr1[i - 1] = null;
-          indexDoubleConsonan = i;
-        } else if (i > 0 && indexDoubleConsonan != i - 1 && "aiueo".indexOf(mp3) > -1) { // 長音
-          if (arr1[i - 1] == mp3) {
-            arr1[i - 1] = longSound[mp3];
-            arr1.splice(i, 1); continue;
-          } else if ("aiueo".indexOf(mp3) > -1) {
-            let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
-              ? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
-            let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
-              ? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
-            if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
-              arr1[i - 1] = c1 + longSound[c2];
+        let mp3 = match(char); // char == "ィ" ? "i" : 
+        if (mp3.length > 0) {
+          if (i > 0 && doubleConsonan.indexOf(arr1[i - 1]) > -1) { // 促音
+            arr1[i] = mp3.substring(0, 1) + mp3;
+            arr1[i - 1] = null;
+            indexDoubleConsonan = i;
+          } else if (i > 0 && indexDoubleConsonan != i - 1 && "aiueo".indexOf(mp3) > -1) { // 長音
+            if (arr1[i - 1] == mp3) {
+              arr1[i - 1] = longSound[mp3];
               arr1.splice(i, 1); continue;
-            } else
-              arr1[i] = mp3;
-          }
-        } else
-          arr1[i] = mp3;
+            } else if ("aiueo".indexOf(mp3) > -1) {
+              let c1 = arr1[i - 1] == null || arr1[i - 1].length == 1
+                ? "" : arr1[i - 1].substr(0, arr1[i - 1].length - 1);
+              let c2 =  arr1[i - 1] == null || arr1[i - 1].length == 1
+                ? arr1[i - 1] : arr1[i - 1].substr(arr1[i - 1].length - 1, 1);
+              if ((c2 == mp3) || (c2 == "e" && mp3 == "i") || (c2 == "o" && mp3 == "u")) { // 長音
+                arr1[i - 1] = c1 + longSound[c2];
+                arr1.splice(i, 1); continue;
+              } else
+                arr1[i] = mp3;
+            }
+          } else
+            arr1[i] = mp3;
+        }
       }
+      i++;
     }
-    i++;
+    arr1 = arr1.filter(el => {
+      return el != null
+    });
+    return arr1.join(" ").replace(/  /g, " ").replace(/\[ /g, "[").replace(/ \]/g, "]");    
   }
-  arr1 = arr1.filter(el => {
-    return el != null
-  });
-  return arr1.join(" ").replace(/  /g, " ").replace(/\[ /g, "[").replace(/ \]/g, "]");
 
   function match(char) {
     let mp3 = "";
@@ -189,6 +193,19 @@ window.rome = (value) => { // 羅馬拼音
     if(mp3.indexOf(",") > -1) mp3 = mp3.split(",")[0];
     return mp3;
   }
+  let s = "";
+  let symbole = text.indexOf("~") > -1 
+    ? "~" : (
+      text.indexOf("-") > -1 ? "-" : ""
+    );
+  let arr = symbole.length == 1 ? text.split(symbole) : [text];
+
+  for(let i = 0; i < arr.length; i++) {
+    let s1 = segment(arr[i].trim());
+    s += (s.length > 0 ? (symbole == "~" ? " ~ " : " - ") : "") + s1;
+
+  }
+  return s;
 }
 
 window.japanese = function() {

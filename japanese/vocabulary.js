@@ -147,7 +147,7 @@ Vue.component('vocabulary', {
 		</div>
 		<div v-else-if="isBigScreen == false  && dsPreview == undefined" ref="frame" style="flex: 1; overflow: auto;">
 			<ul style="padding: 5px;">
-				<li v-for="(item, index) in dsTable" class="lesson-frame" v-html="renderWord(item, index)">
+				<li v-for="(item, index) in dsTable" class="lesson-frame" v-html="renderCard(item, index)">
 				</li>
 			</ul>
 		</div>
@@ -630,32 +630,44 @@ Vue.component('vocabulary', {
 		async onRowClick(data, index) { // ok，只是作為暫時作資料轉換的
 			this.rowIndex = index;
 
-			return;
-			// ok，只是作為暫時作資料轉換的
-			if(this.option2.length > 0) {
-				data.類 = this.option2;
-				this.onCloseEditor(data)
+			if(1 == 0) {
+				if(typeof data.語 == 'string')
+					data.語 = data.語.replace("（", " (").replace("）", ")").trim();
+				if(typeof data.漢 == 'string')
+					data.漢 = data.漢.replace("（", " (").replace("）", ")").trim();
+				if(typeof data.中 == 'string')
+					data.中 = data.中.replace("（", " (").replace("）", ")").trim();
 				this.$set(this.dsTable, index, data);
-			} else if( typeof data.重 == "string" && data.重.length > 0) {
-				let s = "";
-				for(let i = 0; i < data.重.length; i++) {
-					let accent = data.重.substr(i, 1);
-					if(accent == "⓪")
-						accent = "0";
-					else {
-						let c = (accent.charCodeAt(0) - 9311);
-						if(c > 10 || c < 1) {
-							accent = null;
-						} else
-							accent = c + "";
+				this.onCloseEditor(data);				
+			}
+
+			
+			if(1 == 0) { // ok，只是作為暫時作資料轉換的
+				if(this.option2.length > 0) {
+					data.類 = this.option2;
+					this.onCloseEditor(data)
+					this.$set(this.dsTable, index, data);
+				} else if( typeof data.重 == "string" && data.重.length > 0) {
+					let s = "";
+					for(let i = 0; i < data.重.length; i++) {
+						let accent = data.重.substr(i, 1);
+						if(accent == "⓪")
+							accent = "0";
+						else {
+							let c = (accent.charCodeAt(0) - 9311);
+							if(c > 10 || c < 1) {
+								accent = null;
+							} else
+								accent = c + "";
+						}
+					
+						if(accent != null)
+							s += (s.length > 0 ? "," : "") + accent;
 					}
-				
-					if(accent != null)
-						s += (s.length > 0 ? "," : "") + accent;
+					data.重 = s;
+					this.$set(this.dsTable, index, data);
+					this.onCloseEditor(data);
 				}
-				data.重 = s;
-				this.$set(this.dsTable, index, data);
-				this.onCloseEditor(data);
 			}
 		},
 		onChangePage(e, sortKey, orderBy) {
@@ -947,8 +959,8 @@ Vue.component('vocabulary', {
 			this.onCloseEditor(json)
 			this.dsTable.push(json)
 		},
-		async onBtnAddNote() { //筆記
-			let data = this.dsTable[this.rowIndex];
+		async onBtnAddNote(index) { //筆記
+			let data = this.dsTable[typeof index == "number" ? index : this.rowIndex];
 			if(this.note.indexOf(data.id) > -1) {
 				this.note = this.note.replace(data.id + ",", "");
 			} else {
@@ -1051,6 +1063,27 @@ Vue.component('vocabulary', {
 						.collection("japanese").doc("note")
 				try {
 					let x = await ref.set({"預設": this.note});
+
+					//
+					let list = [];
+					this.note.split(",").forEach(el => {
+						if(el.trim().length > 0) {
+							let index = this.dataStore.findIndex(el2 => {
+								return el2.id == el;
+							});
+							if(index > -1) 
+								list.push(this.dataStore[index])
+						}
+					});
+					this.dataStore = [];
+					setTimeout(() => {
+						this.dataStore = list;
+						this.onChangePage(1, 
+							this.search == "=筆記" ? undefined : this.sortKey,
+							this.search == "=本週異動" ? this.orderBy : undefined
+						);						
+					}, 300);
+
 				} catch(e) {
 					console.log(e)
 				} finally {
@@ -1097,7 +1130,7 @@ Vue.component('vocabulary', {
 		onClickCreate(index) {
 			this.editIndex = index;
 		},
-		renderWord(item, index) {
+		renderCard(item, index) {
 			let accent = window.renderAccent(item.語, item.重);
 			let 漢 = typeof item.漢 == "string" && item.漢.length > 0
 				? (`<div style="min-height: 0px;"> ${item.漢.trimChinese()}</div>`)
@@ -1106,9 +1139,11 @@ Vue.component('vocabulary', {
 
 			return (
 				`<div class="card" style="font-size: 20px; width: auto; background: white; position: relative; ">
-					<div style="min-width: 25px; font-size: 20px; margin-right: 5px;"
+					<div style="text-align: center; padding-bottom: 5px; min-width: 40px; height: 32px; 
+							font-size: 20px; margin-right: 5px; 
+							cursor: pointer;  border: 1px solid #eee; border-radius: 5px;"
 						class="${cls}"
-						
+						onclick="vm.$refs['vocabulary'].onBtnAddNote(${index});"
 					>
 						${(index + 1) + "."}
 					</div>
@@ -1132,7 +1167,7 @@ Vue.component('vocabulary', {
 					</div>
 					<a style="padding: 5px 10px; cursor: pointer;  border: 1px solid #eee;
 						border-radius: 5px; position: absolute; right: 10px; bottom: 10px;" 
-						onclick="vm.$refs['vocabulary'].onClickCreate(${index}) "
+						onclick="vm.$refs['vocabulary'].onClickCreate(${index})"
 					>
 						<i class="ivu-icon ivu-icon-md-create" 
 							style="font-size: 20px; color: #2d8cf0;" 

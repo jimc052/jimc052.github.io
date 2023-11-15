@@ -33,8 +33,20 @@ Vue.component('editor', {
 					:disabled="! ($isLogin() && $isDebug()) || item.key == 'id'"
 				/>
 				
-				<a v-if="item.key == '語' && typeof target[item.key] == 'string' && target[item.key].length > 0" target="_blank" :href="'https://dict.youdao.com/result?word=' + target[item.key] + '&lang=ja' ">
-					<Icon type="md-globe" size="30" style="cursor: pointer;"></Icon>
+				<a v-if="item.key == '語' && typeof target[item.key] == 'string' && target[item.key].length > 0" target="_blank" 
+					:href="'https://dict.hjenglish.com/jp/jc/' + target[item.key]"
+					style="min-width: 60px; padding: 5px 5px 5px 5px; margin-right: 5px;
+						text-align: center; border: 1px solid #eee; border-radius: 5px;"
+				>
+					沪江
+				</a>
+				<a v-if="item.key == '語' && typeof target[item.key] == 'string' && target[item.key].length > 0" target="_blank" 
+					:href="'https://dict.youdao.com/result?word=' + target[item.key] + '&lang=ja' "
+					style="min-width: 60px; padding: 5px 0px 5px 0px; 
+						text-align: center; border: 1px solid #eee; border-radius: 5px;"
+				>
+				
+					有道
 				</a>
 				
 			</div>
