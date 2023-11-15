@@ -5,7 +5,10 @@ Vue.component('vocabulary', {
 
 		<div v-if="dsPreview == undefined" style="display: flex; flex-direction: row; align-items: center; justify-content: center; 
 			padding: 5px 10px; position: relative; " 
-			:style="{paddingBottom: isBigScreen ? '5px' : '45px'}"
+			:style="{
+				paddingBottom: isBigScreen ? '5px' : '45px', 
+				paddingRight: '200px'
+			}"
 			>
 			<RadioGroup v-model="level" type="button" button-style="solid" 
 				size="large"
@@ -1020,6 +1023,7 @@ Vue.component('vocabulary', {
 						delete word[key];
 					}
 				}
+				
 				if(this.editIndex > -1) {
 					this.$set(this.dsTable, this.editIndex, word);
 				}
@@ -1044,12 +1048,21 @@ Vue.component('vocabulary', {
 						vocabularys[index] = word;
 					}
 				}
-				window.localStorage["japanese-vocabulary"] = JSON.stringify(vocabularys);
-				let json = Object.assign({}, word);
-				delete json.id;
-				let ref = FireStore.db.collection("japanese-vocabulary")
-					.doc(id);
-				let x = await ref.set(json);
+				try {
+					let json = Object.assign({}, word);
+					if(typeof json.類 == "undefined") json.類 = "";
+					delete json.id;
+					// console.log(JSON.stringify(json, null, 2))
+
+					let ref = FireStore.db.collection("japanese-vocabulary")
+						.doc(id);
+					await ref.set(json,{merge: true});
+
+					window.localStorage["japanese-vocabulary"] = JSON.stringify(vocabularys);					
+				} catch(e) {
+					alert(e)
+					console.error(e)
+				}
 			}
 			this.editIndex = -1;
 		},
