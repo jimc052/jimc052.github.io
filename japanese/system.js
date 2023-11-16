@@ -5,22 +5,11 @@ window.renderAccent = (語, 重) => { // 重音
   ~ => 連接
   - => 句子中的各單字，間隔符號
   */
-  let results = "";
-  let values = typeof 語 == "string"
-    ? (語.indexOf("，") > -1 ? 語.split("，") : 
-        (語.indexOf("、") > -1 ? 語.split("、") : 語.split("//"))
-      ) 
-    : [];
-  let accnets = typeof 重 == "string" //? 重.split("//") : [];
-    ? (重.indexOf("，") > -1 ? 重.split("，") : 
-      (重.indexOf("、") > -1 ? 重.split("、") : 重.split("//"))) 
-    : [];
-  let symboles = [",", "，", ",", "、"]
   let voicedSound = "ゃャゅュょョ"; // 拗音
+  let symboles = [",", "，", ",", "、"];
 
-  for(let x = 0; x < values.length; x++) {
-    let value = values[x];
-    let accent = accnets.length > x ? accnets[x] : accnets[0];
+  let segment = (value, accent) => {
+    let result = "";
     try {
       if(typeof accent == "string" && accent.length > 1) {
         accent = accent.substr(0, 1);
@@ -56,7 +45,6 @@ window.renderAccent = (語, 重) => { // 重音
       }
     }
     // console.log(arr)
-    let result = "";
     if(typeof accent != "undefined" && accent != null) {
       let str = ["", "", ""];
       for(let i = 0; i < arr.length; i++) {
@@ -82,9 +70,34 @@ window.renderAccent = (語, 重) => { // 重音
     } else {
       result = arr.join("");
     }
-    results += (results.length > 0 ? "、" : "") + result;
-  }    
-  return results;
+    // result += (result.length > 0 ? "、" : "") + result;
+    return result;
+  }
+
+  // let values = typeof 語 == "string"
+  //   ? (語.indexOf("，") > -1 ? 語.split("，") : 
+  //       (語.indexOf("、") > -1 ? 語.split("、") : 語.split("//"))
+  //     ) 
+  //   : [];
+  // let accnets = typeof 重 == "string" //? 重.split("//") : [];
+  //   ? (重.indexOf("，") > -1 ? 重.split("，") : 
+  //     (重.indexOf("、") > -1 ? 重.split("、") : 重.split("//"))) 
+  //   : [];
+  let s = "";
+  let symbole = 語.indexOf("~") > -1 
+    ? "~" : (
+      語.indexOf("-") > -1 ? "-" : ""
+    );
+  let values = symbole.length == 1 ? 語.split(symbole) : [語];
+  let accnets = symbole.length == 1 ? 重.split(symbole) : [重];
+  
+  for(let x = 0; x < values.length; x++) {
+    let value = values[x];
+    let accent = accnets.length > x ? accnets[x] : accnets[0];
+    let s1 = segment(value, accent);
+    s += (s.length > 0 ? (symbole == "~" ? " ~ " : " ") : "") + s1;
+  }
+  return s;
 }
 
 window.rome = (text) => { // 羅馬拼音
@@ -98,7 +111,6 @@ window.rome = (text) => { // 羅馬拼音
   let doubleConsonan = "っッ"; // 促音, 雙寫後面第一個假名的字母
   let longSound = {a: "ā", i: "ī", u: "ū", e: "ē", o: "ō"}; // 長音
   let voiceN = "んン";
-
 
   function segment(value) {
     let arr1 = [];

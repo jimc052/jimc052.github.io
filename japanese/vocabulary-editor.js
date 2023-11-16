@@ -45,7 +45,6 @@ Vue.component('editor', {
 					style="min-width: 60px; padding: 5px 0px 5px 0px; 
 						text-align: center; border: 1px solid #eee; border-radius: 5px;"
 				>
-				
 					有道
 				</a>
 				
@@ -101,6 +100,8 @@ Vue.component('editor', {
 	},
 	created(){
 		this.isBigScreen = document.body.clientWidth > 600 ? true : false;
+		this.width = document.body.clientWidth > 1000 ? 1000 
+			: (document.body.clientWidth > 800 ? 800 : document.body.clientWidth - 10);
 	},
 	mounted () {
 
