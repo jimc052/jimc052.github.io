@@ -33,7 +33,7 @@ Vue.component('editor', {
 					:disabled="! ($isLogin() && $isDebug()) || item.key == 'id'"
 				/>
 				
-				<a v-if="item.key == '語' && typeof target[item.key] == 'string' && target[item.key].length > 0" target="_blank" 
+				<a v-if="width > 600 && item.key == '語' && typeof target[item.key] == 'string' && target[item.key].length > 0" target="_blank" 
 					:href="'https://dict.hjenglish.com/jp/jc/' + target[item.key]"
 					style="min-width: 60px; padding: 5px 5px 5px 5px; margin-right: 5px;
 						text-align: center; border: 1px solid #eee; border-radius: 5px;"
@@ -59,8 +59,8 @@ Vue.component('editor', {
 
 			<Button v-if="visible == true && typeof target.id != 'undefined'" 
 				type="primary" size="large"  
-				@click="onCopyTo" style="width: 60px;">
-				複製
+				@click="onCopyTo" style="width: 80px;">
+				剪貼簿
 			</Button>
 
 			<div style="flex: 1;" />
@@ -69,6 +69,7 @@ Vue.component('editor', {
 				type="error" size="large"  @click="onDelete" style="width: 60px;">
 				刪除
 			</Button>
+
 			<Button v-if="dirty == true && $isLogin() && $isDebug()" type="primary" size="large"  
 				@click="save" style="width: 60px;">
 				確定
@@ -100,8 +101,8 @@ Vue.component('editor', {
 	},
 	created(){
 		this.isBigScreen = document.body.clientWidth > 600 ? true : false;
-		this.width = document.body.clientWidth > 1000 ? 1000 
-			: (document.body.clientWidth > 800 ? 800 : document.body.clientWidth - 10);
+		this.width = document.body.clientWidth > 800 ? 800 
+			: (document.body.clientWidth > 700 ? 700 : document.body.clientWidth - 10);
 	},
 	mounted () {
 
