@@ -31,7 +31,7 @@ class TTX {
 	static speak(text, index){
 		// 0 Alex, 1 Fred, 2 Samantha, 女生, 3, 女生
 		return new Promise(async (resolve, reject) => {
-			text = text.replace(/~/g, " - ")
+			text = text.replace(/~/g, " - ").replace(/〜/g, " - ")
 			
 			let arr = text.split("\n");
 			for(let i = 0; i < arr.length; i++) {

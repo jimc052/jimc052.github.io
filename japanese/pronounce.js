@@ -89,12 +89,21 @@ Vue.component('pronounce', {
 			body.style.height = "auto";
 			body.style.position = "absolute";
 			body.style.padding = "0 10px";
-			// let row = document.querySelectorAll("#tbl50 tr")
-			// if(row.length >= 12) { // 有問題
-			// 	row[11].style.pageBreakAfter = "always";
-			// 	row[11].style.marginTop = "20px";
-			// 	row[11].style.border = "2px solid red";
-			// }
+			let rows = document.querySelectorAll("#tbl50 tr")
+			if(rows.length >0) {
+				rows.forEach(row =>{
+					let cells = row.querySelectorAll(".cell");
+					cells.forEach(cell => {
+						// cell.style.padding = "5px 0px";
+						let div = cell.querySelectorAll("div");
+						if(div != null) {
+							cells.forEach(el => {
+								el.style.fontSize = "30px";
+							})
+						}
+					})
+				})
+			}
 			document.querySelector("#pronounce").style.backgroundColor = "white";
 		},
 		onAfterPrint() {
@@ -104,6 +113,24 @@ Vue.component('pronounce', {
 			body.style.height = "100%";
 			body.style.position = "";
 			body.style.padding = "0px";
+
+			let rows = document.querySelectorAll("#tbl50 tr")
+			if(rows.length >0) {
+				rows.forEach(row =>{
+					let cells = row.querySelectorAll(".cell");
+					cells.forEach(cell => {
+						// cell.style.padding = "0px";
+						let div = cell.querySelectorAll("div");
+						if(div != null) {
+							div[1].style.marginTop = "0px";
+							cells.forEach(el => {
+								el.style.fontSize = "24px";
+							})
+						}
+					})
+				})
+			}
+
 			document.querySelector("#pronounce").style.backgroundColor = "transparent";
 		},
 		onResize(){

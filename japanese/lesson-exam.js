@@ -209,8 +209,9 @@ Vue.component('lesson-exam', {
 			let correctWord = (word) => {
 				let arr = word.indexOf("・") > -1 ? word.split("・") : word.split("、");
 				for(let i = 0; i < arr.length; i++) {
-					let s = arr[i].replace("〜", "~").replace("(", "").replace(")", "").replaceAll(" ", "");
-					if(s == data.answer || s.replace("~", "") == data.answer || s.replace("~", " ") == data.answer) 
+					let s = arr[i].replace("〜", "").replace("~", "").replace("(", "").replace(")", "")
+						.replaceAll("-", "").replaceAll(" ", "");
+					if(s == data.answer) 
 						return "Y";
 				}
         return "N";
