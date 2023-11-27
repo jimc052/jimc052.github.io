@@ -98,7 +98,7 @@ Vue.component('pronounce', {
 						let div = cell.querySelectorAll("div");
 						if(div != null) {
 							cells.forEach(el => {
-								el.style.fontSize = "30px";
+								el.style.fontSize = this.index == "3" ? "12px" : "26px";
 							})
 						}
 					})
@@ -140,11 +140,27 @@ Vue.component('pronounce', {
 			token = Date.now();
 			// document.querySelector("#tbl50").innerHTML = "";
 			if(this.index == 3) {
-				this.datas = [];
-				this.$japanese().forEach(el => {
-					this.datas = this.datas.concat(el)
-				})
-
+				if(1 == 1) {
+					let arr = this.$japanese();
+					this.datas = arr[0];
+					let cols = {g: "k", z: "s", d: "t", p: "h", b: "h"}
+					for(let i = 0; i < arr[1].length; i++) {
+						let mp3 = arr[1][i][0].mp3.substr(0, 1);
+						let index = this.datas.findIndex(el => {
+							return el[0].mp3.substr(0, 1) == cols[mp3];
+						});
+						if(index > -1) {
+							this.datas.splice(index + (mp3 == "p" ? 2 : 1), 0, arr[1][i])
+						}
+					}
+					this.datas = this.datas.concat(arr[2])					
+				} else {
+					this.datas = [];
+					this.$japanese().forEach(el => {
+						this.datas = this.datas.concat(el)
+					})					
+				}
+				// console.log(JSON.stringify(this.datas, null, 2))
 			} else {
 				this.datas = this.$japanese()[this.index];
 			}
