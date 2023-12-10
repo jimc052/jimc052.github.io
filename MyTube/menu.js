@@ -86,6 +86,25 @@ Vue.component('yt-menu', {
     this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+    async addProject(){ // 還沒寫畫面
+      let date = (new Date()).getTime(); // /" + report
+      try {
+        // for(let i = 0; i < project.length; i++) {
+          let obj = {};
+          obj.modifyDate = date;
+          obj.index = this.project.length;
+          obj.title = "上井老師";
+          // let key = obj.key;
+          // delete obj.key;
+          let ref = FireStore.db.collection("YouTube").doc("目錄").
+            collection("project").doc("上井老師");
+          let x = await ref.set(obj);
+          console.log(x)
+        // }
+      } catch(e) {
+        console.log(e)
+      }
+    },
     onClickDocument(){
       this.document = this.menu;
     },
