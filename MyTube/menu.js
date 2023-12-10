@@ -23,7 +23,9 @@ Vue.component('yt-menu', {
             <Icon type="ios-arrow-down"></Icon>
           </a>
           <DropdownMenu v-for="(item, index) in project" :key="index" slot="list">
-              <DropdownItem :name="index" :selected="index == topic">{{item.title}}</DropdownItem>
+            <DropdownItem :name="index" :selected="index == topic">
+              {{item.title}}
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
       </div>
@@ -332,7 +334,6 @@ Vue.component('yt-menu', {
       // uploadMenu();
     },
     async onClickProject(name){
-      console.log(name)
       this.topic = name;
       window.localStorage["yt-project"] = name;
       this.menu = await this.downloadMenu();

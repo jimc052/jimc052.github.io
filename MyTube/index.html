@@ -271,7 +271,7 @@
 </body>
 <script src="https://www.youtube.com/iframe_api"></script>
 <script>
-	var vm = null, player, index, videoId, id1, id2;
+	let vm = null, player, index, videoId, id1, id2;
 	window.onload = async function(){
 		let email =  window.localStorage["email"];
 		let password =  window.localStorage["password"];
@@ -413,8 +413,7 @@
 					this.$refs["player"].set(this.editData);
 				},
         async onSelect(item){
-					// console.log(JSON.stringify(item))
-					// window.localStorage["yt-temp"] = JSON.stringify(item);
+					let project = this.$refs["menu"].project[this.$refs["menu"].topic];
 					let exam = document.getElementById("exam");
 					if(exam != null) exam.style.visibility = "hidden";
 					let btnPlays = document.getElementById("btnPlays");
@@ -431,11 +430,11 @@
 					if (node != null && node.parentNode) {
 						node.parentNode.removeChild(node);
 					}
-					var newDiv = document.createElement('DIV');
+					let newDiv = document.createElement('DIV');
 					newDiv.id = "player";
 					newDiv.style.visibility = "hidden";
 
-					var myParent = document.getElementById('playerParent');
+					let myParent = document.getElementById('playerParent');
 					if(!Array.isArray(item.topic) || location.href.indexOf("video=Y") > -1 
 						|| (Array.isArray(item.topic) && Array.isArray(item.position) && item.topic.length > item.position.length)){
 						this.video = true;
@@ -456,7 +455,7 @@
 							height: this.video == true ? clientHeight : 0,
 							width: this.video == true  ? myParent.clientWidth : 0,
 							playerVars: { 
-								'controls': 0, 
+								controls: typeof project.controls == "boolean" && project.controls == true ? 1 : 0, 
 								disablekb: 1,
 								iv_load_policy: 3, 
 								cc_load_policy: 0, 
