@@ -6,16 +6,18 @@ Vue.component('yt-player', {
 		<div style="display: flex; flex-direction: row; justify-content: flex-start; align-items: flex-start; ">
 			<div id="btnPlays"
 				style="padding: 2px 2px 4px 2px; flex: 1;"
-				
 			>
-				<i-button v-for="(item, index) in rows" :key="index" class="btn"
-					:type="active == index || prev == index ? 'warning' : 'default'"
-					:ghost="prev == index"
-					:id="'btn' + (index + 1)"
-					@click.native="times = 0; onClickPlay(index);">
-					<span v-if="typeof item.title == 'string' ">{{item.title}}</span>
-					<span v-else>{{(index + 1)}}</span>
-				</i-button>
+				<Tooltip  v-for="(item, index) in rows" :key="index"
+				  :content="timeLine(item)" placement="top-start">
+					<i-button class="btn"
+						:type="active == index || prev == index ? 'warning' : 'default'"
+						:ghost="prev == index"
+						:id="'btn' + (index + 1)"
+						@click.native="times = 0; onClickPlay(index);">
+						<span v-if="typeof item.title == 'string' ">{{item.title}}</span>
+						<span v-else>{{(index + 1)}}</span>
+					</i-button>
+				</Tooltip>
 			</div>
 			<div style="margin: 3px 10px 3px 0px;">
 				<div v-if="$isDebug() && $isLogin() && videoId.length > 0 && ! $smallScreen()"
@@ -283,11 +285,35 @@ Vue.component('yt-player', {
 					resolve();
 				}, sec * 1000);
 			});
+		},
+		timeLine(item) {
+			function convert(seconds) {
+				let hours = Math.floor(seconds / 3600);
+				let minutes = Math.floor((seconds % 3600) / 60);
+				seconds = seconds % 60;
+
+				let formattedHours = hours < 10 ? `0${hours}` : hours;
+				let formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+				let formattedSeconds = seconds < 10 ? `0${seconds}` : "" + seconds;
+
+				if(formattedSeconds.indexOf(".") > -1) {
+					let arr = formattedSeconds.split(".");
+					arr[1] = arr[1].substr(0, 2);
+					formattedSeconds = arr[0] + "." + arr[1];
+				}
+				let result = (formattedHours == "00" ? ""  : `${formattedHours}:`) +
+					`${formattedMinutes}:${formattedSeconds}`
+
+				return result;
+			}
+			return convert(item.start) + "~" + convert(item.end);
 		}
 	},
 	computed: {
+		
 	},
 	watch: {
+
 	}
 });
 
