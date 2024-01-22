@@ -179,6 +179,11 @@ Vue.component('blood-editor', {
 						setTimeout(() => {
 							document.querySelector("#blood1").focus();
 						}, 600);						
+					} else {
+						this.time2 = now;
+						setTimeout(() => {
+							document.querySelector("#blood2").focus();
+						}, 600);		
 					}
 				} else {
 					this.day = this.recorder.key;
@@ -197,7 +202,6 @@ Vue.component('blood-editor', {
 						setTimeout(() => {
 							document.querySelector("#blood2").focus();
 						}, 600);
-						
 					}
 				}
 			}
