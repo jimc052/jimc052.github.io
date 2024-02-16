@@ -32,12 +32,16 @@ Vue.component('dlg-writing', {
 		},
 		addPage() {
 			const el = document.querySelector("#dlg-writing .ivu-modal-content");
-			const table = document.createElement("table");
+			const div = document.createElement("div");
+			el.appendChild(div);
 			if(el.children.length > 0)
-				table.style.pageBreakBefore = "always";
+				div.style.pageBreakBefore = "always";
+
+			const table = document.createElement("table");
 			table.classList.add("table-writing")
 			table.style.width = Math.ceil(37.795 * 20) + "px"; // (Math.ceil(Math.round(203/2.54)) * 20.3) + "px";
-			el.appendChild(table);
+			div.appendChild(table);
+		
 			console.log(table.clientHeight)
 			let xx = 0; // table.clientHeight < Math.ceil(37.795 * 29) || 
 			while(xx < 10) {
@@ -45,11 +49,15 @@ Vue.component('dlg-writing', {
 				for(let j = 0; j < 10; j++) {
 					let cell = row.insertCell(0);
 					cell.innerHTML = j;
+					cell.style.height = "50px";
 				}
 				xx++;
 				// console.log(table.style.offsetHeight)
 			}
-			console.log(table)
+			setTimeout(() => {
+				console.log(div.clientHeight)	
+			}, 0);
+			
 			// for(let i = 0; i < 10; i++) {
 			// 	let row = table.insertRow(0);
 			// 	for(let j = 0; j < 10; j++) {
