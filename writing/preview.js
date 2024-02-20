@@ -67,10 +67,10 @@ Vue.component('preview', {
 				let row = table.insertRow(0);
 				for(let j = 0; j < 10; j++) {
 					let cell = row.insertCell(0);
-					// cell.innerHTML = (xx + 1) + " - " + j;
 					cell.style.height = this.cellSize + "px";
 					cell.style.width = this.cellSize + "px";
 					cell.style.fontSize = fontSize + "px";
+					cell.style.lineHeight = (fontSize) + "px";
 				}
 				xx++;
 			}
@@ -80,6 +80,7 @@ Vue.component('preview', {
 			let table = this.addPage();
 			let numCell = table.rows[0].cells.length;
 			let indexRow = 0, indexCell = 0;
+			
 
 			let chars = "三日目貝月自言白百主生古石告同用者直真有見年車帛星員";
 			for(let i = 0; i < chars.length; i++) {
