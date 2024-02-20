@@ -20,7 +20,8 @@
 
 	<script src="../VOA/system/fireStore.js"></script>
 	<script src="../VOA/system/system.js"></script>
-	<script src="./dlgWriting.js"></script>
+	<!-- <script src="./dlgWriting.js"></script> -->
+	<script src="./preview.js"></script>
 	<style>
 		* {
 			-webkit-box-sizing: border-box;
@@ -42,18 +43,28 @@
 			height: 100%;
 			font-size: 30px;
 		}
-		#table-writing {
+		#preview {
+			/* border: 1px red solid; */
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+		}
+		.table-writing {
 			/* width: 100%; */
 			border-spacing: 2px;
 		}
+	
 		.table-writing td {
-			border: 1px solid red;	
+			border: 1px solid red;
+			text-align: center;
+			color: #eee;
 		}
 	</style>
 </head>
 <body style="overflow: hidden; ">
 	<div id="app">
-		<dlg-writing :visible="dlg_writing" />
+		<preview />
 	</div>
 </body>
 <script>
