@@ -61,7 +61,7 @@ Vue.component('preview', {
 			div.appendChild(table);
 
       let height = Math.ceil(37.795 * 26);
-			let fontSize = Math.ceil(this.cellSize * 0.8)
+			let fontSize = Math.ceil(this.cellSize * 0.7)
 			let xx = 0;
 			while(xx < 100 && div.clientHeight < height) {
 				let row = table.insertRow(0);
@@ -89,7 +89,7 @@ Vue.component('preview', {
 				indexCell++;
 				if(indexCell >= numCell) {
 					indexCell = 0;
-					indexRow += 2;
+					indexRow += 3;
 				}
 
 			}
