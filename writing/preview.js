@@ -1,12 +1,30 @@
 Vue.component('preview', { 
 	template:  `<div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px;">
+		<div v-for="index1 in pagesNum" :key="index1" :id="'pages' + index1" class="writing-pages"
+			:style="{pageBreakBefore: index1 == 1 ? 'none' : 'always'}"
+		>
+			<div v-for="index2 in rowsNum" :key="index2" :id="'rows' + index1 + '-' + index2" class="writing-rows">
+				<div v-for="index3 in cellsNum" :key="index3" 
+					:id="'cells' + index1 + '-'  + index2 + '-' + index3" class="writing-cells"
+				>
+					<vm-canvas 
+						:char="cellIndex(index1, index2, index3) < rules[0].length 
+						? rules[0].substr(cellIndex(index1, index2, index3), 1) : '' " />
+				</div>
+			</div>
+		</div>
 	</div>`,
 	props: {
 	},
 	data() {
 		return {
-			visible: false,
-			cellSize: 72
+			cellSize: 72,
+			rowsNum: 15,
+			cellsNum: 10,
+			pagesNum: 2,
+			rules: [
+				"三日目貝月自言白百主生古石告同用者直真有見年車帛星員"
+			]
 		};
 	},
 	created(){
@@ -18,7 +36,7 @@ Vue.component('preview', {
     // this.addPage();
 		// setTimeout(() => {
 			this.onAfterPrint();
-			this.rule1();
+			// this.rule1();
 		// }, 1000);
 	},
 	destroyed() {
@@ -45,56 +63,14 @@ Vue.component('preview', {
     cancel() {
 			this.$emit("onClose");
 		},
-    addPage() {
-			const preview = document.querySelector("#preview");
-			const div = document.createElement("div");
-			div.style.background = "white";
-			if(preview.children.length > 0) {
-				div.style.pageBreakBefore = "always";
-				div.style.background = "grey";
-			}
-			preview.appendChild(div);
-
-			const table = document.createElement("table");
-			table.classList.add("table-writing")
-			table.style.width = Math.ceil(37.795 * 20) + "px"; // (Math.ceil(Math.round(203/2.54)) * 20.3) + "px";
-			div.appendChild(table);
-
-      let height = Math.ceil(37.795 * 26);
-			let fontSize = Math.ceil(this.cellSize * 0.7)
-			let xx = 0;
-			while(xx < 100 && div.clientHeight < height) {
-				let row = table.insertRow(0);
-				for(let j = 0; j < 10; j++) {
-					let cell = row.insertCell(0);
-					cell.style.height = this.cellSize + "px";
-					cell.style.width = this.cellSize + "px";
-					cell.style.fontSize = fontSize + "px";
-					cell.style.lineHeight = (fontSize) + "px";
-				}
-				xx++;
-			}
-			return table;
+		cellIndex(page, row, cell) {
+			// return this.name.split('').reverse().join('');
+			return ((page - 1) * this.rowsNum * this.cellsNum) 
+				+ ((row - 1) * this.cellsNum) + (cell - 1)
 		},
-		rule1() { // 均間原則，橫畫均間
-			let table = this.addPage();
-			let numCell = table.rows[0].cells.length;
-			let indexRow = 0, indexCell = 0;
-			
+	},
+	computed: {
 
-			let chars = "三日目貝月自言白百主生古石告同用者直真有見年車帛星員";
-			for(let i = 0; i < chars.length; i++) {
-				let char = chars.substr(i, 1);
-				let cell = table.rows[indexRow].cells[indexCell];
-				cell.innerHTML = char;
-				indexCell++;
-				if(indexCell >= numCell) {
-					indexCell = 0;
-					indexRow += 3;
-				}
-
-			}
-		}
 	},
 	watch: {
 

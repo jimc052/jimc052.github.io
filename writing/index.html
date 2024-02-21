@@ -21,6 +21,7 @@
 	<script src="../VOA/system/fireStore.js"></script>
 	<script src="../VOA/system/system.js"></script>
 	<!-- <script src="./dlgWriting.js"></script> -->
+	<script src="./canvas.js"></script>
 	<script src="./preview.js"></script>
 	<style>
 		* {
@@ -44,12 +45,26 @@
 			font-size: 30px;
 		}
 		#preview {
-			/* border: 1px red solid; */
+			border: 1px red solid;
+
+		}
+		.writing-pages {
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-start;
 			align-items: center;
 		}
+		.writing-rows {
+			display: flex;
+			flex-direction: row;
+			justify-content: flex-start;
+			align-items: center;			
+		}
+		.writing-cells {
+			border: 1px solid red; 
+			z-index: 1000;
+		}
+
 		.table-writing {
 			/* width: 100%; */
 			border-spacing: 0px;
@@ -59,7 +74,7 @@
 			/* border: 1px solid #FADBD8; */
 			border: 1px solid red;
 			text-align: center;
-			background-image: url("./images/bg2.png");
+			background-image: url("./images/bg1.png");
 			background-repeat: no-repeat;
       background-position: center;
 			color: #CACFD2;
