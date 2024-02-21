@@ -30,7 +30,7 @@ Vue.component('vm-canvas', {
 	},
 	async mounted () {
 		// if(this.char.length > 0) {
-			this.drawGrid();
+			this.drawBackground();
 			this.render();			
 		// } else {
 		// 	["background", "canvas", "letter"].forEach(el =>{
@@ -47,15 +47,9 @@ Vue.component('vm-canvas', {
 			let letter = this.$refs["letter"];
 			let ctx = canvas.getContext('2d');
 			let lineWidth = 10, color = "black";
-			// letter.style.cursor = "pointer";
 
-			// canvas.style.width = this.size + "px";
-			// canvas.style.height = this.size + "px";
-			
-			// letter.style.width = this.size + "px";
-			// letter.style.height = this.size + "px";
-			// letter.style.marginTop = (this.size * -1) + "px";
-			letter.style.fontSize = (this.size - 20) + "px";
+			letter.style.fontSize = Math.floor(this.size * 0.9) + "px";
+			letter.style.top = "-5px";
 			letter.style.fontFamily = this.font; // "メイリオ";
 			letter.style.color = "#c4c4c4";
 			
@@ -67,10 +61,6 @@ Vue.component('vm-canvas', {
 				canvas.width = width * window.devicePixelRatio;
 				ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 			}
-
-			// font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
-			
-
 			// mouse
 			function getMousePos(canvas, evt) {
 				var rect = canvas.getBoundingClientRect();
@@ -148,30 +138,32 @@ Vue.component('vm-canvas', {
 			let ctx = canvas.getContext('2d');
 			ctx.clearRect(0, 0, canvas.width, canvas.height);
 		},
-		drawGrid() {
+		drawBackground() {
 			let canvas = this.$refs["background"];
 			let ctx = canvas.getContext('2d');
 			let height = canvas.height, width = canvas.width;
 			ctx.lineWidth = 2;
 
 			ctx.strokeStyle = '#DCDCDC';
-      let j = 4;
-      let x = width / j + 1;
-      for (let i = 0; i < j + 1; i++) {
-        ctx.beginPath();
-				
-        ctx.moveTo(x * (i + 1), 0);
-        ctx.lineTo(x * (i + 1), height);
-        ctx.stroke();
-      }
-			let y = height / j + 1;
-      for (let i = 0; i < j + 1; i++) {
-        ctx.beginPath();
-        ctx.moveTo(0, y * (i + 1));
-        ctx.lineTo(width, y * (i + 1));
-        ctx.stroke();
-      }
-			// font-family: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+			let drawGrid = () => { // 新九宮格
+				let j = 4;
+				let x = width / j + 1;
+				for (let i = 0; i < j + 1; i++) {
+					ctx.beginPath();
+					
+					ctx.moveTo(x * (i + 1), 0);
+					ctx.lineTo(x * (i + 1), height);
+					ctx.stroke();
+				}
+				let y = height / j + 1;
+				for (let i = 0; i < j + 1; i++) {
+					ctx.beginPath();
+					ctx.moveTo(0, y * (i + 1));
+					ctx.lineTo(width, y * (i + 1));
+					ctx.stroke();
+				}				
+			}
+
 		},
 	},
 	watch: {
