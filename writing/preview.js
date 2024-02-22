@@ -35,14 +35,7 @@ Vue.component('preview', {
 			rules: {
 				"均間原則-橫畫": "三日目貝月自言白百主生古石告同用者直真有見年車帛星員書事長表明朋門問間",
 				"均間原則-豎畫": "",
-
 			}
-			// <!-- <vm-canvas :size="size" :char="rule.substr(index, 1)" /> -->
-			/*
-			<div v-else v-for="index in rule.length" :key="index">
-			
-		</div>
-			*/
 		};
 	},
 	created(){

@@ -1,3 +1,4 @@
+/* */
 Vue.component('vm-canvas', { 
 	template:  `<div style="position: relative; z-index: 0;" :style="{width: size + 'px', height: size + 'px'}">
 		<canvas ref="background" :width="size" :height="size" style="position: absolute;  z-index: 0; background: white;"></canvas>
@@ -29,29 +30,22 @@ Vue.component('vm-canvas', {
 	created(){
 	},
 	async mounted () {
-		// if(this.char.length > 0) {
-			this.drawBackground();
-			this.render();			
-		// } else {
-		// 	["background", "canvas", "letter"].forEach(el =>{
-		// 		let ref = this.$refs[el];
-		// 		if(ref != null) ref.style.display = "none";
-		// 	});
-		// }
+		this.drawBackground();
+		this.render();			
 	},
 	destroyed() {
   },
 	methods: {
 		render() {
 			let canvas = this.$refs["canvas"];
-			let letter = this.$refs["letter"];
 			let ctx = canvas.getContext('2d');
 			let lineWidth = 10, color = "black";
 
-			letter.style.fontSize = Math.floor(this.size * 0.9) + "px";
-			letter.style.top = "-5px";
-			letter.style.fontFamily = this.font; // "メイリオ";
-			letter.style.color = "#c4c4c4";
+			// let letter = this.$refs["letter"];
+			// letter.style.fontSize = Math.floor(this.size * 0.9) + "px";
+			// letter.style.top = "-5px";
+			// letter.style.fontFamily = this.font; // "メイリオ";
+			// letter.style.color = "#c4c4c4";
 			
 			let width = canvas.width, height = canvas.height;
 			if (window.devicePixelRatio) {
@@ -144,6 +138,11 @@ Vue.component('vm-canvas', {
 			let height = canvas.height, width = canvas.width;
 			ctx.lineWidth = 2;
 
+			ctx.strokeStyle = "red";
+			ctx.textAlign = "center";
+			ctx.font = `${Math.floor(this.size * 0.8)}px ${this.font}`;
+			ctx.strokeText(this.char + "a", canvas.width/2, canvas.height * 0.75);
+
 			ctx.strokeStyle = '#DCDCDC';
 			let drawGrid = () => { // 新九宮格
 				let j = 4;
@@ -163,7 +162,7 @@ Vue.component('vm-canvas', {
 					ctx.stroke();
 				}				
 			}
-
+			drawGrid();
 		},
 	},
 	watch: {
@@ -172,7 +171,7 @@ Vue.component('vm-canvas', {
 		},
 		char(value) {
 			this.clear();
-			// console.log(value)
+			console.log(value)
 		},
 		font(vale) {
 			this.render();
