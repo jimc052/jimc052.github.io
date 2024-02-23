@@ -6,17 +6,18 @@ Vue.component('preview', {
 			<div v-for="index2 in rowsNum" :key="index2" :id="'rows' + index1 + '-' + index2" class="writing-rows">
 				<div v-for="index3 in cellsNum" :key="index3" 
 					:id="'cells' + index1 + '-'  + index2 + '-' + index3" class="writing-cells"
+					:style="{width: (size) + 'px', height: (size) + 'px'}"
 				>
 					<vm-canvas :size="size"
 						:char="cellIndex(index1, index2, index3) < rule.length 
-						? rule.substr(cellIndex(index1, index2, index3), 1) : '' " />
+						? rule.substr(cellIndex(index1, index2, index3), 1) : null " />
 				</div>
 			</div>
 		</div>
 		<div v-else >
 				<div v-for="index in rule.length" :key="index"  
 					:id="'cells' + index" class="writing-cells"
-					:style="{width: (size + 4) + 'px', height: (size + 4) + 'px'}"
+					:style="{width: size + 'px', height: size + 'px'}"
 				>
 				<vm-canvas :size="size" :char=" rule.substr(index - 1, 1)" />
 			</div>
@@ -39,6 +40,10 @@ Vue.component('preview', {
 		};
 	},
 	created(){
+		if(document.body.clientWidth < 400)
+			this.size = 300;
+		else 
+			this.size = 72;
 	},
 	mounted () {
     window.addEventListener("beforeprint", this.onBeforePrint);
@@ -49,6 +54,7 @@ Vue.component('preview', {
 			this.onAfterPrint();
 			// this.rule1();
 		// }, 1000);
+
 		this.rule = this.rules["均間原則-橫畫"];
 	},
 	destroyed() {

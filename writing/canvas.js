@@ -1,13 +1,7 @@
-/* */
 Vue.component('vm-canvas', { 
-	template:  `<div style="position: relative; z-index: 0;" :style="{width: size + 'px', height: size + 'px'}">
-		<canvas ref="background" :width="size" :height="size" style="position: absolute;  z-index: 0; background: white;"></canvas>
-		<div ref="letter" style="position: absolute; z-index: 0; top: 0px; background: transparent; display: flex; flex-direction: column; align-items: center; justify-content: center;"
-		  :style="{width: size + 'px', height: size + 'px'}">
-			{{char}}
-		</div>
-		<canvas ref="canvas" :width="size" :height="size" style="position: absolute;  z-index: 100; background: transparent;"></canvas>
-  </div>`,
+	template:  `
+		<canvas ref="canvas" :width="size" :height="size" style="background: white"></canvas>
+  `,
 	props: {
 		size: {
 			type: Number,
@@ -30,139 +24,161 @@ Vue.component('vm-canvas', {
 	created(){
 	},
 	async mounted () {
-		this.drawBackground();
-		this.render();			
+		this.canvas = this.$refs["canvas"];
+		this.ctx = this.canvas.getContext('2d');
+
+		let lineWidth = this.size == 72 ? 1 : 5, color = "black";
+		let width = this.canvas.width, height = this.canvas.height;
+		if (window.devicePixelRatio) {
+			this.canvas.style.width = width + "px";
+			this.canvas.style.height = height + "px";
+			this.canvas.height = height * window.devicePixelRatio;
+			this.canvas.width = width * window.devicePixelRatio;
+			this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+		}
+		// mouse
+		let getMousePos =(canvas, evt) => {
+			let rect = this.canvas.getBoundingClientRect();
+			return {
+				x: evt.clientX - rect.left,
+				y: evt.clientY - rect.top
+			};
+		}
+
+		let mouseMove = (evt) => {
+			this.ctx.strokeStyle = color;
+			let mousePos = getMousePos(this.canvas, evt);
+			this.ctx.lineCap = "round";
+			this.ctx.lineWidth = lineWidth;
+			this.ctx.lineJoin="round";
+			this.ctx.shadowBlur = 1; // 邊緣模糊，防止直線邊緣出現鋸齒 
+			this.ctx.shadowColor = 'black';// 邊緣顏色
+			this.ctx.lineTo(mousePos.x, mousePos.y);
+			this.ctx.stroke();
+		}
+
+		this.canvas.addEventListener('mousedown', (evt) => {
+			let mousePos = getMousePos(this.canvas, evt);
+			this.ctx.beginPath();
+			this.ctx.moveTo(mousePos.x, mousePos.y);
+			evt.preventDefault();
+			this.canvas.addEventListener('mousemove', mouseMove, false);
+		});
+
+		this.canvas.addEventListener('mouseup', () => {
+			this.canvas.removeEventListener('mousemove', mouseMove, false);
+		}, false);
+
+		// touch
+		let getTouchPos = (canvas, evt) => {
+			let rect = this.canvas.getBoundingClientRect();
+			return {
+				x: evt.touches[0].clientX - rect.left,
+				y: evt.touches[0].clientY - rect.top
+			};
+		}
+
+		let touchMove = (evt) => {
+			this.ctx.strokeStyle = color;
+			// console.log("touchmove")
+			let touchPos = getTouchPos(canvas, evt);
+			// console.log(touchPos.x, touchPos.y)
+			
+			this.ctx.lineWidth = lineWidth;
+			this.ctx.lineCap = "round"; // 繪制圓形的結束線帽
+			this.ctx.lineJoin="round"; // 兩條線條交匯時，建立圓形邊角
+			this.ctx.shadowBlur = 1; // 邊緣模糊，防止直線邊緣出現鋸齒 
+			this.ctx.shadowColor = 'black'; // 邊緣顏色
+			this.ctx.lineTo(touchPos.x, touchPos.y);
+			this.ctx.stroke();
+		}
+
+		this.canvas.addEventListener('touchstart', (evt) => {
+			// console.log('touchstart')
+			// console.log(evt)
+			let touchPos = getTouchPos(canvas, evt);
+			this.ctx.beginPath(touchPos.x, touchPos.y);
+			this.ctx.moveTo(touchPos.x, touchPos.y);
+			evt.preventDefault();
+			this.canvas.addEventListener('touchmove', touchMove, false);
+		});
+
+		this.canvas.addEventListener('touchend', () => {
+			// console.log("touchend")
+			this.canvas.removeEventListener('touchmove', touchMove, false);
+		}, false);
+
+		// this.drawBackground();
+		this.render();
 	},
 	destroyed() {
   },
 	methods: {
 		render() {
-			let canvas = this.$refs["canvas"];
-			let ctx = canvas.getContext('2d');
-			let lineWidth = 10, color = "black";
+			this.drawBackground();
 
-			// let letter = this.$refs["letter"];
-			// letter.style.fontSize = Math.floor(this.size * 0.9) + "px";
-			// letter.style.top = "-5px";
-			// letter.style.fontFamily = this.font; // "メイリオ";
-			// letter.style.color = "#c4c4c4";
-			
-			let width = canvas.width, height = canvas.height;
-			if (window.devicePixelRatio) {
-				canvas.style.width = width + "px";
-				canvas.style.height = height + "px";
-				canvas.height = height * window.devicePixelRatio;
-				canvas.width = width * window.devicePixelRatio;
-				ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+			if(typeof this.char == "string" && this.char.length > 0) {
+				this.ctx.strokeStyle = "#c4c4c4";
+				this.ctx.textAlign = "center";
+				this.ctx.font = `${Math.floor(this.size * 0.8)}px ${this.font}`;
+				this.ctx.strokeText(this.char, this.canvas.width/2, this.canvas.height * 0.75);				
 			}
-			// mouse
-			function getMousePos(canvas, evt) {
-				var rect = canvas.getBoundingClientRect();
-				return {
-					x: evt.clientX - rect.left,
-					y: evt.clientY - rect.top
-				};
-			}
-
-			function mouseMove(evt) {
-				ctx.strokeStyle = color;
-				var mousePos = getMousePos(canvas, evt);
-				ctx.lineCap = "round";
-				ctx.lineWidth = lineWidth;
-				ctx.lineJoin="round";
-				ctx.shadowBlur = 1; // 邊緣模糊，防止直線邊緣出現鋸齒 
-				ctx.shadowColor = 'black';// 邊緣顏色
-				ctx.lineTo(mousePos.x, mousePos.y);
-				ctx.stroke();
-			}
-
-			canvas.addEventListener('mousedown', function(evt) {
-				var mousePos = getMousePos(canvas, evt);
-				ctx.beginPath();
-				ctx.moveTo(mousePos.x, mousePos.y);
-				evt.preventDefault();
-				canvas.addEventListener('mousemove', mouseMove, false);
-			});
-
-			canvas.addEventListener('mouseup', function() {
-				canvas.removeEventListener('mousemove', mouseMove, false);
-			}, false);
-
-			// touch
-			function getTouchPos(canvas, evt) {
-				var rect = canvas.getBoundingClientRect();
-				return {
-					x: evt.touches[0].clientX - rect.left,
-					y: evt.touches[0].clientY - rect.top
-				};
-			}
-
-			function touchMove(evt) {
-				ctx.strokeStyle = color;
-				// console.log("touchmove")
-				var touchPos = getTouchPos(canvas, evt);
-				// console.log(touchPos.x, touchPos.y)
-				
-				ctx.lineWidth = lineWidth;
-				ctx.lineCap = "round"; // 繪制圓形的結束線帽
-				ctx.lineJoin="round"; // 兩條線條交匯時，建立圓形邊角
-				ctx.shadowBlur = 1; // 邊緣模糊，防止直線邊緣出現鋸齒 
-				ctx.shadowColor = 'black'; // 邊緣顏色
-				ctx.lineTo(touchPos.x, touchPos.y);
-				ctx.stroke();
-			}
-
-			canvas.addEventListener('touchstart', function(evt) {
-				// console.log('touchstart')
-				// console.log(evt)
-				var touchPos = getTouchPos(canvas, evt);
-				ctx.beginPath(touchPos.x, touchPos.y);
-				ctx.moveTo(touchPos.x, touchPos.y);
-				evt.preventDefault();
-				canvas.addEventListener('touchmove', touchMove, false);
-			});
-
-			canvas.addEventListener('touchend', function() {
-				// console.log("touchend")
-				canvas.removeEventListener('touchmove', touchMove, false);
-			}, false);
 		},
 		clear() {
-			let canvas = this.$refs["canvas"];
-			let ctx = canvas.getContext('2d');
-			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			this.render();
 		},
 		drawBackground() {
-			let canvas = this.$refs["background"];
-			let ctx = canvas.getContext('2d');
-			let height = canvas.height, width = canvas.width;
-			ctx.lineWidth = 2;
-
-			ctx.strokeStyle = "red";
-			ctx.textAlign = "center";
-			ctx.font = `${Math.floor(this.size * 0.8)}px ${this.font}`;
-			ctx.strokeText(this.char + "a", canvas.width/2, canvas.height * 0.75);
-
-			ctx.strokeStyle = '#DCDCDC';
+			let height = this.canvas.height, width = this.canvas.width;
+			this.ctx.lineWidth = 2;
+			// this.ctx.strokeStyle = "red";
+			this.ctx.strokeStyle = '#DCDCDC';
 			let drawGrid = () => { // 新九宮格
 				let j = 4;
 				let x = width / j + 1;
 				for (let i = 0; i < j + 1; i++) {
-					ctx.beginPath();
-					
-					ctx.moveTo(x * (i + 1), 0);
-					ctx.lineTo(x * (i + 1), height);
-					ctx.stroke();
+					this.ctx.beginPath();
+					this.ctx.moveTo(x * (i + 1), 0);
+					this.ctx.lineTo(x * (i + 1), height);
+					this.ctx.stroke();
 				}
 				let y = height / j + 1;
 				for (let i = 0; i < j + 1; i++) {
-					ctx.beginPath();
-					ctx.moveTo(0, y * (i + 1));
-					ctx.lineTo(width, y * (i + 1));
-					ctx.stroke();
+					this.ctx.beginPath();
+					this.ctx.moveTo(0, y * (i + 1));
+					this.ctx.lineTo(width, y * (i + 1));
+					this.ctx.stroke();
 				}				
 			}
+
+			let drawBorder = () => {
+				this.ctx.strokeStyle = 'red';
+				// 上
+				this.ctx.beginPath();
+				this.ctx.moveTo(0, 0);
+				this.ctx.lineTo(width, 0);
+				this.ctx.stroke();
+
+				// 左
+				this.ctx.beginPath();
+				this.ctx.moveTo(0, 0);
+				this.ctx.lineTo(0, height);
+				this.ctx.stroke();
+
+				// 下
+				this.ctx.beginPath();
+				this.ctx.moveTo(0, height);
+				this.ctx.lineTo(width, height);
+				this.ctx.stroke();				
+
+				// 右
+				this.ctx.beginPath();
+				this.ctx.moveTo(width, 0);
+				this.ctx.lineTo(width, height);
+				this.ctx.stroke();
+			}
 			drawGrid();
+			drawBorder();
 		},
 	},
 	watch: {
@@ -170,8 +186,9 @@ Vue.component('vm-canvas', {
 			// console.log(value)
 		},
 		char(value) {
-			this.clear();
-			console.log(value)
+			this.render();
+			// this.clear();
+			// console.log(value)
 		},
 		font(vale) {
 			this.render();
