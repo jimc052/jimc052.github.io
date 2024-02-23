@@ -30,11 +30,11 @@ Vue.component('vm-canvas', {
 		let lineWidth = this.size == 72 ? 1 : 5, color = "black";
 		let width = this.canvas.width, height = this.canvas.height;
 		if (window.devicePixelRatio) {
-			this.canvas.style.width = width + "px";
-			this.canvas.style.height = height + "px";
-			this.canvas.height = height * window.devicePixelRatio;
-			this.canvas.width = width * window.devicePixelRatio;
-			this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+			// this.canvas.style.width = width + "px";
+			// this.canvas.style.height = height + "px";
+			// this.canvas.height = height * window.devicePixelRatio;
+			// this.canvas.width = width * window.devicePixelRatio;
+			// this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 		}
 		// mouse
 		let getMousePos =(canvas, evt) => {
@@ -130,10 +130,10 @@ Vue.component('vm-canvas', {
 		},
 		drawBackground() {
 			let height = this.canvas.height, width = this.canvas.width;
-			this.ctx.lineWidth = 2;
-			// this.ctx.strokeStyle = "red";
-			this.ctx.strokeStyle = '#DCDCDC';
+
 			let drawGrid = () => { // 新九宮格
+				this.ctx.lineWidth = 2;
+				this.ctx.strokeStyle = '#DCDCDC';
 				let j = 4;
 				let x = width / j + 1;
 				for (let i = 0; i < j + 1; i++) {
@@ -151,7 +151,8 @@ Vue.component('vm-canvas', {
 				}				
 			}
 
-			let drawBorder = () => {
+			let drawBorder = () => { // 畫框
+				this.ctx.lineWidth = 2;
 				this.ctx.strokeStyle = 'red';
 				// 上
 				this.ctx.beginPath();
