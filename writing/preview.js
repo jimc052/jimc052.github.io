@@ -1,6 +1,6 @@
 Vue.component('preview', { 
 	template:  `<div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px;">
-		<div v-if="size < 300" v-for="index1 in pagesNum" :key="index1" :id="'pages' + index1" class="writing-pages"
+		<div v-if="size == 72" v-for="index1 in pagesNum" :key="index1" :id="'pages' + index1" class="writing-pages"
 			:style="{pageBreakBefore: index1 == 1 ? 'none' : 'always'}"
 		>
 			<div v-for="index2 in rowsNum" :key="index2" :id="'rows' + index1 + '-' + index2" class="writing-rows">
@@ -31,11 +31,12 @@ Vue.component('preview', {
 			rowsNum: 14, // 15
 			cellsNum: 10, // 10
 			pagesNum: 1,
+			rowsSpace: 2,
 			size: 72, // 72, 300
 			rule: "",
 			rules: {
 				"均間原則-橫畫": "三日目貝月自言白百主生古石告同用者直真有見年車帛星員書事長表明朋門問間",
-				"均間原則-豎畫": "",
+				"均間原則-豎畫": "山出中巾而皿血冊回向田由甲申用世高車重果可同固過要覆罪羅西帶明門川州順",
 			}
 		};
 	},
@@ -48,14 +49,26 @@ Vue.component('preview', {
 	mounted () {
     window.addEventListener("beforeprint", this.onBeforePrint);
     window.addEventListener("afterprint", this.onAfterPrint);
-    // this.addPage();
-    // this.addPage();
 		// setTimeout(() => {
 			this.onAfterPrint();
-			// this.rule1();
 		// }, 1000);
+		let s = this.rules["均間原則-橫畫"];
+		if(this.size == 72 && this.rowsSpace > 0) {
+			let i1 = s.length % this.cellsNum;
+			s += " ".repeat(i1);
 
-		this.rule = this.rules["均間原則-橫畫"];
+			let s2 = "";
+			for(let i = 0; i < s.length; i++) {
+				if(i > 0 && i % this.cellsNum == 0) {
+					s2 += " ".repeat(this.cellsNum * this.rowsSpace);
+				}
+				s2 += s.substr(i, 1);
+			}
+			s = s2;
+			this.pagesNum = Math.ceil(s.length / (this.cellsNum * this.rowsNum));
+			// console.log(s.length + ", " + (this.cellsNum * this.rowsNum) + ", " + this.pagesNum)
+		}
+		this.rule = s;
 	},
 	destroyed() {
     window.removeEventListener("beforeprint", this.onBeforePrint);

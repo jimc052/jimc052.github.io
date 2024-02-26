@@ -120,8 +120,8 @@ Vue.component('vm-canvas', {
 			if(typeof this.char == "string" && this.char.length > 0) {
 				this.ctx.strokeStyle = "#c4c4c4";
 				this.ctx.textAlign = "center";
-				this.ctx.font = `${Math.floor(this.size * 0.8)}px ${this.font}`;
-				this.ctx.strokeText(this.char, this.canvas.width/2, this.canvas.height * 0.75);				
+				this.ctx.font = `${Math.floor(this.size * 0.85)}px ${this.font}`;
+				this.ctx.strokeText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);				
 			}
 		},
 		clear() {
@@ -131,7 +131,7 @@ Vue.component('vm-canvas', {
 		drawBackground() {
 			let height = this.canvas.height, width = this.canvas.width;
 
-			let drawGrid = () => { // 新九宮格
+			let drawGrid1 = () => { // 九宮格
 				this.ctx.lineWidth = 2;
 				this.ctx.strokeStyle = '#DCDCDC';
 				let j = 4;
@@ -147,6 +147,44 @@ Vue.component('vm-canvas', {
 					this.ctx.beginPath();
 					this.ctx.moveTo(0, y * (i + 1));
 					this.ctx.lineTo(width, y * (i + 1));
+					this.ctx.stroke();
+				}				
+			}
+
+			let drawGrid2 = () => { // 新九宮格
+				this.ctx.lineWidth = 2;
+				this.ctx.strokeStyle = '#DCDCDC';
+				let j = 4;
+				let x = width / j + 1;
+				for (let i = 0; i < j + 1; i++) {
+					if(i == 0)
+					  x = width * 0.15;
+					else if(i == 1)
+					  x = width * 0.5;
+					else if(i == 2)
+					  x = width * 0.85;
+					this.ctx.beginPath();
+					// this.ctx.moveTo(x * (i + 1), 0);
+					// this.ctx.lineTo(x * (i + 1), height);
+					this.ctx.moveTo(x, 0);
+					this.ctx.lineTo(x, height);
+					this.ctx.stroke();
+				}
+				let y = height / j + 1;
+				for (let i = 0; i < j + 1; i++) {
+
+					if(i == 0)
+					  y = height * 0.15;
+					else if(i == 1)
+					  y = height * 0.5;
+					else if(i == 2)
+					  y = height * 0.85;
+
+					this.ctx.beginPath();
+					this.ctx.moveTo(0, y);
+					this.ctx.lineTo(width, y);
+					// this.ctx.moveTo(0, y * (i + 1));
+					// this.ctx.lineTo(width, y * (i + 1));
 					this.ctx.stroke();
 				}				
 			}
@@ -178,7 +216,7 @@ Vue.component('vm-canvas', {
 				this.ctx.lineTo(width, height);
 				this.ctx.stroke();
 			}
-			drawGrid();
+			drawGrid1();
 			drawBorder();
 		},
 	},
