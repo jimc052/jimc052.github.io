@@ -120,8 +120,9 @@ Vue.component('vm-canvas', {
 			if(typeof this.char == "string" && this.char.length > 0) {
 				this.ctx.strokeStyle = "#c4c4c4";
 				this.ctx.textAlign = "center";
-				this.ctx.font = `${Math.floor(this.size * 0.85)}px ${this.font}`;
-				this.ctx.strokeText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);				
+				this.ctx.font = `${Math.floor(this.size * 0.8)}px ${this.font}`;
+				// this.ctx.fillText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);
+				this.ctx.strokeText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);
 			}
 		},
 		clear() {
@@ -130,10 +131,11 @@ Vue.component('vm-canvas', {
 		},
 		drawBackground() {
 			let height = this.canvas.height, width = this.canvas.width;
+			this.ctx.lineWidth = 2;
+			// this.ctx.strokeStyle = '#DCDCDC';
+			this.ctx.strokeStyle = 'red';
 
 			let drawGrid1 = () => { // 九宮格
-				this.ctx.lineWidth = 2;
-				this.ctx.strokeStyle = '#DCDCDC';
 				let j = 4;
 				let x = width / j + 1;
 				for (let i = 0; i < j + 1; i++) {
@@ -152,8 +154,6 @@ Vue.component('vm-canvas', {
 			}
 
 			let drawGrid2 = () => { // 新九宮格
-				this.ctx.lineWidth = 2;
-				this.ctx.strokeStyle = '#DCDCDC';
 				let j = 4;
 				let x = width / j + 1;
 				for (let i = 0; i < j + 1; i++) {
@@ -189,6 +189,24 @@ Vue.component('vm-canvas', {
 				}				
 			}
 
+			let drawGridRice = () => { // 米
+				this.ctx.lineWidth = 1;
+				this.ctx.beginPath();
+				this.ctx.moveTo(0, 0);
+				this.ctx.lineTo(width, height);
+				this.ctx.stroke();
+
+				this.ctx.beginPath();
+				this.ctx.moveTo(width, 0);
+				this.ctx.lineTo(0, height);
+				this.ctx.stroke();
+
+				this.ctx.beginPath();
+				this.ctx.moveTo(0, height / 2);
+				this.ctx.lineTo(width, height / 2);
+				this.ctx.stroke();
+			}
+
 			let drawBorder = () => { // 畫框
 				this.ctx.lineWidth = 2;
 				this.ctx.strokeStyle = 'red';
@@ -216,7 +234,8 @@ Vue.component('vm-canvas', {
 				this.ctx.lineTo(width, height);
 				this.ctx.stroke();
 			}
-			drawGrid1();
+			// drawGrid1();
+			drawGridRice();
 			drawBorder();
 		},
 	},
