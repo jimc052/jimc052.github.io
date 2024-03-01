@@ -118,11 +118,13 @@ Vue.component('vm-canvas', {
 			this.drawBackground();
 
 			if(typeof this.char == "string" && this.char.length > 0) {
-				this.ctx.strokeStyle = "#c4c4c4";
 				this.ctx.textAlign = "center";
 				this.ctx.font = `${Math.floor(this.size * 0.8)}px ${this.font}`;
-				// this.ctx.fillText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);
-				this.ctx.strokeText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);
+				this.ctx.fillStyle = "#c4c4c4";
+				this.ctx.fillText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);
+
+				// this.ctx.strokeStyle = "#c4c4c4";
+				// this.ctx.strokeText(this.char, this.canvas.width / 2, this.canvas.height * 0.75);
 			}
 		},
 		clear() {
@@ -190,7 +192,7 @@ Vue.component('vm-canvas', {
 			}
 
 			let drawGridRice = () => { // 米
-				this.ctx.lineWidth = 1;
+				this.ctx.lineWidth = 0.5;
 				this.ctx.beginPath();
 				this.ctx.moveTo(0, 0);
 				this.ctx.lineTo(width, height);

@@ -1,6 +1,6 @@
 Vue.component('preview', { 
-	template:  `<div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px;">
-		<div v-if="size == 72" v-for="index1 in pagesNum" :key="index1" :id="'pages' + index1" class="writing-pages"
+	template:  `<div id="preview" style="background: white; overflow: auto; top: 0px; left: 0px; border: 1px blue solid;">
+		<div v-if="size <= 72" v-for="index1 in pagesNum" :key="index1" :id="'pages' + index1" class="writing-pages"
 			:style="{pageBreakBefore: index1 == 1 ? 'none' : 'always'}"
 		>
 			<div v-for="index2 in rowsNum" :key="index2" :id="'rows' + index1 + '-' + index2" class="writing-rows">
@@ -27,12 +27,11 @@ Vue.component('preview', {
 	},
 	data() {
 		return {
-			cellSize: 72,
-			rowsNum: 14, // 15
-			cellsNum: 10, // 10
+			rowsNum: 29, // 72 = 14, 50 = 29
+			cellsNum: 20, // 72 = 10, 50 = 20
 			pagesNum: 1,
 			rowsSpace: 2,
-			size: 72, // 72, 300
+			size: 50, // 72, 300
 			rule: "",
 			rules: {
 				"均間原則-橫畫": "三日目貝月自言白百主生古石告同用者直真有見年車帛星員書事長表明朋門問間",
@@ -41,10 +40,9 @@ Vue.component('preview', {
 		};
 	},
 	created(){
-		if(document.body.clientWidth < 400)
+		if(document.body.clientWidth < 400) {
 			this.size = 300;
-		else 
-			this.size = 72;
+		}
 	},
 	mounted () {
     window.addEventListener("beforeprint", this.onBeforePrint);
@@ -53,7 +51,7 @@ Vue.component('preview', {
 			this.onAfterPrint();
 		// }, 1000);
 		let s = this.rules["均間原則-橫畫"];
-		if(this.size == 72 && this.rowsSpace > 0) {
+		if(this.size <= 72 && this.rowsSpace > 0) {
 			let i1 = s.length % this.cellsNum;
 			s += " ".repeat(i1);
 
@@ -101,9 +99,7 @@ Vue.component('preview', {
 		},
 	},
 	computed: {
-
 	},
 	watch: {
-
 	},
 });
