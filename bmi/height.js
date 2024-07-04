@@ -1,12 +1,12 @@
-Vue.component('height', { 
-	template:  `<modal v-model="visible" 
+Vue.component('dlg-height', { 
+	template:  `<modal v-model="visible"
     title="身高"
     class-name="vertical-center-modal" 
 		id="height" :closable="false" style="overflow: hidden;" @on-ok="ok"
 	>
-		<div style="height: 300px; display: flex; flex-direction: row; align-items: center;  justify-content: center;">
+		<div style="height: 80px; display: flex; flex-direction: row; align-items: center;  justify-content: center;">
       <div style="flex: 1;"></div>  
-      <Input ref="input" v-model="height" placeholder="請輸入身高" 
+      <Input ref="input" v-model="h" placeholder="請輸入身高" 
         element-id="input" @on-change="onKeyChange"
 		  	style="flex: 1; font-size: 20px; padding: 5px;" size="large" clearable />
       <div style="flex: 1;">公分</div>
@@ -23,11 +23,16 @@ Vue.component('height', {
 			require: true, 
 			default: false 
 		},
+		height: {
+			type: String,
+			require: true, 
+			default: "" 
+		},
 	},
 	data() {
 		return {
       dirty: false,
-      height: "0"
+			h: ""
 		};
 	},
 	created(){
@@ -38,24 +43,33 @@ Vue.component('height', {
   },
 	methods: {
     onKeyChange(e) {
-      console.log(e)
+			this.dirty = true;
     },
 		ok(){
-			this.$emit("onSave", this.height);
+			if(this.isValidNumber(this.h)) {
+				this.$emit("onSave", this.h);
+			} else {
+				alert("請輸入正確數字")
+			}
 		},
 		cancel() {
 			this.$emit("onClose");
 		},
-
+		isValidNumber(str) {
+			const regex = /^-?\d+(\.\d+)?$/;
+			return regex.test(str);
+		}
 	},
 	watch: {
 		visible(value) {
-      console.log(value)
       if(value == true) {
         setTimeout(() => {
           this.$refs["input"].focus();
         }, 300);        
       }
+		},
+		height(value) {
+			this.h = value;
 		}
 	},
 });

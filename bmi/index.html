@@ -13,6 +13,7 @@
 	<script src="../statics/iview/zh-TW.min.js"></script>
   <script src="list.js"></script>
 	<script src="height.js"></script>
+	<script src="weight.js"></script>
 	
 	<style>
 		* {
@@ -25,7 +26,7 @@
 		}
 		body {
 			margin: 0px;
-			background-color: #ebecf0;
+			/* background-color: #ebecf0; */
 			padding: 0px 0px;
 			visibility: hidden;
 			color: rgb(0, 0, 0);
@@ -62,7 +63,29 @@
 			align-items: center; 
 			justify-content: center;
 			padding: 5px 10px;
-			border-bottom: 1px solid #eee;
+			/* border-bottom: 1px solid #eee; */
+		}
+		.row > div {
+			font-size: 20px;
+		}
+
+		.row > div:nth-child(1) {
+			width: 100px;
+		}
+		.row > div:nth-child(2) {
+			flex: 1; 
+			text-align: center;
+		}
+		.row > div:nth-child(3) {
+			width: 120px;
+			text-align: right;
+		}
+
+		.row + .row {
+			border-top: 1px #ebecf0 solid; 
+		}
+		.row:nth-last-child(1) {
+			border-bottom: 1px #ebecf0 solid; 
 		}
 		
 	</style>
@@ -80,9 +103,9 @@
 			if(typeof key == "string" && typeof value == "undefined"){
 				let s = window.localStorage[key];
 				if(typeof s == "undefined"){
-					return key == "BMI" ? [] : {};
-				}
-				return JSON.parse(s);
+					return key == "BMI" ? [] : "";
+				} else 
+					return key == "BMI" ? JSON.parse(s) : s;
 			} 
 			else {
 				if(value == null)
@@ -92,6 +115,13 @@
 			}
 		}
 
+		Vue.prototype.$calculateBMI = function (weight, height) {
+			if (weight <= 0 || height <= 0) {
+					throw new Error("体重和身高必须是正数");
+			}
+			height = height / 100;
+			return (weight / (height * height)).toFixed(2);
+		}
 		vm = new Vue({
 			el: '#app',
 			data() {
@@ -119,6 +149,46 @@
 			}
 		});
 	}
+
+	Date.prototype.toString = function (format = "yyyy/mm/dd hh:MM:ss.ms") {
+		let y = this.getFullYear(), m = this.getMonth() + 1;
+		let d = this.getDate(), h = this.getHours();
+		let M = this.getMinutes(), s = this.getSeconds();
+		let ms = this.getMilliseconds();
+		let r = "";
+		if (typeof (format) == "undefined") {
+			format = "yyyy/mm/dd hh:MM:ss.ms";
+		}
+		r = format.replace("yyyy", y);
+		r = r.replace("yy", ("" + y).substr(2, 2));
+		if (m < 10)
+			m = "0" + m;
+		r = r.replace("mm", m);
+		if(format.indexOf("dd") > -1) {
+			if (d < 10)
+				d = "0" + d;
+			r = r.replace("dd", d);		
+		} else {
+			r = r.replace("d", d);	
+		}
+
+		
+		if (h < 10)
+			h = "0" + h;
+		r = r.replace("hh", h);
+		if (M < 10)
+			M = "0" + M;
+		r = r.replace("MM", M);
+		if (s < 10)
+			s = "0" + s;
+		r = r.replace("ss", s);
+		if (ms < 10)
+			ms = "00" + ms;
+		else if (ms < 100)
+			ms = "0" + ms;
+		r = r.replace("ms", ms);
+		return r + "";
+	};
 
 
 /* 	
