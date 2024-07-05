@@ -79,10 +79,10 @@ Vue.component('dlg-weight', {
 			let len = _w.length;
 			if(index == len - 1) {
 				_w = _w.substr(0, len - 1)
-			} else if(len > index + 1) {
+			} else if(index > 0 && len > index + 1) {
 				_w = _w.substr(0, index + 2);
 			}
-			console.log(`index: ${index}, length: ${len}, value: ${_w}`)
+			// console.log(`index: ${index}, length: ${len}, value: ${_w}`)
 			return _w;
 		},
 		cancel() {
