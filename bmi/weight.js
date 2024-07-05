@@ -50,21 +50,40 @@ Vue.component('dlg-weight', {
 	methods: {
     onKeyChange(e) {
       this.$refs["bmi"].innerHTML = "";
+			this.$refs["bmi"].style.color = null;
       this.calculate();
+			return false;
     },
     calculate() {
-      if(this.isValidNumber(this.weight)) {
-        this.$refs["bmi"].innerHTML = this.$calculateBMI(parseFloat(this.weight), parseInt(this.height, 10));
+			let _w = this.fillWeight();
+      if(this.isValidNumber(_w)) {
+				let value = this.$calculateBMI(parseFloat(_w), parseInt(this.height, 10));
+        this.$refs["bmi"].innerHTML = value;
+
+				this.$refs["bmi"].style.color = value >= '18.00' && value <= '24.00' ? 'blue' : 'red';
         this.isOK = true;
-      } else 
-      this.isOK = false;
+      } else {
+      	this.isOK = false;
+			}
     },
 		ok(){
 			if(this.isOK) {
-				this.$emit("onSave", {weight: this.weight, bmi: this.$refs["bmi"].innerHTML});
+				this.$emit("onSave", {weight: this.fillWeight(), bmi: this.$refs["bmi"].innerHTML});
 			} else {
 				alert("請輸入正確數字")
 			}
+		},
+		fillWeight() {
+			let _w = this.weight;
+			let index = _w.indexOf(".");
+			let len = _w.length;
+			if(index == len - 1) {
+				_w = _w.substr(0, len - 1)
+			} else if(len > index + 1) {
+				_w = _w.substr(0, index + 2);
+			}
+			console.log(`index: ${index}, length: ${len}, value: ${_w}`)
+			return _w;
 		},
 		cancel() {
 			this.$emit("onClose");
@@ -86,6 +105,7 @@ Vue.component('dlg-weight', {
           if(input != null) {
             clearInterval(idTime);
             input.style.width = "100px";
+						input.maxlength = 4;
           }
         }, 100);
       }
