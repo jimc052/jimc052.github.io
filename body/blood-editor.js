@@ -63,6 +63,8 @@ Vue.component('blood-editor', {
 		blood2.addEventListener("keydown", this.keydown);
 	},
 	destroyed() {
+		let blood1 = document.querySelector("#blood1");
+		let blood2 = document.querySelector("#blood2");
 		blood1.removeEventListener("keydown", this.keydown);
 		blood2.removeEventListener("keydown", this.keydown);
   },

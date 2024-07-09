@@ -85,16 +85,16 @@ Vue.component('list', {
 		},
 		onSaveWeight(w) {
 			this.modalW = false;
+			this.today = (new Date()).toString("yyyy-mm-dd");
 			let json = Object.assign({
-				date: (new Date()).toString("yyyy-mm-dd"), 
+				date: this.today, 
 			}, w);
 
 			let arr = this.$storage("BMI");
 			arr.unshift(json);
 			this.$storage("BMI", arr);
 
-			console.log(JSON.stringify(arr, null, 2));
-
+			// console.log(JSON.stringify(arr, null, 2));
 			this.datas.unshift(json);
 			if(this.datas.length >= 2)
 				this.compare(0);

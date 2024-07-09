@@ -44,19 +44,29 @@ Vue.component('dlg-weight', {
 	created(){
 	},
 	mounted () {
+		let input2 = document.querySelector("#input2");
+		input2.addEventListener("keydown", this.keydown);
 	},
 	destroyed() {
+		let input2 = document.querySelector("#input2");
+		input2.removeEventListener("keydown", this.keydown);
   },
 	methods: {
+		keydown(event) {
+			let _w = this.fillWeight();
+			if(event.keyCode == 13 && _w.length > 0) {
+				this.onKeyChange();
+				if(this.isOK == true) this.ok();
+			}
+		},
     onKeyChange(e) {
       this.$refs["bmi"].innerHTML = "";
 			this.$refs["bmi"].style.color = null;
       this.calculate();
-			return false;
     },
     calculate() {
 			let _w = this.fillWeight();
-      if(this.isValidNumber(_w)) {
+      if(this.isValidNumber(_w) && parseInt(_w, 10) > 40 && parseInt(_w, 10) < 100) {
 				let value = this.$calculateBMI(parseFloat(_w), parseInt(this.height, 10));
         this.$refs["bmi"].innerHTML = value;
 

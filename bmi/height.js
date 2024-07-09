@@ -6,8 +6,8 @@ Vue.component('dlg-height', {
 	>
 		<div style="height: 80px; display: flex; flex-direction: row; align-items: center;  justify-content: center;">
       <div style="flex: 1;"></div>  
-      <Input ref="input" v-model="h" placeholder="請輸入身高" 
-        element-id="input" @on-change="onKeyChange"
+      <Input ref="input1" v-model="h" placeholder="請輸入身高" 
+        element-id="input1" @on-change="onKeyChange"
 		  	style="flex: 1; font-size: 20px; padding: 5px;" size="large" clearable />
       <div style="flex: 1;">公分</div>
     </div>
@@ -38,15 +38,25 @@ Vue.component('dlg-height', {
 	created(){
 	},
 	mounted () {
+		let input1 = document.querySelector("#input1");
+		input1.addEventListener("keydown", this.keydown);
 	},
 	destroyed() {
+		let input1 = document.querySelector("#input1");
+		input1.removeEventListener("keydown", this.keydown);
   },
 	methods: {
+		keydown(e) {
+			if(e.keyCode == 13 && this.dirty == true) {
+				this.ok();
+			}
+		},
     onKeyChange(e) {
-			this.dirty = true;
+			this.dirty = this.h.length > 0 ? true : false;
     },
 		ok(){
-			if(this.isValidNumber(this.h)) {
+			// console.log(`height: ${this.h}, min: ${this.h > "100"}, max: ${this.h < "200"}`)
+			if(this.isValidNumber(this.h) && parseInt(this.h, 10) > 100 && parseInt(this.h, 10) < 200) {
 				this.$emit("onSave", this.h);
 			} else {
 				alert("請輸入正確數字")
@@ -64,7 +74,7 @@ Vue.component('dlg-height', {
 		visible(value) {
       if(value == true) {
         setTimeout(() => {
-          this.$refs["input"].focus();
+          this.$refs["input1"].focus();
         }, 300);        
       }
 		},
