@@ -25,7 +25,7 @@ Vue.component('list', {
 		/>
 		<dlg-height :visible="modalH" :height="height" @onClose="modalH = false" @onSave="onSaveHeight" />
 		<dlg-weight ref="weight" :visible="modalW" :height="height" @onClose="modalW = false" @onSave="onSaveWeight" />
-		<div id="footer">2024-07-08</div>
+		<div id="footer">2024-07-09</div>
 	</div>`,
 	props: {
 	},
