@@ -171,7 +171,8 @@ Vue.component('calendar', {
 			if(this.isToday() == false) {
 				alert("日期逾時，請更新網頁")
 			} else {
-				let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
+				let url = this.$storage("schedule-url");
+				// let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
 				// 'https://jd.jabezpos.com/?designer=BCC_EIP&database=ERPS&solution=SOLUTION1';
 				// let url = 'https://bccjd.jabezpos.com/main?designer=BCC_EIP';
 				if(this.$isDebug() == false){

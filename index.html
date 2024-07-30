@@ -122,7 +122,9 @@
 
 			let today = new Date(), retireDate  = new Date(2026, 4, 14);
 			let days = retireDate.between(today);
-			div.innerText = "離退休日：" + days + "天";			
+			let datas = today.calculateDateDifference(retireDate);
+			
+			div.innerText = "離退休日：" + days + "天 / " + `${datas.years}年 ${datas.months}月 ${datas.days}天`;			
 		}
 
 	}
@@ -146,6 +148,39 @@
 		return r;
 	};
 
+	Date.prototype.calculateDateDifference = function(endDate) {
+    let startDate = this;
+    let start = new Date(startDate);
+    let end = new Date(endDate);
+
+    // Calculate the difference in years
+    let years = end.getFullYear() - start.getFullYear();
+
+    // Calculate the difference in months
+    let months = end.getMonth() - start.getMonth();
+    if (months < 0) {
+        years--;
+        months += 12;
+    }
+
+    // Calculate the difference in days
+    let days = end.getDate() - start.getDate();
+    if (days < 0) {
+        months--;
+        let previousMonth = new Date(end.getFullYear(), end.getMonth(), 0).getDate();
+        days += previousMonth;
+        if (months < 0) {
+            years--;
+            months += 12;
+        }
+    }
+
+    return {
+        years: years,
+        months: months,
+        days: days
+    };
+	};
 
 </script>
 </html>
