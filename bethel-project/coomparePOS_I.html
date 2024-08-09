@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>POS_I 比對</title>
+    <style>
+     html, body {
+      height: 100%;
+      margin: 0px;
+      padding: 0px;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+      overflow: hidden;
+    }
+    div {
+      padding: 5px;
+    }
+    div.frame {
+      flex: 1;
+      display: none;
+    }
+
+    .frame.active {
+      display: block;
+    }
+
+    #frame2 {
+      overflow: auto;
+    }
+
+    textarea {
+      width: 100%;
+      height: 100%;
+      font-size: 16px;
+    }
+    button {
+      min-width: 60px;
+      padding: 5px 5px;
+    }
+    tr.error {
+      background-color: red;
+      color: white;
+    }
+    </style>
+  </head>
+  <body style="">
+    <div>
+      <button id='btnClear'>清除</button>
+      <button id='btnCompare'>比對</button>
+      <button id='btnCancel' style="visibility: hidden;">取消</button>
+
+      <select id="select" style="visibility: hidden;min-width: 120px; font-size: 18px;"></select>
+    </div>
+    <div id="frame1" class="frame active">
+      <textarea id='ta1' placeholder="請貼上文字"></textarea></div>
+    <div id="frame2" class="frame">
+    </div>
+  </body>
+  <script>
+    var ta1 = document.getElementById("ta1");
+    var btnClear = document.getElementById("btnClear");
+    var btnCompare = document.getElementById("btnCompare");
+    var btnCancel = document.getElementById("btnCancel");
+    var frame1 = document.getElementById("frame1");
+    var frame2 = document.getElementById("frame2");
+    var select = document.getElementById("select");
+    var dataset = [];
+
+    select.addEventListener('change', () => {
+      const selectedValue = select.value;
+      frame2.innerHTML = "";
+      setTimeout(() => {
+        changeOption(selectedValue);  
+      }, 600);
+    });
+
+    btnClear.addEventListener("click", function(e) {
+      localStorage["compare-txt"] = "";
+      ta1.value = "";
+      select.style.visibility ="hidden";
+    });
+
+    btnCompare.addEventListener("click", function(e) {
+      frame1.classList.remove("active");
+      frame2.classList.add("active");
+      dataset = [];
+      select.innerHTML = "";
+      select.style.visibility ="hidden";
+      build();
+      btnClear.style.visibility ="hidden";
+      btnCompare.style.visibility ="hidden";
+      btnCancel.style.visibility ="visible";
+    });
+
+    btnCancel.addEventListener("click", function(e) {
+      frame2.innerHTML = "";
+      frame2.classList.remove("active");
+      frame1.classList.add("active");
+      btnClear.style.visibility ="visible";
+      btnCompare.style.visibility ="visible";
+      btnCancel.style.visibility ="hidden";
+      select.style.visibility ="hidden";
+    });
+    
+    if(typeof localStorage["compare-txt"] == "string") {
+      ta1.value = localStorage["compare-txt"];
+    }
+
+    ta1.onpaste = function(){
+      setTimeout(function () {
+        localStorage["compare-txt"] = ta1.value;
+      }, 600)
+    }
+    ta1.oninput = function () {
+      setTimeout(function () {
+        localStorage["compare-txt"] = ta1.value;
+      }, 600)
+    }
+
+    function build() {
+      let obj = JSON.parse(ta1.value);
+      let array = [];
+      if(ta1.value.indexOf(`"table":`) > -1 && ta1.value.indexOf(`"rows":`) > -1) {
+        array = obj["rows"];
+      } else if(Array.isArray(obj))
+        array = obj;
+      else {
+        const firstKey = Object.keys(obj)[0];
+        array = obj[firstKey];
+      }
+      if(array.length > 0) {
+        dataset = array;
+        let option = ""
+        dataset.forEach(el => {
+          if(option.indexOf(el.SEQ_NO) == -1) {
+            option += (option.length > 0 ? "," : "") + el.SEQ_NO;
+          }
+        });
+
+        let options = option.split(",");
+        if(options.length > 1) {
+          options.forEach(el => {
+            const newOption = document.createElement('option');
+              newOption.value = el;
+              newOption.text = el;
+              select.add(newOption); 
+          });
+          select.style.visibility ="visible";
+        }
+        changeOption("001");
+      }
+    }
+
+    function cell(params) {
+      const td = document.createElement('td'); // 创建列
+      td.style.border = '1px solid black'; // 设置单元格边框样式
+      td.style.padding = '8px'; // 设置单元格填充
+      td.textContent = params;
+      return td;
+    }
+
+    function changeOption(seq) {
+      frame2.innerHTML = "";
+      let array = dataset.filter(el => {
+        return el.SEQ_NO == seq;
+      })
+
+      let base = array[0];
+      const table = document.createElement('table');
+      table.style.border = '1px solid black';
+      let exclude = ["SITE", "T_STORE", "TM_NO", "T_DAY", "T_TIME", "ID_CREATE", "ID_UPDATE", "DT_CREATE", "DT_UPDATE"];
+      exclude.forEach(el => {
+        delete base[el];
+      })
+
+      for(let key in base) {
+        const tr = document.createElement('tr');
+
+        tr.appendChild(cell(key));
+        let diff = false;
+        for(let i = 0; i < array.length; i++) {
+          if(i > 0 && array[i - 1][key] != array[i][key]) {
+            diff = true;
+          }
+          const td = cell(array[i][key]);
+          tr.appendChild(td);
+        }
+
+        if(diff) {
+          tr.classList.add("error")
+        }
+
+        table.appendChild(tr);
+      }
+      frame2.appendChild(table);
+    }
+
+  </script>
+</html>
