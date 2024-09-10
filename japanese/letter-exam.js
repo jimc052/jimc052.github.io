@@ -26,7 +26,7 @@ Vue.component('letter-exam', {
 			</div>
 			<div v-else style="display: flex; flex-direction: row;">
 				<Button id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
-				<Button id="btnRestart" type="primary" size="large" @click="similar" style="">相似字</Button>
+				<Button id="btnSimlar" type="primary" size="large" @click="similar" style="margin-left: 20px;">相似字</Button>
 				<Button size="large" @click="index = -1" style="margin-left: 20px;">設定</Button>
 			</div>
 
