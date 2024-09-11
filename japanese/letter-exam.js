@@ -25,8 +25,8 @@ Vue.component('letter-exam', {
 				</div>
 			</div>
 			<div v-else style="display: flex; flex-direction: row;">
-				<Button id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
-				<Button id="btnSimlar" type="primary" size="large" @click="similar" style="margin-left: 20px;">相似字</Button>
+				<Button v-if="subject == 'sample'" id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
+				<Button v-else id="btnSimlar" type="primary" size="large" @click="similar" style="margin-left: 20px;">相似字</Button>
 				<Button size="large" @click="index = -1" style="margin-left: 20px;">設定</Button>
 			</div>
 
@@ -85,7 +85,7 @@ Vue.component('letter-exam', {
 			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
 				<fieldset style="padding: 0px 0px 5px 10px;">
 					<legend>段</legend> 
-					<CheckboxGroup id="letter-alpha-col" v-model="alpha" size="large"  @on-change="onChangeColAlpha">
+					<CheckboxGroup id="kana-col" v-model="kanaCol" size="large"  @on-change="onChangeKanaCol">
 						<Checkbox label="a"></Checkbox>
 						<Checkbox label="i"></Checkbox>
 						<Checkbox label="u"></Checkbox>
@@ -95,11 +95,14 @@ Vue.component('letter-exam', {
 				</fieldset>
 			</div>
 			
-			<!-- 還沒寫 -->
+			<!-- 還沒寫 
+			
+			-->
 			<div style="visibility: hidden; display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
 				<fieldset style="padding: 0px 0px 5px 10px;">
 					<legend>行</legend>
-					<CheckboxGroup id="letter-alpha-row" v-model="alpha" size="large"  @on-change="onChangeRowAlpha">
+					<CheckboxGroup id="kana-row" v-model="kanaRow" size="large"  @on-change="onChangeKanaRow">
+						<Checkbox></Checkbox>
 					</CheckboxGroup>
 				</fieldset>
 			</div>
@@ -108,9 +111,9 @@ Vue.component('letter-exam', {
 				<Icon :type="volumeOn ? 'md-volume-up' : 'md-volume-off'" size="25" @click="changeVolume()" />
 			</div>
 			<div>
-				<Button :disabled="word.length == 0 || tone.length == 0 || alpha.length == 0" 
+				<Button :disabled="word.length == 0 || tone.length == 0 || (kanaCol.length == 0 && kanaRow.length == 0)" 
 					type="primary" size="large"  @click="sample" style="width: 100px; margin-top: 30px;">開始</Button>
-				<Button
+				<Button :disabled="word.length == 0" 
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
@@ -124,15 +127,19 @@ Vue.component('letter-exam', {
       size: 250,
 			word: ["平假"],
 			tone: ["清音"],
-			alpha: ["a", "i", "u", "e", "o"],
+			kanaCol: ["a", "i", "u", "e", "o"],
+			kanaRow: [],
+			patternRow: "", 
       index: -1,
 			datas: [],
       input1: "",
 			isSmall: true,
-			volumeOn: true
+			volumeOn: true,
+			subject: ""
 		};
 	},
 	created(){
+
 	},
 	async mounted () {
 		let tone = window.localStorage["japanese-letter-exam-tone"]
@@ -143,9 +150,9 @@ Vue.component('letter-exam', {
 		if(typeof word == "string" && word.length > 0){
 			this.word = JSON.parse(word);
 		}
-		let alpha = window.localStorage["japanese-letter-exam-alpha"]
-		if(typeof alpha == "string" && alpha.length > 0){
-			this.alpha = JSON.parse(alpha);
+		let kanaCol = window.localStorage["japanese-letter-exam-kanaCol"]
+		if(typeof kanaCol == "string" && kanaCol.length > 0){
+			this.kanaCol = JSON.parse(kanaCol);
 		}
 
 		let volume = window.localStorage["japanese-letter-exam-volume"]
@@ -155,26 +162,46 @@ Vue.component('letter-exam', {
 		this.broadcast.$on('onResize', this.onResize);
 		this.onResize();
 
-		let arr = document.querySelectorAll("#letter-alpha-col label span:last-child")
+		let arr = document.querySelectorAll("#kana-col label span:last-child")
 		arr.forEach(el => {
 			// console.log(el)
 			el.style.padding = "0 5px 0 2px";
 			el.style.fontSize = "25px";
 		})
+		this.renderKanaRow();
 
-		// let datas1 = this.$japanese(), letter = [];
-		// for(let i = 0; i < 1; i++) {
-		// 	for(let j = 0; j < datas1[i].length; j++) {
-		// 		console.log(JSON.stringify(datas1[i][j][0]))
-		// 	}
-			
-		// }
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		renderKanaRow() {
+			let s = "";
+			let tone = this.tone.join(",");
+			if(tone.indexOf("清音") > -1) {
+				s = "akstnhmyrw撥";
+				s += " ".repeat(4);
+			}
+			if(tone.indexOf("濁音") > -1) {
+				s += "gzdbp"
+			}
+
+			this.patternRow = s;
+
+			// for(let j = 0; j < datas2.length; j++) {
+			// 	let datas3 = datas2[j];
+			// 	for(let k = 0; k < datas3.length; k++) {
+			// 		let data = datas3[k];
+			// 		if(data != null) {
+			// 			if(s.indexOf(data["平"]) > -1)
+			// 				arr.push(char);
+			// 			if(s.indexOf(data["片"]) > -1)
+			// 				arr.push(data["片"]);		
+			// 		}
+			// 	}
+			// }
+		},
 		changeVolume() {
 			this.volumeOn = ! this.volumeOn;
 			window.localStorage["japanese-letter-exam-volume"] = this.volumeOn ? "Y" : "N";
@@ -232,6 +259,7 @@ Vue.component('letter-exam', {
 			}
     },
 		sample() {
+			this.subject = "sample";
 			this.datas = []; this.index = -1;
 			function getRandom(min,max){
 				return Math.floor(Math.random()*max)+min;
@@ -239,18 +267,18 @@ Vue.component('letter-exam', {
 
 			let tone = this.tone.join(",");
 			let word = this.word.join(",");
-			let alpha = "";
-			this.alpha.forEach(el=> {
+			let kanaCol = "";
+			this.kanaCol.forEach(el=> {
 				if(el == "a")
-					alpha += "0";
+					kanaCol += "0";
 				else if(el == "i")
-					alpha += "1";
+					kanaCol += "1";
 				else if(el == "u")
-					alpha += "2";
+					kanaCol += "2";
 				else if(el == "e")
-					alpha += "3";
+					kanaCol += "3";
 				else if(el == "o")
-					alpha += "4";
+					kanaCol += "4";
 			});
 
 			let datas1 = this.$japanese(), arr = [];
@@ -264,7 +292,7 @@ Vue.component('letter-exam', {
 				for(let j = 0; j < datas2.length; j++) {
 					let datas3 = datas2[j];
 					for(let k = 0; k < datas3.length; k++) {
-						if(alpha.indexOf(k) == -1) continue;
+						if(kanaCol.indexOf(k) == -1) continue;
 						let data = datas3[k];
 						if(data != null) {
 							let rome = (data["mp3"].indexOf(",") > -1) ? data["mp3"].split(",")[0] : data["mp3"];
@@ -293,8 +321,11 @@ Vue.component('letter-exam', {
 			}
 			this.execute();
 		},
-		similar(){
-			let s = `お,ね,れ,わ,け,は,ほ,す,む,う,つ,き,さ,ち,ぬ,め,ま,も,る,ろ,ウ,ワ,ク,タ,シ,ツ,ン,ソ,セ,ヤ,コ,ユ,ヨ,ル,レ,ス,ヌ,フ,ヲ,ラ,ナ,チ`;
+		similar(){ // 相似字
+			this.subject = "similar";
+			let word = this.word.join(",");
+			let s = (word.indexOf("平") > -1) ? `お,ね,れ,わ,け,は,ほ,す,む,う,つ,き,さ,ち,ぬ,め,ま,も,る,ろ` : "";
+			if(word.indexOf("片") > -1) s += (s.length > 0 ? "," : "") + `ウ,ワ,ク,タ,シ,ツ,ン,ソ,セ,ヤ,コ,ユ,ヨ,ル,レ,ス,ヌ,フ,ヲ,ラ,ナ,チ`;
 
 			this.datas = []; this.index = -1;
 			function getRandom(min,max){
@@ -362,17 +393,23 @@ Vue.component('letter-exam', {
 			}
 		},
 		onChangeTone() {
-			window.localStorage["japanese-letter-exam-tone"]= JSON.stringify(this.tone);
-
+			window.localStorage["japanese-letter-exam-tone"] = JSON.stringify(this.tone);
+			this.renderKanaRow();
 		},
 		onChangeWord() {
-			window.localStorage["japanese-letter-exam-word"]= JSON.stringify(this.word);
+			window.localStorage["japanese-letter-exam-word"] = JSON.stringify(this.word);
 		},
-		onChangeColAlpha() {
-			window.localStorage["japanese-letter-exam-alpha"]= JSON.stringify(this.alpha);
+		onChangeKanaCol() { // 段
+			window.localStorage["japanese-letter-exam-kanaCol"] = JSON.stringify(this.kanaCol);
+
+			this.kanaRow = [];
+			window.localStorage["japanese-letter-exam-row"]= JSON.stringify(this.kanaRow);
 		},
-		onChangeRowAlpha() {
-			// window.localStorage["japanese-letter-exam-row"]= JSON.stringify(this.alpha);
+		onChangeKanaRow() { // 行
+			window.localStorage["japanese-letter-exam-row"]= JSON.stringify(this.kanaRow);
+
+			this.kanaCol = [];
+			window.localStorage["japanese-letter-exam-kanaCol"] = JSON.stringify(this.kanaCol);
 		}
 	},
 	computed: {
