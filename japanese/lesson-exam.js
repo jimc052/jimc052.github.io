@@ -21,7 +21,7 @@ Vue.component('lesson-exam', {
 				</CheckboxGroup>
 			</div>
 			<div style="flex: 1" />
-			<div style="text-align: center; font-size: 20px;">2023-10-19</div>
+			<div style="text-align: center; font-size: 20px;">2024-09-12</div>
 		</div>
 
     <div v-else style="max-width: 600px; margin-bottom: 0px; display: flex; flex-direction: column; overflow: hidden;" 
