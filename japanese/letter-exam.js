@@ -71,7 +71,7 @@ Vue.component('letter-exam', {
 		</div>
 
 		<div v-else style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-			<div style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
+			<div style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: '320px'}">
 				<CheckboxGroup v-model="tone" size="large"  @on-change="onChangeTone">
 					<Checkbox label="清音"></Checkbox>
 					<Checkbox label="濁音"></Checkbox>
