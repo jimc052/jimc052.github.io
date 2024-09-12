@@ -83,7 +83,7 @@ Vue.component('letter-exam', {
 				</CheckboxGroup>
 			</div>
 			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
-				<fieldset style="padding: 0px 0px 5px 10px;">
+				<fieldset style="padding: 0px 0px 5px 10px;" id="field-col">
 					<legend>段</legend> 
 					<CheckboxGroup id="kana-col" v-model="kanaCol" size="large"  @on-change="onChangeKanaCol">
 						<Checkbox label="a"></Checkbox>
@@ -94,15 +94,15 @@ Vue.component('letter-exam', {
 					</CheckboxGroup>
 				</fieldset>
 			</div>
-			
-			<!-- 還沒寫 
-			
-			-->
-			<div style="visibility: hidden; display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
-				<fieldset style="padding: 0px 0px 5px 10px;">
+	
+			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
+				<fieldset style="padding: 0px 0px 5px 10px;" id="field-row">
 					<legend>行</legend>
 					<CheckboxGroup id="kana-row" v-model="kanaRow" size="large"  @on-change="onChangeKanaRow">
-						<Checkbox></Checkbox>
+						<span v-for="(item, index) in patternRow" >
+							<Checkbox v-if="item.trim().length > 0" :label="item"></Checkbox>
+							<br  v-if="index > 0 && index % 5 == 4" />
+						</span>
 					</CheckboxGroup>
 				</fieldset>
 			</div>
@@ -129,7 +129,7 @@ Vue.component('letter-exam', {
 			tone: ["清音"],
 			kanaCol: ["a", "i", "u", "e", "o"],
 			kanaRow: [],
-			patternRow: "", 
+			patternRow: [], 
       index: -1,
 			datas: [],
       input1: "",
@@ -155,6 +155,11 @@ Vue.component('letter-exam', {
 			this.kanaCol = JSON.parse(kanaCol);
 		}
 
+		let kanaRow = window.localStorage["japanese-letter-exam-kanaRow"]
+		if(typeof kanaRow == "string" && kanaRow.length > 0){
+			this.kanaRow = JSON.parse(kanaRow);
+		}
+
 		let volume = window.localStorage["japanese-letter-exam-volume"]
 		this.volumeOn = volume == "N" ? false : true;
 
@@ -162,14 +167,21 @@ Vue.component('letter-exam', {
 		this.broadcast.$on('onResize', this.onResize);
 		this.onResize();
 
-		let arr = document.querySelectorAll("#kana-col label span:last-child")
+		let arr = document.querySelectorAll("#kana-col label");
 		arr.forEach(el => {
-			// console.log(el)
+			el.style.width = "50px";
+		});
+
+		arr = document.querySelectorAll("#kana-col label span:last-child");
+		arr.forEach(el => {
 			el.style.padding = "0 5px 0 2px";
-			el.style.fontSize = "25px";
-		})
+			el.style.fontSize = "23px";
+		});
 		this.renderKanaRow();
 
+		let field_col = document.querySelector("#field-col");
+		let field_row = document.querySelector("#field-row");
+		field_row.style.width = (field_col.clientWidth + 20) + "px";
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -177,30 +189,36 @@ Vue.component('letter-exam', {
   },
 	methods: {
 		renderKanaRow() {
+			let field_row = document.querySelector("#field-row");
+			// field_row.style.visibility = "hidden";
+
 			let s = "";
 			let tone = this.tone.join(",");
-			if(tone.indexOf("清音") > -1) {
+			if(tone.indexOf("清音") > -1 || this.tone.length == 0) {
 				s = "akstnhmyrw撥";
 				s += " ".repeat(4);
 			}
-			if(tone.indexOf("濁音") > -1) {
+			if(tone.indexOf("濁音") > -1 || this.tone.length == 0) {
 				s += "gzdbp"
 			}
 
-			this.patternRow = s;
+			this.patternRow = [];
+			for(let i = 0; i < s.length; i++) {
+				this.patternRow.push(s.substr(i, 1))
+			}
+			setTimeout(() => {
+				let arr = document.querySelectorAll("#kana-row label span:last-child")
+				arr.forEach(el => {
+					el.style.padding = "0 5px 0 2px";
+					el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "20px";
+				});
 
-			// for(let j = 0; j < datas2.length; j++) {
-			// 	let datas3 = datas2[j];
-			// 	for(let k = 0; k < datas3.length; k++) {
-			// 		let data = datas3[k];
-			// 		if(data != null) {
-			// 			if(s.indexOf(data["平"]) > -1)
-			// 				arr.push(char);
-			// 			if(s.indexOf(data["片"]) > -1)
-			// 				arr.push(data["片"]);		
-			// 		}
-			// 	}
-			// }
+				arr = document.querySelectorAll("#kana-row label");
+				arr.forEach(el => {
+					el.style.width = "50px";
+				});
+				// field_row.style.visibility = "visible";
+			}, 600);
 		},
 		changeVolume() {
 			this.volumeOn = ! this.volumeOn;
@@ -280,7 +298,6 @@ Vue.component('letter-exam', {
 				else if(el == "o")
 					kanaCol += "4";
 			});
-
 			let datas1 = this.$japanese(), arr = [];
 			for(let i = 0; i < datas1.length - 1; i++) {
 				if(i == 0 && tone.indexOf("清") == -1)
@@ -291,21 +308,41 @@ Vue.component('letter-exam', {
 				let datas2 = datas1[i];
 				for(let j = 0; j < datas2.length; j++) {
 					let datas3 = datas2[j];
-					for(let k = 0; k < datas3.length; k++) {
-						if(kanaCol.indexOf(k) == -1) continue;
-						let data = datas3[k];
-						if(data != null) {
-							let rome = (data["mp3"].indexOf(",") > -1) ? data["mp3"].split(",")[0] : data["mp3"];
-							if(word.indexOf("平") > -1)
-								arr.push({char: data["平"], mp3: data["mp3"], rome});
-							if(word.indexOf("片") > -1)
-								arr.push({char: data["片"], mp3: data["mp3"], rome});							
+					if(kanaCol.length > 0) { // 段
+						for(let k = 0; k < datas3.length; k++) {
+							if(kanaCol.indexOf(k) == -1) continue;
+							let data = datas3[k];
+							if(data != null) {
+								let rome = (data["mp3"].indexOf(",") > -1) ? data["mp3"].split(",")[0] : data["mp3"];
+								if(word.indexOf("平") > -1)
+									arr.push({char: data["平"], mp3: data["mp3"], rome});
+								if(word.indexOf("片") > -1)
+									arr.push({char: data["片"], mp3: data["mp3"], rome});							
+							}
+						}
+					} else {
+						let mp3 = datas3[0].mp3;
+						let key = mp3 == "n" ? "撥" : mp3.substr(0, 1);
+						let index = this.kanaRow.findIndex(el => {
+							return el == key;
+						});
+						if(index > -1) {
+							for(let k = 0; k < datas3.length; k++) {
+								let data = datas3[k];
+								if(data != null) {
+									let rome = (data["mp3"].indexOf(",") > -1) ? data["mp3"].split(",")[0] : data["mp3"];
+									if(word.indexOf("平") > -1)
+										arr.push({char: data["平"], mp3: data["mp3"], rome});
+									if(word.indexOf("片") > -1)
+										arr.push({char: data["片"], mp3: data["mp3"], rome});							
+								}
+							}
 						}
 					}
 				}
 			}
 
-			let max = this.tone.length + this.word.length > 2 ? 50 : 30;
+			let max = arr.length > 50 ? 50 : 30;
 			let cycle = 500;
 			while (arr.length > 0 && cycle >= 0) {
 				let index = 0;
@@ -403,10 +440,10 @@ Vue.component('letter-exam', {
 			window.localStorage["japanese-letter-exam-kanaCol"] = JSON.stringify(this.kanaCol);
 
 			this.kanaRow = [];
-			window.localStorage["japanese-letter-exam-row"]= JSON.stringify(this.kanaRow);
+			window.localStorage["japanese-letter-exam-kanaRow"]= JSON.stringify(this.kanaRow);
 		},
 		onChangeKanaRow() { // 行
-			window.localStorage["japanese-letter-exam-row"]= JSON.stringify(this.kanaRow);
+			window.localStorage["japanese-letter-exam-kanaRow"]= JSON.stringify(this.kanaRow);
 
 			this.kanaCol = [];
 			window.localStorage["japanese-letter-exam-kanaCol"] = JSON.stringify(this.kanaCol);
