@@ -1,5 +1,5 @@
 Vue.component('letter-exam', { 
-	template:  `<div id='letter-exam' style="height: 100%; padding: 5px 10px;">
+	template:  `<div id='letter-exam' style="height: 100%; padding: 5px 5px;">
 		<div v-if="index > -1" id="frame-letter-exam" 
 			style="height: 100%; overflow: hidden; display: flex;"
 			:style="{
@@ -71,7 +71,7 @@ Vue.component('letter-exam', {
 		</div>
 
 		<div v-else style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-			<div style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: '320px'}">
+			<div style="display: flex; flex-direction: row; margin: 5px; z-index: 10;">
 				<CheckboxGroup v-model="tone" size="large"  @on-change="onChangeTone">
 					<Checkbox label="清音"></Checkbox>
 					<Checkbox label="濁音"></Checkbox>
@@ -82,7 +82,7 @@ Vue.component('letter-exam', {
 					<Checkbox label="片假"></Checkbox>
 				</CheckboxGroup>
 			</div>
-			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
+			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;">
 				<fieldset style="padding: 0px 0px 5px 10px;" id="field-col">
 					<legend>段</legend> 
 					<CheckboxGroup id="kana-col" v-model="kanaCol" size="large"  @on-change="onChangeKanaCol">
@@ -95,7 +95,7 @@ Vue.component('letter-exam', {
 				</fieldset>
 			</div>
 	
-			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;" :style="{width: '320px'}">
+			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;">
 				<fieldset style="padding: 0px 0px 5px 10px;" id="field-row">
 					<legend>行</legend>
 					<CheckboxGroup id="kana-row" v-model="kanaRow" size="large"  @on-change="onChangeKanaRow">
@@ -117,7 +117,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2024-09-12 10:30</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2024-09-12 14:30</div>
 		</div>
   </div>`,
 	props: {
@@ -172,7 +172,7 @@ Vue.component('letter-exam', {
 
 		let field_col = document.querySelector("#field-col");
 		let field_row = document.querySelector("#field-row");
-		field_row.style.width = (field_col.clientWidth + 20) + "px";
+		field_row.style.width = (field_col.clientWidth + 6) + "px";
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -195,7 +195,7 @@ Vue.component('letter-exam', {
 			arr = document.querySelectorAll("#kana-col label span:last-child");
 			arr.forEach(el => {
 				el.style.padding = "0 5px 0 2px";
-				el.style.fontSize = "23px";
+				el.style.fontSize = "18px";
 			});
 		},
 		renderKanaRow() {
@@ -220,7 +220,7 @@ Vue.component('letter-exam', {
 				let arr = document.querySelectorAll("#kana-row label span:last-child")
 				arr.forEach(el => {
 					el.style.padding = "0 5px 0 2px";
-					el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "20px";
+					el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "18px";
 				});
 
 				arr = document.querySelectorAll("#kana-row label");
