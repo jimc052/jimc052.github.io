@@ -27,7 +27,7 @@ Vue.component('letter-exam', {
 			<div v-else style="display: flex; flex-direction: row;">
 				<Button v-if="subject == 'sample'" id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
 				<Button v-else id="btnSimlar" type="primary" size="large" @click="similar" style="margin-left: 20px;">相似字</Button>
-				<Button size="large" @click="index = -1" style="margin-left: 20px;">設定</Button>
+				<Button size="large" @click="setup" style="margin-left: 20px;">設定</Button>
 			</div>
 
 			<div style="margin-bottom: 5px; display: flex; flex-direction: column; overflow: auto; " 
@@ -167,16 +167,7 @@ Vue.component('letter-exam', {
 		this.broadcast.$on('onResize', this.onResize);
 		this.onResize();
 
-		let arr = document.querySelectorAll("#kana-col label");
-		arr.forEach(el => {
-			el.style.width = "50px";
-		});
-
-		arr = document.querySelectorAll("#kana-col label span:last-child");
-		arr.forEach(el => {
-			el.style.padding = "0 5px 0 2px";
-			el.style.fontSize = "23px";
-		});
+		this.renderKanaCol();
 		this.renderKanaRow();
 
 		let field_col = document.querySelector("#field-col");
@@ -188,6 +179,25 @@ Vue.component('letter-exam', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		setup() {
+			this.index = -1;
+			setTimeout(() => {
+				this.renderKanaCol();
+				this.renderKanaRow();
+			}, 100);
+		},
+		renderKanaCol() {
+			let arr = document.querySelectorAll("#kana-col label");
+			arr.forEach(el => {
+				el.style.width = "50px";
+			});
+	
+			arr = document.querySelectorAll("#kana-col label span:last-child");
+			arr.forEach(el => {
+				el.style.padding = "0 5px 0 2px";
+				el.style.fontSize = "23px";
+			});
+		},
 		renderKanaRow() {
 			let field_row = document.querySelector("#field-row");
 			// field_row.style.visibility = "hidden";
