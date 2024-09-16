@@ -72,7 +72,7 @@ Vue.component('letter-exam', {
 
 			<div v-if="isSmall && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
 				<div>
-					<div v-for="(ch, index) in 'aeiou'" :key="ch" @click="keySend(ch)">{{ ch }}</div>
+					<div v-for="(ch, index) in 'aiueo'" :key="ch" @click="keySend(ch)">{{ ch }}</div>
 
 					<div @click="keySend('bs')">
 						<Icon type="md-backspace" size="25" />
