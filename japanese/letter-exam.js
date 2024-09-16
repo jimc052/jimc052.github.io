@@ -462,11 +462,10 @@ Vue.component('letter-exam', {
 						if(input != null) {
 							clearInterval(idTime);
 							input.setAttribute("autocapitalize","off");
+							input.setAttribute("readonly", !this.$isDebug() && this.isSmall == true ? "readonly" : "");
 							input.style.textTransform = "lowercase";
 							input.style.fontSize = "20px";
 							input.focus();
-							
-							input.readonly = !this.$isDebug() && this.isSmall == true ? true : false;
 						}
 					}, 300);
 				}
