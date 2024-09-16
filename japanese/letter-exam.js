@@ -1,7 +1,7 @@
 Vue.component('letter-exam', { 
-	template:  `<div id='letter-exam' style="height: 100%; padding: 5px 5px;">
+	template:  `<div id='letter-exam' style="height: 100%; padding: 5px 5px; display: flex; flex-direction: column;">
 		<div v-if="index > -1" id="frame-letter-exam" 
-			style="height: 100%; overflow: hidden; display: flex;"
+			style="flex: 1; overflow: hidden; display: flex;"
 			:style="{
 				width: isSmall ? '100%' : '700px', 
 				flexDirection: isSmall ? 'column' : 'row',
@@ -17,6 +17,7 @@ Vue.component('letter-exam', {
 						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
 						placeholder="請輸入羅馬拼音後, 按 enter 確認"
+						
 					/>
 					
 					<div class="button" style="margin-left: 10px;">
@@ -68,6 +69,23 @@ Vue.component('letter-exam', {
 					<div style="font-size: 20px;">{{"分數：" + rate}}</div>
 				</div>
 			</div>
+
+			<div v-if="isSmall && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
+				<div>
+					<div v-for="(ch, index) in 'aeiou'" :key="ch" @click="keySend(ch)">{{ ch }}</div>
+
+					<div @click="keySend('bs')">
+						<Icon type="md-backspace" size="25" />
+					</div>
+				</div>
+
+				<div>
+					<div v-for="(ch, index) in keyRandom" :key="ch" @click="keySend(ch)">{{ ch }}</div>
+					<div @click="keySend('enter')">
+						<Icon type="md-arrow-round-forward" size="25" />
+					</div>
+				</div>
+			</div>
 		</div>
 
 		<div v-else style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
@@ -117,7 +135,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2024-09-12 14:30</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2024-09-16 10:00</div>
 		</div>
   </div>`,
 	props: {
@@ -135,7 +153,8 @@ Vue.component('letter-exam', {
       input1: "",
 			isSmall: true,
 			volumeOn: true,
-			subject: ""
+			subject: "",
+			keyRandom: "kstnm"
 		};
 	},
 	created(){
@@ -179,6 +198,19 @@ Vue.component('letter-exam', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		keySend(c) {
+			if(c == "bs") {
+				if(this.input1.length > 0) {
+					this.input1 = this.input1.substr(0, this.input1.length - 1)
+				}
+			} else if(c == "enter") {
+				if(this.input1.length > 0) {
+					this.checkAnswer();
+				}
+			} else if(this.input1.length <= 2) {
+				this.input1 += c;
+			}
+		},
 		setup() {
 			this.index = -1;
 			setTimeout(() => {
@@ -237,6 +269,14 @@ Vue.component('letter-exam', {
 		onResize() {
 			this.isSmall = document.body.clientWidth  < 600 ? true : false;
 		},
+		checkAnswer() {
+			if(this.index <= this.datas.length - 1) {
+				this.datas[this.index].answer = this.input1.trim().length == 0 ? "X" : this.input1.toLowerCase();
+				this.$set(this.datas, this.index, this.datas[this.index]);
+				this.input1 = "";
+				this.execute();
+			}
+		},
     onKeydown(event) {
 			let o = document.activeElement;
 			let pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey;
@@ -247,12 +287,7 @@ Vue.component('letter-exam', {
 
 			if(o.tagName == "INPUT"){
 				if(code == 13) {
-					if(this.index <= this.datas.length - 1) {
-						this.datas[this.index].answer = this.input1.trim().length == 0 ? "X" : this.input1.toLowerCase();
-						this.$set(this.datas, this.index, this.datas[this.index]);
-						this.input1 = "";
-						this.execute();
-					}
+					this.checkAnswer();
 				} else if(code == 27) {
 					this.input1 = "";
 				} else if(pk == true) {
@@ -420,6 +455,7 @@ Vue.component('letter-exam', {
 					document.querySelector("#btnRestart").focus();
 				}, 600);
 			} else {
+				this.assembleKey();
 				if(this.index == 0) {
 					let idTime = setInterval(() => {
 						let input = document.querySelector("#input1");
@@ -429,6 +465,8 @@ Vue.component('letter-exam', {
 							input.style.textTransform = "lowercase";
 							input.style.fontSize = "20px";
 							input.focus();
+							
+							input.readonly = !this.$isDebug() && this.isSmall == true ? true : false;
 						}
 					}, 300);
 				}
@@ -438,6 +476,40 @@ Vue.component('letter-exam', {
 					}, 300);					
 				}
 			}
+		},
+		assembleKey() {
+			function getRandom(min,max){
+				return Math.floor(Math.random()*max)+min;
+			};
+
+			let tone = this.tone.join(","), s = "", keyRandom = "";
+			if(tone.indexOf("清音") > -1 || this.tone.length == 0) {
+				s = "kstnhmyrwncf";
+			}
+			if(tone.indexOf("濁音") > -1 || this.tone.length == 0) {
+				s += "gzdbp"
+			}
+
+			let rome = this.datas[this.index].rome;
+			if(rome.length > 1)
+				keyRandom = rome.substr(0, rome.length - 1);
+
+			while (keyRandom.length < 5) {
+				let x = getRandom(0, s.length);
+				let s1 = s.substr(x, 1);
+				s = s.replace(s1, "");
+				if(keyRandom.indexOf(s1) == -1)
+					keyRandom += s1;
+			}
+			// console.log("1. " + keyRandom)
+
+			for(let i = 0; i < 3; i++) {
+				let x = getRandom(0, keyRandom.length - 1);
+				let s1 = keyRandom.substr(x, 1);
+				keyRandom = keyRandom.replace(s1, "") + s1;
+			}
+			// console.log("2. " + keyRandom)
+			this.keyRandom = keyRandom;
 		},
 		onChangeTone() {
 			window.localStorage["japanese-letter-exam-tone"] = JSON.stringify(this.tone);
