@@ -70,7 +70,7 @@ Vue.component('letter-exam', {
 				</div>
 			</div>
 
-			<div v-if="isSmall && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
+			<div v-if="isSmall && !$isDebug() && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
 				<div>
 					<div v-for="(ch, index) in 'aiueo'" :key="ch" @click="keySend(ch)">{{ ch }}</div>
 
@@ -462,7 +462,10 @@ Vue.component('letter-exam', {
 						if(input != null) {
 							clearInterval(idTime);
 							input.setAttribute("autocapitalize","off");
-							input.setAttribute("readonly", !this.$isDebug() && this.isSmall == true ? "readonly" : "");
+							if(this.isSmall == true && !this.$isDebug())
+								input.setAttribute("readonly", true)
+							else 
+								input.removeAttribute("readonly")
 							input.style.textTransform = "lowercase";
 							input.style.fontSize = "20px";
 							input.focus();
