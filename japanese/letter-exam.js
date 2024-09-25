@@ -515,6 +515,7 @@ Vue.component('letter-exam', {
 		},
 		onChangeTone() {
 			window.localStorage["japanese-letter-exam-tone"] = JSON.stringify(this.tone);
+			this.kanaRow = [];
 			this.renderKanaRow();
 		},
 		onChangeWord() {
