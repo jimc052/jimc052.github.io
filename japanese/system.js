@@ -262,20 +262,13 @@ window.japanese = function() {
 
 String.prototype.ruby = function(漢字) {
   let kana = this.toString();
-  if(typeof 漢字 == "string") {
-  }
-  if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
-    漢字 = 漢字.split("・")[0]
-  }
-  let code = kana.charCodeAt(0);
-  // console.log(kana.substr(0, 1) + ": " + code)
-  if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
-    return null;
-  else {
+
+  let combine = (word) => {
+    // 126 ~
     let arr = [], mode = "";
-    for(let i = 0; i < 漢字.length; i++) {
-      code = 漢字.charCodeAt(i); //  
-      let char = 漢字.substr(i, 1);
+    for(let i = 0; i < word.length; i++) {
+      let code = word.charCodeAt(i); //  
+      let char = word.substr(i, 1);
       if(code == 126 || !(code >= 12353 && code <= 12438) ){
         if(mode != "漢") arr.push("");
         arr[arr.length -1] += char;
@@ -285,13 +278,13 @@ String.prototype.ruby = function(漢字) {
         arr[arr.length -1] += char;
         mode = code == 126 ? "s" : "kana"
       }
-      // if(漢字.indexOf("~") > -1) console.log("mode: " + mode + ", " + char + ": " + code);
+      // if(word.indexOf("~") > -1) console.log("mode: " + mode + ", " + char + ": " + code);
     }
-    // if(漢字.indexOf("~") > -1) console.log(arr);
+    // if(word.indexOf("~") > -1) console.log(arr);
     let r = "";
-    if(arr.length == 1 && 漢字.indexOf("~") == 0) return null;
+    if(arr.length == 1 && word.indexOf("~") == 0) return null;
     for(let i = 0; i < arr.length; i++) {
-      code = arr[i].charCodeAt(0);
+      let code = arr[i].charCodeAt(0);
       if(code >= 12353 && code <= 12438){
         r += `<span style="font-size: 22px;">${arr[i]}</span>`;
         kana = kana.replace(arr[i], "")
@@ -315,6 +308,17 @@ String.prototype.ruby = function(漢字) {
     // div.innerHTML = r;
     // document.body.appendChild(div)
     return r;
+  }
+
+  if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
+    漢字 = 漢字.split("・")[0]
+  }
+  let code = kana.charCodeAt(0); 
+  // console.log(kana.substr(0, 1) + ": " + code)
+  if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
+    return null;
+  else {
+    return combine(漢字)
   }
 }
 
