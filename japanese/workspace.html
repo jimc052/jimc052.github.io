@@ -41,9 +41,14 @@
 	</style>
 </head>
 <body>
-  <div>
-    <span>から</span><ruby><span>来</span><rt>き</rt><span>ました</span></ruby>
-  </div>
+  <!-- <div>
+    <span>から</span>
+    <ruby>
+      <span>来</span>
+      <rt>き</rt>
+      <span>ました</span>
+    </ruby>
+  </div> -->
 </body>
 <script>
   String.prototype.ruby = function (漢字) {
@@ -56,9 +61,9 @@
     };
 
     let combine = (word) => {
+      let kana2 = kana;
       // 126 ~
-      let arr = [],
-        mode = "";
+      let arr = [],  mode = "";
       for (let i = 0; i < word.length; i++) {
         let code = word.charCodeAt(i); //
         let char = word.substr(i, 1);
@@ -81,19 +86,19 @@
         let code = arr[i].charCodeAt(0);
         if (code >= 12353 && code <= 12438) {
           r += `<span style="font-size: 22px;">${arr[i]}</span>`;
-          kana = kana.replace(arr[i], "");
+          kana2 = kana2.replace(arr[i], "");
         } else if (code < 12438) {
           r += `<span style="font-size: 22px;">${arr[i]}</span>`;
-          kana = kana.replace(arr[i], "");
+          kana2 = kana2.replace(arr[i], "");
         } else {
           let s = "";
           if (i < arr.length - 1) {
-            let index = kana.indexOf(arr[i + 1]);
-            s = kana.substr(0, index);
-            kana = kana.replace(s, "");
-            // console.log("s: " + s + ", kana: " + kana + ", index: " + index )
+            let index = kana2.indexOf(arr[i + 1]);
+            s = kana2.substr(0, index);
+            kana2 = kana2.replace(s, "");
+            // console.log("s: " + s + ", kana2: " + kana2 + ", index: " + index )
           } else {
-            s = kana;
+            s = kana2;
           }
           r += `<ruby><span style="font-size: 20px;">${arr[i]}</span>
               <rt style="font-size: 12px;">${s}</rt>
@@ -101,37 +106,51 @@
         }
       }
 
-      writeBody(r);
+      // writeBody(r);
       return r;
     };
 
     // if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
     //   漢字 = 漢字.split("・")[0]
     // }
-    let code = kana.charCodeAt(0);
-    if (
-      typeof 漢字 == "undefined" ||
-      漢字.trim().length == 0 ||
-      !(code >= 12353 && code <= 12438)
-    )
+    let code = kana.charCodeAt(0), result = "";
+    if (typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
       return null;
     else {
-      let syo = ["、"], index = -1;
-      for (let i = 0; i < syo.length; i++) {
-        if (漢字.indexOf(syo[i]) > -1) {
-          index = i;
+      let symbols = ["、", "・"], mark = "";
+      for (let i = 0; i < symbols.length; i++) {
+        if (漢字.indexOf(symbols[i]) > -1) {
+          mark = symbols[i];
           break;
         }
       }
-      // console.log(kana.substr(0, 1) + ": " + code)
-      return combine(漢字);
+      if(mark == "") {
+        result = combine(漢字);
+      } else {
+        let arr = 漢字.split(mark);
+        for(let i = 0; i < arr.length; i++) {
+          let s = combine(arr[i]);
+          if(typeof s == "string")
+            arr[i] = s;
+          // console.log(s)
+        }
+        result = arr.join(mark)
+      }
+      return result;
     }
   };
 
-
 	window.onload = async function(){
+    let writeBody = (result) => {
+      let div = document.createElement("div");
+      div.innerHTML = result;
+      document.body.appendChild(div);
+    };
+
     let arr = [{
         kana: "わたし", 漢: "私"
+      }, {
+        kana: "いいえ", // 漢: "私"
       }, {
          kana: "あなた", 漢: "貴方、貴男、貴女、彼方"
       }, {
@@ -151,16 +170,15 @@
     }]
 
     for(let i = 0; i < arr.length; i++) {
-      arr[i].kana.ruby(arr[i]["漢"])
+      // console.log(arr[i].kana + " => " + arr[i]["漢"])
+      let result = arr[i].kana.ruby(arr[i]["漢"])
+      // console.log(result)
+      writeBody(typeof result == "string" ? result : arr[i].kana)
     }
 	}
 
 
 /*
-}, {
-      kana: "", 漢: ""  
-
-
 平假名(ひらがな)：編碼 12353 - 12438
 片假名(カタカナ)：編碼  12449 - 12531
 ASCII 編碼：12353 - 12531
@@ -171,7 +189,6 @@ let s = "わ"
     for(let x = 12353; x  <= 12531; x++) {
         console.log(x + ": " + String.fromCharCode(x))
     }
-
 */
 </script>
 </html>

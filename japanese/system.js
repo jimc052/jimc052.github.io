@@ -260,67 +260,95 @@ window.japanese = function() {
   ];
 }
 
-String.prototype.ruby = function(漢字) {
+String.prototype.ruby = function (漢字) {
   let kana = this.toString();
 
+  let writeBody = (result) => {
+    let div = document.createElement("div");
+    div.innerHTML = result;
+    document.body.appendChild(div);
+  };
+
   let combine = (word) => {
+    let kana2 = kana;
     // 126 ~
-    let arr = [], mode = "";
-    for(let i = 0; i < word.length; i++) {
-      let code = word.charCodeAt(i); //  
+    let arr = [],  mode = "";
+    for (let i = 0; i < word.length; i++) {
+      let code = word.charCodeAt(i); //
       let char = word.substr(i, 1);
-      if(code == 126 || !(code >= 12353 && code <= 12438) ){
-        if(mode != "漢") arr.push("");
-        arr[arr.length -1] += char;
+      if (code == 126 || !(code >= 12353 && code <= 12438)) {
+        if (mode != "漢") arr.push("");
+        arr[arr.length - 1] += char;
         mode = code == 126 ? "s" : "漢";
       } else {
-        if(mode != "kana") arr.push("");
-        arr[arr.length -1] += char;
-        mode = code == 126 ? "s" : "kana"
+        if (mode != "kana") arr.push("");
+        arr[arr.length - 1] += char;
+        mode = code == 126 ? "s" : "kana";
       }
-      // if(word.indexOf("~") > -1) console.log("mode: " + mode + ", " + char + ": " + code);
+      //   if (word.indexOf("~") > -1)
+      //   console.log("mode: " + mode + ", " + char + ": " + code);
     }
     // if(word.indexOf("~") > -1) console.log(arr);
     let r = "";
-    if(arr.length == 1 && word.indexOf("~") == 0) return null;
-    for(let i = 0; i < arr.length; i++) {
+    if (arr.length == 1 && word.indexOf("~") == 0) return null;
+    for (let i = 0; i < arr.length; i++) {
       let code = arr[i].charCodeAt(0);
-      if(code >= 12353 && code <= 12438){
+      if (code >= 12353 && code <= 12438) {
         r += `<span style="font-size: 22px;">${arr[i]}</span>`;
-        kana = kana.replace(arr[i], "")
-      } else if(code < 12438){
+        kana2 = kana2.replace(arr[i], "");
+      } else if (code < 12438) {
         r += `<span style="font-size: 22px;">${arr[i]}</span>`;
-        kana = kana.replace(arr[i], "")
+        kana2 = kana2.replace(arr[i], "");
       } else {
         let s = "";
-        if(i < arr.length - 1) {
-          let index = kana.indexOf(arr[i + 1]);
-          s = kana.substr(0, index);
-          kana = kana.replace(s, "");
-          // console.log("s: " + s + ", kana: " + kana + ", index: " + index )
+        if (i < arr.length - 1) {
+          let index = kana2.indexOf(arr[i + 1]);
+          s = kana2.substr(0, index);
+          kana2 = kana2.replace(s, "");
+          // console.log("s: " + s + ", kana2: " + kana2 + ", index: " + index )
         } else {
-          s = kana;
+          s = kana2;
         }
-        r += `<ruby><span style="font-size: 20px;">${arr[i]}</span><rt style="font-size: 12px;">${s}</rt></ruby>`;
+        r += `<ruby><span style="font-size: 20px;">${arr[i]}</span>
+            <rt style="font-size: 12px;">${s}</rt>
+          </ruby>`;
       }
     }
-    // let div = document.createElement("div")
-    // div.innerHTML = r;
-    // document.body.appendChild(div)
-    return r;
-  }
 
-  if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
-    漢字 = 漢字.split("・")[0]
-  }
-  let code = kana.charCodeAt(0); 
-  // console.log(kana.substr(0, 1) + ": " + code)
-  if(typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
+    // writeBody(r);
+    return r;
+  };
+
+  // if(typeof 漢字 == "string" && 漢字.indexOf("・") > -1) {
+  //   漢字 = 漢字.split("・")[0]
+  // }
+  let code = kana.charCodeAt(0), result = "";
+  if (typeof 漢字 == "undefined" || 漢字.trim().length == 0 || !(code >= 12353 && code <= 12438))
     return null;
   else {
-    return combine(漢字)
+    let symbols = ["、", "・"], mark = "";
+    for (let i = 0; i < symbols.length; i++) {
+      if (漢字.indexOf(symbols[i]) > -1) {
+        mark = symbols[i];
+        break;
+      }
+    }
+    if(mark == "") {
+      result = combine(漢字);
+    } else {
+      let arr = 漢字.split(mark);
+      for(let i = 0; i < arr.length; i++) {
+        let s = combine(arr[i]);
+        if(typeof s == "string")
+          arr[i] = s;
+        // console.log(s)
+      }
+      result = arr.join(mark)
+    }
+    return result;
   }
-}
+};
+
 
 String.prototype.trimChinese = function() { // 只要漢字，英文的不要
   let 漢字 = this.toString();
