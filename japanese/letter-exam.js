@@ -102,7 +102,7 @@ Vue.component('letter-exam', {
 			</div>
 			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;">
 				<fieldset style="padding: 0px 0px 5px 10px;" id="field-col">
-					<legend>段</legend> 
+					<legend style="padding: 0px 10px; margin: 10px 0; cursor: pointer;" v-on:click.stop="onClickCol()">段</legend>
 					<CheckboxGroup id="kana-col" v-model="kanaCol" size="large"  @on-change="onChangeKanaCol">
 						<Checkbox label="a"></Checkbox>
 						<Checkbox label="i"></Checkbox>
@@ -115,7 +115,7 @@ Vue.component('letter-exam', {
 	
 			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;">
 				<fieldset style="padding: 0px 0px 5px 10px;" id="field-row">
-					<legend>行</legend>
+					<legend style="padding: 0px 10px; margin: 10px 0; cursor: pointer;" v-on:click.stop="onClickRow()">行</legend>
 					<CheckboxGroup id="kana-row" v-model="kanaRow" size="large"  @on-change="onChangeKanaRow">
 						<span v-for="(item, index) in patternRow" >
 							<Checkbox v-if="item.trim().length > 0" :label="item"></Checkbox>
@@ -198,6 +198,12 @@ Vue.component('letter-exam', {
 		this.broadcast.$off('onResize', this.onResize);
   },
 	methods: {
+		onClickCol() {
+			this.kanaCol = [];
+		},
+		onClickRow() {
+			this.kanaRow = [];
+		},
 		keySend(c) {
 			if(c == "bs") {
 				if(this.input1.length > 0) {
