@@ -199,10 +199,25 @@ Vue.component('letter-exam', {
   },
 	methods: {
 		onClickCol() {
-			this.kanaCol = [];
+			this.kanaCol = this.kanaCol.length == 0 
+				? ["a", "i", "u", "e", "o"] : [];
 		},
 		onClickRow() {
-			this.kanaRow = [];
+			if(this.kanaRow.length > 0) {
+				this.kanaRow = [];
+			} else {
+				let tone = this.tone.join(","), s = "";
+				if(tone.indexOf("清音") > -1 || this.tone.length == 0) {
+					s = "akstnhmyrw撥";
+					s += " ".repeat(4);
+				}
+				if(tone.indexOf("濁音") > -1 || this.tone.length == 0) {
+					s += "gzdbp"
+				}
+				for(let i = 0; i < s.length; i++) {
+					this.kanaRow.push(s.substr(i, 1))
+				}
+			}
 		},
 		keySend(c) {
 			if(c == "bs") {
