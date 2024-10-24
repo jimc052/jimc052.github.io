@@ -1,4 +1,5 @@
 /* 大家的日本語 */
+let active = -1;
 Vue.component('lesson', { 
 	template:  `<div style="height: 100%; width: 100%; display: flex; flex-direction: column;"
 			:style="{
@@ -118,7 +119,27 @@ Vue.component('lesson', {
 				window.localStorage[`japanese-大家的日本語-${this.mode}-scroll`] = e.srcElement.scrollTop;
 			}
 		},
-		onKeydown() {
+		onKeydown(event) {
+			let o = document.activeElement, 
+				pk = navigator.userAgent.indexOf('Macintosh') > -1 ? event.metaKey : event.ctrlKey,
+				ck = navigator.userAgent.indexOf('Macintosh') > -1  ? event.ctrlKey : event.altKey,
+				ok = navigator.userAgent.indexOf('Macintosh') > -1  ? event.altKey : false,
+				sk = event.shiftKey, 
+				code = event.keyCode;
+			// let id = event.target.id;
+			// console.log("key: " + code + ", pk: " + pk + ", cntrl: " + ck + ", option: " + ok)
+			if(code == 37 || code == 39) {
+				this.changeActive(active + (code == 37 ? -1 : 1));
+			}
+		},
+		changeActive(index) {
+			let arr = document.querySelectorAll(".lesson-frame .card");
+			active = index < 0 ? 0 : (index >= arr.length ? 0 : index);
+			
+			arr.forEach((el, index2) => {
+				el.style.borderColor = (index == index2) ? "#2d8cf0" : "#eee";
+				// console.log(el)
+			})
 		},
 		onChangeLesson(event) {
 			this.scrollTop = 0;
@@ -250,8 +271,10 @@ Vue.component('lesson', {
 							<ol style="margin: 0px 0px 0px 30px; ">${detail}</ol>
 						</div>`
 				}
+				
 				setTimeout(() => {
 					this.changeWidth();
+
 				}, 600);
 			}
 		},
@@ -317,6 +340,7 @@ Vue.component('lesson', {
 			}
 			setTimeout(() => {
 				this.changeWidth();
+				active = -1;
 			}, 600);
 		}
 	},
