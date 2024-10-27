@@ -138,8 +138,8 @@ Vue.component('lesson', {
 			
 			arr.forEach((el, index2) => {
 				el.style.borderColor = (index == index2) ? "#2d8cf0" : "#eee";
-				// console.log(el)
 			})
+			TTX.speak(單字[this.option][active].split("\t")[0])
 		},
 		onChangeLesson(event) {
 			this.scrollTop = 0;
@@ -258,7 +258,7 @@ Vue.component('lesson', {
 						// console.log(arr[i])
 						detail += `
 							<li>
-								<a href="javascript: TTX.speak('${arr[i].日文}');">
+								<a href="javascript: void">
 									${arr[i].日文}
 								</a>
 								<br>
@@ -280,6 +280,7 @@ Vue.component('lesson', {
 		},
 		parseWord(){ // 單字
 			let execute = (option) => {
+				// console.log(option)
 				if(typeof 單字[option] == "object") {
 					let arr = 單字[option], result = "";
 					for(let i = 0; i < arr.length; i++) {
@@ -300,14 +301,14 @@ Vue.component('lesson', {
 							</div>
 							<div style="flex: 1;">${td[1].trimChinese()}</div>`;
 						}
-
+						// 
 						result += `<div class="card ${this.print == 'N' ? '' : 'print'}" style="font-size: 20px;">
 								<div style="min-width: 25px; font-size: 20px;">${i + 1}.</div>
 								<div style="flex: 1; font-size: 20px; display: flex; flex-direction: column;">
 									${s}
-									<a href="javascript: TTX.speak('${td[0]}');" style="font-size: 20px;">
+									<span style="font-size: 20px; color: #2d8cf0">
 										${window.rome(td[0])}
-									</a>
+									</span>
 									<div>${td[2]}</div>
 								</div>
 							</div>`;
@@ -322,9 +323,9 @@ Vue.component('lesson', {
 						+ (`<h3 style="width: 100%; font-size: 30px; text-align: center;">${option}</h3>`)
 					
 					) + result;
-					
 				}
 			}
+			
 
 			if(this.print == "N") {
 				execute(this.option)
@@ -341,6 +342,13 @@ Vue.component('lesson', {
 			setTimeout(() => {
 				this.changeWidth();
 				active = -1;
+
+				let arr = document.querySelectorAll(".lesson-frame .card");
+				arr.forEach((el, index) => {
+					el.addEventListener("click", () => { this.changeActive(index) }, false);
+					el.style.cursor = "pointer";
+					// 
+				})
 			}, 600);
 		}
 	},
