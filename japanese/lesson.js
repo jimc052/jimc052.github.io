@@ -130,7 +130,14 @@ Vue.component('lesson', {
 			// console.log("key: " + code + ", pk: " + pk + ", cntrl: " + ck + ", option: " + ok)
 			if(code == 37 || code == 39) {
 				this.changeActive(active + (code == 37 ? -1 : 1));
+			} else if(code == 32) { // 空白鍵
+				if(active > -1) this.changeActive(active);
+			} else {
+				return;
 			}
+			event.preventDefault();
+			event.stopImmediatePropagation();
+			event.stopPropagation();
 		},
 		changeActive(index) {
 			let arr = document.querySelectorAll(".lesson-frame .card");
