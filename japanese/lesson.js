@@ -265,7 +265,7 @@ Vue.component('lesson', {
 						// console.log(arr[i])
 						detail += `
 							<li>
-								<a href="javascript: void">
+								<a href="javascript: TTX.speak('${arr[i].日文}');">
 									${arr[i].日文}
 								</a>
 								<br>
