@@ -20,6 +20,7 @@ Vue.component('lesson-exam', {
 					</Checkbox>
 				</CheckboxGroup>
 			</div>
+			<Slider v-model="slider" :max="max" range  :marks="marks" style="max-width: 400px;"></Slider>
 			<div style="flex: 1" />
 			<div style="text-align: center; font-size: 20px;">2024-09-12</div>
 		</div>
@@ -113,7 +114,17 @@ Vue.component('lesson-exam', {
       input1: "",
 			chinese: "",
 			range: [],
-			ranges: ["1-10", "11-20"]
+			ranges: ["1-10", "11-20"],
+			slider: [0,0],
+			max: 42,
+			marks: {
+				0: "0",
+				10: "10",
+				20: "20",
+				30: "30",
+				40: "40",
+				50: "50",
+			}
 		};
 	},
 	created(){
@@ -141,19 +152,37 @@ Vue.component('lesson-exam', {
   },
 	methods: {
 		renderRange(){
+			let arr = 單字[this.option];
+			this.max = arr.length;
+			this.marks = {};
+			let step = 0;
+			while (step <= arr.length) {
+				if(step + 5 > arr.length) {
+					this.marks[arr.length] = arr.length + "";
+					break;
+				}
+				else {
+					this.marks[step] = step + "";
+					step += 5;
+				}
+			}
+			let slider = window.localStorage["japanese-大家的日本語-exam-slider"];
+			if(typeof slider == "string" && slider.length > 0)
+				this.slider = JSON.parse(slider);
+
 			this.ranges = [];
 			this.range = [];
 			let s = window.localStorage["japanese-大家的日本語-exam-range"];
 			if(typeof s == "string" && s.length > 0)
 				this.range = JSON.parse(s);
 
-			let arr = 單字[this.option];
 			let x = Math.ceil(arr.length / 10)
 			for(let i = 0; i < x; i++) {
 				let j = (i * 10) + 1;
 				let k = i == x - 1 ? arr.length : j + 9; 
 				this.ranges.push(j + "~" + k);
 			}
+			
 			let id = setInterval(() => {
 				arr = document.querySelectorAll("#lesson-range span.range");
 				if(arr != null) {
@@ -167,6 +196,7 @@ Vue.component('lesson-exam', {
 				}
 
 			}, 300);
+			
 		},
     onKeydown(event) {
 			let o = document.activeElement;
@@ -281,6 +311,7 @@ Vue.component('lesson-exam', {
     sample() {
       this.datas = []; this.index = -1;
 			window.localStorage["japanese-大家的日本語-exam-range"] = JSON.stringify(this.range);
+			window.localStorage["japanese-大家的日本語-exam-slider"] = JSON.stringify(this.slider);
 			function getRandom(min,max){
 				return Math.floor(Math.random()*max)+min;
 			};
@@ -300,11 +331,17 @@ Vue.component('lesson-exam', {
         })
       }
 			let arr3 = [];
-			this.range.sort()
-			for(let i = this.range.length - 1; i >= 0; i--){
-				let a = arr2.splice(this.range[i] * 10, 10);
-				arr3 = arr3.concat(a)
+			let start = (this.slider[0] == 0 ? 1 : this.slider[0]) - 1;
+
+			for(let i = start; i < this.slider[1]; i++) {
+				arr3.push(arr2[i]);
+				console.log(i, JSON.stringify(arr2[i]))
 			}
+			// this.range.sort()
+			// for(let i = this.range.length - 1; i >= 0; i--){
+			// 	let a = arr2.splice(this.range[i] * 10, 10);
+			// 	arr3 = arr3.concat(a)
+			// }
 			arr2 = arr3;
 			// console.log(JSON.stringify(arr2, null, 2))
 
