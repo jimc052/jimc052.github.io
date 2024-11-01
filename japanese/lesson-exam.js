@@ -249,6 +249,7 @@ Vue.component('lesson-exam', {
     },
 		onChangeLesson(event) {
 			window.localStorage["japanese-大家的日本語-exam-option"] = this.option;
+			window.localStorage["japanese-大家的日本語-exam-slider"] = JSON.stringify([0, 0]);
 			this.renderRange();
     },
     play() {
