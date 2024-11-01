@@ -10,17 +10,10 @@ Vue.component('lesson-exam', {
 					<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
 				</Select>
 
-				<Button type="success" size="large"  @click="sample" :disabled="this.range.length == 0"
+				<Button type="success" size="large"  @click="sample" :disabled="this.slider[1] == 0"
 					style="margin-left: 10px;">開始</Button>
 			</div>
-			<div style="margin-top: 10px;">
-				<CheckboxGroup id="lesson-range" v-model="range" size="large">
-					<Checkbox v-for="(item, index) in ranges" :label="index" :key="index">
-						<span class="range">{{item}}</span>
-					</Checkbox>
-				</CheckboxGroup>
-			</div>
-			<Slider v-model="slider" :max="max" range  :marks="marks" style="max-width: 400px;"></Slider>
+			<Slider v-model="slider" :max="max" range :marks="marks" style="max-width: 400px;"></Slider>
 			<div style="flex: 1" />
 			<div style="text-align: center; font-size: 20px;">2024-09-12</div>
 		</div>
@@ -113,8 +106,6 @@ Vue.component('lesson-exam', {
       // size: 250,
       input1: "",
 			chinese: "",
-			range: [],
-			ranges: ["1-10", "11-20"],
 			slider: [0,0],
 			max: 42,
 			marks: {
@@ -166,37 +157,12 @@ Vue.component('lesson-exam', {
 					step += 5;
 				}
 			}
+			// console.log(JSON.stringify(this.marks, null, 2))
 			let slider = window.localStorage["japanese-大家的日本語-exam-slider"];
 			if(typeof slider == "string" && slider.length > 0)
 				this.slider = JSON.parse(slider);
-
-			this.ranges = [];
-			this.range = [];
-			let s = window.localStorage["japanese-大家的日本語-exam-range"];
-			if(typeof s == "string" && s.length > 0)
-				this.range = JSON.parse(s);
-
-			let x = Math.ceil(arr.length / 10)
-			for(let i = 0; i < x; i++) {
-				let j = (i * 10) + 1;
-				let k = i == x - 1 ? arr.length : j + 9; 
-				this.ranges.push(j + "~" + k);
-			}
-			
-			let id = setInterval(() => {
-				arr = document.querySelectorAll("#lesson-range span.range");
-				if(arr != null) {
-					clearInterval(id);
-					arr.forEach(el => {
-						// console.log(el)
-						el.style.padding = "0 5px 0 2px";
-						el.style.fontSize = "20px";
-					});
-					document.querySelector("#lesson-range").style.width = "400px"
-				}
-
-			}, 300);
-			
+			else 
+			this.slider = [0, 0];			
 		},
     onKeydown(event) {
 			let o = document.activeElement;
@@ -310,7 +276,6 @@ Vue.component('lesson-exam', {
     },
     sample() {
       this.datas = []; this.index = -1;
-			window.localStorage["japanese-大家的日本語-exam-range"] = JSON.stringify(this.range);
 			window.localStorage["japanese-大家的日本語-exam-slider"] = JSON.stringify(this.slider);
 			function getRandom(min,max){
 				return Math.floor(Math.random()*max)+min;
@@ -335,13 +300,9 @@ Vue.component('lesson-exam', {
 
 			for(let i = start; i < this.slider[1]; i++) {
 				arr3.push(arr2[i]);
-				console.log(i, JSON.stringify(arr2[i]))
+				// console.log(i, JSON.stringify(arr2[i]))
 			}
-			// this.range.sort()
-			// for(let i = this.range.length - 1; i >= 0; i--){
-			// 	let a = arr2.splice(this.range[i] * 10, 10);
-			// 	arr3 = arr3.concat(a)
-			// }
+
 			arr2 = arr3;
 			// console.log(JSON.stringify(arr2, null, 2))
 
