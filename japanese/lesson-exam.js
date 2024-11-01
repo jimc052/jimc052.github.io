@@ -10,7 +10,7 @@ Vue.component('lesson-exam', {
 					<Option v-for="item in options" :value="item" :key="item">{{ item }}</Option>
 				</Select>
 
-				<Button type="success" size="large"  @click="sample" :disabled="this.slider[1] == 0"
+				<Button type="success" size="large"  @click="sample" :disabled="slider[1] - slider[0] < 3"
 					style="margin-left: 10px;">開始</Button>
 			</div>
 			<Slider v-model="slider" :max="max" range :marks="marks" style="max-width: 400px;"></Slider>
