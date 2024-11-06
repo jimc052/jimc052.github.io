@@ -26,9 +26,12 @@ Vue.component('lesson-exam', {
 					padding: '0px',
 				}"
 			>
-      <div v-if="index < datas.length">
+      <div v-if="index < datas.length">	
 				<div
           style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
+					
+					<div style="color: #2d8cf0; padding-right:  10px; font-size: 20px;">{{option}}</div>
+
 					<Input ref="input1" element-id="input1" v-model="input1"
 						style="font-size: 20px; flex: 1; text-transform: lowercase;"
 						size="large"
@@ -42,7 +45,8 @@ Vue.component('lesson-exam', {
 				<div style="padding: 5px; min-height: 40px; font-size: 20px;">{{
 					index > -1 && index < datas.length ? datas[index].中 : ""}}</div>
 			</div>
-      <div v-else style="display: flex; flex-direction: row;">
+      <div v-else style="display: flex; flex-direction: row; justify-content: flex-start; align-items: center">
+				<div style="padding: 10px; font-size: 20px;">{{option}}</div>
 				<Button id="btnRestart" type="primary" size="large" @click="sample" style="">開始</Button>
 				<Button size="large" @click="index = -1" style="margin-left: 20px;">設定</Button>
 			</div>
