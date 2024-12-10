@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>轉檔 2024-12-10</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; media-src *; img-src * filesystem: data:">
+  <style>
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      /* user-select: none; */
+      font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+      font-size: 16px;
+    }
+
+    body {
+      /* margin: 10px; */
+      background-color: #ebecf0;
+      padding: 0px 0px;
+      color: rgb(0, 0, 0);
+    }
+
+    html,
+    body {
+      min-height: 100% !important;
+      height: 100%;
+    }
+
+    body {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    table thead tr:first-child td {
+      text-align: center;
+      color: blue;
+      font-weight: 700;
+      background: #eee;
+    }
+
+    td {
+      border: 1px solid black;
+      padding: 5px;
+      text-align: center;
+    }
+
+    tr.no-data {
+      background-color: red;
+      color: white;
+    }
+    button {
+      /* font-size: 20px; */
+      color: white;
+      background: blue;
+      padding: 10px;
+      border: 1px solid white;
+      border-radius: 5px;
+      min-width: 80px;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="padding: 5px 0;">
+    <button>轉換</button>
+  </div>
+  <div style="flex: 1; overflow: scroll">
+    <table>
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</body>
+<script>
+  let dataStore = [];
+  window.onload = async function () {
+    let arr = source();
+    let s = window.localStorage["japanese-vocabulary"];	
+    let vocabularys = typeof s != "undefined" && s.length > 0 ? JSON.parse(s) : [];
+    for(let i = 0; i < arr.length; i++) {
+      let row = arr[i].trim();
+      if(row.length == 0) continue;
+
+      let arr2 = vocabularys.filter(el => {
+        return row == el["語"]
+      })
+      dataStore.push({text: row, data: arr2})
+      // console.log(arr[i].trim())
+      // console.log(arr2)
+    }
+    console.log(JSON.stringify(dataStore, null, 2))
+
+    // console.log(vocabularys)
+
+    render();
+  }
+
+  function render() {
+    let tbody = document.querySelector("tbody");
+    tbody.innerHTML = "";
+    tbody.scrollTop = 0;
+      // {
+      //   "id": "06154",
+      //   "date": 1692233193590,
+      //   "中": "早",
+      //   "漢": "早い",
+      //   "級": "4",
+      //   "詞": "形容詞",
+      //   "語": "はやい",
+      //   "重": "2"
+      // },
+
+    let x = 0;
+    dataStore.forEach((el, index) => {
+      let row = tbody.insertRow();
+      row.id = x;
+      renderRow(row, el)
+      // cell1.innerHTML = x;
+      // for (let j = 0; j < cols1.length; j++) {
+      //   let col = cols1[j];
+      //   let cell = row.insertCell();
+      //   cell.innerHTML = typeof el[col] == "string" ? el[col] : "";
+      // }
+      x++;
+    });
+
+  }
+
+  function  renderRow(row, data) {
+    let cols = ["語", "漢", "中", "重"];
+    console.log(data.data[0])
+    for(let i = 0; i < cols.length; i++) {
+      let col = cols[i];
+      let cell = row.insertCell();
+      cell.innerHTML = data.data[0][col]
+    }
+  }
+
+  function  source() {
+    return `おおきい
+      ちいさい
+      ながい
+      みじかい
+      たかい
+      ひくい
+      たかい
+      やすい
+      あたらしい
+      ふるい
+      あかるい
+      くらい
+      はやい
+      おそい
+      はやい
+      `.split("\n");
+  }
+</script>
+
+</html>
