@@ -95,74 +95,63 @@
       let arr2 = vocabularys.filter(el => {
         return row == el["語"]
       })
-      dataStore.push({text: row, data: arr2})
-      // console.log(arr[i].trim())
-      // console.log(arr2)
+      dataStore.push({text: row, data: arr2, })
     }
-    console.log(JSON.stringify(dataStore, null, 2))
+    // console.log(JSON.stringify(dataStore, null, 2))
 
     // console.log(vocabularys)
 
     render();
   }
 
+  let x = 0;
   function render() {
     let tbody = document.querySelector("tbody");
     tbody.innerHTML = "";
-    tbody.scrollTop = 0;
-      // {
-      //   "id": "06154",
-      //   "date": 1692233193590,
-      //   "中": "早",
-      //   "漢": "早い",
-      //   "級": "4",
-      //   "詞": "形容詞",
-      //   "語": "はやい",
-      //   "重": "2"
-      // },
-
-    let x = 0;
     dataStore.forEach((el, index) => {
+      renderRow(tbody, el, index)
+    });
+  }
+
+  function  renderRow(tbody, data, key) {
+    let cols = ["語", "漢", "中", "重"];
+    // console.log(data.data[0])
+    data.data.forEach((el, index) => {
       let row = tbody.insertRow();
-      row.id = x;
-      renderRow(row, el)
-      // cell1.innerHTML = x;
-      // for (let j = 0; j < cols1.length; j++) {
-      //   let col = cols1[j];
-      //   let cell = row.insertCell();
-      //   cell.innerHTML = typeof el[col] == "string" ? el[col] : "";
-      // }
-      x++;
+      row.style.background = key % 2 == 0 ? "white" : "rgb(235, 247, 255)"
+
+      let cell = row.insertCell();  
+      cell.innerHTML = (key + 1);
+      
+      for(let i = 0; i < cols.length; i++) {
+        let col = cols[i];
+        let cell = row.insertCell();
+        if(typeof el[col] != "undefined")
+          cell.innerHTML = el[col];
+      }      
     });
 
   }
 
-  function  renderRow(row, data) {
-    let cols = ["語", "漢", "中", "重"];
-    console.log(data.data[0])
-    for(let i = 0; i < cols.length; i++) {
-      let col = cols[i];
-      let cell = row.insertCell();
-      cell.innerHTML = data.data[0][col]
-    }
-  }
-
   function  source() {
     return `おおきい
-      ちいさい
-      ながい
-      みじかい
-      たかい
-      ひくい
-      たかい
-      やすい
-      あたらしい
-      ふるい
-      あかるい
-      くらい
-      はやい
-      おそい
-      はやい
+ちいさい
+ながい
+みじかい
+たかい
+ひくい
+たかい
+やすい
+あたらしい
+ふるい
+あかるい
+くらい
+はやい
+おそい
+はやい
+おそい
+おもい
+かるい
       `.split("\n");
   }
 </script>
