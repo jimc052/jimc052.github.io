@@ -8,7 +8,6 @@ Vue.component('list', {
 				<div style="display: flex; flex-direction: row; align-items: center;  justify-content: center;">
 					<span style="margin-right: 5px">{{item.weight}}</span>
 
-
 					<div style="width: 50px; font-size: 16px;">
 						<Icon v-if="item.compare > 0" type="md-arrow-up" size="14" style="color: red" />
 						<Icon v-if="item.compare < 0" type="md-arrow-down" size="14" style="color: blue" />
@@ -19,13 +18,15 @@ Vue.component('list', {
 			</div>
 		</div>
 
-		<i-button v-if="height.length > 0 && today == ''" shape="circle" circle icon="md-add" 
+		<i-button v-if="height.length > 0 && today == '' && activeItem == null" shape="circle" circle icon="md-add" 
 			style="position: absolute; bottom: 15px; right: 15px;"
 			@click.native="onAdd()" size="large"
 		/>
 		<dlg-height :visible="modalH" :height="height" @onClose="modalH = false" @onSave="onSaveHeight" />
-		<dlg-weight ref="weight" :visible="modalW" :height="height" @onClose="modalW = false" @onSave="onSaveWeight" />
-		<div id="footer">2024-07-09</div>
+		<dlg-weight ref="weight" :visible="modalW" :height="height" 
+			@onClose="modalW = false; activeItem = null;" 
+			@onSave="onSaveWeight" />
+		<div id="footer">2025-05-27</div>
 	</div>`,
 	props: {
 	},
@@ -36,7 +37,8 @@ Vue.component('list', {
 			today: "",
 			height: "",
 			modalH: false,
-			modalW: false
+			modalW: false,
+			activeItem: null,
 		};
 	},
 	created(){
@@ -54,7 +56,7 @@ Vue.component('list', {
 					this.compare(index);
 			});
 		}
-		// console.log(this.datas)
+		// console.log(JSON.stringify(this.datas, null, 2));
 
 		this.height = this.$storage("BMI-H");
 		if(this.height.length == 0) {
@@ -76,7 +78,13 @@ Vue.component('list', {
 			}
 		},
 		onClickRow(item, index) {
-
+			// console.log("onClickRow", item, index);
+			this.activeItem = item;
+			this.modalW = true;
+			setTimeout(() => {
+				this.$refs["weight"].weight = item.weight;
+				this.$refs["weight"].calculate();
+			}, 600);
 		},
 		onSaveHeight(h) {
 			this.height = h;
@@ -85,17 +93,35 @@ Vue.component('list', {
 		},
 		onSaveWeight(w) {
 			this.modalW = false;
-			this.today = (new Date()).toString("yyyy-mm-dd");
-			let json = Object.assign({
-				date: this.today, 
-			}, w);
+			let arr = this.$storage("BMI");			
+			if(this.activeItem == null) {
+				this.today = (new Date()).toString("yyyy-mm-dd");
+				let json = Object.assign({
+					date: this.today, 
+				}, w);
 
-			let arr = this.$storage("BMI");
-			arr.unshift(json);
-			this.$storage("BMI", arr);
+				arr.unshift(json);
+				this.$storage("BMI", arr);
+				this.datas.unshift(json);
+			} else {
+				arr.forEach((el, index) => {
+					if(el.date == this.activeItem.date) {
+						el.weight = w.weight;
+						el.bmi = w.bmi;					
+					}
+				});
+				this.$storage("BMI", arr);
 
+				this.datas.forEach((el, index) => {
+					if(el.date == this.activeItem.date) {
+						el.weight = w.weight;
+						el.bmi = w.bmi;					
+					}
+				});
+				this.activeItem = null;
+			}
 			// console.log(JSON.stringify(arr, null, 2));
-			this.datas.unshift(json);
+			
 			if(this.datas.length >= 2)
 				this.compare(0);
 		},
