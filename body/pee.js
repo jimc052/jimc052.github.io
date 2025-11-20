@@ -1,6 +1,6 @@
 Vue.component('pee', { 
 	template:  `
-		<div style="height: 100%; display: flex; flex-direction: column; position: relative; overflow: hidden;">
+		<div style="height: 100%; zoom: 1.2; display: flex; flex-direction: column; position: relative; overflow: hidden;">
 			<Spin size="large" fix v-if="spinShow"></Spin>
 			<div id="header" style="background: rgb(45, 140, 240); color: white;  font-size: 30px;
 				display: flex; flex-direction: row; align-items: center;
@@ -34,9 +34,12 @@ Vue.component('pee', {
 					<div style="font-size: 25px; margin-right: 10px; width: 80px; ">{{(datas.length - index) + "."}}</div>
 					<div style="flex: 1"></div>
 
-					<Input v-if="active == index"  ref="input" :value="item"
-						style="width: 120px; font-size: 20px; padding: 5px;" size="large" clearable 
-						@on-enter="onEnter"/>
+					<Input v-if="active == index"  ref="input" :value="item" class="my-custom-input"
+						style="width: 130px; font-size: 20px; padding: 5px;" size="large" clearable 
+						@on-enter="onEnter"
+						placeholder="輸入時間"
+						element-id="input1"
+					/>
 
 					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
 						@click="onEdit(index)"
@@ -146,8 +149,15 @@ Vue.component('pee', {
 			});
 		},
 		onEdit(index) {
-			if(this.canEdit == true)
+			if(this.canEdit == true) {
 				this.active = index;
+
+				setTimeout(() => {
+				let input1 = document.querySelector("#input1");
+				if(input1 != null)
+					input1.style.fontSize = "24px";				
+				}, 300);
+			}
 		},
 		async onEnter(event){
 
