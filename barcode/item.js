@@ -30,15 +30,15 @@ Vue.component('vue-item', {
 	methods: {
     render() {
       JsBarcode("#" + this.barcode, this.item.value, {
-        height: 60,
-        width: 1,
+        height: 80,
+        width: 2,
         // textMargin: 0,
         // displayValue: false,
         // fontSize: 40,
         // background: "#4b8b7f",
         // lineColor: "#ffffff",
-        // margin: 40,
-        // marginLeft: 80
+        margin: 20,
+        fontOptions: "bold",
       });
     }
   },
