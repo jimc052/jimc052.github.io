@@ -10,7 +10,7 @@ Vue.component('pronounce', {
 				<Radio label="2">拗音</Radio>
 				<Radio v-if="width > 600" label="3">全部</Radio>
 			</RadioGroup>
-			<div :style="{flex: width < 400 ? 1 : null, width: width < 400 ? null : '20px'}" />
+			<div :style="{flex: 1}" />
 			<RadioGroup v-model="word" type="button" style="margin-left: 10px;">
 				<Radio label="平">平假</Radio>
 				<Radio label="片">片假</Radio>
