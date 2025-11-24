@@ -11,7 +11,7 @@ Vue.component('pronounce', {
 				<Radio v-if="width > 600" label="3">全部</Radio>
 			</RadioGroup>
 			<div :style="{flex: 1}" />
-			<RadioGroup v-model="word" type="button" style="margin-left: 10px;">
+			<RadioGroup v-model="word" type="button" style="margin-left: 10px;" @on-change="onChangeWord">
 				<Radio label="平">平假</Radio>
 				<Radio label="片">片假</Radio>
 				<Radio v-if="width > 400" label="全">全部</Radio>
@@ -69,6 +69,16 @@ Vue.component('pronounce', {
 	},
 	async mounted () {
 		this.onResize();
+
+		let w = window.localStorage["japanese-pronounce-word"];
+		if(typeof w == "string" && w.length > 0) {
+			this.word = w;
+		}
+		let i = window.localStorage["japanese-pronounce-index"];
+		if(typeof i == "string" && w.length > 0) {
+			this.index = i;
+		}
+
 		this.broadcast.$on('onResize', this.onResize);
 		window.addEventListener('keydown', this.onKeydown, false);
 		window.addEventListener("beforeprint", this.onBeforePrint);
@@ -181,6 +191,7 @@ Vue.component('pronounce', {
 					}
 				}
 			}, 100);
+			window.localStorage["japanese-pronounce-index"] = this.index + "";
 		},
 		async play(row, col) {
 			if(Player.mode != "") await Player.wait(1);
@@ -328,6 +339,9 @@ Vue.component('pronounce', {
 				event.stopPropagation();				
 			// }
 		},
+		onChangeWord() {
+			window.localStorage["japanese-pronounce-word"] = this.word;
+		}
 	},
 	watch: {
 	},
