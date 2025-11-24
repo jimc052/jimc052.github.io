@@ -14,7 +14,7 @@ Vue.component('pronounce', {
 			<RadioGroup v-model="word" type="button" style="margin-left: 10px;">
 				<Radio label="平">平假</Radio>
 				<Radio label="片">片假</Radio>
-				<Radio v-if="width > 600" label="全">全部</Radio>
+				<Radio v-if="width > 400" label="全">全部</Radio>
 			</RadioGroup>
 		</div>
 		<div id="pronounce-body" style="flex: 1; overflow: auto; width: 100%;">
