@@ -473,7 +473,8 @@ Vue.component('letter-exam', {
 			
 			if(this.index == this.datas.length) {
 				setTimeout(() => {
-					document.querySelector("#btnRestart").focus();
+					if(document.querySelector("#btnRestart"))
+						document.querySelector("#btnRestart").focus();
 				}, 600);
 			} else {
 				this.assembleKey();
