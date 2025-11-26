@@ -135,7 +135,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2024-09-16 10:00</div>
+			<div style="color: #2d8cf0; font-size: 20px;">2025-11-26 17:00</div>
 		</div>
   </div>`,
 	props: {
@@ -192,8 +192,6 @@ Vue.component('letter-exam', {
 		let field_col = document.querySelector("#field-col");
 		let field_row = document.querySelector("#field-row");
 		field_row.style.width = (field_col.clientWidth + 6) + "px";
-
-		console.log("Letter Exam mounted. 2025-11-26 17:00");
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
