@@ -334,6 +334,8 @@
 				console.log(e)
 				// alert(e.message);
 			}
+		} else {
+			email = "";
 		}
 
 		Vue.prototype.$isLogin = function() {
@@ -373,7 +375,7 @@
 			return decodeURI(s);
 		}
 		Vue.prototype.$isDebug = function() {
-			return (email && email.indexOf("jimc") == 0)
+			return (typeof email == "string" && email.indexOf("jimc") == 0)
 				|| location.href.indexOf("file:///") > -1 
 				|| location.href.indexOf("192.168") > -1 
 				? true : false;

@@ -192,6 +192,8 @@ Vue.component('letter-exam', {
 		let field_col = document.querySelector("#field-col");
 		let field_row = document.querySelector("#field-row");
 		field_row.style.width = (field_col.clientWidth + 6) + "px";
+
+		console.log("Letter Exam mounted. 2025-11-26 17:00");
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
