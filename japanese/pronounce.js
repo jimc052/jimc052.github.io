@@ -3,7 +3,7 @@ let token = Date.now
 Vue.component('pronounce', { 
 	template:  `
 	<div id="pronounce" style="height: 100%; width: 100%; display: flex; flex-direction: column; padding: 0px 5px;">
-		<div style="display: flex; flex-direction: row; padding: 5px 0px;" ref="header">
+		<div id="pronounce-header" style="display: flex; flex-direction: row; padding: 5px 0px;" ref="header">
 			<RadioGroup v-model="index" type="button" style="" @on-change="onChangeIndex">
 				<Radio label="0">清音</Radio>
 				<Radio label="1">濁音</Radio>
@@ -92,7 +92,7 @@ Vue.component('pronounce', {
 		window.removeEventListener("afterprint", this.onAfterPrint);
   },
 	methods: {
-		onBeforePrint() {
+		onBeforePrint() { // 要把 font-size 改為 class; 2025-11-27 08:00
 			this.$refs.header.style.display = "none";
 			let body = document.querySelector("#pronounce-body");
 			body.style.overflow = "none";
