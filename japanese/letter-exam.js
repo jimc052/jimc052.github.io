@@ -138,7 +138,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 24px;">2025-11-26 17:00</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-11-28 18:00</div>
 		</div>
   </div>`,
 	props: {
