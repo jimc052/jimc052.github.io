@@ -89,7 +89,7 @@ Vue.component('letter-exam', {
 		</div>
 
 		<div v-else style="height: 100%; width: 100%; overflow: auto; display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-			<div style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: '320px'}">
+			<div id="header" style="display: flex; flex-direction: row; margin: 5px; z-index: 10;" :style="{width: width +'px'}">
 				<CheckboxGroup v-model="tone" size="large"  @on-change="onChangeTone">
 					<Checkbox label="清音"></Checkbox>
 					<Checkbox label="濁音"></Checkbox>
@@ -100,7 +100,7 @@ Vue.component('letter-exam', {
 					<Checkbox label="片假"></Checkbox>
 				</CheckboxGroup>
 			</div>
-			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;">
+			<div style="margin-top: 10px; z-index: 10;" :style="{width: width + 'px'}">
 				<fieldset style="padding: 0px 0px 5px 10px;" id="field-col">
 					<legend style="padding: 0px 10px; margin: 10px 0; cursor: pointer;" v-on:click.stop="onClickCol()">段</legend>
 					<CheckboxGroup id="kana-col" v-model="kanaCol" size="large"  @on-change="onChangeKanaCol">
@@ -113,14 +113,17 @@ Vue.component('letter-exam', {
 				</fieldset>
 			</div>
 	
-			<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin-top: 10px; z-index: 10;">
+			<div style="margin-top: 10px; z-index: 10;" :style="{width: width + 'px'}">
 				<fieldset style="padding: 0px 0px 5px 10px;" id="field-row">
 					<legend style="padding: 0px 10px; margin: 10px 0; cursor: pointer;" v-on:click.stop="onClickRow()">行</legend>
 					<CheckboxGroup id="kana-row" v-model="kanaRow" size="large"  @on-change="onChangeKanaRow">
-						<span v-for="(item, index) in patternRow" >
-							<Checkbox v-if="item.trim().length > 0" :label="item"></Checkbox>
-							<br  v-if="index > 0 && index % 5 == 4" />
-						</span>
+						<table id="kana-table" width="100%" style="border-collapse: collapse; display: flex; flex-direction: column;">
+							<tr v-for="(item1, index1) in patternRow" >
+								<td v-for="(item2, index2) in item1" style="width: 20%;">
+									<Checkbox v-if="item2.trim().length > 0" :label="item2"></Checkbox>
+								</td>
+							</tr>
+						</table>
 					</CheckboxGroup>
 				</fieldset>
 			</div>
@@ -135,7 +138,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 20px;">2025-11-26 17:00</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-11-26 17:00</div>
 		</div>
   </div>`,
 	props: {
@@ -154,11 +157,18 @@ Vue.component('letter-exam', {
 			isSmall: true,
 			volumeOn: true,
 			subject: "",
-			keyRandom: "kstnm"
+			keyRandom: "kstnm",
+			width: 320
 		};
 	},
 	created(){
+		this.width = document.body.clientWidth > 600 ? 500 : 
+			(document.body.clientWidth > 400 ? 380 : 310);
+		this.fontSize = document.body.clientWidth > 600 ? 30 : 
+			(document.body.clientWidth > 400 ? 24 : 18);
 
+		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : 
+			(document.body.clientWidth > 400 ? 18 : 14);
 	},
 	async mounted () {
 		let tone = window.localStorage["japanese-letter-exam-tone"]
@@ -189,9 +199,16 @@ Vue.component('letter-exam', {
 		this.renderKanaCol();
 		this.renderKanaRow();
 
-		let field_col = document.querySelector("#field-col");
-		let field_row = document.querySelector("#field-row");
-		field_row.style.width = (field_col.clientWidth + 6) + "px";
+		let arr = document.querySelectorAll("#header label span:first-child");
+		arr.forEach(el => {
+			el.style.padding = "0 5px 5px 2px";
+		});
+		arr = document.querySelectorAll("#header label span:last-child");
+		arr.forEach(el => {
+			el.style.padding = "0 5px 0 2px";
+			el.style.fontSize = this.fontSizeChinese + "px";
+		});
+
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -240,19 +257,22 @@ Vue.component('letter-exam', {
 			}, 100);
 		},
 		renderKanaCol() {
-			let arr = document.querySelectorAll("#kana-col label");
-			arr.forEach(el => {
-				el.style.width = "50px";
-			});
+			// let arr = document.querySelectorAll("#kana-col label span");
+			// arr.forEach(el => { });
 	
+			let arr = document.querySelectorAll("#kana-col label span:first-child");
+			arr.forEach(el => {
+				el.style.padding = "0 5px 5px 2px";
+				// el.style.fontSize = this.fontSize + "px";
+			});
 			arr = document.querySelectorAll("#kana-col label span:last-child");
 			arr.forEach(el => {
 				el.style.padding = "0 5px 0 2px";
-				el.style.fontSize = "18px";
+				el.style.fontSize = this.fontSize + "px";
 			});
 		},
 		renderKanaRow() {
-			let field_row = document.querySelector("#field-row");
+			// let field_row = document.querySelector("#field-row");
 			// field_row.style.visibility = "hidden";
 
 			let s = "";
@@ -267,18 +287,39 @@ Vue.component('letter-exam', {
 
 			this.patternRow = [];
 			for(let i = 0; i < s.length; i++) {
-				this.patternRow.push(s.substr(i, 1))
+				if(i == 0 || i % 5 == 0) {
+					this.patternRow.push([]);
+				}
+				this.patternRow[this.patternRow.length - 1].push(s.substr(i, 1))
 			}
 			setTimeout(() => {
 				let arr = document.querySelectorAll("#kana-row label span:last-child")
 				arr.forEach(el => {
 					el.style.padding = "0 5px 0 2px";
-					el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "18px";
+					// el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "18px";
+					el.style.fontSize = (el.innerText.indexOf("撥") > -1 ? this.fontSizeChinese : this.fontSize) + "px";
 				});
 
 				arr = document.querySelectorAll("#kana-row label");
 				arr.forEach(el => {
-					el.style.width = "50px";
+					// el.style.width = "50px";
+				});
+
+				let table = document.querySelector("#kana-table");
+				let width = 50;
+				if(table) {
+					table.style.borderCollapse = "collapse";
+					// console.log("table.clientWidth: " + table.clientWidth);
+					width = Math.floor(table.clientWidth / 5) - 4;
+				}
+
+				arr = document.querySelectorAll("#kana-table td");
+				arr.forEach(el => {
+					el.style.width = width + "px";
+					el.style.paddingLeft = (document.body.clientWidth > 600 
+						? 20 
+						: 
+						(document.body.clientWidth > 400 ? 5 : 0)) + "px";
 				});
 				// field_row.style.visibility = "visible";
 			}, 600);

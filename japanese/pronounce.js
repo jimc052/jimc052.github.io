@@ -75,7 +75,7 @@ Vue.component('pronounce', {
 			this.word = w;
 		}
 		let i = window.localStorage["japanese-pronounce-index"];
-		if(typeof i == "string" && w.length > 0) {
+		if(typeof i == "string" && i.length > 0) {
 			this.index = i;
 		}
 
