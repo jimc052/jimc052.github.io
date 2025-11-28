@@ -163,12 +163,12 @@ Vue.component('letter-exam', {
 	},
 	created(){
 		this.width = document.body.clientWidth > 600 ? 500 : 
-			(document.body.clientWidth > 400 ? 380 : 310);
+			(document.body.clientWidth > 400 ? 380 : 300);
 		this.fontSize = document.body.clientWidth > 600 ? 30 : 
-			(document.body.clientWidth > 400 ? 24 : 18);
+			(document.body.clientWidth > 400 ? 24 : 16);
 
 		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : 
-			(document.body.clientWidth > 400 ? 18 : 14);
+			(document.body.clientWidth > 400 ? 18 : 12);
 	},
 	async mounted () {
 		let tone = window.localStorage["japanese-letter-exam-tone"]
@@ -314,12 +314,11 @@ Vue.component('letter-exam', {
 				}
 
 				arr = document.querySelectorAll("#kana-table td");
+				let clientWidth = document.body.clientWidth;
 				arr.forEach(el => {
 					el.style.width = width + "px";
-					el.style.paddingLeft = (document.body.clientWidth > 600 
-						? 20 
-						: 
-						(document.body.clientWidth > 400 ? 5 : 0)) + "px";
+					el.style.paddingLeft = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 5 : 0)) + "px";
+					el.style.paddingTop = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 10 : 5)) + "px";
 				});
 				// field_row.style.visibility = "visible";
 			}, 600);
