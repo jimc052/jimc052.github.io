@@ -1,5 +1,13 @@
 let token = Date.now 
 // open -a Google\ Chrome "index.html"
+/*
+			<RadioGroup v-model="word" type="button" style="margin-left: 10px;" @on-change="onChangeWord">
+				<Radio label="平">平假</Radio>
+				<Radio label="片">片假</Radio>
+				<Radio v-if="width > 400" label="全">全部</Radio>
+			</RadioGroup>
+		
+*/
 Vue.component('pronounce', { 
 	template:  `
 	<div id="pronounce" style="height: 100%; width: 100%; display: flex; flex-direction: column; padding: 0px 5px;">
@@ -11,11 +19,6 @@ Vue.component('pronounce', {
 				<Radio v-if="width > 600" label="3">全部</Radio>
 			</RadioGroup>
 			<div :style="{flex: 1}" />
-			<RadioGroup v-model="word" type="button" style="margin-left: 10px;" @on-change="onChangeWord">
-				<Radio label="平">平假</Radio>
-				<Radio label="片">片假</Radio>
-				<Radio v-if="width > 400" label="全">全部</Radio>
-			</RadioGroup>
 		</div>
 		<div id="pronounce-body" style="flex: 1; overflow: auto; width: 100%;">
 			<table id="tbl50" style="border-collapse:collapse; width: 100%;">
@@ -50,6 +53,7 @@ Vue.component('pronounce', {
 				</tr>
 			</table>
 		</div>
+		<div style="color: #2d8cf0; font-size: 24px; text-align: center; margin: 10px;">2025-12-01 07:30</div>
 	</div>`,
 	//
 	props: {
@@ -74,6 +78,7 @@ Vue.component('pronounce', {
 		if(typeof w == "string" && w.length > 0) {
 			this.word = w;
 		}
+		this.word = "全"
 		let i = window.localStorage["japanese-pronounce-index"];
 		if(typeof i == "string" && i.length > 0) {
 			this.index = i;
