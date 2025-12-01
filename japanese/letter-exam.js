@@ -138,8 +138,10 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 24px;">2025-12-01 08:10</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-12-01 09:00</div>
+			<!--
 			<div style="color: #2d8cf0; font-size: 24px;">{{"clientWidth " + this.clientWidth}}</div>
+			-->
 		</div>
   </div>`,
 	props: {
@@ -163,13 +165,11 @@ Vue.component('letter-exam', {
 		};
 	},
 	created(){
-		this.width = document.body.clientWidth > 600 ? 500 : 
-			(document.body.clientWidth > 400 ? 390 : 300);
-		this.fontSize = document.body.clientWidth > 600 ? 30 : 
-			(document.body.clientWidth > 400 ? 24 : 16);
+		this.width = document.body.clientWidth > 600 ? 500 : (document.body.clientWidth >= 390 ? 380 : 300);
 
-		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : 
-			(document.body.clientWidth > 400 ? 18 : 12);
+		this.fontSize = document.body.clientWidth > 600 ? 30 : (document.body.clientWidth >= 390 ? 26 : 20);
+
+		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : (document.body.clientWidth >= 390 ? 18 : 12);
 		this.clientWidth = document.body.clientWidth;
 	},
 	async mounted () {
@@ -322,9 +322,8 @@ Vue.component('letter-exam', {
 				let clientWidth = document.body.clientWidth;
 				arr.forEach(el => {
 					el.style.width = width + "px";
-					el.style.paddingLeft = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 5 : 0)) + "px";
-					el.style.paddingTop = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 10 : 5)) + "px";
-					
+					// el.style.paddingLeft = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 5 : 0)) + "px";
+					el.style.paddingTop = (clientWidth > 600  ? 20 : (clientWidth >= 390 ? 18 : 14)) + "px";
 				});
 				// field_row.style.visibility = "visible";
 			}, 600);
