@@ -138,7 +138,8 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 24px;">2025-11-28 18:00</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-12-01 08:10</div>
+			<div style="color: #2d8cf0; font-size: 24px;">{{"clientWidth " + this.clientWidth}}</div>
 		</div>
   </div>`,
 	props: {
@@ -163,12 +164,13 @@ Vue.component('letter-exam', {
 	},
 	created(){
 		this.width = document.body.clientWidth > 600 ? 500 : 
-			(document.body.clientWidth > 400 ? 380 : 300);
+			(document.body.clientWidth > 400 ? 390 : 300);
 		this.fontSize = document.body.clientWidth > 600 ? 30 : 
 			(document.body.clientWidth > 400 ? 24 : 16);
 
 		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : 
 			(document.body.clientWidth > 400 ? 18 : 12);
+		this.clientWidth = document.body.clientWidth;
 	},
 	async mounted () {
 		let tone = window.localStorage["japanese-letter-exam-tone"]
@@ -269,6 +271,7 @@ Vue.component('letter-exam', {
 			arr.forEach(el => {
 				el.style.padding = "0 5px 0 2px";
 				el.style.fontSize = this.fontSize + "px";
+				el.style.fontFamily = 'Courier New';
 			});
 		},
 		renderKanaRow() {
@@ -297,6 +300,7 @@ Vue.component('letter-exam', {
 				arr.forEach(el => {
 					el.style.padding = "0 5px 0 2px";
 					// el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "18px";
+					el.style.fontFamily = 'Courier New';
 					el.style.fontSize = (el.innerText.indexOf("撥") > -1 ? this.fontSizeChinese : this.fontSize) + "px";
 				});
 
@@ -311,6 +315,7 @@ Vue.component('letter-exam', {
 					table.style.borderCollapse = "collapse";
 					// console.log("table.clientWidth: " + table.clientWidth);
 					width = Math.floor(table.clientWidth / 5) - 4;
+					
 				}
 
 				arr = document.querySelectorAll("#kana-table td");
@@ -319,6 +324,7 @@ Vue.component('letter-exam', {
 					el.style.width = width + "px";
 					el.style.paddingLeft = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 5 : 0)) + "px";
 					el.style.paddingTop = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 10 : 5)) + "px";
+					
 				});
 				// field_row.style.visibility = "visible";
 			}, 600);

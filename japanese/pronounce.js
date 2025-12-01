@@ -61,7 +61,7 @@ Vue.component('pronounce', {
 	data() {
 		return {
 			index: "0",
-			word: "平",
+			word: "全",
 			active: "",
 			mode: "",
 			width: 0,
@@ -74,11 +74,10 @@ Vue.component('pronounce', {
 	async mounted () {
 		this.onResize();
 
-		let w = window.localStorage["japanese-pronounce-word"];
-		if(typeof w == "string" && w.length > 0) {
-			this.word = w;
-		}
-		this.word = "全"
+		// let w = window.localStorage["japanese-pronounce-word"];
+		// if(typeof w == "string" && w.length > 0) {
+		// 	this.word = w;
+		// }
 		let i = window.localStorage["japanese-pronounce-index"];
 		if(typeof i == "string" && i.length > 0) {
 			this.index = i;
