@@ -9,8 +9,11 @@ Vue.component('letter-exam', {
 				alignItems: isSmall ? 'center' : 'flex-start'
 			}"
 		>
+			<div class="button" style="margin-left: 10px; position: absolute; left: 5px; top: 5px;">
+				<Icon type="ios-arrow-back" size="25" @click="setup()" />
+			</div>
 			<div v-if="index < datas.length" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
-				<vm-canvas ref="canvas" :size="150" :char="datas[index]['char']" />
+				<vm-canvas ref="canvas" :size="150" :char="datas[index]['char']" style="margin-top: 40px;" />
 
 				<div :style="{width: (size + 80)+ 'px'}" style="padding: 5px; display: flex; flex-direction: row; justify-content: flex-start; align-items: center;">
 					<Input ref="input1" element-id="input1" v-model="input1"
@@ -72,7 +75,9 @@ Vue.component('letter-exam', {
 
 			<div v-if="isSmall && !$isDebug() && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
 				<div>
-					<div v-for="(ch, index) in 'aiueo'" :key="ch" @click="keySend(ch)">{{ ch }}</div>
+					<div v-for="(ch, index) in 'aiueo'" :key="ch" @click="keySend(ch)">
+						{{ ch }}
+					</div>
 
 					<div @click="keySend('bs')">
 						<Icon type="md-backspace" size="25" />
@@ -80,7 +85,9 @@ Vue.component('letter-exam', {
 				</div>
 
 				<div>
-					<div v-for="(ch, index) in keyRandom" :key="ch" @click="keySend(ch)">{{ ch }}</div>
+					<div v-for="(ch, index) in keyRandom" :key="ch" @click="keySend(ch)">
+						{{ ch }}
+					</div>
 					<div @click="keySend('enter')">
 						<Icon type="md-arrow-round-forward" size="25" />
 					</div>
