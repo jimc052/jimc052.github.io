@@ -480,6 +480,27 @@
 		});
 	}
 
+	/*
+	// 在頁面完全載入後執行
+window.onload = function() {
+    // 增加一個新的歷史記錄點。這裡的 state object 和 title 都可以是 null。
+    history.pushState(null, null, location.href);
+
+    // 監聽 popstate 事件
+    window.addEventListener('popstate', function(event) {
+        // 當使用者按下返回鍵時，popstate 事件會觸發。
+        // 我們使用 history.go(1) 將使用者推回「前進」一頁，即停留在目前頁面。
+        history.go(1);
+        
+        // 您可以在這裡加入其他邏輯，例如：
+        // alert("您確定要離開嗎？"); 
+        // 或是顯示一個自訂的確認 Modal
+    });
+};
+	
+	
+	*/
+
 </script>
 </html>
 <!-- 

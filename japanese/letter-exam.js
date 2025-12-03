@@ -72,26 +72,26 @@ Vue.component('letter-exam', {
 					<div style="font-size: 20px;">{{"分數：" + rate}}</div>
 				</div>
 			</div>
-
-			<div v-if="isSmall && !$isDebug() && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
+			<!--  && !$isDebug() -->
+			<div v-if="isSmall && index > -1" id="letter-exam-keyboard" style="align-self: stretch;">
 				<div>
-					<div v-for="(ch, index) in 'aiueo'" :key="ch" @click="keySend(ch)">
+					<div v-for="(ch, index) in keyRandom" :key="ch" @click="keySend(ch)">
 						{{ ch }}
 					</div>
-
 					<div @click="keySend('bs')">
 						<Icon type="md-backspace" size="25" />
 					</div>
 				</div>
 
 				<div>
-					<div v-for="(ch, index) in keyRandom" :key="ch" @click="keySend(ch)">
+					<div v-for="(ch, index) in 'aiueo'" :key="ch" @click="keySend(ch)">
 						{{ ch }}
 					</div>
 					<div @click="keySend('enter')">
 						<Icon type="md-arrow-round-forward" size="25" />
 					</div>
 				</div>
+
 			</div>
 		</div>
 
@@ -145,7 +145,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 24px;">2025-12-03 09:00</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-12-03 09:30</div>
 			<!--
 			<div style="color: #2d8cf0; font-size: 24px;">{{"clientWidth " + this.clientWidth}}</div>
 			-->
@@ -173,9 +173,7 @@ Vue.component('letter-exam', {
 	},
 	created(){
 		this.width = document.body.clientWidth > 600 ? 500 : (document.body.clientWidth >= 390 ? 380 : 300);
-
 		this.fontSize = document.body.clientWidth > 600 ? 30 : (document.body.clientWidth >= 390 ? 26 : 20);
-
 		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : (document.body.clientWidth >= 390 ? 18 : 12);
 		this.clientWidth = document.body.clientWidth;
 	},
@@ -217,7 +215,6 @@ Vue.component('letter-exam', {
 			el.style.padding = "0 5px 0 2px";
 			el.style.fontSize = this.fontSizeChinese + "px";
 		});
-
 	},
 	destroyed() {
 		window.removeEventListener('keydown', this.onKeydown, false);
@@ -536,7 +533,7 @@ Vue.component('letter-exam', {
 						if(input != null) {
 							clearInterval(idTime);
 							input.setAttribute("autocapitalize","off");
-							if(this.isSmall == true && !this.$isDebug())
+							if(this.isSmall == true) //  && !this.$isDebug()
 								input.setAttribute("readonly", true)
 							else 
 								input.removeAttribute("readonly")
