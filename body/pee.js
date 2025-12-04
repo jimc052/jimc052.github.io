@@ -2,24 +2,24 @@ Vue.component('pee', {
 	template:  `
 		<div style="height: 100%; zoom: 1.2; display: flex; flex-direction: column; position: relative; overflow: hidden;">
 			<Spin size="large" fix v-if="spinShow"></Spin>
-			<div id="header" style="background: rgb(45, 140, 240); color: white; font-size: 28px;
+			<div id="header" style="background: rgb(45, 140, 240); color: white; font-size: 24px;
 				display: flex; flex-direction: row; align-items: center; padding: 5px 0px;
 				justify-content: center;">
 				<div style="">
-					<Icon type="md-refresh" size="32" @click.native="refresh()" 
+					<Icon type="md-refresh" size="28" @click.native="refresh()" 
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 				<div style="flex: 1;" />
-				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
+				<Icon type="ios-arrow-back" size="28" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
 				<span style="font-size: inherit; cursor: pointer; " @click="onClickIcon(0)">
 					{{yymmdd}}
 				</span>
-				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
+				<Icon type="ios-arrow-forward" size="28" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
 				<div style="flex: 1;" />
 				<div style="">
-					<Icon type="md-swap" size="32" @click.native="$emit('change-page', 'blood')" 
+					<Icon type="md-swap" size="28" @click.native="$emit('change-page', 'blood')" 
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
 			</div>
@@ -71,10 +71,10 @@ Vue.component('pee', {
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
 
-			<div style="font-size: 24px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
+			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-04 16:30"}}</div>
+				{{"2025-12-04 17:30"}}</div>
 		</div>
 	`,
 	props: {
