@@ -35,7 +35,7 @@ Vue.component('pee', {
 					<div style="flex: 1"></div>
 
 					<Input v-if="active == index"  ref="input" :value="item" class="my-custom-input"
-						style="width: 130px; font-size: 20px; padding: 5px;" size="large" clearable 
+						style="width: 180px; font-size: 20px; padding: 5px;" size="large" clearable 
 						@on-enter="onEnter"
 						placeholder="輸入時間"
 						element-id="input1"
@@ -56,6 +56,7 @@ Vue.component('pee', {
 					{{yesterday}}
 				</div>
 			</div>
+			
 			<i-button v-if="datas.length > 0 && isToday()" type="warning" shape="circle" icon="md-clock" 
 				circle @click.native="onTimer" size="large"
 				style="position: absolute; bottom: 10px; left: 10px;"
@@ -64,8 +65,16 @@ Vue.component('pee', {
 				circle @click.native="onAdd" size="large"
 				style="position: absolute; bottom: 10px; right: 10px;"
 			></i-button>
+
+			<div style="font-size: 24px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
+				@click="onClearEdit()"
+			>
+				{{"2025-12-04 12:30"}}</div>
 		</div>
 	`,
+	/*
+	
+	*/
 	props: {
 		// editable: {
 		// 	type: Boolean,
@@ -160,7 +169,6 @@ Vue.component('pee', {
 			}
 		},
 		async onEnter(event){
-
 			const value = event.target.value;
 			let arr = value.split(":");
 			let msg = "";
@@ -182,6 +190,9 @@ Vue.component('pee', {
 			} else {
 				alert(msg)
 			}
+		},
+		onClearEdit() {
+			this.active = -1;
 		},
 		async fetch(yymmdd, showNextTime) {
 			return new Promise(async (success, error) => {
