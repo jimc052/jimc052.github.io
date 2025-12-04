@@ -2,10 +2,10 @@ Vue.component('pee', {
 	template:  `
 		<div style="height: 100%; zoom: 1.2; display: flex; flex-direction: column; position: relative; overflow: hidden;">
 			<Spin size="large" fix v-if="spinShow"></Spin>
-			<div id="header" style="background: rgb(45, 140, 240); color: white;  font-size: 30px;
-				display: flex; flex-direction: row; align-items: center;
+			<div id="header" style="background: rgb(45, 140, 240); color: white; font-size: 28px;
+				display: flex; flex-direction: row; align-items: center; padding: 5px 0px;
 				justify-content: center;">
-				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+				<div style="">
 					<Icon type="md-refresh" size="32" @click.native="refresh()" 
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
@@ -17,7 +17,8 @@ Vue.component('pee', {
 				</span>
 				<Icon type="ios-arrow-forward" size="32" @click.native="onClickIcon(1)" 
 					style="cursor: pointer; margin-left: 10px;"/>
-				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-end;">
+				<div style="flex: 1;" />
+				<div style="">
 					<Icon type="md-swap" size="32" @click.native="$emit('change-page', 'blood')" 
 						style="cursor: pointer; margin: 0px 10px;"/>
 				</div>
