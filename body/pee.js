@@ -5,6 +5,10 @@ Vue.component('pee', {
 			<div id="header" style="background: rgb(45, 140, 240); color: white;  font-size: 30px;
 				display: flex; flex-direction: row; align-items: center;
 				justify-content: center;">
+				<div style="flex: 1; display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+					<Icon type="md-refresh" size="32" @click.native="refresh()" 
+						style="cursor: pointer; margin: 0px 10px;"/>
+				</div>
 				<div style="flex: 1;" />
 				<Icon type="ios-arrow-back" size="32" @click.native="onClickIcon(-1)" 
 					style="cursor: pointer; margin-right: 10px;"/>
@@ -27,23 +31,23 @@ Vue.component('pee', {
 				{{nextTime}}
 			</div>
 			<div style="flex: 1; overflow-y: auto; background: white;">
-				<div v-for="(item, index) in datas" 
-					style="padding: 5px 10px; 
+				<div v-for="(item, index) in datas" :id="index"
+					style="padding: 5px 10px; cursor: pointer; 
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
-					:style="{'border-bottom': '1px solid #eee'}">
+					:style="{'border-bottom': '1px solid #eee'}"
+					@click="onEdit(index)"
+				>
+
 					<div style="font-size: 25px; margin-right: 10px; width: 80px; ">{{(datas.length - index) + "."}}</div>
+
 					<div style="flex: 1"></div>
 
 					<Input v-if="active == index"  ref="input" :value="item" class="my-custom-input"
 						style="width: 180px; font-size: 20px; padding: 5px;" size="large" clearable 
-						@on-enter="onEnter"
-						placeholder="輸入時間"
-						element-id="input1"
+						@on-enter="onEnter" placeholder="輸入時間" element-id="input1"
 					/>
 
-					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
-						@click="onEdit(index)"
-					>{{item}}</div>
+					<div v-else style="width: 120px; font-size: 25px; text-align: center;">{{item}}</div>
 					
 					<div style="flex: 1"></div>
 					<div style="font-size: 25px; width: 80px; text-align: right;"
@@ -69,12 +73,9 @@ Vue.component('pee', {
 			<div style="font-size: 24px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-04 12:30"}}</div>
+				{{"2025-12-04 16:30"}}</div>
 		</div>
 	`,
-	/*
-	
-	*/
 	props: {
 		// editable: {
 		// 	type: Boolean,
@@ -110,6 +111,9 @@ Vue.component('pee', {
 		window.onresize = null;
   },
 	methods: {
+		refresh() {
+			location.reload();
+		},
 		onResize() {
 			// if(document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1)
 				this.canEdit = true; // (document.body.clientWidth > 500 || location.href.indexOf("/Users/jimc/") > -1) ? true : false;
@@ -158,9 +162,10 @@ Vue.component('pee', {
 			});
 		},
 		onEdit(index) {
-			if(this.canEdit == true) {
+			if(this.active > -1) {
+				this.active = -1;
+			} else if(this.canEdit == true) {
 				this.active = index;
-
 				setTimeout(() => {
 				let input1 = document.querySelector("#input1");
 				if(input1 != null)
