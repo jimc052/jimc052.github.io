@@ -145,7 +145,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 24px;">2025-12-03 13:30</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-12-04 08:50</div>
 			<!--
 			<div style="color: #2d8cf0; font-size: 24px;">{{"clientWidth " + this.clientWidth}}</div>
 			-->
@@ -172,9 +172,9 @@ Vue.component('letter-exam', {
 		};
 	},
 	created(){
-		this.width = document.body.clientWidth > 600 ? 500 : (document.body.clientWidth >= 390 ? 380 : 300);
-		this.fontSize = document.body.clientWidth > 600 ? 30 : (document.body.clientWidth >= 390 ? 26 : 20);
-		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : (document.body.clientWidth >= 390 ? 18 : 12);
+		this.width = document.body.clientWidth > 600 ? 500 : (document.body.clientWidth >= 390 ? 378 : 310);
+		this.fontSize = document.body.clientWidth > 600 ? 30 : (document.body.clientWidth >= 390 ? 26 : 18);
+		this.fontSizeChinese = document.body.clientWidth > 600 ? 20 : (document.body.clientWidth >= 390 ? 20 : 12);
 		this.clientWidth = document.body.clientWidth;
 	},
 	async mounted () {
@@ -256,6 +256,10 @@ Vue.component('letter-exam', {
 			}
 		},
 		setup() {
+			let table = document.querySelector("#kana-table");
+			if(table != null) {
+				table.style.visibility = "hidden";
+			}
 			this.index = -1;
 			setTimeout(() => {
 				this.renderKanaCol();
@@ -279,8 +283,10 @@ Vue.component('letter-exam', {
 			});
 		},
 		renderKanaRow() {
-			// let field_row = document.querySelector("#field-row");
-			// field_row.style.visibility = "hidden";
+			let table = document.querySelector("#kana-table");
+			if(table != null) {
+				table.style.visibility = "hidden";
+			}
 
 			let s = "";
 			let tone = this.tone.join(",");
@@ -303,9 +309,8 @@ Vue.component('letter-exam', {
 				let arr = document.querySelectorAll("#kana-row label span:last-child")
 				arr.forEach(el => {
 					el.style.padding = "0 5px 0 2px";
-					// el.style.fontSize = el.innerText.indexOf("撥") > -1 ? "16px" : "18px";
 					el.style.fontFamily = 'Courier New';
-					el.style.fontSize = (el.innerText.indexOf("撥") > -1 ? this.fontSizeChinese : this.fontSize) + "px";
+					el.style.fontSize = (el.innerHTML.indexOf("撥") > -1 ? this.fontSizeChinese : this.fontSize) + "px";
 				});
 
 				arr = document.querySelectorAll("#kana-row label");
@@ -313,24 +318,24 @@ Vue.component('letter-exam', {
 					// el.style.width = "50px";
 				});
 
-				let table = document.querySelector("#kana-table");
+				
 				let width = 50;
 				if(table) {
 					table.style.borderCollapse = "collapse";
 					// console.log("table.clientWidth: " + table.clientWidth);
 					width = Math.floor(table.clientWidth / 5) - 4;
-					
 				}
+				console.log("width: " + width);
 
 				arr = document.querySelectorAll("#kana-table td");
 				let clientWidth = document.body.clientWidth;
 				arr.forEach(el => {
 					el.style.width = width + "px";
-					// el.style.paddingLeft = (clientWidth > 600  ? 20 : (clientWidth > 400 ? 5 : 0)) + "px";
 					el.style.paddingTop = (clientWidth > 600  ? 20 : (clientWidth >= 390 ? 18 : 14)) + "px";
+					el.style.paddingLeft = (clientWidth > 600  ? 10 : (clientWidth >= 390 ? 8 : 0)) + "px";
 				});
-				// field_row.style.visibility = "visible";
-			}, 600);
+				table.style.visibility = "visible";
+			}, 300);
 		},
 		changeVolume() {
 			this.volumeOn = ! this.volumeOn;
@@ -581,7 +586,7 @@ Vue.component('letter-exam', {
 				let s1 = keyRandom.substr(x, 1);
 				keyRandom = keyRandom.replace(s1, "") + s1;
 			}
-			// console.log("2. " + keyRandom)
+			console.log("2. " + keyRandom)
 			this.keyRandom = keyRandom;
 		},
 		onChangeTone() {
