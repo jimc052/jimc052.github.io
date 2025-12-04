@@ -32,11 +32,10 @@ Vue.component('pee', {
 				{{nextTime}}
 			</div>
 			<div style="flex: 1; overflow-y: auto; background: white;">
-				<div v-for="(item, index) in datas" :id="index"
-					style="padding: 5px 10px; cursor: pointer; 
+				<div v-for="(item, index) in datas"
+					style="padding: 5px 10px; 
 						display: flex; flex-direction: row; align-items: center; justify-content: center;"
 					:style="{'border-bottom': '1px solid #eee'}"
-					@click="onEdit(index)"
 				>
 
 					<div style="font-size: 25px; margin-right: 10px; width: 80px; ">{{(datas.length - index) + "."}}</div>
@@ -48,7 +47,9 @@ Vue.component('pee', {
 						@on-enter="onEnter" placeholder="輸入時間" element-id="input1"
 					/>
 
-					<div v-else style="width: 120px; font-size: 25px; text-align: center;">{{item}}</div>
+					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
+						@click="onEdit(index)"
+					>{{item}}</div>
 					
 					<div style="flex: 1"></div>
 					<div style="font-size: 25px; width: 80px; text-align: right;"
