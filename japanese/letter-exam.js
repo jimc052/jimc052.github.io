@@ -9,9 +9,10 @@ Vue.component('letter-exam', {
 				alignItems: isSmall ? 'center' : 'flex-start'
 			}"
 		>
-			<div class="button" style="margin-left: 10px; position: absolute; left: 5px; top: 5px;">
+			<div class="button" v-if="index < datas.length" style="margin-left: 10px; position: absolute; left: 5px; top: 5px;">
 				<Icon type="ios-arrow-back" size="25" @click="setup()" />
 			</div>
+
 			<div v-if="index < datas.length" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: center;">
 				<vm-canvas ref="canvas" :size="150" :char="datas[index]['char']" style="margin-top: 40px;" />
 
@@ -145,7 +146,7 @@ Vue.component('letter-exam', {
 					type="primary" size="large"  @click="similar" style="width: 100px; margin-top: 30px;">相似字</Button>
 			</div>
 			<div style="flex: 1" />
-			<div style="color: #2d8cf0; font-size: 24px;">2025-12-04 08:50</div>
+			<div style="color: #2d8cf0; font-size: 24px;">2025-12-05 17:50</div>
 			<!--
 			<div style="color: #2d8cf0; font-size: 24px;">{{"clientWidth " + this.clientWidth}}</div>
 			-->
