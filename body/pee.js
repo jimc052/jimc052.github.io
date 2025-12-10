@@ -75,7 +75,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-04 17:30"}}</div>
+				{{"2025-12-10 14:30"}}</div>
 		</div>
 	`,
 	props: {
@@ -177,12 +177,19 @@ Vue.component('pee', {
 		},
 		async onEnter(event){
 			const value = event.target.value;
-			let arr = value.split(":");
-			let msg = "";
-			if(arr.length != 2) 
-				msg = "請輸入冒號";
-			else if(arr[0].length > 2 || arr[1].length > 2)
-				msg = "請輸入 2 位數字";
+			let msg = "", arr = ["00", "00"];
+			if(value.length == 4 && value.indexOf(":") == -1) {
+				arr[0] = value.substring(0, 2);
+				arr[1] = value.substring(2, 4);
+			} else if(value.indexOf(":") > -1) {
+				arr = value.split(":");
+				if(arr.length != 2) 
+					msg = "請輸入冒號";
+				else if(arr[0].length > 2 || arr[1].length > 2)
+					msg = "請輸入 2 位數字";
+			} else {
+				msg = "請輸入正確時間格式(hh:MM)";
+			}
 
 			if(msg.length == 0) {
 				if(arr[0].length == 1) arr[0] = "0" + arr[0];
