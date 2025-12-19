@@ -42,11 +42,17 @@ Vue.component('pee', {
 
 					<div style="flex: 1"></div>
 
+					<Icon v-if="active == index" type="md-trash" size="20" @click.native="trash()" 
+						style="cursor: pointer; margin: 0px 10px;"/>
+
 					<Input v-if="active == index" ref="input" 
 						:value="item.replace(':', '')" type="number" class="my-custom-input"
-						style="width: 180px; font-size: 20px; padding: 5px;" size="large" clearable 
-						@on-enter="onEnter" placeholder="輸入時間(1430)" element-id="input1"
+						style="width: 120px; padding: 5px;" size="large" clearable 
+						@on-enter="onEnter" placeholder="輸入時間(hhmm)" element-id="input1"
 					/>
+
+					<Icon v-if="active == index" type="md-undo" size="20" @click.native="undo()" 
+						style="cursor: pointer; margin: 0px 10px;"/>
 
 					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
 						@click="onEdit(index)"
@@ -76,7 +82,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-19 11:10"}}</div>
+				{{"2025-12-19 11:30"}}</div>
 		</div>
 	`,
 	props: {
@@ -114,6 +120,14 @@ Vue.component('pee', {
 		window.onresize = null;
   },
 	methods: {
+		undo() {
+			this.active = -1;
+		},
+		trash() {
+			this.datas.splice(this.active, 1);
+			this.active = -1;
+			this.save();
+		},
 		refresh() {
 			location.reload();
 		},
@@ -148,6 +162,7 @@ Vue.component('pee', {
 			await this.save();
 		},
 		async save() {
+			this.datas.sort().reverse();
 			return new Promise(async (success, error) => { 
 				let ref = FireStore.db.collection("users").doc(FireStore.uid())
 						.collection("pee").doc(this.yymmdd)
@@ -172,7 +187,7 @@ Vue.component('pee', {
 				setTimeout(() => {
 				let input1 = document.querySelector("#input1");
 				if(input1 != null)
-					input1.style.fontSize = "24px";				
+					input1.style.fontSize = "20px";				
 				}, 300);
 			}
 		},
@@ -182,20 +197,16 @@ Vue.component('pee', {
 			if(value.length == 4 && value.indexOf(":") == -1) {
 				arr[0] = value.substring(0, 2);
 				arr[1] = value.substring(2, 4);
-			} else if(value.indexOf(":") > -1) {
-				arr = value.split(":");
-				if(arr.length != 2) 
-					msg = "請輸入冒號";
-				else if(arr[0].length > 2 || arr[1].length > 2)
-					msg = "請輸入 2 位數字";
+				if (!this.isValidHour(arr[0])) {
+					msg = "小時必須介於 00 和 23 之間";
+				} else if (!this.isValidMinute(arr[1])) {
+					msg = "分鐘必須介於 00 和 59 之間";
+				}
 			} else {
-				msg = "請輸入正確時間格式(hh:MM)";
+				msg = "請輸入正確時間格式(hhMM)";
 			}
 
 			if(msg.length == 0) {
-				if(arr[0].length == 1) arr[0] = "0" + arr[0];
-				if(arr[1].length == 1) arr[1] = "0" + arr[1];
-				
 				this.$set(this.datas, this.active, arr[0] + ":" + arr[1]);
 				if(this.active == 0) {
 					this.showNextTime(arr[0] + ":" + arr[1])
@@ -208,6 +219,14 @@ Vue.component('pee', {
 		},
 		onClearEdit() {
 			this.active = -1;
+		},
+		isValidHour(hour) {
+			const h = parseInt(hour, 10);
+			return !isNaN(h) && h >= 0 && h <= 23;
+		},
+		isValidMinute(minute) {
+			const m = parseInt(minute, 10);
+			return !isNaN(m) && m >= 0 && m <= 59;
 		},
 		async fetch(yymmdd, showNextTime) {
 			return new Promise(async (success, error) => {
