@@ -42,9 +42,10 @@ Vue.component('pee', {
 
 					<div style="flex: 1"></div>
 
-					<Input v-if="active == index"  ref="input" :value="item" class="my-custom-input"
+					<Input v-if="active == index" ref="input" 
+						:value="item.replace(':', '')" type="number" class="my-custom-input"
 						style="width: 180px; font-size: 20px; padding: 5px;" size="large" clearable 
-						@on-enter="onEnter" placeholder="輸入時間" element-id="input1"
+						@on-enter="onEnter" placeholder="輸入時間(1430)" element-id="input1"
 					/>
 
 					<div v-else style="width: 120px; font-size: 25px; text-align: center; cursor: pointer; "
@@ -75,7 +76,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-10 14:30"}}</div>
+				{{"2025-12-19 11:10"}}</div>
 		</div>
 	`,
 	props: {
