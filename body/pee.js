@@ -47,7 +47,7 @@ Vue.component('pee', {
 
 					<Input v-if="active == index" ref="input" 
 						:value="item.replace(':', '')" type="number" class="my-custom-input"
-						style="width: 120px; padding: 5px;" size="large" clearable 
+						style="width: 140px; padding: 5px;" size="large" 
 						@on-enter="onEnter" placeholder="輸入時間(hhmm)" element-id="input1"
 					/>
 
@@ -82,7 +82,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-19 11:30"}}</div>
+				{{"2025-12-22 17:50"}}</div>
 		</div>
 	`,
 	props: {
