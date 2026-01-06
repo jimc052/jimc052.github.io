@@ -82,7 +82,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2025-12-22 17:50"}}</div>
+				{{"2026-01-06 15:40"}}</div>
 		</div>
 	`,
 	props: {
@@ -299,9 +299,14 @@ Vue.component('pee', {
 				let arr = this.datas[0].split(":");
 				let h = parseInt(arr[0], 10) + 2;
 				if(h < 10) h = "0" + h;
-				next = "\n\n建議在 " + h + ":" + arr[1] + "進行"
+				next = "\n\n建議在 " + h + ":" + arr[1] + " 進行"
 			}
-			alert("時間跨距：" + span + next)
+			let goat = "", minutes = span.split(":")
+				, total = 120 - (parseInt(parseInt(minutes[0], 10) * 60) + parseInt(minutes[1], 10));
+			if(total > 0) {
+				goat = "\n\n還有時間：" + total + " 分鐘";
+			}
+			alert("時間跨距：" + span + goat + next)
 		}, 
 		isToday() {
 			return (new Date()).toString("yyyy-mm-dd") == this.yymmdd;
