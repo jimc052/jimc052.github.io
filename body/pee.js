@@ -82,7 +82,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2026-01-06 15:40"}}</div>
+				{{"2026-01-15 15:50"}}</div>
 		</div>
 	`,
 	props: {
@@ -123,10 +123,13 @@ Vue.component('pee', {
 		undo() {
 			this.active = -1;
 		},
-		trash() {
+		async trash() {
 			this.datas.splice(this.active, 1);
 			this.active = -1;
-			this.save();
+			await this.save();
+			setTimeout(() => {
+				this.showNextTime(this.datas.length > 0 ? this.datas[0] : "");	
+			}, 600);
 		},
 		refresh() {
 			location.reload();
