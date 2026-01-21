@@ -112,8 +112,8 @@
 				width += a.clientWidth;
 			}
 		}
-
-		if(local) {
+		let email =  window.localStorage["email"] || "";
+		if(local || email.length > 0) {
 			let div = document.createElement("div");
 			document.body.appendChild(div);
 			div.style.marginTop = "30px";
