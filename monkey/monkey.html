@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Monkey Script</title>
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        user-select: none;
+        font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+        font-size: 16px;
+      }
+      html, body {
+        min-height: 100% !important;
+        height: 100%;
+      }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .right {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+</head>
+<body>
+  <main>
+    <section class="right">
+      <textarea style="width: 100%; height: 100%;"></textarea>
+    </section>
+  </main>
+
+  <footer style="display: flex; padding: 10px;">
+     <button id="btn">腳本</button>
+     <!-- <button onclick="location.reload();">重新載入</button> -->
+  </footer>
+
+  <script>
+    const btn = document.getElementById('btn');
+    const textarea = document.querySelector('textarea');
+    let monkey_script = "";
+    window.onload = function() {
+      monkey_script = window.localStorage["monkey_script"];
+      if(monkey_script && monkey_script.length > 0) {
+        textarea.value = monkey_script;
+      } else {
+        btn.style.display = "none";
+      }
+    };
+
+    btn.onclick = function() {
+      if(btn.innerText == "腳本") {
+        btn.innerText = "還原";
+        assemble();
+      } else if(btn.innerText == "還原") {
+        btn.innerText = "腳本";
+
+      }
+    };
+
+    function assemble(params) {
+      let ds = [], ms = "";
+      try {
+        ds = JSON.parse(textarea.value);
+        ms = `type=raw 
+        events=
+        count=10
+        speed=1.0
+        start data >>
+        `.replace(/  /g, '');
+        for(let i = 0; i < ds.length; i++) {
+          let d = ds[i];
+          if(d.title && d.title.length > 0 && d.title != "undefined") {
+            ms += `\n### ${d.title} ###\n`;
+          }
+          ms += `Tap(${d.x},${d.y},50)\n`;
+          if(isNaN(d.ms) == false && d.ms > 0) {
+            ms += `UserWait(${d.ms})\n`;
+          }
+        }
+        textarea.value = ms;
+      } catch (err) {
+        alert("JSON 解析錯誤: \n" + err.message);
+        return;
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+type=raw 
+events=
+count=10
+speed=1.0
+start data >>
+
+### new2DC ###
+Tap(211,165,50)
+UserWait(20000)
+
+### 點餐 ###
+Tap(87,102,50)
+UserWait(8000)
+
+### 收銀-合計 ###
+Tap(1219,695,50)
+UserWait(3000)
+
+### back-收銀 ###
+Tap(501,744,50)
+UserWait(3000)
+
+### back-home ###
+Tap(501,744,50)
+UserWait(3000)
+
+### back-desktop ###
+Tap(501,744,50)
+UserWait(3000)

@@ -118,6 +118,7 @@ Vue.component('list', {
 			this.modalDetail = false;
 		},
 		onCloseCols(result) {
+			console.log(result)
 			let ref;
 			if(typeof result == "object") {
 				if(this.mode == "tabs")

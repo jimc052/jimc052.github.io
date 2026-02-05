@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Monkey Script</title>
+    <style>
+      * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        user-select: none;
+        font-family: 'Times New Roman', 'Helvetica Neue', 微軟正黑體, 'Microsoft Jhenghei', Helvetica, Arial, sans-serif;
+        font-size: 16px;
+      }
+      html, body {
+        min-height: 100% !important;
+        height: 100%;
+      }
+      body {
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+          line-height: 1.6;
+          margin: 0;
+          /* padding: 20px; */
+          color: #333;
+            display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      .left {
+        height: 100%;
+        flex: 1;
+        padding: 0px 10px;
+        background-color: #f4f4f4;
+        margin-right: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .right {
+        height: 100%;
+        width: 400px;
+      }
+      button + button {
+        margin-left: 10px;
+      }
+    </style>
+</head>
+<body>
+  <main>
+    <section class="left">
+      <img style="display: none;" />
+    </section>
+
+    <section class="right">
+      <textarea style="width: 100%; height: 100%;"></textarea>
+    </section>
+  </main>
+
+  <footer style="display: flex; padding: 10px;">
+    <div>
+    <span id="xy">座標 X： ，座標 Y：</span>
+    </div>
+
+    <div style="flex: 1;"></div>
+    <button id="btnClear" onclick="clearData();">清空</button>
+    <button onclick="location.assign('monkey.html');">monkey</button>
+  </footer>
+
+  <script>
+    let ds = [];
+    const textarea = document.querySelector('textarea');
+
+    window.onload = function() {
+      const leftSection = document.querySelector('.left');
+      const img = document.querySelector('.left img');
+      const xyLabel = document.getElementById('xy');
+      let scale = 1;
+      // console.log("leftSection.clientWidth:" + leftSection.clientWidth 
+      //   + ", leftSection.clientHeight:" + leftSection.clientHeight
+      // );
+      let s = window.localStorage["monkey_script"];
+      if(s && s.length > 0) {
+        try {
+          ds = JSON.parse(s);
+          textarea.value = s;
+        } catch (err) {
+          alert("localStorage 中的 JSON 解析錯誤: \n" + err.message);
+        }
+      }
+
+      img.onload = function() {
+        // console.log("naturalWidth:" + img.naturalWidth 
+        //   + ", naturalHeight:" + img.naturalHeight
+        // );
+        let w = (img.naturalWidth/leftSection.clientWidth);
+        let h = (img.naturalHeight/leftSection.clientHeight);
+        if(h > w) {
+          scale = h;
+          img.height = leftSection.clientHeight;
+        } else {
+          scale = w;
+          img.width = leftSection.clientWidth;
+        }
+        img.style.display = 'block';
+      };
+      img.src = 'screenshot.png';
+      img.addEventListener('mousemove', function(e) {
+        // scale = img.width / img.naturalWidth; // Ensure scale is accurate if resized
+        const x = Math.round(e.offsetX * scale);
+        const y = Math.round(e.offsetY * scale);
+        if(x < 0 || y < 0 || x > img.naturalWidth || y > img.naturalHeight) {
+          xyLabel.textContent = `座標 X： ，座標 Y： `;
+        } else {
+          xyLabel.textContent = `座標 X： ${x}，座標 Y： ${y}`;
+        }
+      });
+      img.addEventListener('click', function(e) {
+        const x = Math.round(e.offsetX * scale);
+        const y = Math.round(e.offsetY * scale);
+        if(x >= 0 && y >= 0) {
+          ds.push({title: "undefined", x: x, y: y, ms: 3000});
+          textarea.value = JSON.stringify(ds, null, 2);
+          window.localStorage["monkey_script"] = textarea.value;
+        }
+      });
+      // 1. input 事件：內容改變時即時觸發
+      textarea.addEventListener('input', function(e) {
+        // console.log("即時輸入 (input):", e.target.value);
+      });
+
+      // 2. change 事件：內容改變並失去焦點後觸發
+      textarea.addEventListener('change', function(e) {
+        try {
+          ds = JSON.parse(e.target.value);
+          window.localStorage["monkey_script"] = e.target.value;
+        } catch (err) {
+          alert("JSON 解析錯誤: \n" + err.message);
+        }
+        // console.log("異動確認 (change):", e.target.value);
+      });
+    };
+    function clearData() {
+      ds = [];
+      textarea.value = ""; 
+      window.localStorage["monkey_script"] = textarea.value;
+    }
+  </script>
+</body>
+</html>

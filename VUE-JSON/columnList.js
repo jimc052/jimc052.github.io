@@ -48,7 +48,7 @@ Vue.component('column-list', {
 			dirty: false,
 			columns: [{
 				type: 'index',
-				width: 40,
+				width: 50,
 				align: 'center',
 				fixed: "left",
 				className: "index",
@@ -56,7 +56,7 @@ Vue.component('column-list', {
 				title: "欄位",
 				key: "key",
 				resizable: true,
-				width: 150,
+				width: 180,
 			},{ 
 				title: "標題",
 				key: "title",
