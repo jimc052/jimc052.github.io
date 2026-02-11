@@ -33,6 +33,7 @@
         flex-direction: row;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
       }
       .left {
         height: 100%;
@@ -47,6 +48,7 @@
       }
       .right {
         height: 100%;
+        overflow: auto;
       }
       .right, table{
         width: 400px;
@@ -87,10 +89,10 @@
       }
       #_cursor {
         position: absolute;
-        width: 10px;
-        height: 10px;
+        width: 20px;
+        height: 20px;
         border-radius: 50%;
-        background-color: red;
+        background: radial-gradient(transparent 30%, lightcoral, red 20%,  darkred);
         visibility: hidden;
       }
     </style>
@@ -110,12 +112,12 @@
     </section>
   </main>
 
-  <footer style="display: flex; padding: 10px;">
-    <div>
+  <footer style="display: flex; justify-content: space-between; align-items: center; padding: 10px;">
+    <div style="width: 220px;">
       <span id="xy">座標 X： ，座標 Y：</span>
     </div>
 
-    <div style="flex: 1;"></div>
+    <div id="msg" style="flex: 1; text-align: center;"></div>
     <button id="btnClear" disabled>清空</button>
     <button id="btnMonkey" disabled>腳本</button>
     <select id="select" style="margin-left: 10px; font-size: 20px;"></select>
@@ -130,14 +132,15 @@
     const btnClear = document.getElementById('btnClear');
     const btnMonkey = document.getElementById('btnMonkey');
     const select = document.getElementById('select');
-    const _cursor = document.getElementById('_cursor');
+    const _cursor = document.getElementById('_cursor'); // 座標，紅色點
+    let msg = document.getElementById('msg');
     const ws = new WebSocket("ws://localhost:8080");
     let scale = 1, orginalWidth = 0, cursorId;
     let imgLoading = false, recording = false, monkey_script = "", execTimes = 0, 
       maxTimes = 1, startTime = null, runIntervalId;
 
     ws.onopen = function() {
-      console.log("WebSocket 連線已開啟");
+      sendMsg("WebSocket 連線已開啟");
     }; 
     ws.onmessage = function(event) {
       const data = JSON.parse(event.data);
@@ -169,10 +172,10 @@
       }
     };
     ws.onclose = function() {
-      console.log("WebSocket 連線已關閉");
+      sendMsg("WebSocket 連線已關閉");
     };
     ws.onerror = function(error) {
-      console.error("WebSocket 連線發生錯誤:", error);
+      sendMsg("WebSocket 連線發生錯誤:", error);
     };
 
     window.onload = function() {
@@ -181,17 +184,21 @@
       if(s && s.length > 0) {
         try {
           ds = JSON.parse(s);
-          btnClear
           checkButton();
         } catch (err) {
           alert("localStorage 中的 JSON 解析錯誤: \n" + err.message);
         } 
       }
       
-      clsTable = new Table({ds, onclick: (index) => {
-        let data = ds[index];
-        moveCursor(data)
-      }})
+      clsTable = new Table({ds, 
+        onclick: (index) => {
+          let data = ds[index];
+          moveCursor(data)
+        }, 
+        onmsg: (params) => {
+          sendMsg(params)
+        },
+      })
 
       {  // 新增選項到下拉選單
         addOption("1 次", 1);
@@ -244,8 +251,8 @@
       clearTimeout(cursorId);
       const x = params.x / scale;
       const y = params.y / scale;
-      _cursor.style.left = (img.offsetLeft + x - 7) + "px";
-      _cursor.style.top = (img.offsetTop + y - 6) + "px";
+      _cursor.style.left = (img.offsetLeft + x - 12) + "px";
+      _cursor.style.top = (img.offsetTop + y - 11) + "px";
       _cursor.style.visibility = "visible";
       cursorId =  setTimeout(() => {
         _cursor.style.visibility = "hidden";
@@ -279,7 +286,7 @@
           clsTable.updateCell4(index, data.ms)
 
           startTime = now;
-          console.log("startTime: " + startTime + ", ds: " + ds.length + ", last.ms: " + ds[ds.length - 1].ms)
+          // console.log("startTime: " + startTime + ", ds: " + ds.length + ", last.ms: " + ds[ds.length - 1].ms)
         }
         let data = {title: titleName(), x: x, y: y, ms: 5000};
         ds.push(data);
@@ -355,11 +362,12 @@
       // div.style.height = '100%';
       div.style.fontSize = "16px";
       div.style.overflow = 'auto';
-      div.innerHTML = `<span style="font-weight: bold;font-size: 18px;">${(new Date()).toLocaleTimeString('zh-Hant', { hour12: false })}：${params}</span>`;
+      div.innerHTML = `<span style="font-weight: bold;font-size: 20px;">${(new Date()).toLocaleTimeString('zh-Hant', { hour12: false })}：${params}</span>`;
       rightSection.prepend(div); 
       //  + "：" + params + ;
       const span = document.createElement('span');
-      span.style.fontSize = "16px";
+      span.style.fontSize = "18px";
+      span.style.marginLeft = "20px"
       div.appendChild(span); 
       let startTime = (new Date()).getTime();
       runIntervalId = setInterval(() => {
@@ -383,6 +391,12 @@
       option.text = text;
       option.value = typeof value == "undefined" ? text: value;
       select.add(option);
+    }
+
+    function sendMsg(params, error) {
+      msg.innerHTML = (new Date()).toLocaleTimeString('zh-Hant', { hour12: false }) + "：" + params 
+        + (typeof error == "object" ? error.message : error)
+      ;
     }
   </script>
 </body>

@@ -2,6 +2,7 @@ class Table {
   constructor(props) {
     this.ds = [];
     this.onclick = props.onclick;
+    this.onmsg = props.onmsg;
     this.table = document.getElementById('table');
     this.active = -1;
     if(Array.isArray(props.ds) && props.ds.length > 0) {
@@ -113,6 +114,7 @@ class Table {
     let cols = Object.keys(data);
     data[cols[cellIndex]] = value;
     window.localStorage["monkey_script"] = JSON.stringify(ds, null, 2);
+    this.onmsg(`第 ${rowIndex} 筆資料已儲存`);
   }
 
   show() {
