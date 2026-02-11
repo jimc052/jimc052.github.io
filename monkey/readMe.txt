@@ -7,3 +7,4 @@
 6. monkey.html，按下方的「腳本」button；將內容複製、貼上，儲存到 monkey_script.txt。
 2. 上傳腳本到手機後，執行腳本：
   adb push monkey_script.txt /sdcard/ && adb shell monkey -f /sdcard/monkey_script.txt -v 1
+注意(for Jim)： 因為這裡無法下載圖，所以在 ~/Documents/temp/monkey 也有一份

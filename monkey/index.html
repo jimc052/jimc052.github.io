@@ -43,114 +43,346 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
       }
       .right {
         height: 100%;
+      }
+      .right, table{
         width: 400px;
       }
       button + button {
         margin-left: 10px;
       }
+      button {
+        min-width: 100px;
+        font-size: 20px;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      th, td {
+        border: 1px solid #ddd;
+        padding: 4px 4px;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2; 
+        text-align: center;
+        position: sticky;
+        top: 0;
+      }
+      tr.editing td {
+        padding: 2px;
+      }
+      th:nth-child(1) {
+        min-width: 100px;
+      }
+      th:nth-child(2), th:nth-child(3), th:nth-child(4) {
+        width: 80px;
+      }
+      td:nth-child(2), td:nth-child(3), td:nth-child(4) {
+        text-align: right;
+      }
+      #_cursor {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background-color: red;
+        visibility: hidden;
+      }
     </style>
+    <script type="text/javascript" src="./tables.js"></script>
 </head>
-<body>
+<body style="visibility: hidden;">
   <main>
     <section class="left">
       <img style="display: none;" />
+      <div id="_cursor"></div>
     </section>
 
     <section class="right">
-      <textarea style="width: 100%; height: 100%;"></textarea>
+       <table id="table" style="width: 100%;">
+          <tr><th>標題</th><th>座標 X</th><th>座標 Y</th><th>時間</th></tr>
+      </table>
     </section>
   </main>
 
   <footer style="display: flex; padding: 10px;">
     <div>
-    <span id="xy">座標 X： ，座標 Y：</span>
+      <span id="xy">座標 X： ，座標 Y：</span>
     </div>
 
     <div style="flex: 1;"></div>
-    <button id="btnClear" onclick="clearData();">清空</button>
-    <button onclick="location.assign('monkey.html');">monkey</button>
+    <button id="btnClear" disabled>清空</button>
+    <button id="btnMonkey" disabled>腳本</button>
+    <select id="select" style="margin-left: 10px; font-size: 20px;"></select>
   </footer>
 
   <script>
-    let ds = [];
-    const textarea = document.querySelector('textarea');
+    let ds = [], clsTable;
+    const img = document.querySelector('.left img');
+    const leftSection = document.querySelector('.left');
+    const rightSection = document.querySelector('.right');
+    const xyLabel = document.getElementById('xy');
+    const btnClear = document.getElementById('btnClear');
+    const btnMonkey = document.getElementById('btnMonkey');
+    const select = document.getElementById('select');
+    const _cursor = document.getElementById('_cursor');
+    const ws = new WebSocket("ws://localhost:8080");
+    let scale = 1, orginalWidth = 0, cursorId;
+    let imgLoading = false, recording = false, monkey_script = "", execTimes = 0, 
+      maxTimes = 1, startTime = null, runIntervalId;
+
+    ws.onopen = function() {
+      console.log("WebSocket 連線已開啟");
+    }; 
+    ws.onmessage = function(event) {
+      const data = JSON.parse(event.data);
+      if(data.type === "screenshot") { // 收到截圖資料
+        imageLoad(true)
+        img.src = data.message;
+      } else if(data.type === "error") {
+        alert("錯誤訊息: \n" + data.message);
+      } else if(data.type === "tap") {
+        
+      } else if(data.type === "monkey_script") {
+        execTimes++;
+        if(execTimes <= maxTimes) {
+          monkeyLog(`${execTimes}/${maxTimes} 指令執行中...`);
+          ws.send(JSON.stringify({type: "monkey_script", content: monkey_script}));
+        } 
+        else {
+          alert(`指令全部執行完畢...`);
+          clearInterval(runIntervalId);
+          setTimeout(() => {
+            execTimes = 0;
+            rightSection.querySelectorAll('div').forEach(div => div.remove());
+            clsTable.show();
+            checkButton();            
+          }, 1000);
+        }
+      } else {
+        console.log("收到訊息:", event.data);
+      }
+    };
+    ws.onclose = function() {
+      console.log("WebSocket 連線已關閉");
+    };
+    ws.onerror = function(error) {
+      console.error("WebSocket 連線發生錯誤:", error);
+    };
 
     window.onload = function() {
-      const leftSection = document.querySelector('.left');
-      const img = document.querySelector('.left img');
-      const xyLabel = document.getElementById('xy');
-      let scale = 1;
-      // console.log("leftSection.clientWidth:" + leftSection.clientWidth 
-      //   + ", leftSection.clientHeight:" + leftSection.clientHeight
-      // );
+      console.log("window.onload: " + (new Date()).toLocaleTimeString('zh-Hant', { hour12: false }));
       let s = window.localStorage["monkey_script"];
       if(s && s.length > 0) {
         try {
           ds = JSON.parse(s);
-          textarea.value = s;
+          btnClear
+          checkButton();
         } catch (err) {
           alert("localStorage 中的 JSON 解析錯誤: \n" + err.message);
-        }
+        } 
+      }
+      
+      clsTable = new Table({ds, onclick: (index) => {
+        let data = ds[index];
+        moveCursor(data)
+      }})
+
+      {  // 新增選項到下拉選單
+        addOption("1 次", 1);
+        addOption("2 次", 2);
+        addOption("5 次", 5);
+        addOption("10 次", 10);
+        addOption("15 次", 15);
+        addOption("20 次", 20);
+        addOption("25 次", 25);
+        addOption("25 次", 25);
+        addOption("30 次", 30);
+        addOption("40 次", 40);
+        addOption("50 次", 50);
+        addOption("75 次", 75);
+        addOption("100 次", 100);
+        
+        select.addEventListener('change', function(e) {
+          maxTimes = e.target.value;
+        });
       }
 
       img.onload = function() {
-        // console.log("naturalWidth:" + img.naturalWidth 
-        //   + ", naturalHeight:" + img.naturalHeight
-        // );
-        let w = (img.naturalWidth/leftSection.clientWidth);
-        let h = (img.naturalHeight/leftSection.clientHeight);
-        if(h > w) {
-          scale = h;
-          img.height = leftSection.clientHeight;
-        } else {
-          scale = w;
-          img.width = leftSection.clientWidth;
-        }
-        img.style.display = 'block';
-      };
-      img.src = 'screenshot.png';
-      img.addEventListener('mousemove', function(e) {
-        // scale = img.width / img.naturalWidth; // Ensure scale is accurate if resized
-        const x = Math.round(e.offsetX * scale);
-        const y = Math.round(e.offsetY * scale);
-        if(x < 0 || y < 0 || x > img.naturalWidth || y > img.naturalHeight) {
-          xyLabel.textContent = `座標 X： ，座標 Y： `;
-        } else {
-          xyLabel.textContent = `座標 X： ${x}，座標 Y： ${y}`;
-        }
-      });
-      img.addEventListener('click', function(e) {
-        const x = Math.round(e.offsetX * scale);
-        const y = Math.round(e.offsetY * scale);
-        if(x >= 0 && y >= 0) {
-          ds.push({title: "undefined", x: x, y: y, ms: 3000});
-          textarea.value = JSON.stringify(ds, null, 2);
-          window.localStorage["monkey_script"] = textarea.value;
-        }
-      });
-      // 1. input 事件：內容改變時即時觸發
-      textarea.addEventListener('input', function(e) {
-        // console.log("即時輸入 (input):", e.target.value);
-      });
+        imageLoad(false);
+        if(orginalWidth !== img.naturalWidth) {
+          const body = document.querySelector('body');
+          body.style.visibility = 'visible';
 
-      // 2. change 事件：內容改變並失去焦點後觸發
-      textarea.addEventListener('change', function(e) {
-        try {
-          ds = JSON.parse(e.target.value);
-          window.localStorage["monkey_script"] = e.target.value;
-        } catch (err) {
-          alert("JSON 解析錯誤: \n" + err.message);
+          let clientWidth = leftSection.clientWidth - 20;
+
+          orginalWidth = img.naturalWidth;
+          let w = (img.naturalWidth / clientWidth);
+          let h = (img.naturalHeight / leftSection.clientHeight);
+          if(h > w) {
+            scale = h;
+            img.height = leftSection.clientHeight;
+          } else {
+            scale = w;
+            img.width = clientWidth;
+          }
+          img.style.display = 'block';          
         }
-        // console.log("異動確認 (change):", e.target.value);
-      });
+      };
     };
+
+    window.onbeforeunload = function() {
+      ws.close();
+    };
+
+    function moveCursor(params) {
+      clearTimeout(cursorId);
+      const x = params.x / scale;
+      const y = params.y / scale;
+      _cursor.style.left = (img.offsetLeft + x - 7) + "px";
+      _cursor.style.top = (img.offsetTop + y - 6) + "px";
+      _cursor.style.visibility = "visible";
+      cursorId =  setTimeout(() => {
+        _cursor.style.visibility = "hidden";
+      }, 1000);
+    }
+
+    img.addEventListener('mousemove', function(e) {
+      const x = Math.round(e.offsetX * scale);
+      const y = Math.round(e.offsetY * scale);
+      if(x < 0 || y < 0 || x > img.naturalWidth || y > img.naturalHeight) {
+        xyLabel.textContent = `座標 X： ，座標 Y： `;
+      } else {
+        xyLabel.textContent = `座標 X： ${x}，座標 Y： ${y}`;
+      }
+    });
+    img.addEventListener('click', function(e) {
+      if(imgLoading == true || execTimes > 0) return;
+      const x = Math.round(e.offsetX * scale);
+      const y = Math.round(e.offsetY * scale);
+
+      if(x >= 0 && y >= 0) {
+        let now = (new Date()).getTime();
+        if(startTime == null) {
+          startTime = now;
+        } 
+        else if(ds.length > 0) {
+          let index = ds.length - 1;
+          let data = ds[index];
+          let ms = Math.floor((now - startTime) / 1000) * 1000;
+          ds[index].ms = ms == 0 ? 1000 : ms;
+          clsTable.updateCell4(index, data.ms)
+
+          startTime = now;
+          console.log("startTime: " + startTime + ", ds: " + ds.length + ", last.ms: " + ds[ds.length - 1].ms)
+        }
+        let data = {title: titleName(), x: x, y: y, ms: 5000};
+        ds.push(data);
+        clsTable.insertRow(data)
+        window.localStorage["monkey_script"] = JSON.stringify(ds, null, 2);
+        ws.send(JSON.stringify({type: "tap", x: x, y: y}));
+        checkButton();
+      }
+    });
+
+    function titleName() {
+      let serialNumber = ds.length + 1;
+      let title = `第 ${String(serialNumber).padStart(2, '0')} 次`;
+      while (ds.find(d => d.title == title)) {
+        serialNumber++;
+        title = `第 ${String(serialNumber).padStart(2, '0')} 次`;
+      }
+      return title;
+    }
+
+    function imageLoad(params) {
+      imgLoading = params;
+      // if(params == false)
+      //   img.classList.remove('loading');
+      // else
+      //   img.classList.add('loading');
+    }
+
+    btnMonkey.addEventListener('click', function(e) {
+      execTimes = 1; monkey_script = assembleScript(); startTime = null;
+      clsTable.hide();
+      monkeyLog(`${execTimes}/${maxTimes} 指令執行中...`);
+      ws.send(JSON.stringify({type: "monkey_script", content: monkey_script}));
+      checkButton();
+    });
+
+    btnClear.addEventListener('click', function(e) {
+      clearData();
+      checkButton();
+    });
+    
+    function assembleScript(params) {
+      let content = "";
+      try {
+        content = `type=raw 
+          events=
+          count=10
+          speed=1.0
+          start data >>
+          `.replace(/  /g, '');
+        for(let i = 0; i < ds.length; i++) {
+          let d = ds[i];
+          if(d.title && d.title.length > 0 && d.title != "undefined") {
+            content += `\n### ${d.title} ###\n`;
+          }
+          content += `Tap(${d.x},${d.y},50)\n`;
+          if(isNaN(d.ms) == false && d.ms > 0) {
+            content += `UserWait(${d.ms})\n`;
+          }
+        }
+        // console.log(content)
+        return content;
+      } catch (err) {
+        alert("JSON 解析錯誤: \n" + err.message);
+        return;
+      }
+    }
+
+    function monkeyLog(params) {
+      if(runIntervalId) clearInterval(runIntervalId);
+      const div = document.createElement('div');
+      div.style.whiteSpace = 'pre';
+      // div.style.height = '100%';
+      div.style.fontSize = "16px";
+      div.style.overflow = 'auto';
+      div.innerHTML = `<span style="font-weight: bold;font-size: 18px;">${(new Date()).toLocaleTimeString('zh-Hant', { hour12: false })}：${params}</span>`;
+      rightSection.prepend(div); 
+      //  + "：" + params + ;
+      const span = document.createElement('span');
+      span.style.fontSize = "16px";
+      div.appendChild(span); 
+      let startTime = (new Date()).getTime();
+      runIntervalId = setInterval(() => {
+        let now = (new Date()).getTime();
+        span.innerText = ((now - startTime) / 1000).toFixed(1) + " 秒";
+      }, 100);  
+    }
+    function checkButton() {
+      btnClear.disabled = ds.length === 0 || execTimes > 0;
+      btnMonkey.disabled = ds.length === 0 || execTimes > 0;
+      select.disabled = execTimes > 0;
+    }
     function clearData() {
       ds = [];
-      textarea.value = ""; 
-      window.localStorage["monkey_script"] = textarea.value;
+      clsTable.clear();
+      delete window.localStorage["monkey_script"];
+    }
+
+    function addOption(text, value) {
+      const option = document.createElement("option");
+      option.text = text;
+      option.value = typeof value == "undefined" ? text: value;
+      select.add(option);
     }
   </script>
 </body>
