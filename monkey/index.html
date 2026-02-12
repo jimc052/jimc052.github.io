@@ -140,7 +140,6 @@
         </table>        
       </div>
       <div id="log" style="display: none; height: 120px; overflow: auto; border-top: 1px solid #ddd; padding: 5px;">
-
       </div>
     </section>
   </main>
@@ -152,6 +151,7 @@
 
     <div id="msg" style="flex: 1; text-align: center;"></div>
     <button id="btnClear" disabled>清空</button>
+    <button id="btnSave" disabled>存檔</button>
     <button id="btnMonkey" disabled>執行腳本</button>
     <select id="select" style="margin-left: 10px; font-size: 20px;"></select>
   </footer>
@@ -165,6 +165,7 @@
     const xyLabel = document.getElementById('xy');
     const btnClear = document.getElementById('btnClear');
     const btnMonkey = document.getElementById('btnMonkey');
+    const btnSave = document.getElementById('btnSave');
     const select = document.getElementById('select');
     const _cursor = document.getElementById('_cursor'); // 座標，紅色點
     let msg = document.getElementById('msg');
@@ -191,6 +192,9 @@
             execScript(data)  
           }, data.ms);
         }
+      } 
+      else if(data.type === "save") {
+        alert("儲存腳本成功: \n" + data.fileName);
       }
       else {
         console.log("收到訊息:", event.data);
@@ -209,6 +213,10 @@
       if(s && s.length > 0) {
         try {
           ds = JSON.parse(s);
+          ds.forEach(el => {
+            delete el.index;
+            delete el.type;
+          })
           checkButton();
         } catch (err) {
           alert("localStorage 中的 JSON 解析錯誤: \n" + err.message);
@@ -221,6 +229,7 @@
           moveCursor(data)
         }, 
         onmsg: (params) => {
+          console.log("ds: " + ds.length)
           sendMsg(params)
         },
       })
@@ -339,13 +348,20 @@
       }
     });
 
+    btnSave.addEventListener('click', function(e) {
+      ds.forEach(el => {
+        delete el.index;
+        delete el.type;
+      })
+      ws.send(JSON.stringify({type: "save", script: JSON.stringify(ds, null, 2)}));
+    });
+
     btnClear.addEventListener('click', function(e) {
       clearData();
       checkButton();
     });
     
     function execScript(params) {
-      
       if(execTimes == 0) return;
       let index = typeof params == "object" ? params.index + 1 : 0;
       // console.log(`${execTimes}/${maxTimes}, index: ${index}`)
@@ -371,6 +387,10 @@
 
     function stopScript(params) {
       execTimes = 0;
+      ds.forEach(el => {
+        delete el.index;
+        delete el.type;
+      })
       btnMonkey.innerText = "執行腳本";
       clsTable.focusRow(-1);
       clearInterval(logIntervalId);
@@ -404,6 +424,7 @@
     function checkButton() {
       btnClear.disabled = ds.length === 0 || execTimes > 0;
       btnMonkey.disabled = ds.length === 0;
+      btnSave.disabled = ds.length === 0;
       select.disabled = execTimes > 0;
     }
     function clearData() {
@@ -424,6 +445,41 @@
         + (typeof error == "object" ? error.message : error || "")
       ;
     }
+
+    document.body.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+    });
+
+    document.body.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      if(e.dataTransfer.files.length > 0) {
+        let file = e.dataTransfer.files[0];
+        let reader = new FileReader();
+        reader.onload = function(e) {
+          try {
+            let json = JSON.parse(e.target.result);
+            if(Array.isArray(json)) {
+              clearData();
+              ds = json;
+              ds.forEach(el => {
+                delete el.index;
+                delete el.type;
+                clsTable.insertRow(el);
+              });
+              checkButton();
+              window.localStorage["monkey_script"] = JSON.stringify(ds, null, 2);
+            } else {
+              alert("檔案內容格式錯誤 (需為 Array)");
+            }
+          } catch (err) {
+            alert("JSON 解析錯誤: \n" + err.message);
+          } 
+        };
+        reader.readAsText(file);
+      }
+    });
   </script>
 </body>
 </html>

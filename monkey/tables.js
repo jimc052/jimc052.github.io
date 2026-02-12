@@ -38,8 +38,9 @@ class Table {
         let index = tr.rowIndex;
         let answer = confirm(`確定要刪除第 ${index} 筆資料嗎？`);
         if(answer) {
-          this.table.deleteRow(tr.rowIndex);
-          ds.splice(tr.rowIndex - 1, 1);
+          this.table.deleteRow(index);
+          ds.splice(index - 1, 1);
+          console.log("ds: " + ds.length)
           window.localStorage["monkey_script"] = JSON.stringify(ds, null, 2);
           this.onmsg(`第 ${index} 筆資料已刪除`);
           this.active = -1;

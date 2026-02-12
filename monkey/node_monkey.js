@@ -10,7 +10,7 @@ const SocketServer = require('ws').Server;
 const fs = require('fs');
 const wss = new SocketServer({ port: 8080 });
 let shotIndex = 0, refreshFrequcy = 100;
-let screenshots = "screenshots";
+let screenshots = "screenshots", scripts = "scripts";
 let captureSessionId = 0;
 let monkeyProcess = null;
 
@@ -22,7 +22,8 @@ wss.on('connection', async (ws) => {
     captureSessionId++;
     const sessionId = captureSessionId;
     try {
-      await checkFolder();
+      await createFolder(screenshots);
+      await createFolder(scripts);
       screenCapture(sessionId);
     } catch (e) {
       broadcast({ type: "error", message: `${e}` });
@@ -35,6 +36,9 @@ wss.on('connection', async (ws) => {
       if(data.type === 'tap') {
         await execCmd(`adb shell input tap ${data.x} ${data.y}`);
         broadcast(Object.assign(data, {message: `OK`}));
+      } else if(data.type === 'save') {
+        // await execCmd(`adb shell input tap ${data.x} ${data.y}`);
+        saveScript(data);
       } else {
         console.log(`Received message: ${message}`);
       }
@@ -59,7 +63,11 @@ wss.on('connection', async (ws) => {
   });
 });
 
-function now(params) {
+function today() {
+  return (new Date()).toLocaleDateString('zh-Hant', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  //.replace(/\//g, '')
+}
+function now() {
   return (new Date()).toLocaleTimeString('zh-Hant', { hour12: false });
 }
 
@@ -76,10 +84,6 @@ function execCmd(command) {
 }
 
 function clearFolder() {
-  if (fs.existsSync(`monkey_script.txt`)) {
-    fs.unlinkSync(`monkey_script.txt`);
-  }
-
   const dir = './' + screenshots;
   if (fs.existsSync(dir)) {
     fs.readdirSync(dir).forEach((file) => {
@@ -88,8 +92,8 @@ function clearFolder() {
   }
 }
 
-function checkFolder() {
-  const dir = './' + screenshots;
+function createFolder(path) {
+  const dir = './' + path;
   return new Promise((resolve, reject) => {
     fs.access(dir, (err) => {
       if (err) {
@@ -157,6 +161,20 @@ function screenCapture(sessionId) {
     capture();
 }
 
+async function saveScript(data) {
+  
+  let dt = today().replace(/\//g, '') + "T" + now().replace(/:/g, '');
+  const fileName = `./${scripts}/${dt}.txt`  ;
+
+  fs.writeFile(fileName, data.script, (err) => {
+    if (err) {
+      console.error(err);
+      broadcast({ type: "error", message: `exec error: ${err}` });
+    } else {
+      broadcast(Object.assign(data, {fileName, message: `OK`}));
+    }
+  });
+}
 
 function broadcast(params) {
   wss.clients.forEach((client) => {
