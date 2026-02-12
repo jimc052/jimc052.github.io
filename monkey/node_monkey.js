@@ -32,11 +32,9 @@ wss.on('connection', async (ws) => {
   ws.on('message', async (message) => {
     try {
       const data = JSON.parse(message);
-      if (data.type === 'monkey_script') {
-        writeMonkeyScript(data.content)
-      } else if(data.type === 'tap') {
+      if(data.type === 'tap') {
         await execCmd(`adb shell input tap ${data.x} ${data.y}`);
-        broadcast({ type: "tap", message: `OK` });
+        broadcast(Object.assign(data, {message: `OK`}));
       } else {
         console.log(`Received message: ${message}`);
       }
@@ -63,7 +61,6 @@ wss.on('connection', async (ws) => {
 
 function now(params) {
   return (new Date()).toLocaleTimeString('zh-Hant', { hour12: false });
-  
 }
 
 function execCmd(command) {
@@ -160,29 +157,6 @@ function screenCapture(sessionId) {
     capture();
 }
 
-function writeMonkeyScript(params) {
-  fs.writeFile('monkey_script.txt', params, (err) => {
-    if (err) {
-      console.error(err);
-      broadcast({ type: "error", message: `exec error: ${err}` });
-    } else {
-      runMonkeyScript();
-    }
-  });  
-}
-function runMonkeyScript() {
-  const cmd = 'adb push monkey_script.txt /sdcard/ && adb shell monkey -f /sdcard/monkey_script.txt -v 1';
-  monkeyProcess = exec(cmd, (error, stdout, stderr) => {
-    monkeyProcess = null;
-    if (error) {
-      console.error(`exec error: ${error}`);
-      broadcast({ type: "error", message: `exec error: ${error}` });
-    } else {
-      console.log(`Monkey script output: ${stdout}`);
-      broadcast({ type: "monkey_script", message: "OK" });
-    }
-  });
-}
 
 function broadcast(params) {
   wss.clients.forEach((client) => {
