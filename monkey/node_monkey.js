@@ -189,7 +189,8 @@ app.use(express.static(__dirname));
 //   res.send('Hello World!')
 // })
 const server = app.listen(port, () => {
-  console.log(`app listening on port ${port}`)
+  console.log(`app listening on port ${port}`);
+  exec(`open -a "Google Chrome" http://localhost:${port}`);
 });
 
 process.on('SIGINT', () => {
