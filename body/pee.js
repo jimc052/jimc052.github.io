@@ -72,17 +72,17 @@ Vue.component('pee', {
 			
 			<i-button v-if="datas.length > 0 && isToday()" type="warning" shape="circle" icon="md-clock" 
 				circle @click.native="onTimer" size="large"
-				style="position: absolute; bottom: 10px; left: 10px;"
+				style="position: absolute; bottom: 50px; left: 20px;"
 			></i-button>
 			<i-button v-if="isToday()" type="primary" shape="circle" icon="md-add" 
 				circle @click.native="onAdd" size="large"
-				style="position: absolute; bottom: 10px; right: 10px;"
+				style="position: absolute; bottom: 50px; right: 20px;"
 			></i-button>
 
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2026-01-15 15:50"}}</div>
+				{{"2026-04-21 11:00"}}</div>
 		</div>
 	`,
 	props: {
@@ -100,7 +100,7 @@ Vue.component('pee', {
 			nextTime: "",
 			active: -1,
 			canEdit: false,
-			yesterday: ""
+			yesterday: "",
 		};
 	},
 	created(){

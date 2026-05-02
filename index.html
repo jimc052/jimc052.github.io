@@ -52,7 +52,6 @@
 	let Links = [
 		[
 			{title: "VOA", path: "VOA"}, 
-			{title: "barcode", path: "barcode"},
 			{title: "VUE-JSON", path: "VUE-JSON"},
 		], [
 			{ path: "japanese", mode: "五十音", title: "五十音" }, 
@@ -94,9 +93,7 @@
 					let para = (path == "MyTube" ? "?duration=5&repeat=1&answer=0" 
 						: (path == "shiftTime"  && local == true ? "?anonymous=amltY2hlbjUzNDJAZ21haWwuY29tCTUzNDJKaW1DaGVu" : "")
 						)
-					if(path == "barcode" && local == true) {
-						// para = "?mode=COUPON&SITE=BSMS000032&STORE=000000&ID_NO=20249";
-					} else if(typeof mode == "string" && mode.length > 0) {
+					if(typeof mode == "string" && mode.length > 0) {
 						para = "?mode=" + mode;
 					}
 					a.setAttribute("href", `./${path}/index.html` + para)					
