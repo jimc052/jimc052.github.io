@@ -107,21 +107,6 @@
 				width += a.clientWidth;
 			}
 		}
-		let email =  window.localStorage["email"] || "";
-		if(local || email.length > 0) {
-			let div = document.createElement("div");
-			document.body.appendChild(div);
-			div.style.marginTop = "30px";
-			div.style.fontSize = "40px";
-			div.style.color = "#2d8cf0";
-
-			let today = new Date(), retireDate  = new Date(2026, 3, 14);
-			let days = retireDate.between(today);
-			let datas = today.calculateDateDifference(retireDate);
-			
-			div.innerText = "離退休日：" + days + "天 / " + `${datas.years}年 ${datas.months}月 ${datas.days}天`;			
-		}
-
 	}
 
 	Date.prototype.between = function (d, kind) { // 天
