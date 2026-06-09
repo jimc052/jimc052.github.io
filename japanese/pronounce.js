@@ -1,13 +1,6 @@
 let token = Date.now 
 // open -a Google\ Chrome "index.html"
-/*
-			<RadioGroup v-model="word" type="button" style="margin-left: 10px;" @on-change="onChangeWord">
-				<Radio label="平">平假</Radio>
-				<Radio label="片">片假</Radio>
-				<Radio v-if="width > 400" label="全">全部</Radio>
-			</RadioGroup>
-		
-*/
+
 Vue.component('pronounce', { 
 	template:  `
 	<div id="pronounce" style="height: 100%; width: 100%; display: flex; flex-direction: column; padding: 0px 5px;">
@@ -46,8 +39,7 @@ Vue.component('pronounce', {
 						</div>
 
 						<div style="color: #2d8cf0" :class="{active: active == index1 + '-' + index2}">
-							{{item2 == null ? "" 
-								: item2["mp3"].indexOf(",") ? item2["mp3"].split(",")[0] : item2["mp3"]}}
+							{{getRomaLabel(item2 == null ? "" : item2["mp3"])}}
 						</div>
 					</td>
 				</tr>
@@ -345,6 +337,16 @@ Vue.component('pronounce', {
 		},
 		onChangeWord() {
 			window.localStorage["japanese-pronounce-word"] = this.word;
+		},
+		getRomaLabel(mp3) {
+			if(mp3 == null || mp3.length == 0) return "";
+			if(mp3.indexOf(",") > -1) {
+				let arr = mp3.split(",");
+				let label = arr.splice(0, 1)[0];
+				mp3 = label + `(${arr.join(",")})`;
+			}
+			return mp3;
+			// return mp3 ? mp3.split(',')[0] : '';
 		}
 	},
 	watch: {

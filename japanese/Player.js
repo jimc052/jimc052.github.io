@@ -9,7 +9,10 @@ class Player {
 			let audio = new Audio();
 			if(mp3.indexOf(",") > -1) {
 				let arr = mp3.split(",");
-				mp3 = arr[arr.length - 1];
+				mp3 = arr[0];
+			}
+			if(mp3 == "cha" || mp3 == "chu" || mp3 == "cho") {
+				mp3 = mp3.replace("ch", "cy");
 			}
 
 			audio.src = Player.url + mp3 + ".mp3";
