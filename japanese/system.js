@@ -133,6 +133,10 @@ window.rome = (text) => { // 羅馬拼音
       let char = arr1[i];
       if (voiceN.indexOf(char) > -1) { // ん 後續音, 不懂 2023-05-25
         arr1[i] = "n"
+      } else if (char === "は" && text == "おなまえは") { //i > 0 && i === arr1.length - 1) { // 處理助詞 は (wa)
+        arr1[i] = "wa"
+      // } else if (char === "へ" && i > 0 && i === arr1.length - 1) { // 處理助詞 へ (e)
+      //   arr1[i] = "e"
       } else if (doubleConsonan.indexOf(char) > -1) { // 促音
 
       } else if (char == "ィ") { // 不知怎麼用，只好寫死

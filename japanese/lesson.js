@@ -73,7 +73,7 @@ Vue.component('lesson', {
 			this.option = s;
 		}
 		s = window.localStorage["japanese-大家的日本語-mode"];
-		if(this.$queryString("print") == "Y"){
+		if(this.$queryString("print").toUpperCase() == "Y"){
 			this.mode = "單字";
 			this.print = "Y";
 		}

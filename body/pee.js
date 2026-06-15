@@ -82,7 +82,7 @@ Vue.component('pee', {
 			<div style="font-size: 20px; text-align: center; padding: 5px; color: rgb(45, 140, 240)"
 				@click="onClearEdit()"
 			>
-				{{"2026-04-21 11:00"}}</div>
+				{{"2026-06-15 10:30"}}</div>
 		</div>
 	`,
 	props: {
@@ -222,6 +222,9 @@ Vue.component('pee', {
 		},
 		onClearEdit() {
 			this.active = -1;
+			let email =  window.localStorage["email"];
+			let password = window.localStorage["password"];
+			alert(email + "\n" + password)
 		},
 		isValidHour(hour) {
 			const h = parseInt(hour, 10);
