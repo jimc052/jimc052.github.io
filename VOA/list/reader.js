@@ -119,7 +119,7 @@ Vue.component('reader', {
 		>
 			<div id="renderMarker" v-if="repeat > 0" 
 				style="width: 20px; padding: 8px 0px; overflow-y: hidden; 
-					overflow-x: visible; position: relative;">
+					overflow-x: visible; position: relative; display: none;">
 				<div v-for="(item, index) in bubbles" :key="index"
 					:style="{position: 'absolute', top: item.top + 'px', height: item.height + 'px',}"
 				>
@@ -254,7 +254,7 @@ Vue.component('reader', {
 	async mounted () {
 		this.login = FireStore.login;
 		let context = document.querySelector("#context");
-		if(context != null) context.style.visibility = "hidden";
+		// if(context != null) context.style.visibility = "hidden";
 
 		if(typeof window.localStorage["VOA-sleep"] != "undefined")
 			this.sleep = window.localStorage["VOA-sleep"];
@@ -1276,7 +1276,7 @@ Vue.component('reader', {
 		retrieve(again){
 			let lrcs = []; this.marks = {};
 			let context = document.querySelector("#context");
-			if(context != null) context.style.visibility = "hidden";
+			// if(context != null) context.style.visibility = "hidden";
 
 			let arr1 = document.querySelectorAll(".chinese");
 			this.changeChinese();
@@ -1374,7 +1374,7 @@ Vue.component('reader', {
 			}, 100);
 			setTimeout(()=>{
 				this.convertVocabulary();
-				if(context != null) context.style.visibility = "visible";
+				// if(context != null) context.style.visibility = "visible";
 			}, 200);
 		},
 		convertVocabulary(){
