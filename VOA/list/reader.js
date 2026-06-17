@@ -1,3 +1,8 @@
+/*
+2026-06-17 
+  1. mp3 不讓下載了
+*/
+
 Vue.component('reader', { 
 	template:  `<modal v-model="modal" class-name="vertical-center-modal" 
 		  id="reader"  class="page" 
@@ -940,8 +945,10 @@ Vue.component('reader', {
 
 			if(this.$isFlutter() && typeof this.source.mp3Path == 'string') {
 				this.url = await this.$toBase64(this.source.mp3Path);
-			} else
-				this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
+			} else {
+				// this.url = await FireStore.downloadFileURL("VOA/" + this.source.report + "/" + this.source.key + ".mp3");
+				this.url = "";
+			}
 			this.audio.src = this.url;
 
 			document.getElementById("readerFrame").style.zoom = this.zoom;

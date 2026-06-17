@@ -1,0 +1,1 @@
+1. 用 jimc052 用 mail 帳號註冊 firebase，但沒有後台可以用
