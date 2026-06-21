@@ -1,1 +1,1 @@
-1. 用 jimc052 用 mail 帳號註冊 firebase，但沒有後台可以用
+1. 用 jimc052@bethel.com.tw 的 mail 帳號註冊 firebase，但沒有後台可以用

@@ -7,7 +7,7 @@
     static login = false;
   
     static initial(key){
-      var firebaseConfig = {
+      var firebaseConfig = { //用 jimc052@bethel.com.tw 的 mail 帳號註冊 firebase，但沒有後台可以用
         apiKey: "AIzaSyBLvDLmJ6p9Ko44Q2gNt0NLgTqu1ewnBR8",
         authDomain: "jvoa-3c784.firebaseapp.com",
         databaseURL: "https://jvoa-3c784.firebaseio.com",
